@@ -25,7 +25,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { router } from 'expo-router';
 
 
-export default function Index() {
+export default function Home() {
 
   const { t } = i18n;
   const [currentLanguage, setCurrentLanguage] = React.useState("en"); // Default language is "en
@@ -72,6 +72,7 @@ export default function Index() {
               { label: t('PAGES.LOGIN'), value: '/auth/login' },
               { label: t('PAGES.REGISTER'), value: '/auth/register' },
               { label: t('PAGES.FORGOT_PASSWORD'), value: '/auth/forgot-password' },
+              { label: t('PAGES.HOME'), value: '/home' }
             ]}
           />
         </View>

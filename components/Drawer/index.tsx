@@ -13,7 +13,7 @@ function Drawer() {
                 headerShadowVisible: true,
                 headerTitle: 'Homes',
                 
-            }} name="index" component={Index} />
+            }} name="home" component={Index} />
             <CreateDrawer.Screen options={{
                 drawerLabel: 'Login',
                 title: 'Login',

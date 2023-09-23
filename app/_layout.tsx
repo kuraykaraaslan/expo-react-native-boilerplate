@@ -9,17 +9,9 @@ import React, { useEffect } from 'react';
 
 export default function HomeLayout() {
 
-  useEffect(() => {
-    console.log("Store", store.getState());
-  }, []);
-
-
   return (
     <Provider store={store}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <Drawer>
-        </Drawer>
-      </GestureHandlerRootView>
+    <Slot /> 
     </Provider>
   );
 }
