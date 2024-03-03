@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "expo-react-redux-boilerplate",
+    "slug": "expo-react-redux-boilerplate",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "entryPoint" : "./app/index.tsx",
+    "backgroundColor": "#ffffff",
+    "userInterfaceStyle": "dark",
+    "experiments": {
+      "typedRoutes": true
+    },    
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
