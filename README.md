@@ -1,7 +1,8 @@
 ![logo](/static/logo.png)
 
 
-# Expo-React-Redux-Boilerplate
+# Expo-React-Redux-Boilerplate **DEVELOPMENT IN PROGRESS**
+
 
 This boilerplate provides a robust starting point for building mobile applications using Expo, React Native, Redux for state management, Tailwind CSS for styling, and TypeScript. It's designed to help developers jumpstart their project with a well-structured, scalable, and easily maintainable codebase.
 
