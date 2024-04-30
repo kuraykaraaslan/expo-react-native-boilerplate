@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "expo-react-redux-boilerplate",
+    "name": "Expo React Redux Boilerplate",
     "slug": "expo-react-redux-boilerplate",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.kuraykaraaslan.boilerplate"
     },
     "web": {
       "bundler": "metro",

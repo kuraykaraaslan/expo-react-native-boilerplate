@@ -1,5 +1,7 @@
-import Slot from "expo-router";
-
+import { Slot } from 'expo-router';
 import "../global.css"
 
-export default Slot
+
+export default function HomeLayout() {
+  return <Slot />;
+}
