@@ -1,0 +1,86 @@
+{
+    "LOCALIZATION": {
+        "SELECT_LANGUAGE": "Select Language",
+        "ENGLISH": "English",
+        "FRENCH": "French",
+        "GERMAN": "German",
+        "SPANISH": "Spanish",
+        "ITALIAN": "Italian"
+    },
+    "LANGUAGES": {
+        "EN": "English",
+        "FR": "French",
+        "DE": "German",
+        "ES": "Spanish",
+        "IT": "Italian",
+        "TR": "Turkish"
+    },
+    "AUTH": {
+        "LOGIN": "Login",
+        "REGISTER": "Register",
+        "USERNAME": "Username",
+        "PASSWORD": "Password",
+        "EMAIL": "Email",
+        "CONFIRM_PASSWORD": "Confirm Password",
+        "FORGOT_PASSWORD": "Forgot Password",
+        "RESET_PASSWORD": "Reset Password",
+        "SEND_RESET_LINK": "Send Reset Link",
+        "ALREADY_REGISTERED": "Already registered?",
+        "NOT_REGISTERED": "Not registered?",
+        "REGISTER_NOW": "Register now",
+        "LOGIN_NOW": "Login now",
+        "LOGOUT": "Logout",
+        "PROFILE": "Profile",
+        "SETTINGS": "Settings",
+        "INVALID_CREDENTIALS": "Invalid credentials",
+        "EMAIL_REQUIRED": "Email is required",
+        "EMAIL_INVALID": "Email is invalid",
+        "USERNAME_REQUIRED": "Username is required",
+        "PASSWORD_REQUIRED": "Password is required",
+        "PASSWORD_MIN_LENGTH": "Password must be at least 6 characters",
+        "CONFIRM_PASSWORD_REQUIRED": "Confirm Password is required",
+        "CONFIRM_PASSWORD_MATCH": "Passwords must match",
+        "RESET_LINK_SENT": "Reset link sent to your email",
+        "RESET_LINK_FAILED": "Failed to send reset link",
+        "PASSWORD_RESET": "Password reset successfully",
+        "PASSWORD_RESET_FAILED": "Failed to reset password",
+        "REGISTER_SUCCESS": "Registration successful",
+        "REGISTER_FAILED": "Failed to register",
+        "LOGIN_SUCCESS": "Login successful",
+        "LOGIN_FAILED": "Failed to login",
+        "LOGOUT_SUCCESS": "Logout successful",
+        "LOGOUT_FAILED": "Failed to logout",
+        "DELETE_ACCOUNT": "Delete Account",
+        "HAVE_ACCOUNT": "Already have an account?",
+        "NO_ACCOUNT": "Don't have an account?",
+        "OR_CONTINUE_WITH": "Or continue with"
+    },
+    "PAGES": {
+        "HOME": "Home",
+        "ABOUT": "About",
+        "CONTACT": "Contact",
+        "SETTINGS": "Settings",
+        "PROFILE": "Profile",
+        "LOGOUT": "Logout",
+        "LOGIN": "Login",
+        "REGISTER": "Register",
+        "DASHBOARD": "Dashboard",
+        "USERS": "Users",
+        "FORGOT_PASSWORD": "Forgot Password"
+    },
+    "HOME": {
+        "WELCOME": "Welcome to Expo React Redux Boilerplate",
+        "DESCRIPTION": "This is a boilerplate for Expo React Redux with localization and authentication features. It is built with React Native, Expo, Redux, Axios, Nativewind, React-i18next and Secure-Storage.",
+        "SELECT_LANGUAGE": "Select Language",
+        "PAGES": "You can navigate to the following pages:",
+        "SELECT_PAGE": "Select Page",
+        "LANGUAGES": "You can select the following languages:",
+        "DEVELOPER": "Developed by Kuray Karaaslan with ❤️. Click here to view the source code."
+    },
+    "ERRORS" : {
+        "AUTH" : {
+            "NEED_LOGIN" : "You need to login to access this page"
+        }
+    },
+    "ANANAS" : "Ananas2"
+}

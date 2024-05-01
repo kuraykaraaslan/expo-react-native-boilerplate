@@ -11,9 +11,12 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
 
+import i18n from '@/libs/localize/localize';
+
 
 export default function AuthLayout({ children , subChildren } : { children: React.ReactNode, subChildren: React.ReactNode }) {
 
+    const { t } = i18n;
 
     function handleGoogleLogin() {
         console.log("Google login");
@@ -46,7 +49,7 @@ export default function AuthLayout({ children , subChildren } : { children: Reac
             </View>
             {/*Social Login*/}
             <View className="flex justify-center mt-6">
-                <Text className="text-lg text-gray-500">Or continue with</Text>
+                <Text className="text-lg text-gray-500">{t('AUTH.OR_CONTINUE_WITH')}</Text>
             </View>
             <View className="flex justify-center px-4 w-full w-1/2 pt-8">
                 <View className="flex flex-row justify-center w-full gap-4">

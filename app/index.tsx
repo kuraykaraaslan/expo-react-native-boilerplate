@@ -16,40 +16,73 @@
  * 
  * to use these pages, you can import them from the
  */
-
+import RNPickerSelect from 'react-native-picker-select';
 import React from 'react';
-import { View, Text, Button, Image } from 'react-native';
+import { View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import { Link, Route } from 'expo-router';
+import i18n from '@/libs/localize/localize';
+import * as WebBrowser from 'expo-web-browser';
+import { router } from 'expo-router';
+
 
 export default function Home() {
+
+  const { t } = i18n;
+  const [currentLanguage, setCurrentLanguage] = React.useState(i18n.language);
+  const [availableLanguages, setAvailableLanguages] = React.useState(i18n.languages);
+
+  function changeLanguage(value: string) {
+    i18n.changeLanguage(value);
+    setCurrentLanguage(value);
+    console.log("Language changed to", value);
+  }
+
+  function changePage(value: string) {
+    router.push(value as any);
+  }
+
+  function openDeveloperWebsite() {
+    WebBrowser.openBrowserAsync('https://kuray.dev');
+  }
+
   return (
     <View className="container mx-auto text-center bg-base-100 h-screen">
       <View className="flex justify-center mt-20 px-4">
         <Image source={require('@/assets/images/home.png')} className="w-full h-64 mb-4" />
-        <Text className="text-4xl font-bold">Welcome to Expo React Redux Boilerplate</Text>
-        <Text className="text-lg mt-4">This is a boilerplate project for building mobile applications using Expo, React, and Redux. It provides a solid foundation for creating cross-platform mobile apps with a predictable state container for managing application data flow.</Text>
-        <Text className="mt-4 font-bold">To get started, you can use the following pages:</Text>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginTop: 20 }} className="w-full border-2 border-black divide-y-2 divide-black divide-x-2">
-          
-          <View className="w-1/2 p-2">
-            <Text className="text-lg font-bold rounded-md">Category</Text>
-          </View>
-          <View className="border-l-2 border-black p-2 w-1/2">
-            <Text className="text-lg font-bold rounded-md">Page</Text>
-          </View>
-          <View className="w-1/2 p-2 border-t-2 border-black">
-            <Text className="text-lg">Auth</Text>
-          </View>
-          <View className="border-l-2 border-t-2 border-black p-2 w-1/2">
-            <Link href="/auth/login" className="text-lg text-orange-600">Login</Link>
-          </View>
-          <View className="w-1/2 p-2 border-t-2 border-black">
-            <Text className="text-lg">Auth</Text>
-          </View>
-          <View className="border-l-2 border-t-2 border-black p-2 w-1/2">
-            <Link href="/auth/register" className="text-lg text-orange-600">Register</Link>
-          </View>
+        <Text className="text-4xl font-bold">{t('HOME.WELCOME')}</Text>
+        <Text className="text-lg mt-4">{t('HOME.DESCRIPTION')}</Text>
+
+        <Text className="mt-4 font-bold">{t('HOME.LANGUAGES')}</Text>
+        <View className="flex justify-center mt-4">
+          <RNPickerSelect style={{ placeholder: { color: 'black' }, viewContainer: { borderWidth: 2, borderColor: 'black', borderRadius: 5, padding: 0 } }}
+            placeholder={{ label: t('LOCALIZATION.SELECT_LANGUAGE'), value: null }}
+            onValueChange={(value) => changeLanguage(value)}
+            items={availableLanguages.map((lang) => ({ label: t(`LANGUAGES.${lang.toUpperCase()}`)
+              , value: lang }))}
+          />
         </View>
+
+
+        <Text className="mt-4 font-bold">{t('HOME.PAGES')}</Text>
+        <View className="flex justify-center mt-4">
+          <RNPickerSelect style={{ placeholder: { color: 'black' }, viewContainer: { borderWidth: 2, borderColor: 'black', borderRadius: 5, padding: 0 } }}
+            placeholder={{ label: t('HOME.SELECT_PAGE'), value: null }}
+            onValueChange={(value) => changePage(value)}
+            items={[
+              { label: t('PAGES.LOGIN'), value: '/auth/login' },
+              { label: t('PAGES.REGISTER'), value: '/auth/register' },
+              { label: t('PAGES.FORGOT_PASSWORD'), value: '/auth/forgot-password' },
+            ]}
+          />
+        </View>
+        <View className="mt-4">
+          {/* <Link for kuray.dev as development */}
+          <TouchableOpacity onPress={openDeveloperWebsite} className="text-blue-500 underline cursor-pointer">
+            <Text className="mt-2 font-bold">{t('HOME.DEVELOPER')}</Text>
+          </TouchableOpacity>
+        </View>
+
+
       </View>
     </View>
   );
