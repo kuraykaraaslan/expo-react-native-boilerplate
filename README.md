@@ -14,6 +14,12 @@ This boilerplate provides a robust starting point for building mobile applicatio
   <img src="/static/screenshots/register.png" width="200" />
 </p>
 
+## Available Languages
+
+- English
+- Turkish
+- German
+
 ## Features
 
 - **Expo SDK**: Utilizes the latest Expo SDK to manage the native code easily and to access the Expo ecosystem for rapid development.
