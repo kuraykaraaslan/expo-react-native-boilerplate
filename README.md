@@ -14,12 +14,6 @@ This boilerplate provides a robust starting point for building mobile applicatio
   <img src="/static/screenshots/register.png" width="200" />
 </p>
 
-## Available Languages
-
-- English
-- Turkish
-- German
-
 ## Features
 
 - **Expo SDK**: Utilizes the latest Expo SDK to manage the native code easily and to access the Expo ecosystem for rapid development.
@@ -32,6 +26,16 @@ This boilerplate provides a robust starting point for building mobile applicatio
 - **Axios**: Includes Axios for making HTTP requests, with a pre-configured instance for easy API integration.
 - **i18next**: Supports i18next for internationalization and localization of the app.
 
+## Roadmap
+
+- [x] Initial setup with Expo, React Native, Redux, Tailwind CSS, and TypeScript.
+- [ ] Implement authentication flow with Redux.
+- [x] Add Axios for making HTTP requests.
+- [x] Integrate i18next for internationalization and localization.
+- [ ] Support dark mode and light mode themes.
+- [ ] Add form validation with Formik and Yup.
+- [ ] Implement unit tests with Jest and React Testing Library.
+- [ ] Support for web and desktop platforms.
 
 ## Getting Started
 
