@@ -69,7 +69,7 @@
         "FORGOT_PASSWORD": "Forgot Password"
     },
     "HOME": {
-        "WELCOME": "Welcome to Expo React Redux Boilerplate",
+        "WELCOME": "Welcome to Expo Boilerplate",
         "DESCRIPTION": "This is a boilerplate for Expo React Redux with localization and authentication features. It is built with React Native, Expo, Redux, Axios, Nativewind, React-i18next and Secure-Storage.",
         "SELECT_LANGUAGE": "Select Language",
         "PAGES": "You can navigate to the following pages:",
