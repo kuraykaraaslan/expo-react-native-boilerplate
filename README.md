@@ -6,6 +6,14 @@
 
 This boilerplate provides a robust starting point for building mobile applications using Expo, React Native, Redux for state management, Tailwind CSS for styling, and TypeScript. It's designed to help developers jumpstart their project with a well-structured, scalable, and easily maintainable codebase.
 
+## Screenshots
+
+<p align="center">
+  <img src="/static/screenshots/home.png" width="200" />
+  <img src="/static/screenshots/login.png" width="200" />
+  <img src="/static/screenshots/register.png" width="200" />
+</p>
+
 ## Features
 
 - **Expo SDK**: Utilizes the latest Expo SDK to manage the native code easily and to access the Expo ecosystem for rapid development.
@@ -16,6 +24,8 @@ This boilerplate provides a robust starting point for building mobile applicatio
 - **React Navigation**: Integrated with React Navigation for routing and navigation in the app.
 - **Prettier & ESLint**: Pre-configured with Prettier and ESLint for consistent code formatting and linting, following best practices.
 - **Axios**: Includes Axios for making HTTP requests, with a pre-configured instance for easy API integration.
+- **i18next**: Supports i18next for internationalization and localization of the app.
+
 
 ## Getting Started
 
