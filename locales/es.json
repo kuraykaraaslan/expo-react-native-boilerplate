@@ -1,0 +1,78 @@
+{
+    "LANGUAGES": {
+      "EN": "Inglés",
+      "FR": "Francés",
+      "DE": "Alemán",
+      "ES": "Español",
+      "IT": "italiano",
+      "TR": "turco"
+    },
+    "AUTH": {
+      "LOGIN": "Acceso",
+      "REGISTER": "Registro",
+      "USERNAME": "Nombre de usuario",
+      "PASSWORD": "Contraseña",
+      "EMAIL": "Correo electrónico",
+      "CONFIRM_PASSWORD": "confirmar Contraseña",
+      "FORGOT_PASSWORD": "Has olvidado tu contraseña",
+      "RESET_PASSWORD": "Restablecer la contraseña",
+      "SEND_RESET_LINK": "Enviar enlace de reinicio",
+      "ALREADY_REGISTERED": "¿Ya registrado?",
+      "NOT_REGISTERED": "¿No registrado?",
+      "REGISTER_NOW": "Regístrate ahora",
+      "LOGIN_NOW": "Inicia sesión ahora",
+      "LOGOUT": "Cerrar sesión",
+      "PROFILE": "Perfil",
+      "SETTINGS": "Ajustes",
+      "INVALID_CREDENTIALS": "Credenciales no válidas",
+      "EMAIL_REQUIRED": "correo electronico es requerido",
+      "EMAIL_INVALID": "el correo electrónico es invalido",
+      "USERNAME_REQUIRED": "Se requiere nombre de usuario",
+      "PASSWORD_REQUIRED": "se requiere contraseña",
+      "PASSWORD_MIN_LENGTH": "La contraseña debe tener al menos 6 caracteres",
+      "CONFIRM_PASSWORD_REQUIRED": "Confirmar Se requiere contraseña",
+      "CONFIRM_PASSWORD_MATCH": "Las contraseñas deben coincidir",
+      "RESET_LINK_SENT": "Restablecer enlace enviado a su correo electrónico",
+      "RESET_LINK_FAILED": "No se pudo enviar el enlace de reinicio",
+      "PASSWORD_RESET": "Restablecimiento de contraseña exitoso",
+      "PASSWORD_RESET_FAILED": "No se pudo restablecer la contraseña",
+      "REGISTER_SUCCESS": "Registro exitoso",
+      "REGISTER_FAILED": "Fallo el registro",
+      "LOGIN_SUCCESS": "Inicio de sesión correcto",
+      "LOGIN_FAILED": "Error al iniciar sesión",
+      "LOGOUT_SUCCESS": "Cerrar sesión exitosamente",
+      "LOGOUT_FAILED": "No se pudo cerrar sesión",
+      "DELETE_ACCOUNT": "Borrar cuenta",
+      "HAVE_ACCOUNT": "¿Ya tienes una cuenta?",
+      "NO_ACCOUNT": "¿No tienes una cuenta?",
+      "OR_CONTINUE_WITH": "O continuar con"
+    },
+    "PAGES": {
+      "HOME": "Hogar",
+      "ABOUT": "Acerca de",
+      "CONTACT": "Contacto",
+      "SETTINGS": "Ajustes",
+      "PROFILE": "Perfil",
+      "LOGOUT": "Cerrar sesión",
+      "LOGIN": "Acceso",
+      "REGISTER": "Registro",
+      "DASHBOARD": "Panel",
+      "USERS": "Usuarios",
+      "FORGOT_PASSWORD": "Has olvidado tu contraseña"
+    },
+    "HOME": {
+      "WELCOME": "Bienvenido a la Expo Repetitiva",
+      "DESCRIPTION": "Este es un modelo estándar para Expo React Redux con funciones de localización y autenticación. ",
+      "SELECT_LANGUAGE": "Seleccione el idioma",
+      "PAGES": "Puede navegar a las siguientes páginas:",
+      "SELECT_PAGE": "Seleccionar página",
+      "LANGUAGES": "Puede seleccionar los siguientes idiomas:",
+      "DEVELOPER": "Desarrollado por Kuray Karaaslan con ❤️. "
+    },
+    "ERRORS": {
+      "AUTH": {
+        "NEED_LOGIN": "Necesitas iniciar sesión para acceder a esta página"
+      }
+    },
+    "ANANAS": "Ananas2"
+  }

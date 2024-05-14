@@ -1,0 +1,78 @@
+{
+    "LANGUAGES": {
+      "EN": "Inglese",
+      "FR": "francese",
+      "DE": "Tedesco",
+      "ES": "spagnolo",
+      "IT": "Italiano",
+      "TR": "Turco"
+    },
+    "AUTH": {
+      "LOGIN": "Login",
+      "REGISTER": "Registrati",
+      "USERNAME": "Nome utente",
+      "PASSWORD": "Parola d'ordine",
+      "EMAIL": "E-mail",
+      "CONFIRM_PASSWORD": "Conferma password",
+      "FORGOT_PASSWORD": "Ha dimenticato la password",
+      "RESET_PASSWORD": "Resetta la password",
+      "SEND_RESET_LINK": "Invia collegamento di reimpostazione",
+      "ALREADY_REGISTERED": "Già registrato?",
+      "NOT_REGISTERED": "Non registrato?",
+      "REGISTER_NOW": "Iscriviti ora",
+      "LOGIN_NOW": "Accedi ora",
+      "LOGOUT": "Disconnettersi",
+      "PROFILE": "Profilo",
+      "SETTINGS": "Impostazioni",
+      "INVALID_CREDENTIALS": "Credenziali non valide",
+      "EMAIL_REQUIRED": "L'e-mail è obbligatoria",
+      "EMAIL_INVALID": "L'email non è valida",
+      "USERNAME_REQUIRED": "è richiesto il nome utente",
+      "PASSWORD_REQUIRED": "E 'richiesta la password",
+      "PASSWORD_MIN_LENGTH": "La password deve essere di almeno 6 caratteri",
+      "CONFIRM_PASSWORD_REQUIRED": "È richiesta la conferma della password",
+      "CONFIRM_PASSWORD_MATCH": "Le password devono essere identiche",
+      "RESET_LINK_SENT": "Reimposta il collegamento inviato alla tua email",
+      "RESET_LINK_FAILED": "Impossibile inviare il collegamento di reimpostazione",
+      "PASSWORD_RESET": "Reimpostazione della password riuscita",
+      "PASSWORD_RESET_FAILED": "Impossibile reimpostare la password",
+      "REGISTER_SUCCESS": "Iscrizione completata correttamente",
+      "REGISTER_FAILED": "Impossibile registrarsi",
+      "LOGIN_SUCCESS": "Accesso riuscito",
+      "LOGIN_FAILED": "Impossibile accedere",
+      "LOGOUT_SUCCESS": "Disconnessione riuscita",
+      "LOGOUT_FAILED": "Impossibile disconnettersi",
+      "DELETE_ACCOUNT": "Eliminare l'account",
+      "HAVE_ACCOUNT": "Hai già un account?",
+      "NO_ACCOUNT": "Non hai un account?",
+      "OR_CONTINUE_WITH": "Oppure continua con"
+    },
+    "PAGES": {
+      "HOME": "Casa",
+      "ABOUT": "Di",
+      "CONTACT": "Contatto",
+      "SETTINGS": "Impostazioni",
+      "PROFILE": "Profilo",
+      "LOGOUT": "Disconnettersi",
+      "LOGIN": "Login",
+      "REGISTER": "Registrati",
+      "DASHBOARD": "Pannello di controllo",
+      "USERS": "Utenti",
+      "FORGOT_PASSWORD": "Ha dimenticato la password"
+    },
+    "HOME": {
+      "WELCOME": "Benvenuti a Expo Boilerplate",
+      "DESCRIPTION": "Questo è un boilerplate per Expo React Redux con funzionalità di localizzazione e autenticazione. ",
+      "SELECT_LANGUAGE": "Seleziona la lingua",
+      "PAGES": "È possibile navigare alle seguenti pagine:",
+      "SELECT_PAGE": "Seleziona Pagina",
+      "LANGUAGES": "È possibile selezionare le seguenti lingue:",
+      "DEVELOPER": "Sviluppato da Kuray Karaaslan con ❤️. "
+    },
+    "ERRORS": {
+      "AUTH": {
+        "NEED_LOGIN": "È necessario effettuare il login per accedere a questa pagina"
+      }
+    },
+    "ANANAS": "Ananas2"
+  }

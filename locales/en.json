@@ -1,12 +1,4 @@
 {
-    "LOCALIZATION": {
-        "SELECT_LANGUAGE": "Select Language",
-        "ENGLISH": "English",
-        "FRENCH": "French",
-        "GERMAN": "German",
-        "SPANISH": "Spanish",
-        "ITALIAN": "Italian"
-    },
     "LANGUAGES": {
         "EN": "English",
         "FR": "French",
@@ -82,5 +74,23 @@
             "NEED_LOGIN" : "You need to login to access this page"
         }
     },
-    "ANANAS" : "Ananas2"
+    "SETTINGS": {
+        "LANGUAGE": "Language",
+        "THEME": "Theme",
+        "DARK_MODE": "Dark Mode",
+        "LIGHT_MODE": "Light Mode",
+        "SYSTEM_MODE": "System Mode",
+        "LOGOUT": "Logout",
+        "DELETE_ACCOUNT": "Delete Account",
+        "DELETE_ACCOUNT_CONFIRM": "Are you sure you want to delete your account?",
+        "ACCOUNT_DELETED": "Account deleted successfully",
+        "ACCOUNT_DELETE_FAILED": "Failed to delete account"
+    },
+    "PROFILE": {
+        "USERNAME": "Username",
+        "EMAIL": "Email",
+        "SAVE": "Save",
+        "SAVED": "Profile saved successfully",
+        "SAVE_FAILED": "Failed to save profile"
+    }
 }

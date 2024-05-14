@@ -3,12 +3,16 @@ import { initReactI18next } from 'react-i18next';
 
 import tr from "@/locales/tr.json";
 import en from "@/locales/en.json";
+import de from "@/locales/de.json";
+import es from "@/locales/es.json";
+import fr from "@/locales/fr.json";
+import it from "@/locales/it.json";
 
 import store from '@/libs/redux/store';
 
 const compatibilityJSON = 'v3';
 const fallbackLng = 'en';
-const languages = ['en', 'tr', 'de'];
+const languages = ['en', 'tr', 'de','es', 'fr', 'it'];
 
 const resources = {
   en: {
@@ -17,6 +21,18 @@ const resources = {
   ,
   tr: {
     translation: tr
+  },
+  de: {
+    translation: de
+  },
+  es: {
+    translation: es
+  },
+  fr: {
+    translation: fr
+  },
+  it: {
+    translation: it
   }
 };
 
@@ -41,12 +57,11 @@ i18n
   .init({
     compatibilityJSON,
     fallbackLng,
-    languages,
     debug : process.env.NODE_ENV === 'development',
     resources,
     interpolation
   });
-console.log(i18n.t('HOME'));
+console.log(i18n.languages);
 
 if (store.getState().global.language) {
   i18n.changeLanguage(store.getState().global.language);

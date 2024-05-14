@@ -28,7 +28,7 @@ import { router } from 'expo-router';
 export default function Home() {
 
   const { t } = i18n;
-  const [currentLanguage, setCurrentLanguage] = React.useState(i18n.language);
+  const [currentLanguage, setCurrentLanguage] = React.useState("en"); // Default language is "en
   const [availableLanguages, setAvailableLanguages] = React.useState(i18n.languages);
 
   function changeLanguage(value: string) {
@@ -55,7 +55,7 @@ export default function Home() {
         <Text className="mt-4 font-bold">{t('HOME.LANGUAGES')}</Text>
         <View className="flex justify-center mt-4">
           <RNPickerSelect style={{ placeholder: { color: 'black' }, viewContainer: { borderWidth: 2, borderColor: 'black', borderRadius: 5, padding: 0 } }}
-            placeholder={{ label: t('LOCALIZATION.SELECT_LANGUAGE'), value: null }}
+            placeholder={{ label: t('HOME.SELECT_LANGUAGE'), value: null }}
             onValueChange={(value) => changeLanguage(value)}
             items={availableLanguages.map((lang) => ({ label: t(`LANGUAGES.${lang.toUpperCase()}`)
               , value: lang }))}

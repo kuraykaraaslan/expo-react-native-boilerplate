@@ -1,0 +1,78 @@
+{
+    "LANGUAGES": {
+      "EN": "Englisch",
+      "FR": "Französisch",
+      "DE": "Deutsch",
+      "ES": "Spanisch",
+      "IT": "Italienisch",
+      "TR": "Türkisch"
+    },
+    "AUTH": {
+      "LOGIN": "Anmeldung",
+      "REGISTER": "Registrieren",
+      "USERNAME": "Nutzername",
+      "PASSWORD": "Passwort",
+      "EMAIL": "Email",
+      "CONFIRM_PASSWORD": "Bestätige das Passwort",
+      "FORGOT_PASSWORD": "Passwort vergessen",
+      "RESET_PASSWORD": "Passwort zurücksetzen",
+      "SEND_RESET_LINK": "Link zum Zurücksetzen senden",
+      "ALREADY_REGISTERED": "Bereits registriert?",
+      "NOT_REGISTERED": "Nicht registriert?",
+      "REGISTER_NOW": "Jetzt registrieren",
+      "LOGIN_NOW": "Jetzt einloggen",
+      "LOGOUT": "Ausloggen",
+      "PROFILE": "Profil",
+      "SETTINGS": "Einstellungen",
+      "INVALID_CREDENTIALS": "Ungültige Anmeldeinformationen",
+      "EMAIL_REQUIRED": "E-Mail ist erforderlich",
+      "EMAIL_INVALID": "E-Mail ist ungültig",
+      "USERNAME_REQUIRED": "Benutzername wird benötigt",
+      "PASSWORD_REQUIRED": "Passwort wird benötigt",
+      "PASSWORD_MIN_LENGTH": "Das Passwort muss mindestens aus 6 Zeichen bestehen",
+      "CONFIRM_PASSWORD_REQUIRED": "Bestätigen Sie, dass ein Passwort erforderlich ist",
+      "CONFIRM_PASSWORD_MATCH": "Die Passwörter müssen übereinstimmen",
+      "RESET_LINK_SENT": "Der Link zum Zurücksetzen wurde an Ihre E-Mail-Adresse gesendet",
+      "RESET_LINK_FAILED": "Der Link zum Zurücksetzen konnte nicht gesendet werden",
+      "PASSWORD_RESET": "Passwort erfolgreich zurückgesetzt",
+      "PASSWORD_RESET_FAILED": "Passwort konnte nicht zurückgesetzt werden",
+      "REGISTER_SUCCESS": "Registrierung erfolgreich",
+      "REGISTER_FAILED": "Registrierung fehlschlagen",
+      "LOGIN_SUCCESS": "Anmeldung erfolgreich",
+      "LOGIN_FAILED": "Einloggen fehlgeschlagen",
+      "LOGOUT_SUCCESS": "Abmeldung erfolgreich",
+      "LOGOUT_FAILED": "Abmelden fehlgeschlagen",
+      "DELETE_ACCOUNT": "Konto löschen",
+      "HAVE_ACCOUNT": "Sie haben bereits ein Konto?",
+      "NO_ACCOUNT": "Sie haben noch kein Konto?",
+      "OR_CONTINUE_WITH": "Oder fahren Sie fort mit"
+    },
+    "PAGES": {
+      "HOME": "Heim",
+      "ABOUT": "Um",
+      "CONTACT": "Kontakt",
+      "SETTINGS": "Einstellungen",
+      "PROFILE": "Profil",
+      "LOGOUT": "Ausloggen",
+      "LOGIN": "Anmeldung",
+      "REGISTER": "Registrieren",
+      "DASHBOARD": "Armaturenbrett",
+      "USERS": "Benutzer",
+      "FORGOT_PASSWORD": "Passwort vergessen"
+    },
+    "HOME": {
+      "WELCOME": "Willkommen bei Expo Boilerplate",
+      "DESCRIPTION": "Dies ist ein Boilerplate für Expo React Redux mit Lokalisierungs- und Authentifizierungsfunktionen. ",
+      "SELECT_LANGUAGE": "Sprache auswählen",
+      "PAGES": "Sie können zu den folgenden Seiten navigieren:",
+      "SELECT_PAGE": "Wählen Sie Seite aus",
+      "LANGUAGES": "Sie können folgende Sprachen auswählen:",
+      "DEVELOPER": "Entwickelt von Kuray Karaaslan mit ❤️. "
+    },
+    "ERRORS": {
+      "AUTH": {
+        "NEED_LOGIN": "Sie müssen sich anmelden, um auf diese Seite zugreifen zu können"
+      }
+    },
+    "ANANAS": "Ananas2"
+  }

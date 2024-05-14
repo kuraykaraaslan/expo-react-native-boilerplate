@@ -1,0 +1,78 @@
+{
+    "LANGUAGES": {
+      "EN": "Anglais",
+      "FR": "Français",
+      "DE": "Allemand",
+      "ES": "Espagnol",
+      "IT": "italien",
+      "TR": "turc"
+    },
+    "AUTH": {
+      "LOGIN": "Se connecter",
+      "REGISTER": "Registre",
+      "USERNAME": "Nom d'utilisateur",
+      "PASSWORD": "Mot de passe",
+      "EMAIL": "E-mail",
+      "CONFIRM_PASSWORD": "Confirmez le mot de passe",
+      "FORGOT_PASSWORD": "Mot de passe oublié",
+      "RESET_PASSWORD": "réinitialiser le mot de passe",
+      "SEND_RESET_LINK": "Envoyer le lien de réinitialisation",
+      "ALREADY_REGISTERED": "Déjà enregistré?",
+      "NOT_REGISTERED": "Non enregistré?",
+      "REGISTER_NOW": "S'inscrire maintenant",
+      "LOGIN_NOW": "Connecte-toi maintenant",
+      "LOGOUT": "Se déconnecter",
+      "PROFILE": "Profil",
+      "SETTINGS": "Paramètres",
+      "INVALID_CREDENTIALS": "les informations d'identification invalides",
+      "EMAIL_REQUIRED": "L'e-mail est requis",
+      "EMAIL_INVALID": "Le courriel est invalide",
+      "USERNAME_REQUIRED": "Nom d'utilisateur est nécessaire",
+      "PASSWORD_REQUIRED": "Mot de passe requis",
+      "PASSWORD_MIN_LENGTH": "Le mot de passe doit être au moins de 6 caractères",
+      "CONFIRM_PASSWORD_REQUIRED": "Confirmer que le mot de passe est requis",
+      "CONFIRM_PASSWORD_MATCH": "Les mots de passe doivent correspondre",
+      "RESET_LINK_SENT": "Lien de réinitialisation envoyé à votre e-mail",
+      "RESET_LINK_FAILED": "Échec de l'envoi du lien de réinitialisation",
+      "PASSWORD_RESET": "Mot de passe réinitialisé avec succès",
+      "PASSWORD_RESET_FAILED": "Échec de la réinitialisation du mot de passe",
+      "REGISTER_SUCCESS": "inscription réussi",
+      "REGISTER_FAILED": "Échec de l'inscription",
+      "LOGIN_SUCCESS": "Connexion réussie",
+      "LOGIN_FAILED": "Échec de la connexion",
+      "LOGOUT_SUCCESS": "Déconnexion réussie",
+      "LOGOUT_FAILED": "Échec de la déconnexion",
+      "DELETE_ACCOUNT": "Supprimer le compte",
+      "HAVE_ACCOUNT": "Vous avez déjà un compte?",
+      "NO_ACCOUNT": "Vous n'avez pas de compte ?",
+      "OR_CONTINUE_WITH": "Ou continuez avec"
+    },
+    "PAGES": {
+      "HOME": "Maison",
+      "ABOUT": "À propos",
+      "CONTACT": "Contact",
+      "SETTINGS": "Paramètres",
+      "PROFILE": "Profil",
+      "LOGOUT": "Se déconnecter",
+      "LOGIN": "Se connecter",
+      "REGISTER": "Registre",
+      "DASHBOARD": "Tableau de bord",
+      "USERS": "Utilisateurs",
+      "FORGOT_PASSWORD": "Mot de passe oublié"
+    },
+    "HOME": {
+      "WELCOME": "Bienvenue à Expo Chaudière",
+      "DESCRIPTION": "Il s'agit d'un modèle pour Expo React Redux avec des fonctionnalités de localisation et d'authentification. ",
+      "SELECT_LANGUAGE": "Choisir la langue",
+      "PAGES": "Vous pouvez accéder aux pages suivantes :",
+      "SELECT_PAGE": "Sélectionner une page",
+      "LANGUAGES": "Vous pouvez sélectionner les langues suivantes :",
+      "DEVELOPER": "Développé par Kuray Karaaslan avec ❤️. "
+    },
+    "ERRORS": {
+      "AUTH": {
+        "NEED_LOGIN": "Vous devez vous connecter pour accéder à cette page"
+      }
+    },
+    "ANANAS": "Ananas2"
+  }

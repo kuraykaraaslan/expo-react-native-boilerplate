@@ -1,1 +1,78 @@
-{}
+{
+    "LANGUAGES": {
+      "EN": "İngilizce",
+      "FR": "Fransızca",
+      "DE": "Almanca",
+      "ES": "İspanyol",
+      "IT": "İtalyan",
+      "TR": "Türkçe"
+    },
+    "AUTH": {
+      "LOGIN": "Giriş yapmak",
+      "REGISTER": "Kayıt olmak",
+      "USERNAME": "Kullanıcı adı",
+      "PASSWORD": "Şifre",
+      "EMAIL": "E-posta",
+      "CONFIRM_PASSWORD": "Şifreyi Onayla",
+      "FORGOT_PASSWORD": "Parolanızı mı unuttunuz",
+      "RESET_PASSWORD": "Şifreyi yenile",
+      "SEND_RESET_LINK": "Sıfırlama Bağlantısı Gönder",
+      "ALREADY_REGISTERED": "Zaten kayıtlı?",
+      "NOT_REGISTERED": "Kayıtlı değil?",
+      "REGISTER_NOW": "Şimdi üye Ol",
+      "LOGIN_NOW": "Şimdi giriş yap",
+      "LOGOUT": "Çıkış Yap",
+      "PROFILE": "Profil",
+      "SETTINGS": "Ayarlar",
+      "INVALID_CREDENTIALS": "Geçersiz kimlik bilgileri",
+      "EMAIL_REQUIRED": "Email gereklidir",
+      "EMAIL_INVALID": "e-posta geçersiz",
+      "USERNAME_REQUIRED": "Kullanıcı adı gerekli",
+      "PASSWORD_REQUIRED": "Şifre gereklidir",
+      "PASSWORD_MIN_LENGTH": "Şifre en az 6 karakter olmalıdır",
+      "CONFIRM_PASSWORD_REQUIRED": "Şifreyi Onayla gerekli",
+      "CONFIRM_PASSWORD_MATCH": "Şifreler aynı olmalıdır",
+      "RESET_LINK_SENT": "E-postanıza gönderilen bağlantıyı sıfırlayın",
+      "RESET_LINK_FAILED": "Sıfırlama bağlantısı gönderilemedi",
+      "PASSWORD_RESET": "Şifre başarıyla sıfırlandı",
+      "PASSWORD_RESET_FAILED": "Şifre sıfırlanamadı",
+      "REGISTER_SUCCESS": "Kayıt başarılı",
+      "REGISTER_FAILED": "Kayıt başarısız",
+      "LOGIN_SUCCESS": "Giriş başarılı",
+      "LOGIN_FAILED": "Giriş yapılamadı",
+      "LOGOUT_SUCCESS": "Çıkış başarılı",
+      "LOGOUT_FAILED": "Oturum kapatılamadı",
+      "DELETE_ACCOUNT": "Hesabı sil",
+      "HAVE_ACCOUNT": "Zaten hesabınız var mı?",
+      "NO_ACCOUNT": "Hesabınız yok mu?",
+      "OR_CONTINUE_WITH": "Veya ile devam edin"
+    },
+    "PAGES": {
+      "HOME": "Ev",
+      "ABOUT": "Hakkında",
+      "CONTACT": "Temas etmek",
+      "SETTINGS": "Ayarlar",
+      "PROFILE": "Profil",
+      "LOGOUT": "Çıkış Yap",
+      "LOGIN": "Giriş yapmak",
+      "REGISTER": "Kayıt olmak",
+      "DASHBOARD": "Gösterge Paneli",
+      "USERS": "Kullanıcılar",
+      "FORGOT_PASSWORD": "Parolanızı mı unuttunuz"
+    },
+    "HOME": {
+      "WELCOME": "Expo Boilerplate'e hoş geldiniz",
+      "DESCRIPTION": "Bu, Expo React Redux için yerelleştirme ve kimlik doğrulama özelliklerine sahip bir standarttır. ",
+      "SELECT_LANGUAGE": "Dil Seçin",
+      "PAGES": "Aşağıdaki sayfalara gidebilirsiniz:",
+      "SELECT_PAGE": "Sayfa Seçin",
+      "LANGUAGES": "Aşağıdaki dilleri seçebilirsiniz:",
+      "DEVELOPER": "Kuray Karaaslan tarafından ❤️ ile geliştirildi. "
+    },
+    "ERRORS": {
+      "AUTH": {
+        "NEED_LOGIN": "Bu sayfaya erişmek için giriş yapmalısınız"
+      }
+    },
+    "ANANAS": "Ananas2"
+  }
