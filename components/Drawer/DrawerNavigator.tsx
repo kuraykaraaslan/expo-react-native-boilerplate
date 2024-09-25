@@ -4,20 +4,18 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const CreateDrawer = createDrawerNavigator();
 
-function Drawer() {
+export default function DrawerNavigator() {
     return (
         <CreateDrawer.Navigator>
             <CreateDrawer.Screen options={{
-                drawerLabel: 'Home',
+                drawerLabel: 'Welcome',
                 title: 'Home',
-                headerShadowVisible: true,
-                headerTitle: 'Homes',
-                
-            }} name="home" component={Index} />
+                headerShadowVisible: true,                
+            }} name="index" component={Index} />
             <CreateDrawer.Screen options={{
                 drawerLabel: 'Login',
                 title: 'Login',
-                headerShadowVisible: true,
+                headerShadowVisible: false,
                 headerTitle: 'Login',
                 
             }} name="auth/login" component={Login} />
@@ -25,5 +23,3 @@ function Drawer() {
         </CreateDrawer.Navigator>
     );
 }
-
-export default Drawer;

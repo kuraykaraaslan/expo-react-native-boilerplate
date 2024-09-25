@@ -14,7 +14,7 @@ import i18n from '@/libs/localize/localize';
 import { AuthService } from '@/services/AuthService';
 
 
-export default function Login() {
+export default function Login({ navigation } : any) {
 
     const { t } = i18n;
 
@@ -26,8 +26,9 @@ export default function Login() {
 
         const EXPO_PUBLIC_API_URL = process.env.EXPO_PUBLIC_API_URL;
         console.log("EXPO_PUBLIC_API_URL", EXPO_PUBLIC_API_URL);
+        navigation.navigate("index");
  
-        await AuthService.login(email, password);
+        //await AuthService.login(email, password);
 
     }
 

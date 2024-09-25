@@ -46,8 +46,8 @@ export default function Home() {
   }
 
   return (
-    <View className="container mx-auto text-center bg-base-100 h-screen">
-      <View className="flex justify-center mt-20 px-4">
+    <View className="container mx-auto text-center bg-base-100 h-screen pt-4">
+      <View className="flex justify-center px-4">
         <Image source={require('@/assets/images/home.png')} className="w-full h-64 mb-4" />
         <Text className="text-4xl font-bold">{t('HOME.WELCOME')}</Text>
         <Text className="text-lg mt-4">{t('HOME.DESCRIPTION')}</Text>
