@@ -1,10 +1,10 @@
 ![logo](/static/logo.png)
 
 
-# Expo-React-Redux-Boilerplate **DEVELOPMENT IN PROGRESS**
+# Zeus - Expo-React-Boilerplate **DEVELOPMENT IN PROGRESS**
 
 
-This boilerplate provides a robust starting point for building mobile applications using Expo, React Native, Redux for state management, Tailwind CSS for styling, and TypeScript. It's designed to help developers jumpstart their project with a well-structured, scalable, and easily maintainable codebase.
+This boilerplate provides a robust starting point for building mobile applications using Expo, React Native, Zustand for state management, Tailwind CSS for styling, and TypeScript. It's designed to help developers jumpstart their project with a well-structured, scalable, and easily maintainable codebase.
 
 ## Screenshots
 
@@ -18,7 +18,7 @@ This boilerplate provides a robust starting point for building mobile applicatio
 
 - **Expo SDK**: Utilizes the latest Expo SDK to manage the native code easily and to access the Expo ecosystem for rapid development.
 - **React Native**: Builds upon React Native for developing cross-platform mobile applications with native-like performance.
-- **Redux**: Implements Redux for efficient and predictable state management, along with Redux Toolkit to simplify Redux-related logic.
+- **Zustand**: Using Zustand for state management
 - **Tailwind CSS**: Incorporates Tailwind CSS for styling, enabling utility-first CSS directly in your JavaScript.
 - **TypeScript**: Uses TypeScript for static type checking, enhancing code quality and maintainability.
 - **React Navigation**: Integrated with React Navigation for routing and navigation in the app.
@@ -28,8 +28,8 @@ This boilerplate provides a robust starting point for building mobile applicatio
 
 ## Roadmap
 
-- [x] Initial setup with Expo, React Native, Redux, Tailwind CSS, and TypeScript.
-- [ ] Implement authentication flow with Redux.
+- [x] Initial setup with Expo, React Native, Zustand, Tailwind CSS, and TypeScript.
+- [x] Implement authentication flow with Zustand.
 - [x] Add Axios for making HTTP requests.
 - [x] Integrate i18next for internationalization and localization.
 - [ ] Support dark mode and light mode themes.
@@ -56,13 +56,13 @@ Follow these instructions to set up the project locally. These instructions will
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/kuraykaraaslan/expo-react-redux-boilerplate.git
+   git clone https://github.com/kuraykaraaslan/zeus.git
    ```
 
 2. Navigate to the project directory:
 
    ```sh
-    cd expo-react-redux-boilerplate
+    cd zeus
     ```
 
 3. Install the dependencies:

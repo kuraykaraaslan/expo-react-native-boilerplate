@@ -45,7 +45,16 @@
         "DELETE_ACCOUNT": "Delete Account",
         "HAVE_ACCOUNT": "Already have an account?",
         "NO_ACCOUNT": "Don't have an account?",
-        "OR_CONTINUE_WITH": "Or continue with"
+        "OR_CONTINUE_WITH": "Or continue with",
+        "TWO_FACTOR_AUTH": "Two Factor Authentication",
+        "USE_EMAIL": "Use Email",
+        "USE_PHONE": "Use Phone",
+        "OTP_CODE": "OTP Code",
+        "SIX_DIGIT_CODE": "Six digit code",
+        "SEND_PHONE_CODE": "Send Phone Code",
+        "SEND_EMAIL_CODE": "Send Email Code",
+        "RESEND_IN": "Resend in {{time}} seconds"
+
     },
     "PAGES": {
         "HOME": "Home",

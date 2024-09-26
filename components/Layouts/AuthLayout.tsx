@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Link } from "expo-router";
 import Logo from '@/components/Logo';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faApple, faFacebook, faFacebookF, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { faApple, faFacebook, faFacebookF, faGithub, faGoogle, faLinkedin, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 import { useRoute } from '@react-navigation/native';
 //import { useFocusEffect } 
@@ -14,7 +14,7 @@ import { useCallback } from 'react';
 import i18n from '@/libs/localize/localize';
 
 
-export default function AuthLayout({ children , subChildren } : { children: React.ReactNode, subChildren: React.ReactNode }) {
+export default function AuthLayout({ children, subChildren, hideSSO = false }: { children: React.ReactNode, subChildren: React.ReactNode, hideSSO?: boolean }) {
 
     const { t } = i18n;
 
@@ -42,40 +42,35 @@ export default function AuthLayout({ children , subChildren } : { children: Reac
     return (
         <View className="container mx-auto items-center justify-center bg-black h-screen">
             <Logo />
-            <View className="flex justify-center px-4 w-full w-1/2 pt-8 shadow-lg rounded-lg">
+            <View className="flex justify-center px-4 w-full pt-8 shadow-lg rounded-lg">
                 <View className="flex justify-center p-4 bg-white rounded-lg shadow-lg w-full border-2 border-gray-200">
                     {children}
                 </View>
             </View>
             {/*Social Login*/}
-            <View className="flex justify-center mt-6">
+            <View className={"flex justify-center mt-6" + (hideSSO ? " hidden" : "")}>
                 <Text className="text-lg text-gray-500">{t('AUTH.OR_CONTINUE_WITH')}</Text>
             </View>
-            <View className="flex justify-center px-4 w-full w-1/2 pt-8">
+            <View className={"flex justify-center px-4 w-full w-1/2 pt-8" + (hideSSO ? " hidden" : "")}>
                 <View className="flex flex-row justify-center w-full gap-4">
-                    <View className="w-16 h-16 bg-white text-white text-center rounded-full items-center justify-center p-2 border-2 border-gray-200">
-                        <TouchableOpacity onPress={handleGoogleLogin} className="w-full h-12 bg-red-500 text-white text-center rounded-lg mt-4 p-2">
-                            <FontAwesomeIcon icon={faGoogle} size={30} color="black" />
-                        </TouchableOpacity>
-                    </View>
-                    <View className="w-16 h-16 bg-white text-white text-center rounded-full items-center justify-center p-2 border-2 border-gray-200">
-                        <TouchableOpacity onPress={handleFacebookLogin} className="w-full h-12 bg-blue-500 text-white text-center rounded-lg mt-4 p-2">
-                            <FontAwesomeIcon icon={faFacebookF} size={30} color="black" />
-                        </TouchableOpacity>
-                    </View>
-                    <View className="w-16 h-16 bg-white text-white text-center rounded-full items-center justify-center p-2 border-2 border-gray-200">
-                        <TouchableOpacity onPress={handleAppleLogin} className="w-full h-12 bg-black text-white text-center rounded-lg mt-4 p-2">
-                            <FontAwesomeIcon icon={faApple} size={30} color="black" />
-                        </TouchableOpacity>
-                    </View>
-                    <View className="w-16 h-16 bg-white text-white text-center rounded-full items-center justify-center p-2 border-2 border-gray-200">
-                        <TouchableOpacity onPress={handleGithubLogin} className="w-full h-12 bg-black text-white text-center rounded-lg mt-4 p-2">
-                            <FontAwesomeIcon icon={faFacebook} size={30} color="black" />
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity onPress={handleGoogleLogin} className="w-16 h-16 bg-white items-center justify-center border-2 border-gray-200 text-red-500 text-center rounded-full self-center">
+                        <FontAwesomeIcon icon={faGoogle} size={30} color="#DB4437" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleFacebookLogin} className="w-16 h-16 bg-white items-center justify-center border-2 border-gray-200 text-blue-500 text-center rounded-full self-center">
+                        <FontAwesomeIcon icon={faFacebookF} size={30} color="#4267B2" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleAppleLogin} className="w-16 h-16 bg-white items-center justify-center border-2 border-gray-200 text-black text-center rounded-full self-center">
+                        <FontAwesomeIcon icon={faApple} size={30} color="#000" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleGithubLogin} className="w-16 h-16 bg-white items-center justify-center border-2 border-gray-200 text-black text-center rounded-full self-center">
+                        <FontAwesomeIcon icon={faGithub} size={30} color="#000" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleLinkedInLogin} className="w-16 h-16 bg-white items-center justify-center border-2 border-gray-200 text-blue-500 text-center rounded-full self-center">
+                        <FontAwesomeIcon icon={faLinkedinIn} size={30} color="#0A66C2" />
+                    </TouchableOpacity>
                 </View>
             </View>
-            <View className="absolute bottom-20 w-full p-4 items-center justify-center">
+            <View className="mt-4 w-full p-4 items-center justify-center">
                 {subChildren}
             </View>
         </View>

@@ -12,11 +12,13 @@ import axios from "@/libs/axios";
 import i18n from '@/libs/localize/localize';
 
 import { AuthService } from '@/services/AuthService';
-
+import { useAuthStore } from '@/libs/zustand';
 
 export default function Login({ navigation } : any) {
 
     const { t } = i18n;
+
+    const { setToken, setOtp , setUser } = useAuthStore();
 
     const [email, setEmail] = useState("kuraykaraaslan@gmail.com");
     const [password, setPassword] = useState("WeeBoo@123");
@@ -24,12 +26,27 @@ export default function Login({ navigation } : any) {
     async function handleLogin() {
         console.log("Login");
 
-        const EXPO_PUBLIC_API_URL = process.env.EXPO_PUBLIC_API_URL;
-        console.log("EXPO_PUBLIC_API_URL", EXPO_PUBLIC_API_URL);
-        navigation.navigate("index");
- 
-        //await AuthService.login(email, password);
+        const result = await AuthService.login(email, password)
+            .then((res) => {
+                setToken(res.token);
+                setUser(res.user);
+                setOtp(res.OTP);
+                return res;
+            });
 
+        if (result) {
+            setTimeout(() => {
+                if (result.OTP.OTPNeeded) {
+                    console.log("OTP needed");
+                    navigation.navigate("TFA");
+                } else {
+                    console.log("OTP not needed");
+                    navigation.navigate("index");
+                }
+            }, 2000);
+        } else {
+            console.log("Login failed");
+        }
     }
 
 

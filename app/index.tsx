@@ -25,7 +25,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { router } from 'expo-router';
 
 
-export default function Home() {
+export default function Home({ navigation }: any) {
 
   const { t } = i18n;
   const [currentLanguage, setCurrentLanguage] = React.useState("en"); // Default language is "en
@@ -38,7 +38,7 @@ export default function Home() {
   }
 
   function changePage(value: string) {
-    router.push(value as any);
+    navigation.navigate(value);
   }
 
   function openDeveloperWebsite() {
@@ -69,10 +69,15 @@ export default function Home() {
             placeholder={{ label: t('HOME.SELECT_PAGE'), value: null }}
             onValueChange={(value) => changePage(value)}
             items={[
-              { label: t('PAGES.LOGIN'), value: '/auth/login' },
-              { label: t('PAGES.REGISTER'), value: '/auth/register' },
-              { label: t('PAGES.FORGOT_PASSWORD'), value: '/auth/forgot-password' },
-              { label: t('PAGES.HOME'), value: '/home' }
+              { label: t('PAGES.LOGIN'), value: 'Login' },
+              { label: t('PAGES.REGISTER'), value: 'Register' },
+              { label: t('PAGES.FORGOT_PASSWORD'), value: 'ForgotPassword' },
+              { label: t('PAGES.HOME'), value: 'Home' },
+              { label: t('PAGES.DASHBOARD'), value: 'Dashboard' },
+              { label: t('PAGES.PROFILE'), value: 'Profile' },
+              { label: t('PAGES.SETTINGS'), value: 'Settings' },
+              { label: t('PAGES.ABOUT'), value: 'About' },
+              { label: t('PAGES.CONTACT'), value: 'Contact' },
             ]}
           />
         </View>
