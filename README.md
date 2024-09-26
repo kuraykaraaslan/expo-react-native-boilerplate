@@ -1,7 +1,7 @@
 ![logo](/static/logo.png)
 
 
-# Zeus - Expo-React-Boilerplate
+# Zeus
 
 
 This boilerplate provides a robust starting point for building mobile applications using Expo, React Native, Zustand for state management, Tailwind CSS for styling, and TypeScript. It's designed to help developers jumpstart their project with a well-structured, scalable, and easily maintainable codebase.
