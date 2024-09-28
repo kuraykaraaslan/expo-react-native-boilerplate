@@ -15,7 +15,7 @@ import { AuthService } from '@/services/AuthService';
 import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 
 
-export default function TFA({ navigation }: any) {
+export default function TFAPage({ navigation }: any) {
 
     const { t } = i18n;
 

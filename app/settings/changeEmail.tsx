@@ -1,66 +1,62 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { useAuthStore } from '@/libs/zustand';
+import { AuthService } from '@/services/AuthService';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import i18n from '@/libs/localize/localize';
 
-const ChangeEmail: React.FC = () => {
-    const [email, setEmail] = useState('');
+const ChangeEmailPage = ({ navigation } : any) => {
+    
+    const { user } = useAuthStore();
+    const { t } = i18n;
+
     const [newEmail, setNewEmail] = useState('');
     const [message, setMessage] = useState('');
 
-    const handleChangeEmail = () => {
-        // Add your email change logic here
-        if (email && newEmail) {
-            setMessage('Email changed successfully!');
-        } else {
-            setMessage('Please fill in both fields.');
+    const handleChangeEmail = async () => {
+
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+        if (!regex.test(newEmail)) {
+            setMessage('Invalid email address');
+            return;
         }
+
+        const result = await AuthService.changeEmail(newEmail);
+
+        if (result) {
+            setMessage('Email changed successfully');
+        } else {
+            setMessage('Failed to change email');
+        }
+
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.label}>Current Email:</Text>
+        <View className='container mx-auto text-center bg-base-100 h-screen p-4 pt-8'>
+            <Text className='text-xl mb-1'>Current Email:</Text>
             <TextInput
-                style={styles.input}
-                value={email}
-                onChangeText={setEmail}
-                placeholder="Enter current email"
-                keyboardType="email-address"
+                className='input input-bordered w-full bg-gray-100 border-2 border-gray-200 p-1 pl-2 text-black'
+                value={user?.email}
+                editable={false}                
             />
-            <Text style={styles.label}>New Email:</Text>
+            <Text className='text-xl mt-4 mb-1'>New Email:</Text>
             <TextInput
-                style={styles.input}
+                className='input input-bordered w-full bg-white border-2 border-gray-200 p-1 pl-2 text-black'
                 value={newEmail}
-                onChangeText={setNewEmail}
+                onChangeText={setNewEmail} 
                 placeholder="Enter new email"
                 keyboardType="email-address"
             />
-            <Button title="Change Email" onPress={handleChangeEmail} />
-            {message ? <Text style={styles.message}>{message}</Text> : null}
+            <Text className='text-red-500 mt-2'>{message}</Text>
+
+            <TouchableOpacity onPress={handleChangeEmail} className="w-full p-2">
+                <Text className="w-full h-12 bg-blue-500 text-white text-center rounded-lg mt-4 p-3">{t('SETTINGS.UPDATE')}</Text>
+            </TouchableOpacity>
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: '#fff',
-    },
-    label: {
-        fontSize: 16,
-        marginBottom: 8,
-    },
-    input: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        marginBottom: 16,
-        paddingHorizontal: 8,
-    },
-    message: {
-        marginTop: 16,
-        fontSize: 16,
-        color: 'green',
-    },
-});
 
-export default ChangeEmail;
+export default ChangeEmailPage;

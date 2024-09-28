@@ -1,14 +1,67 @@
 'use client';
 import AxiosInstance from "@/libs/axios";
+import OTP from "@/types/OTP";
 import User from "@/types/User";
+import * as SecureStore from 'expo-secure-store';
 
-import { useAuthStore } from "@/libs/zustand";
+import { UseBoundStore, StoreApi } from "zustand";
+
 
 export class AuthService {
 
+
     static AxiosInstance: any = AxiosInstance;
 
-    static store: any = useAuthStore();
+    static ZustandStore: any;
+    static SecureStore: any;
+
+    
+    static initialize(useAuthStore: any, SecureStore: any) {
+        this.ZustandStore = useAuthStore;
+        this.SecureStore = SecureStore;
+
+        this.loadFromSecureStore();
+
+    }
+
+    static async loadFromSecureStore() {
+
+        if (!this.SecureStore || !this.ZustandStore) {
+            return;
+        }
+
+        await this.SecureStore.getItemAsync('token').then((token : string | null) => {
+            if (token) {
+                this.ZustandStore?.setState({ token });
+            }
+        });
+
+        await this.SecureStore.getItemAsync('user').then((user : string | null) => {
+            if (user) {
+                this.ZustandStore?.setState({ user: JSON.parse(user) });
+            }
+        });
+
+        await this.SecureStore.getItemAsync('otp').then((otp : string | null) => {
+            if (otp) {
+                this.ZustandStore?.setState({ otp: JSON.parse(otp) });
+            }
+        });
+
+        console.log("Loaded from secure store");
+        console.log(this.ZustandStore.getState().token);
+    }
+
+    static async saveToSecureStore() {
+
+        if (!this.SecureStore || !this.ZustandStore) {
+            return;
+        }
+
+        this.SecureStore.setItemAsync('token', this.ZustandStore.getState().token);
+        this.SecureStore.setItemAsync('user', JSON.stringify(this.ZustandStore.getState().user));
+        this.SecureStore.setItemAsync('otp', JSON.stringify(this.ZustandStore.getState().otp));
+    }
 
 
     static async wait(seconds: number) {
@@ -21,9 +74,13 @@ export class AuthService {
 
    
     static async login(email: string, password: string): Promise<any> {
-        const response = await this.AxiosInstance.post('/v1/auth/login', { email, password }).catch((error: any) => {
-            return null;
-        });
+        const response = await this.AxiosInstance.post('/v1/auth/login', { email, password })
+
+        if (response.data) {
+            this.ZustandStore.setState({ token: response.data.token, user: response.data.user, otp: response.data.OTP });
+            console.log("Login successful");
+            await this.saveToSecureStore();
+        }
 
         return response.data;   
     }
@@ -63,5 +120,13 @@ export class AuthService {
         });
         return response.data;
     }
+
+    static async changeEmail(email: string): Promise<any> {
+        const response = await this.AxiosInstance.post('/v1/auth/change-email', { email }).catch((error: any) => {
+            return null;
+        });
+        return response.data;
+    }
+    
 }
 

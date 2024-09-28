@@ -7,7 +7,7 @@ import Logo from '@/components/Logo';
 import AuthLayout from '@/components/Layouts/AuthLayout';
 import i18n from '@/libs/localize/localize';
 
-export default function ForgotPassword() {
+export default function ForgotPasswordPage() {
 
     const { t } = i18n;
 

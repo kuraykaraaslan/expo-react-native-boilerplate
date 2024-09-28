@@ -57,11 +57,10 @@ i18n
   .init({
     compatibilityJSON,
     fallbackLng,
-    debug : process.env.NODE_ENV === 'development',
+    debug : false,
     resources,
     interpolation
   });
-console.log(i18n.languages);
 
 if (store.getState().global.language) {
   i18n.changeLanguage(store.getState().global.language);

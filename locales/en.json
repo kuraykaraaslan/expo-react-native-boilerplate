@@ -7,6 +7,21 @@
         "IT": "Italian",
         "TR": "Turkish"
     },
+    "DATE": {
+        "JUST_NOW": "Just now",
+        "SECOND_AGO": "A second ago",
+        "SECONDS_AGO": "{{time}} seconds ago",
+        "A_MINUTE_AGO": "a minute ago",
+        "MINUTES_AGO": "{{time}} minutes ago",
+        "AN_HOUR_AGO": "An hour ago",
+        "HOURS_AGO": "{{time}} hours ago",
+        "A_DAY_AGO": "A day ago",
+        "DAYS_AGO": "{{time}} days ago",
+        "A_MONTH_AGO": "A month ago",
+        "MONTHS_AGO": "{{time}} months ago",
+        "A_YEAR_AGO": "A year ago",
+        "YEARS_AGO": "{{time}} years ago"
+    },
     "AUTH": {
         "LOGIN": "Login",
         "REGISTER": "Register",

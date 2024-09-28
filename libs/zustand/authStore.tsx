@@ -10,6 +10,7 @@ type State = {
     setToken: (token: string) => void;
     setOtp: (otp: OTP) => void;
     logout: () => void;
+    setTriple: (user: User, token: string, otp: OTP) => void;
 }
 
 const useAuthStore = create<State>((set) => ({
@@ -19,7 +20,8 @@ const useAuthStore = create<State>((set) => ({
     setUser: (user) => set({ user }),
     setToken: (token) => set({ token }),
     setOtp: (otp) => set({ otp }),
-    logout: () => set({ token: null, user: null , otp: null })
+    logout: () => set({ token: null, user: null , otp: null }),
+    setTriple: (user, token, otp) => set({ user, token, otp })
 }))
 
 export default useAuthStore;

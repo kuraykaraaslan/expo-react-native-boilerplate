@@ -1,6 +1,4 @@
-// Login Page
-
-import React , { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Linking } from 'react-native';
 import { Link } from "expo-router";
 import Logo from '@/components/Logo';
@@ -14,41 +12,47 @@ import i18n from '@/libs/localize/localize';
 import { AuthService } from '@/services/AuthService';
 import { useAuthStore } from '@/libs/zustand';
 
-export default function Login({ navigation } : any) {
+import { useNavigation } from '@react-navigation/native';
 
+export default function LoginPage({ navigation }: any) {
     const { t } = i18n;
 
-    const { setToken, setOtp , setUser } = useAuthStore();
-
+    // State hooks
     const [email, setEmail] = useState("kuraykaraaslan@gmail.com");
     const [password, setPassword] = useState("WeeBoo@123");
+    
+    const user = useAuthStore(state => state.user);
+    const token = useAuthStore(state => state.token);
+    const otp = useAuthStore(state => state.otp);
 
+    //const navigation = useNavigation(); // React navigation hook
+
+    // Handle login logic
     async function handleLogin() {
         console.log("Login");
 
-        const result = await AuthService.login(email, password)
-            .then((res) => {
-                setToken(res.token);
-                setUser(res.user);
-                setOtp(res.OTP);
-                return res;
-            });
+        let result = null;
+
+        try {
+            result = await AuthService.login(email, password);
+        } catch (error) {
+            console.error("Error during login:", error);
+        }
 
         if (result) {
-            setTimeout(() => {
-                if (result.OTP.OTPNeeded) {
-                    console.log("OTP needed");
-                    navigation.navigate("TFA");
-                } else {
-                    console.log("OTP not needed");
-                    navigation.navigate("index");
-                }
-            }, 2000);
-        } else {
-            console.log("Login failed");
-        }
-    }
 
+            if (result.OTP?.OTPNeeded) {
+                console.log("OTP needed");
+
+                navigation.navigate("TFA"); // Navigate to OTP page
+            } else {
+                console.log("OTP not needed"); 
+                //@ts-ignore
+                navigation.navigate("Home"); // Navigate to Home page
+            }
+        }
+
+    }
 
     function subChildren() : React.ReactNode {
         return (

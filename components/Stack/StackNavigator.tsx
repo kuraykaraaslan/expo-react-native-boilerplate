@@ -15,7 +15,7 @@ export default function StackNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="MainDrawer"
+        name="Main"
         component={DrawerNavigator}
         options={{ headerShown: false }} // Hide header when showing the drawer
       />

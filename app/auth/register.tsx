@@ -7,7 +7,7 @@ import Logo from '@/components/Logo';
 import AuthLayout from '@/components/Layouts/AuthLayout';
 import i18n from '@/libs/localize/localize';
 
-export default function Register() {
+export default function RegisterPage() {
 
     const { t } = i18n;
 

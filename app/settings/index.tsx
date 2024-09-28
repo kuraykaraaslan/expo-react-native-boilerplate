@@ -5,7 +5,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
 import { useAuthStore } from '@/libs/zustand';
 
-const Settings = ({ navigation }: any) => {
+const SettingsIndexPage = ({ navigation }: any) => {
 
     const { user } = useAuthStore();
 
@@ -20,21 +20,21 @@ const Settings = ({ navigation }: any) => {
             <View className="flex flex-row justify-center px-4">
                 <Text className="text-xl font-bold mt-6 mr-2 w-1/4">Email:</Text>
                 <Text className="flex-grow text-lg mt-6">{user?.email}</Text>
-                <TouchableOpacity onPress={() => navigation.navigate("ChangeEmail")} className="bg-orange-500 p-2 rounded-lg mt-4 w-20 items-center">
+                <TouchableOpacity onPress={() => navigation.navigate("Settings-ChangeEmail")} className="bg-orange-500 p-2 rounded-lg mt-4 w-20 items-center">
                     <Text className="text-lg text-white font-bold">Change</Text>
                 </TouchableOpacity>
             </View>
             <View className="flex flex-row justify-center px-4">
                 <Text className="text-xl font-bold mt-6 mr-2 w-1/4">Password:</Text>
                 <Text className="flex-grow text-lg mt-6">********</Text>
-                <TouchableOpacity onPress={() => navigation.navigate("ChangePassword")} className="bg-orange-500 p-2 rounded-lg mt-4 w-20 items-center">
+                <TouchableOpacity onPress={() => navigation.navigate("Settings-ChangePassword")} className="bg-orange-500 p-2 rounded-lg mt-4 w-20 items-center">
                     <Text className="text-lg text-white font-bold">Change</Text>
                 </TouchableOpacity>
             </View>
             <View className="flex flex-row justify-center px-4">
                 <Text className="text-xl font-bold mt-6 mr-2 w-1/4">Phone:</Text>
                 <Text className="flex-grow text-lg mt-6">{user?.phone}</Text>
-                <TouchableOpacity onPress={() => navigation.navigate("ChangePhone")} className="bg-orange-500 p-2 rounded-lg mt-4 w-20 items-center">
+                <TouchableOpacity onPress={() => navigation.navigate("Settings-ChangePhone")} className="bg-orange-500 p-2 rounded-lg mt-4 w-20 items-center">
                     <Text className="text-lg text-white font-bold">{user?.phone ? "Change" : "Add"}</Text>
                 </TouchableOpacity>
             </View>
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Settings;
+export default SettingsIndexPage;
