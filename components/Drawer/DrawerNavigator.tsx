@@ -1,4 +1,3 @@
-import Login from '@/app/auth/login';
 import Index from '@/app/index';
 import { faBell, faBolt, faEnvelope, faMessage, faUser, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -12,6 +11,17 @@ import { Text } from 'react-native';
 import UserInbox from '@/app/user/message/inbox';
 import UserSettings from '@/app/settings/index';
 import UserNotifications from '@/app/user/notifications';
+
+//Settings
+import ChangeEmail from '@/app/settings/change-email';
+import ChangePassword from '@/app/settings/change-password';
+import ChangePhone from '@/app/settings/change-phone';
+import ChangeName from '@/app/settings/change-name';
+import ChangeLanguage from '@/app/settings/change-language';
+
+//Chat
+import Chat from '@/app/user/message/chat';
+
 
 // Create a drawer navigator
 const CreateDrawer = createDrawerNavigator();
@@ -56,9 +66,9 @@ export default function DrawerNavigator({ navigation }: any) {
     } as any;
 
 
-    const goHome = (props: any) => (
+    const goBack = (props: any) => (
             <TouchableOpacity style={{ marginRight: 12, marginTop: 4, flexDirection: "row" }}
-                onPress={() => navigation.navigate("Home")}>
+                onPress={() => navigation.goBack()}>
                 <FontAwesomeIcon icon={faArrowLeft} size={20} color="#fff" style={{ marginTop: 4 }} />
                 <Text style={{ color: "#fff", fontSize: 16, marginLeft: 5, fontWeight: "bold", marginTop: 2 }}>Back</Text>
             </TouchableOpacity>
@@ -95,7 +105,7 @@ export default function DrawerNavigator({ navigation }: any) {
                             display: 'none'
                         },
                         headerShown: true,
-                        headerRight: goHome
+                        headerRight: goBack
                     }
                 } name="UserInbox" component={UserInbox} />
                 <CreateDrawer.Screen options={
@@ -112,9 +122,111 @@ export default function DrawerNavigator({ navigation }: any) {
                             display: 'none'
                         },
                         headerShown: true,
-                        headerRight: goHome
+                        headerRight: goBack
                     }
                 } name="UserNotifications" component={UserNotifications} />
+                <CreateDrawer.Screen options={
+                    {
+                        title: 'Change Email',
+                        headerStyle: {
+                            backgroundColor: '#f4511e',
+                        },
+                        headerTintColor: '#fff',
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                        },
+                        drawerItemStyle: {
+                            display: 'none'
+                        },
+                        headerShown: true,
+                        headerRight: goBack
+                    }
+                } name="Settings-ChangeEmail" component={ChangeEmail} />
+                <CreateDrawer.Screen options={
+                    {
+                        title: 'Change Password',
+                        headerStyle: {
+                            backgroundColor: '#f4511e',
+                        },
+                        headerTintColor: '#fff',
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                        },
+                        drawerItemStyle: {
+                            display: 'none'
+                        },
+                        headerShown: true,
+                        headerRight: goBack
+                    }
+                } name="Settings-ChangePassword" component={ChangePassword} />
+                <CreateDrawer.Screen options={
+                    {
+                        title: 'Change Phone',
+                        headerStyle: {
+                            backgroundColor: '#f4511e',
+                        },
+                        headerTintColor: '#fff',
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                        },
+                        drawerItemStyle: {
+                            display: 'none'
+                        },
+                        headerShown: true,
+                        headerRight: goBack
+                    }
+                } name="Settings-ChangePhone" component={ChangePhone} />
+                <CreateDrawer.Screen options={
+                    {
+                        title: 'Change Name',
+                        headerStyle: {
+                            backgroundColor: '#f4511e',
+                        },
+                        headerTintColor: '#fff',
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                        },
+                        drawerItemStyle: {
+                            display: 'none'
+                        },
+                        headerShown: true,
+                        headerRight: goBack
+                    }
+                } name="Settings-ChangeName" component={ChangeName} />
+                <CreateDrawer.Screen options={
+                    {
+                        title: 'Change Language',
+                        headerStyle: {
+                            backgroundColor: '#f4511e',
+                        },
+                        headerTintColor: '#fff',
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                        },
+                        drawerItemStyle: {
+                            display: 'none'
+                        },
+                        headerShown: true,
+                        headerRight: goBack
+                    }
+                } name="Settings-ChangeLanguage" component={ChangeLanguage} />
+                <CreateDrawer.Screen options={
+                    {
+                        title: 'Chat',
+                        headerStyle: {
+                            backgroundColor: '#f4511e',
+                        },
+                        headerTintColor: '#fff',
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                        },
+                        drawerItemStyle: {
+                            display: 'none'
+                        },
+                        headerShown: true,
+                        headerRight: goBack
+                    }
+                } name="Chat" component={Chat} />
             </CreateDrawer.Navigator>
         );
     }

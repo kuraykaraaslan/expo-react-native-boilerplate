@@ -8,7 +8,7 @@ import es from "@/locales/es.json";
 import fr from "@/locales/fr.json";
 import it from "@/locales/it.json";
 
-import store from '@/libs/redux/store';
+//import store from '@/libs/redux/store';
 
 const compatibilityJSON = 'v3';
 const fallbackLng = 'en';
@@ -62,9 +62,7 @@ i18n
     interpolation
   });
 
-if (store.getState().global.language) {
-  i18n.changeLanguage(store.getState().global.language);
-}
+
 
 
 export default i18n;

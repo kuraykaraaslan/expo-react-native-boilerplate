@@ -2,12 +2,14 @@
 import AxiosInstance from "@/libs/axios";
 import OTP from "@/types/OTP";
 import User from "@/types/User";
-import * as SecureStore from 'expo-secure-store';
-
-import { UseBoundStore, StoreApi } from "zustand";
-
 
 export class AuthService {
+    static changeName(newName: string) {
+        throw new Error('Method not implemented.');
+    }
+    static changePhone(newPhone: string) {
+        throw new Error('Method not implemented.');
+    }
 
 
     static AxiosInstance: any = AxiosInstance;

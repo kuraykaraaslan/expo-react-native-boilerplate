@@ -2,8 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, Button } from 'react-native';
 import {  TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import RNPickerSelect from 'react-native-picker-select';
 import { useAuthStore } from '@/libs/zustand';
+import { continents, countries, languages } from 'countries-list'
+
 
 const SettingsIndexPage = ({ navigation }: any) => {
 
@@ -15,7 +16,10 @@ const SettingsIndexPage = ({ navigation }: any) => {
         <View className="container mx-auto text-center bg-base-100 h-screen pt-4">
             <View className="flex flex-row justify-center px-4 bg-base-100">
                 <Text className="text-xl font-bold mt-6 mr-2 w-1/4">Name:</Text>
-                <TextInput className="flex-grow input input-bordered w-full mt-4 bg-gray-100 border-2 border-gray-200 p-1 pl-2" placeholder="Name" onChangeText={(text) => setName(text)} value={name} />
+                <Text className="flex-grow text-lg mt-6">{user?.name}</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Settings-ChangeName")} className="bg-orange-500 p-2 rounded-lg mt-4 w-20 items-center">
+                    <Text className="text-lg text-white font-bold">Change</Text>
+                </TouchableOpacity>
             </View>                
             <View className="flex flex-row justify-center px-4">
                 <Text className="text-xl font-bold mt-6 mr-2 w-1/4">Email:</Text>
@@ -40,15 +44,10 @@ const SettingsIndexPage = ({ navigation }: any) => {
             </View>
             <View className="flex flex-row justify-center px-4 mt-4">
                 <Text className="text-xl font-bold mt-6 mr-2 w-1/4">Language:</Text>
-                <Text className="flex-grow text-lg mt-6">{user?.language}</Text>
-                <RNPickerSelect 
-                    onValueChange={(value) => console.log(value)}
-                    items={[
-                        { label: "English", value: "en" },
-                        { label: "Turkish", value: "tr" },
-                        { label: "German", value: "de" },
-                    ]}
-                />
+                <Text className="flex-grow text-lg mt-6">{languages[user?.language as keyof typeof languages || 'en'].name}</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Settings-ChangeLanguage")} className="bg-orange-500 p-2 rounded-lg mt-4 w-20 items-center">
+                    <Text className="text-lg text-white font-bold">Change</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );

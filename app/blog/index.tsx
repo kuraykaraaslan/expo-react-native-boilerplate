@@ -1,4 +1,3 @@
-import RNPickerSelect from 'react-native-picker-select';
 import React from 'react';
 import { View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import { Link, Router } from 'expo-router';
@@ -24,13 +23,7 @@ export default function Index() {
 
         <Text className="mt-4 font-bold">{t('BLOG.CATEGORIES')}</Text>
         <View className="flex justify-center mt-4">
-          <RNPickerSelect style={{ placeholder: { color: 'black' }, viewContainer: { borderWidth: 2, borderColor: 'black', borderRadius: 5, padding: 0 } }}
-            placeholder={{ label: t('HOME.SELECT_CATEGORY'), value: null }}
-            onValueChange={(value) => selectCategory(value)}
-            
-            items={categories.map((lang) => ({ label: t(`LANGUAGES.${lang.toUpperCase()}`)
-              , value: lang }))}
-          />
+
         </View>
 
       </View>

@@ -1,40 +1,22 @@
 import { Link, Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text } from 'react-native';
 
-import { Text, View } from '@/components/Themed';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function NotFoundScreen() {
+
+export default function NotFoundScreen({ navigation }: { navigation: any }) {
   return (
-    <>
-      <Stack.Screen options={{ title: 'Oops!' }} />
-      <View style={styles.container}>
-        <Text style={styles.title}>This screen doesn't exist.</Text>
-
-        <Link href="/" style={styles.link}>
-          <Text style={styles.linkText}>Go to home screen!</Text>
-        </Link>
+    <View className="container mx-auto text-center bg-base-100 h-screen">
+      <View className="flex justify-center mt-20 px-4">
+        <Text className="mt-4 font-bold">404 - Page Not Found</Text>
+        <View className="flex justify-center mt-4">
+          <TouchableOpacity onPress={() => navigation.navigate("Home")} className="bg-blue-500 p-2 rounded-lg mt-4 w-20 items-center">
+            <Text className="text-lg text-white font-bold">Home</Text>
+          </TouchableOpacity> 
+        </View>
       </View>
-    </>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-  linkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
-});

@@ -6,6 +6,7 @@ import i18n from '@/libs/localize/localize';
 
 import { useAuthStore } from '@/libs/zustand';
 import User from '@/types/User';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 
@@ -16,11 +17,11 @@ const demo: Inbox[] = [
             {
                 userId: '1',
                 name: 'John Doe',
-                avatar: 'https://picsum.photos/200',
+                avatar: 'https://picsum.photos/250',
             },
             {
-                userId: '2',
-                name: 'Jane Doe',
+                userId: 'cm0kqkxks0000v5f30uxzibs3',
+                name: 'Kuray Karaaslan',
                 avatar: 'https://picsum.photos/200',
             },
         ],
@@ -33,7 +34,7 @@ const demo: Inbox[] = [
             },
             {
                 messageId: '2',
-                senderId: '2',
+                senderId: 'cm0kqkxks0000v5f30uxzibs3',
                 content: 'I am good, thank you!',
                 createdAt: new Date(),
             },
@@ -46,11 +47,11 @@ const demo: Inbox[] = [
             {
                 userId: '3',
                 name: 'Alice',
-                avatar: 'https://picsum.photos/200',
+                avatar: 'https://picsum.photos/250',
             },
             {
-                userId: '2',
-                name: 'Jane Doe',
+                userId: 'cm0kqkxks0000v5f30uxzibs3',
+                name: 'Kuray Karaaslan',
                 avatar: 'https://picsum.photos/200',
             },
         ],
@@ -59,19 +60,19 @@ const demo: Inbox[] = [
                 messageId: '1',
                 senderId: '3',
                 content: 'Hey, What are you doing?',
-                createdAt: new Date(),
+                createdAt: new Date(), 
             },
             {
                 messageId: '2',
-                senderId: '2',
-                content: 'I am good, thank you!',
-                createdAt: new Date(),
+                senderId: 'cm0kqkxks0000v5f30uxzibs3',
+                content: 'Can you sit on my face?',
+                createdAt: new Date("2021-09-01T12:00:00"),
             },
         ]
     }
 ];
 
-const SingleInbox = ({ self, item }: { self: User | undefined, item: Inbox }) => {
+const SingleInbox = ({ self, item, navigation }: { self: User | undefined, item: Inbox, navigation: any }) => {
 
     const { t } = i18n;
 
@@ -157,7 +158,9 @@ const SingleInbox = ({ self, item }: { self: User | undefined, item: Inbox }) =>
 
 
     return (
-        <View className='relative flex flex-row p-4 bg-base-100 mt-2 border-b border-gray-200 drop-shadow-lg'>
+        <TouchableOpacity onPress={() => navigation.navigate('Chat', { inbox: JSON.stringify(item) })}>
+        <View
+        className='relative flex flex-row p-4 bg-base-100 mt-2 border-b border-gray-200 drop-shadow-lg'>
             <View className='flex flex-row items-center'>
                 <Image className='w-12 h-12 rounded-full' source={{ uri: 'https://fastly.picsum.photos/id/616/200/200.jpg?hmac=QEzyEzU6nVn4d_vdALhsT9UAtTUEVhwrT-kM5ogBqKM' }} />
             </View>
@@ -169,6 +172,7 @@ const SingleInbox = ({ self, item }: { self: User | undefined, item: Inbox }) =>
                 <Text className='text-gray-500'>{lastMessageDateText}</Text>
             </View>
         </View>
+        </TouchableOpacity>
     );
 }
 
@@ -211,7 +215,7 @@ const InboxPage = ({ navigation }: any) => {
     return (
         <ScrollView style={{ marginTop: margin }}>
             {inboxes.map((inbox) => (
-                <SingleInbox self={user as User} item={inbox} />
+                <SingleInbox self={user as User} item={inbox} navigation={navigation} />
             ))}
         </ScrollView>
     );

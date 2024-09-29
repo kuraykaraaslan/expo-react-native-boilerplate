@@ -16,13 +16,14 @@
  * 
  * to use these pages, you can import them from the
  */
-import RNPickerSelect from 'react-native-picker-select';
+import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 import { View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import { Link, Router } from 'expo-router';
 import i18n from '@/libs/localize/localize';
 import * as WebBrowser from 'expo-web-browser';
 import { router } from 'expo-router';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default function Home({ navigation }: any) {
@@ -46,7 +47,7 @@ export default function Home({ navigation }: any) {
   }
 
   return (
-    <View className="container mx-auto text-center bg-base-100 h-screen pt-4">
+    <ScrollView className="container mx-auto text-center bg-base-100 h-screen pt-4 pb-8">
       <View className="flex justify-center px-4">
         <Image source={require('@/assets/images/home.png')} className="w-full h-64 mb-4" />
         <Text className="text-4xl font-bold">{t('HOME.WELCOME')}</Text>
@@ -54,32 +55,22 @@ export default function Home({ navigation }: any) {
 
         <Text className="mt-4 font-bold">{t('HOME.LANGUAGES')}</Text>
         <View className="flex justify-center mt-4">
-          <RNPickerSelect style={{ placeholder: { color: 'black' }, viewContainer: { borderWidth: 2, borderColor: 'black', borderRadius: 5, padding: 0 } }}
-            placeholder={{ label: t('HOME.SELECT_LANGUAGE'), value: null }}
-            onValueChange={(value) => changeLanguage(value)}
-            items={availableLanguages.map((lang) => ({ label: t(`LANGUAGES.${lang.toUpperCase()}`)
-              , value: lang }))}
-          />
+        <Picker
+          selectedValue={currentLanguage}
+          onValueChange={(itemValue, itemIndex) => changeLanguage(itemValue)}
+          style={{ width: 200 }}
+        >
+          {availableLanguages.map((lang) => {
+            return <Picker.Item key={lang} label={lang} value={lang} />
+          })}
+        </Picker>
+
         </View>
 
 
         <Text className="mt-4 font-bold">{t('HOME.PAGES')}</Text>
         <View className="flex justify-center mt-4">
-          <RNPickerSelect style={{ placeholder: { color: 'black' }, viewContainer: { borderWidth: 2, borderColor: 'black', borderRadius: 5, padding: 0 } }}
-            placeholder={{ label: t('HOME.SELECT_PAGE'), value: null }}
-            onValueChange={(value) => changePage(value)}
-            items={[
-              { label: t('PAGES.LOGIN'), value: 'Login' },
-              { label: t('PAGES.REGISTER'), value: 'Register' },
-              { label: t('PAGES.FORGOT_PASSWORD'), value: 'ForgotPassword' },
-              { label: t('PAGES.HOME'), value: 'Home' },
-              { label: t('PAGES.DASHBOARD'), value: 'Dashboard' },
-              { label: t('PAGES.PROFILE'), value: 'Profile' },
-              { label: t('PAGES.SETTINGS'), value: 'Settings' },
-              { label: t('PAGES.ABOUT'), value: 'About' },
-              { label: t('PAGES.CONTACT'), value: 'Contact' },
-            ]}
-          />
+
         </View>
         <View className="mt-4">
           {/* <Link for kuray.dev as development */}
@@ -90,6 +81,6 @@ export default function Home({ navigation }: any) {
 
 
       </View>
-    </View>
+    </ScrollView>
   );
 }

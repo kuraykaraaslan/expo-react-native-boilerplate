@@ -1,15 +1,9 @@
-import { Slot } from 'expo-router';
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { Link } from "expo-router";
+import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Logo from '@/components/Logo';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faApple, faFacebook, faFacebookF, faGithub, faGoogle, faLinkedin, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import { faApple, faFacebookF, faGithub, faGoogle, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
-import { useRoute } from '@react-navigation/native';
-//import { useFocusEffect } 
-import { useFocusEffect } from 'expo-router';
-import { useCallback } from 'react';
 
 import i18n from '@/libs/localize/localize';
 

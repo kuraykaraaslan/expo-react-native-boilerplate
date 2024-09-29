@@ -1,19 +1,11 @@
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Slot } from 'expo-router';
 import "../global.css"
-import { Provider } from 'react-redux';
-import store from '@/libs/redux/store';
-
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-
-import MainStackNavigator from '@/components/Stack/StackNavigator';
-import DrawerNavigator from '@/components/Drawer/DrawerNavigator';
 import StackNavigator from '@/components/Stack/StackNavigator';
 
+// Zustand store and secure store for authentication
 import { useAuthStore } from '@/libs/zustand';
 import { AuthService } from '@/services/AuthService';
-
 import * as SecureStore from 'expo-secure-store';
 
 
