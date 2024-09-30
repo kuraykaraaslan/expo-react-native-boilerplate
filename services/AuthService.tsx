@@ -4,6 +4,9 @@ import OTP from "@/types/OTP";
 import User from "@/types/User";
 
 export class AuthService {
+    static changeLanguage(newLanguage: string) {
+        throw new Error('Method not implemented.');
+    }
     static changeName(newName: string) {
         throw new Error('Method not implemented.');
     }
