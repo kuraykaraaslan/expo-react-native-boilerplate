@@ -38,6 +38,8 @@ export class AuthService {
         await this.SecureStore.getItemAsync('token').then((token : string | null) => {
             if (token) {
                 this.ZustandStore?.setState({ token });
+                
+                this.AxiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + token;
             }
         });
 
@@ -52,6 +54,7 @@ export class AuthService {
                 this.ZustandStore?.setState({ otp: JSON.parse(otp) });
             }
         });
+
 
         console.log("Loaded from secure store");
         console.log(this.ZustandStore.getState().token);
