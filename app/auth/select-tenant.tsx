@@ -28,6 +28,12 @@ const SelectTenanPage = ({ navigation }: any) => {
 
     async function getTenantMembershipsByUser() {
         const response = await TenantMemberService.getTenantMembershipsByUser();
+
+        if (!response) {
+            return;
+        }
+
+        setTenantMemberships(response);
         return response;
     }
 
@@ -41,11 +47,20 @@ const SelectTenanPage = ({ navigation }: any) => {
            }
         });
 
+        TenantMemberService.getSelectedTenantMembership().then((selectedTenantMembership) => {
+            if (selectedTenantMembership) {
+                setSelectedTenantMembership(selectedTenantMembership);
+            }
+        });
+
     }, []);
 
 
-    function handleTenantMembershipSelection(tenantMembership: TenantMember) {
-        setSelectedTenantMembership(tenantMembership);
+    async function handleTenantMembershipSelection() {
+        if (!selectedTenantMembership) {
+            return;
+        }
+        await TenantMemberService.setSelectTenantMembership(selectedTenantMembership);
     }
 
     return (
@@ -53,7 +68,7 @@ const SelectTenanPage = ({ navigation }: any) => {
             <Text className="text-3xl font-bold mb-4">{t('AUTH.SELECT_TENANT')}</Text>
             <Picker
                 selectedValue={null}
-                onValueChange={(itemValue, itemIndex) => handleTenantMembershipSelection(itemValue as unknown as TenantMember)}
+                onValueChange={(itemValue, itemIndex) => setSelectedTenantMembership(itemValue)}
                 className='w-full bg-gray-100 border-2 border-gray-200'
                 style={{ }}
             >   
@@ -64,7 +79,7 @@ const SelectTenanPage = ({ navigation }: any) => {
                 )}
 
             </Picker>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')} className="w-full">
+            <TouchableOpacity onPress={handleTenantMembershipSelection} className="w-full">
                 <Text className="w-full h-12 bg-blue-500 text-white text-center rounded-lg mt-4 p-2">{t('AUTH.SELECT')}</Text>
             </TouchableOpacity>
         </AuthLayout>

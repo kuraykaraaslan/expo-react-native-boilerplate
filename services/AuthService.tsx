@@ -21,8 +21,8 @@ export class AuthService {
     static SecureStore: any;
 
     
-    static initialize(useAuthStore: any, SecureStore: any) {
-        this.ZustandStore = useAuthStore;
+    static initialize(ZustandStore: any, SecureStore: any) {
+        this.ZustandStore = ZustandStore;
         this.SecureStore = SecureStore;
 
         this.loadFromSecureStore();
@@ -37,7 +37,7 @@ export class AuthService {
 
         await this.SecureStore.getItemAsync('token').then((token : string | null) => {
             if (token) {
-                this.ZustandStore?.setState({ token });
+                this.ZustandStore?.useAuthStore.setState({ token });
                 
                 this.AxiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + token;
             }
@@ -45,19 +45,19 @@ export class AuthService {
 
         await this.SecureStore.getItemAsync('user').then((user : string | null) => {
             if (user) {
-                this.ZustandStore?.setState({ user: JSON.parse(user) });
+                this.ZustandStore?.useAuthStore.setState({ user: JSON.parse(user) });
             }
         });
 
         await this.SecureStore.getItemAsync('otp').then((otp : string | null) => {
             if (otp) {
-                this.ZustandStore?.setState({ otp: JSON.parse(otp) });
+                this.ZustandStore?.useAuthStore.setState({ otp: JSON.parse(otp) });
             }
         });
 
 
-        console.log("Loaded from secure store");
-        console.log(this.ZustandStore.getState().token);
+        console.log("AuthService loaded from secure store");
+        console.log(this.ZustandStore.useAuthStore.getState().token);
     }
 
     static async saveToSecureStore() {
@@ -66,9 +66,9 @@ export class AuthService {
             return;
         }
 
-        this.SecureStore.setItemAsync('token', this.ZustandStore.getState().token);
-        this.SecureStore.setItemAsync('user', JSON.stringify(this.ZustandStore.getState().user));
-        this.SecureStore.setItemAsync('otp', JSON.stringify(this.ZustandStore.getState().otp));
+        this.SecureStore.setItemAsync('token', this.ZustandStore.useAuthStore.getState().token);
+        this.SecureStore.setItemAsync('user', JSON.stringify(this.ZustandStore.useAuthStore.getState().user));
+        this.SecureStore.setItemAsync('otp', JSON.stringify(this.ZustandStore.useAuthStore.getState().otp));
     }
 
 
@@ -85,7 +85,7 @@ export class AuthService {
         const response = await this.AxiosInstance.post('/v1/auth/login', { email, password })
 
         if (response.data) {
-            this.ZustandStore.setState({ token: response.data.token, user: response.data.user, otp: response.data.OTP });
+            this.ZustandStore.useAuthStore.setState({ token: response.data.token, user: response.data.user, otp: response.data.OTP });
             console.log("Login successful");
             await this.saveToSecureStore();
         }
