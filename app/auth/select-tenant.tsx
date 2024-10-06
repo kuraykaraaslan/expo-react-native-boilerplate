@@ -13,6 +13,8 @@ import { TenantMemberService } from '@/services/TenantMemberService';
 import TenantMember from '@/types/TenantMember';
 
 
+
+
 interface Tenant {
     id: string;
     name: string;
@@ -61,6 +63,8 @@ const SelectTenanPage = ({ navigation }: any) => {
             return;
         }
         await TenantMemberService.setSelectTenantMembership(selectedTenantMembership);
+        navigation.navigate('Home');
+
     }
 
     return (

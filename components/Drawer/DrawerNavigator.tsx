@@ -26,12 +26,13 @@ import Chat from '@/app/user/message/chat';
 // Create a drawer navigator
 const CreateDrawer = createDrawerNavigator();
 
-import { useAuthStore } from '@/libs/zustand';
+import { useAuthStore , useTenantMemberStore } from '@/libs/zustand';
 import { Picker } from '@react-native-picker/picker';
 
 export default function DrawerNavigator({ navigation }: any) {
 
     const { user } = useAuthStore();
+    const { selectedTenantMembership } = useTenantMemberStore();
 
     const defaultOptions = {
         title: 'Index',
@@ -47,7 +48,8 @@ export default function DrawerNavigator({ navigation }: any) {
             <View style={{ flexDirection: "row" }}>
             <TouchableOpacity style={{ marginLeft: 0, flexDirection: "row" }} onPress={() => navigation.navigate("Home")} onLongPress={() => navigation.navigate("SelectTenant")}>
                 <FontAwesomeIcon icon={faBolt} size={20} color="#fff" style={{ marginTop: 5 }} />
-                <Text style={{ color: "#fff", fontSize: 20, marginLeft: 5, fontWeight: "bold", marginTop: 2 }}>Zeus</Text>
+                {selectedTenantMembership?.tenant?.name ? <Text style={{ color: "#fff", fontSize: 20, marginLeft: 5, fontWeight: "bold", marginTop: 2 }}>{selectedTenantMembership?.tenant?.name}</Text> : 
+                <Text style={{ color: "#fff", fontSize: 20, marginLeft: 5, fontWeight: "bold", marginTop: 2 }}>Zeus</Text> }
             </TouchableOpacity>
             <TouchableOpacity style={{ marginLeft: 4, flexDirection: "row" }} onPress={() => navigation.navigate("SelectTenant")}>
                 <FontAwesomeIcon icon={faCaretDown} size={20} color="#fff" style={{ marginTop: 5 }} />

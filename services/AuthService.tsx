@@ -19,11 +19,13 @@ export class AuthService {
 
     static ZustandStore: any;
     static SecureStore: any;
+    static Toast: any;
 
     
-    static initialize(ZustandStore: any, SecureStore: any) {
+    static initialize(ZustandStore: any, SecureStore: any, Toast: any) {
         this.ZustandStore = ZustandStore;
         this.SecureStore = SecureStore;
+        this.Toast = Toast;
 
         this.loadFromSecureStore();
 
@@ -35,29 +37,42 @@ export class AuthService {
             return;
         }
 
-        await this.SecureStore.getItemAsync('token').then((token : string | null) => {
+        await this.SecureStore.getItemAsync('token').then(async (token : string | null) => {
             if (token) {
                 this.ZustandStore?.useAuthStore.setState({ token });
-                
                 this.AxiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+
+
+                const user = await this.fetchUser();
+
+                this.Toast.show({
+                    type: 'success',
+                    text1: 'Welcome back'
+                    });
             }
         });
 
+
+        /*
         await this.SecureStore.getItemAsync('user').then((user : string | null) => {
             if (user) {
                 this.ZustandStore?.useAuthStore.setState({ user: JSON.parse(user) });
             }
+
+            this.fetchUser();
         });
+       
 
         await this.SecureStore.getItemAsync('otp').then((otp : string | null) => {
             if (otp) {
                 this.ZustandStore?.useAuthStore.setState({ otp: JSON.parse(otp) });
             }
-        });
-
-
-        console.log("AuthService loaded from secure store");
+        }); 
+        
         console.log(this.ZustandStore.useAuthStore.getState().token);
+
+        */
+    
     }
 
     static async saveToSecureStore() {
@@ -135,6 +150,22 @@ export class AuthService {
         });
         return response.data;
     }
+
+    static async fetchUser(): Promise<User | null> {
+        const response = await this.AxiosInstance.get('/v1/auth/me').catch((error: any) => {
+            console.log("fetchUser error", error);
+            return null;
+        });
+
+        if (!response) {
+            return null;
+        }
+
+        this.ZustandStore.useAuthStore.setState({ user: response.data });
+
+        return response.data;
+    }
+
     
 }
 

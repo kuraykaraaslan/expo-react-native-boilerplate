@@ -12,11 +12,15 @@ export class TenantMemberService {
     static AxiosInstance = AuthService.AxiosInstance;
     static ZustandStore: any;
     static SecureStore: any;
+    static Toast: any;
+    static Navigation: any;
 
-    static initialize(ZustandStore: any, SecureStore: any) {
+    static initialize(ZustandStore: any, SecureStore: any , Toast: any) {
         console.log("TenantMemberService initialized");
         this.ZustandStore = ZustandStore;
+        console.log("TenantMemberService ZustandStore", this.ZustandStore);
         this.SecureStore = SecureStore;
+        this.Toast = Toast;
 
         this.loadFromSecureStore();
     }
@@ -29,6 +33,7 @@ export class TenantMemberService {
 
         await this.SecureStore.getItemAsync('selectedTenantMembership').then((selectedTenantMembership: string | null) => {
             if (selectedTenantMembership) {
+                console.log("selectedTenantMembership", selectedTenantMembership);
                 this.ZustandStore?.useTenantMemberStore.setState({ selectedTenantMembership: JSON.parse(selectedTenantMembership) });
             }
         });
@@ -45,6 +50,11 @@ export class TenantMemberService {
         });
 
         const memberships = response.data.memberships;
+
+        this.Toast.show({
+            type: 'success',
+            text1: 'Memberships loaded'
+          });
 
         return memberships.map((membership: any) => {
             return {
@@ -71,7 +81,12 @@ export class TenantMemberService {
     static async setSelectTenantMembership(tenantMember: TenantMember) {
         console.log("useTenantMemberStore", this.ZustandStore?.useTenantMemberStore);
         this.ZustandStore?.useTenantMemberStore.setState({ selectedTenantMembership: tenantMember });
-        this.SecureStore.useTenantMemberStore.setItemAsync('selectedTenantMembership', JSON.stringify(tenantMember));
+        this.SecureStore.setItemAsync('selectedTenantMembership', JSON.stringify(tenantMember));
+        this.Toast.show({
+            type: 'info',
+            text1: 'Tenant membership selected'
+            });
+        console.log("Tenant membership selected");
     }
 
     static async getSelectedTenantMembership(): Promise<TenantMember | null> {
