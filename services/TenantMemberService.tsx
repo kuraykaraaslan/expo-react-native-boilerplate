@@ -2,6 +2,7 @@
 import OTP from "@/types/OTP";
 import User from "@/types/User";
 import { AuthService } from "./AuthService";
+import AxiosInstance from "@/libs/axios";
 
 import Tenant from "@/types/Tenant";
 import TenantMember from "@/types/TenantMember";
@@ -9,7 +10,7 @@ import TenantMember from "@/types/TenantMember";
 export class TenantMemberService {
 
 
-    static AxiosInstance = AuthService.AxiosInstance;
+    static AxiosInstance = AxiosInstance;
     static ZustandStore: any;
     static SecureStore: any;
     static Toast: any;
@@ -42,12 +43,29 @@ export class TenantMemberService {
 
     }
 
+    static async flush() {
+        this.ZustandStore?.useTenantMemberStore.setState({ selectedTenantMembership: null });
+        this.SecureStore.deleteItemAsync('selectedTenantMembership');
+    }
+
 
     static async getTenantMembershipsByUser(): Promise<TenantMember[] | null> {
+
+        if (!this.AxiosInstance) {
+            return null;
+        }
 
         const response = await this.AxiosInstance.get('/v1/tenants/me').catch((error: any) => {
             return null;
         });
+
+        if (!response) {
+            this.Toast.show({
+                type: 'error',
+                text1: 'Failed to load memberships'
+              });
+            return null;
+        }
 
         const memberships = response.data.memberships;
 

@@ -18,9 +18,13 @@ import ChangePassword from '@/app/settings/change-password';
 import ChangePhone from '@/app/settings/change-phone';
 import ChangeName from '@/app/settings/change-name';
 import ChangeLanguage from '@/app/settings/change-language';
+import ViewSessionsPage from '@/app/settings/view-sessions';
 
 //Chat
 import Chat from '@/app/user/message/chat';
+
+//AuthService
+import { AuthService } from '@/services/AuthService';
 
 
 // Create a drawer navigator
@@ -33,6 +37,8 @@ export default function DrawerNavigator({ navigation }: any) {
 
     const { user } = useAuthStore();
     const { selectedTenantMembership } = useTenantMemberStore();
+
+    AuthService.Navigation = navigation;
 
     const defaultOptions = {
         title: 'Index',
@@ -64,10 +70,10 @@ export default function DrawerNavigator({ navigation }: any) {
                 <TouchableOpacity style={{ marginRight: 12, marginTop: 4 }} onPress={() => navigation.navigate("UserInbox")}>
                     <FontAwesomeIcon icon={faMessage} size={20} color="#fff" />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ marginRight: 12 }} onPress={user ? () => navigation.navigate("Settings") : () => navigation.navigate("Login")}>
+                <TouchableOpacity style={{ marginRight: 12}} onPress={user ? () => navigation.navigate("Settings") : () => navigation.navigate("Login")}>
                     {user?.avatar ? <Image source={{ uri: user.avatar }} style={{
                         width: 30, height: 30, borderRadius: 20, borderColor: "#fff", borderWidth: 1
-                    }} /> : <FontAwesomeIcon icon={faUser} size={20} color="#fff" />}
+                    }} /> : <FontAwesomeIcon icon={faUser} size={20} color="#fff" style={{ marginTop: 4 }}/>}
                 </TouchableOpacity>
             </View>
         ),
@@ -235,6 +241,23 @@ export default function DrawerNavigator({ navigation }: any) {
                     headerRight: goBack
                 }
             } name="Chat" component={Chat} />
+            <CreateDrawer.Screen options={
+                {
+                    title: 'Sessions',
+                    headerStyle: {
+                        backgroundColor: '#f4511e',
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    },
+                    drawerItemStyle: {
+                        display: 'none'
+                    },
+                    headerShown: true,
+                    headerRight: goBack
+                }
+            } name="Settings-Sessions" component={ViewSessionsPage} />
         </CreateDrawer.Navigator>
     );
 }

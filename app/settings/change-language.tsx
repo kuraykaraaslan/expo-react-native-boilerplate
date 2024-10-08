@@ -24,14 +24,7 @@ const ChangeLanguagePage = ({ navigation } : any) => {
         // 2-3 letter language code
         const regex = /^[a-zA-Z]{2,3}$/;
 
-        const result = await AuthService.changeLanguage(newLanguage);
-
-        if (result) {
-            setMessage('Email changed successfully');
-        } else {
-            setMessage('Failed to change email');
-        }
-
+        await AuthService.changeLanguage(newLanguage);
     };
 
     return (

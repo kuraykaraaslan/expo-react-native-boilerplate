@@ -52,13 +52,7 @@ const ChangePhonePage = ({ navigation }: any) => {
 
             console.log('Phone is valid');
 
-            const result = await AuthService.changePhone(phone);
-
-            if (result) {
-                setMessage('Phone changed successfully');
-            } else {
-                setMessage('Failed to change phone');
-            }
+            await AuthService.changePhone(phone);
 
         } else {
             setMessage('Invalid phone number');

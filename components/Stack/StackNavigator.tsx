@@ -12,7 +12,10 @@ import SelectTenanPage from '@/app/auth/select-tenant';
 
 const Stack = createStackNavigator();
 
+
 export default function StackNavigator() {
+
+
   return (
     <Stack.Navigator>
       <Stack.Screen

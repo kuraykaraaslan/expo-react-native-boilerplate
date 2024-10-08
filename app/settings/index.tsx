@@ -49,6 +49,13 @@ const SettingsIndexPage = ({ navigation }: any) => {
                     <Text className="text-lg text-white font-bold">Change</Text>
                 </TouchableOpacity>
             </View>
+            <View className="flex flex-row justify-center px-4">
+                <Text className="text-xl font-bold mt-6 mr-2 w-1/4">Sessions:</Text>
+                <Text className="flex-grow text-lg mt-6">View</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Settings-Sessions")} className="bg-orange-500 p-2 rounded-lg mt-4 w-20 items-center">
+                    <Text className="text-lg text-white font-bold">View</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };

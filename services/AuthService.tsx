@@ -3,6 +3,8 @@ import AxiosInstance from "@/libs/axios";
 import OTP from "@/types/OTP";
 import User from "@/types/User";
 
+import { TenantMemberService } from "./TenantMemberService";
+
 export class AuthService {
     static changeLanguage(newLanguage: string) {
         throw new Error('Method not implemented.');
@@ -13,6 +15,7 @@ export class AuthService {
     static changePhone(newPhone: string) {
         throw new Error('Method not implemented.');
     }
+        
 
 
     static AxiosInstance: any = AxiosInstance;
@@ -20,12 +23,14 @@ export class AuthService {
     static ZustandStore: any;
     static SecureStore: any;
     static Toast: any;
+    static Navigation : any;
 
     
     static initialize(ZustandStore: any, SecureStore: any, Toast: any) {
         this.ZustandStore = ZustandStore;
         this.SecureStore = SecureStore;
         this.Toast = Toast;
+
 
         this.loadFromSecureStore();
 
@@ -45,10 +50,19 @@ export class AuthService {
 
                 const user = await this.fetchUser();
 
-                this.Toast.show({
-                    type: 'success',
-                    text1: 'Welcome back'
+                if (user) {
+                    this.Toast.show({
+                        type: 'success',
+                        text1: 'Welcome back'
                     });
+                    this.Navigation.navigate('Settings');
+                } else {
+                    this.Toast.show({
+                        type: 'error',
+                        text1: 'Session expired'
+                    });
+                    this.Navigation.navigate('Login');
+                }
             }
         });
 
@@ -105,7 +119,27 @@ export class AuthService {
             await this.saveToSecureStore();
         }
 
+
         return response.data;   
+    }
+
+    static async flush(): Promise<any> {
+        this.ZustandStore.useAuthStore.setState({ token: null, user: null, otp: null });
+        this.AxiosInstance.defaults.headers.common['Authorization'] = '';
+        this.SecureStore.deleteItemAsync('token');
+        this.SecureStore.deleteItemAsync('user');
+        this.SecureStore.deleteItemAsync('otp');
+
+        //Flush services
+        TenantMemberService.flush();
+    }
+
+    static async logout(): Promise<any> {
+        const response = await this.AxiosInstance.post('/v1/auth/logout').catch((error: any) => {
+            return null;
+        });
+
+        return response.data;
     }
 
     static async register(email: string, password: string): Promise<any> {
@@ -162,6 +196,32 @@ export class AuthService {
         }
 
         this.ZustandStore.useAuthStore.setState({ user: response.data });
+
+        return response.data;
+    }
+
+    static async listAllSessionsByUser(): Promise<any> {
+        const response = await this.AxiosInstance.get('/v1/auth/sessions').catch((error: any) => {
+            return null;
+        });
+
+        return response.data;
+    }
+
+    static async revokeAllSessions(): Promise<any> {
+        const response = await this.AxiosInstance.delete('/v1/auth/sessions').catch((error: any) => {
+            return null;
+        });
+
+        this.logout();
+
+        return response.data;
+    }
+
+    static async revokeSession(sessionId: string): Promise<any> {
+        const response = await this.AxiosInstance.delete('/v1/auth/sessions/' + sessionId).catch((error: any) => {
+            return null;
+        });
 
         return response.data;
     }
