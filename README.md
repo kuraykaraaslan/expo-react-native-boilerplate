@@ -6,6 +6,8 @@
 
 This boilerplate provides a robust starting point for building mobile applications using Expo, React Native, Zustand for state management, Tailwind CSS for styling, and TypeScript. It's designed to help developers jumpstart their project with a well-structured, scalable, and easily maintainable codebase.
 
+> **🤖 AI agents:** read [AGENTS.md](AGENTS.md) first — canonical orientation guide. Then pull the machine-readable catalog from `public/registry/` (screens, components, services, stores, DTOs, libs, conventions) or talk to the MCP server in [.mcp.json](.mcp.json). Editor-native rule mirrors: [.cursor/rules/expo-react-native.mdc](.cursor/rules/expo-react-native.mdc), [.cursorrules](.cursorrules), [.windsurfrules](.windsurfrules), [.github/copilot-instructions.md](.github/copilot-instructions.md), [.clinerules](.clinerules). Rebuild the catalog after any change: `npm run registry:snapshot`.
+
 ## Screenshots
 
 <p align="center">

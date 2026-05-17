@@ -8,10 +8,14 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "prebuild": "npm run registry:snapshot",
+    "build": "expo export",
     "test": "jest --watchAll",
     "test:ci": "jest --ci",
     "lint": "expo lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "registry:snapshot": "node scripts/build-registry-snapshot.mjs",
+    "mcp:server": "node scripts/mcp-server.mjs"
   },
   "jest": {
     "preset": "jest-expo"
