@@ -1,33 +1,57 @@
-import "../global.css"
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import StackNavigator from '@/components/Stack/StackNavigator';
+import "../global.css";
+import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Slot } from "expo-router";
+import { Toaster } from "sonner-native";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { useAuthStore } from "@/stores/authStore";
+import { getToken } from "@/libs/secureStorage";
+import { AuthClientService } from "@/services/AuthClientService";
+import logger from "@/libs/logger";
 
-// Zustand store and secure store for authentication
-import * as ZustandStore from '@/libs/zustand';
-import { AuthService } from '@/services/AuthService';
-import * as SecureStore from 'expo-secure-store';
-import { TenantMemberService } from "@/services/TenantMemberService";
+SplashScreen.preventAutoHideAsync();
 
-import Toast from 'react-native-toast-message'
+export default function RootLayout() {
+  const [loaded] = useFonts({});
 
+  const setUser = useAuthStore((s) => s.setUser);
+  const setAuthenticated = useAuthStore((s) => s.setAuthenticated);
 
-export default function HomeLayout() {
+  // Restore session from stored tokens on app startup
+  useEffect(() => {
+    async function restoreSession() {
+      try {
+        const token = await getToken("accessToken");
+        if (!token) {
+          setAuthenticated(false);
+          return;
+        }
 
-  /*
-   AuthService is a service that is used to manage the authentication state of the user. 
-   And distribute the state to the application to other services and components.
-  */
-  TenantMemberService.initialize(ZustandStore, SecureStore, Toast);
-  AuthService.initialize(ZustandStore, SecureStore, Toast);
+        const user = await AuthClientService.getSession();
+        setUser(user);
+      } catch {
+        logger.warn("Session restore failed");
+        setAuthenticated(false);
+      }
+    }
+
+    restoreSession();
+  }, [setUser, setAuthenticated]);
+
+  useEffect(() => {
+    if (loaded) SplashScreen.hideAsync();
+  }, [loaded]);
+
+  if (!loaded) return null;
 
   return (
-    <NavigationContainer independent={true}>
-      <StackNavigator />
-      <Toast
-        position='top'
-        bottomOffset={20}
-      />
-    </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <Slot />
+        <Toaster position="bottom-center" />
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

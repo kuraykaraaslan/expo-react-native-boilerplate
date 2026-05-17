@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\kuray\\\\Documents\\\\Projects\\\\expo-react-native-boilerplate\" -Force)",
+      "Bash(Select-Object Name, FullName)",
+      "Read(///wsl.localhost/Ubuntu/home/kuray/next-boilerplate/app/tenant/[tenantId]/api/subscription/**)",
+      "Read(///wsl.localhost/Ubuntu/home/kuray/next-boilerplate/app/system/api/settings/**)",
+      "Bash(npx tsc *)",
+      "Read(//c/Users/kuray/Desktop/00_Config_and_AI_Rules/00_Config_and_AI_Rules/Code_Structure_Rules/**)"
+    ]
+  }
+}

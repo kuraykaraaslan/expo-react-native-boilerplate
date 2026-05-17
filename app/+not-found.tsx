@@ -1,22 +1,18 @@
-import { Link, Stack } from 'expo-router';
-import { StyleSheet } from 'react-native';
-import React from 'react';
-import { View, Text } from 'react-native';
+import { Link, Stack } from "expo-router";
+import { View, Text } from "react-native";
 
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
-
-export default function NotFoundScreen({ navigation }: { navigation: any }) {
+export default function NotFoundScreen() {
   return (
-    <View className="container mx-auto text-center bg-base-100 h-screen">
-      <View className="flex justify-center mt-20 px-4">
-        <Text className="mt-4 font-bold">404 - Page Not Found</Text>
-        <View className="flex justify-center mt-4">
-          <TouchableOpacity onPress={() => navigation.navigate("Home")} className="bg-blue-500 p-2 rounded-lg mt-4 w-20 items-center">
-            <Text className="text-lg text-white font-bold">Home</Text>
-          </TouchableOpacity> 
-        </View>
+    <>
+      <Stack.Screen options={{ title: "Oops!" }} />
+      <View className="flex-1 items-center justify-center p-4">
+        <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          This screen does not exist.
+        </Text>
+        <Link href="/" className="text-blue-500 underline">
+          Go to home screen
+        </Link>
       </View>
-    </View>
+    </>
   );
 }
