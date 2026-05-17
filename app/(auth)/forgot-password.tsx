@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-nativ
 import { Link } from "expo-router";
 import { toast } from "sonner-native";
 import * as Haptics from "expo-haptics";
-import { AuthClientService } from "@/services/AuthClientService";
+import { AuthClientService } from "@/services/auth.service.client";
 import { extractErrorMessage } from "@/dto/common.dto";
 
 export default function ForgotPasswordScreen() {

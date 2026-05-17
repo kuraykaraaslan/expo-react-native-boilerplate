@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { toast } from "sonner-native";
 import * as Haptics from "expo-haptics";
 import { useAuthStore } from "@/stores/authStore";
-import { AuthClientService } from "@/services/AuthClientService";
+import { AuthClientService } from "@/services/auth.service.client";
 import { extractErrorMessage } from "@/dto/common.dto";
 import type { OTPMethod } from "@/dto/auth.dto";
 

@@ -8,7 +8,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useAuthStore } from "@/stores/authStore";
 import { getToken } from "@/libs/secureStorage";
-import { AuthClientService } from "@/services/AuthClientService";
+import { AuthClientService } from "@/services/auth.service.client";
 import logger from "@/libs/logger";
 
 SplashScreen.preventAutoHideAsync();
