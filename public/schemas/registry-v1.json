@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://expo-react-native-boilerplate.local/schemas/registry-v1.json",
+  "title": "expo-react-native-boilerplate registry",
+  "description": "Machine-readable catalog of every Expo Router screen, component, service, Zustand store, Zod DTO, and lib primitive in the boilerplate. Built by scripts/build-registry-snapshot.mjs; served from public/registry/.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "name",
+    "version",
+    "registryVersion",
+    "generatedAt",
+    "description",
+    "layers",
+    "conventions",
+    "screens",
+    "components",
+    "services",
+    "stores",
+    "dtos",
+    "libs"
+  ],
+  "properties": {
+    "$schema":         { "type": "string", "format": "uri" },
+    "name":            { "type": "string" },
+    "version":         { "type": "string" },
+    "registryVersion": { "type": "string" },
+    "generatedAt":     { "type": "string", "format": "date-time" },
+    "description":     { "type": "string" },
+    "layers": {
+      "type": "object",
+      "required": ["app", "components", "services", "stores", "dtos", "libs"],
+      "properties": {
+        "app":        { "type": "string" },
+        "components": { "type": "string" },
+        "services":   { "type": "string" },
+        "stores":     { "type": "string" },
+        "dtos":       { "type": "string" },
+        "libs":       { "type": "string" }
+      }
+    },
+    "conventions": {
+      "type": "object",
+      "required": ["routing", "styling", "state", "tokens", "dataFetch", "validation", "icons", "fileNaming"],
+      "properties": {
+        "routing":    { "type": "string" },
+        "styling":    { "type": "string" },
+        "state":      { "type": "string" },
+        "tokens":     { "type": "string" },
+        "dataFetch":  { "type": "string" },
+        "validation": { "type": "string" },
+        "icons":      { "type": "string" },
+        "fileNaming": { "type": "string" }
+      }
+    },
+    "screens":    { "type": "array", "items": { "$ref": "#/definitions/Screen" } },
+    "components": { "type": "array", "items": { "$ref": "#/definitions/Component" } },
+    "services":   { "type": "array", "items": { "$ref": "#/definitions/Service" } },
+    "stores":     { "type": "array", "items": { "$ref": "#/definitions/Store" } },
+    "dtos":       { "type": "array", "items": { "$ref": "#/definitions/Dto" } },
+    "libs":       { "type": "array", "items": { "$ref": "#/definitions/Lib" } }
+  },
+  "definitions": {
+    "Screen": {
+      "type": "object",
+      "required": ["filePath", "route", "kind"],
+      "properties": {
+        "filePath": { "type": "string", "description": "Repo-relative path under app/." },
+        "route":    { "type": "string", "description": "Logical URL path after stripping (group) segments and the .tsx extension." },
+        "kind":     { "type": "string", "enum": ["screen", "layout", "not-found", "html"], "description": "Type of Expo Router entry." },
+        "group":    { "type": "string", "description": "The (group) wrapping this file, if any (e.g. \"auth\", \"tabs\")." },
+        "dynamic":  { "type": "boolean", "description": "True when the route contains a [param] segment." },
+        "layoutChain": { "type": "array", "items": { "type": "string" }, "description": "_layout.tsx files this screen inherits, in outer-to-inner order." }
+      }
+    },
+    "Component": {
+      "type": "object",
+      "required": ["id", "filePath", "name", "category"],
+      "properties": {
+        "id":         { "type": "string", "description": "<category>/<Name>, e.g. \"ui/Button\"." },
+        "filePath":   { "type": "string" },
+        "name":       { "type": "string", "description": "Default exported component name, or the file basename." },
+        "category":   { "type": "string", "description": "Subfolder under components/ (e.g. ui, auth)." },
+        "exports":    { "type": "array", "items": { "type": "string" } },
+        "props":      { "type": "array", "items": { "type": "string" }, "description": "Best-effort prop names extracted from the props type." }
+      }
+    },
+    "Service": {
+      "type": "object",
+      "required": ["filePath", "name"],
+      "properties": {
+        "filePath":   { "type": "string" },
+        "name":       { "type": "string", "description": "Module basename (without extension), e.g. \"auth.service.client\"." },
+        "className":  { "type": "string", "description": "Exported class name, e.g. \"AuthClientService\"." },
+        "methods":    { "type": "array", "items": { "type": "string" }, "description": "Static methods on the exported class." },
+        "endpoints":  { "type": "array", "items": { "type": "string" }, "description": "URL paths called via axiosInstance.<method>(...)." }
+      }
+    },
+    "Store": {
+      "type": "object",
+      "required": ["filePath", "name", "hook"],
+      "properties": {
+        "filePath":  { "type": "string" },
+        "name":      { "type": "string", "description": "File basename (without extension)." },
+        "hook":      { "type": "string", "description": "Exported hook name, e.g. \"useAuthStore\"." },
+        "stateKeys": { "type": "array", "items": { "type": "string" }, "description": "Best-effort field names parsed from the state interface." },
+        "persisted": { "type": "boolean", "description": "True when the store uses persist() or zustandStorage." }
+      }
+    },
+    "Dto": {
+      "type": "object",
+      "required": ["filePath", "name"],
+      "properties": {
+        "filePath": { "type": "string" },
+        "name":     { "type": "string" },
+        "schemas":  { "type": "array", "items": { "type": "string" }, "description": "Exported Zod schema names (typically ending in Schema or Enum)." },
+        "types":    { "type": "array", "items": { "type": "string" }, "description": "Exported TS types/interfaces." }
+      }
+    },
+    "Lib": {
+      "type": "object",
+      "required": ["filePath", "name"],
+      "properties": {
+        "filePath": { "type": "string" },
+        "name":     { "type": "string" },
+        "exports":  { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

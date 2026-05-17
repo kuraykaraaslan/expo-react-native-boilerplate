@@ -1,0 +1,95 @@
+{
+  "name": "client",
+  "registryVersion": "1.0",
+  "generatedAt": "2026-05-17T17:02:58.295Z",
+  "services": [
+    {
+      "filePath": "services/auth.service.client.ts",
+      "name": "auth.service.client",
+      "className": "AuthClientService",
+      "methods": [
+        "login",
+        "logout",
+        "register",
+        "sendOTP",
+        "verifyOTP",
+        "forgotPassword",
+        "getSession",
+        "getSessions",
+        "revokeSession",
+        "changeEmail"
+      ],
+      "endpoints": [
+        "/api/system/auth/login",
+        "/api/system/auth/logout",
+        "/api/system/auth/register",
+        "/api/system/auth/otp/send",
+        "/api/system/auth/otp/verify",
+        "/api/system/auth/forgot-password",
+        "/api/system/auth/session",
+        "/api/system/auth/me/sessions",
+        "/api/system/auth/me/sessions/${sessionId}",
+        "/api/system/auth/change-email"
+      ]
+    },
+    {
+      "filePath": "services/notification.service.client.ts",
+      "name": "notification.service.client",
+      "className": "NotificationClientService",
+      "methods": [
+        "getNotifications",
+        "markAsRead",
+        "markAllAsRead",
+        "clearAll"
+      ],
+      "endpoints": [
+        "/api/system/auth/me/notifications",
+        "/api/system/auth/me/notifications/${notificationId}/read",
+        "/api/system/auth/me/notifications/read-all"
+      ]
+    },
+    {
+      "filePath": "services/profile.service.client.ts",
+      "name": "profile.service.client",
+      "className": "ProfileClientService",
+      "methods": [
+        "getProfile",
+        "updateProfile"
+      ],
+      "endpoints": [
+        "/api/system/auth/me/profile"
+      ]
+    },
+    {
+      "filePath": "services/tenant.service.client.ts",
+      "name": "tenant.service.client",
+      "className": "TenantClientService",
+      "methods": [
+        "getMyTenants",
+        "createTenant",
+        "getMembers",
+        "getMember",
+        "updateMember",
+        "removeMember",
+        "getInvitations",
+        "sendInvitation",
+        "revokeInvitation",
+        "acceptInvitation",
+        "declineInvitation",
+        "getTenantSettings",
+        "updateTenantSettings"
+      ],
+      "endpoints": [
+        "/api/system/auth/me/tenants",
+        "/api/system/tenants/create",
+        "/api/tenant/${tenantId}/members",
+        "/api/tenant/${tenantId}/members/${memberId}",
+        "/api/tenant/${tenantId}/invitations",
+        "/api/tenant/${tenantId}/invitations/${invitationId}",
+        "/api/tenant/${tenantId}/invitations/accept",
+        "/api/tenant/${tenantId}/invitations/decline",
+        "/api/tenant/${tenantId}/settings"
+      ]
+    }
+  ]
+}

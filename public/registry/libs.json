@@ -1,0 +1,62 @@
+{
+  "name": "client",
+  "registryVersion": "1.0",
+  "generatedAt": "2026-05-17T17:02:58.295Z",
+  "libs": [
+    {
+      "filePath": "libs/axios.ts",
+      "name": "axios",
+      "exports": [
+        "axiosInstance",
+        "default"
+      ]
+    },
+    {
+      "filePath": "libs/env.ts",
+      "name": "env",
+      "exports": [
+        "env",
+        "Env"
+      ]
+    },
+    {
+      "filePath": "libs/i18n.ts",
+      "name": "i18n",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "filePath": "libs/logger.ts",
+      "name": "logger",
+      "exports": [
+        "logger",
+        "default"
+      ]
+    },
+    {
+      "filePath": "libs/mmkv.ts",
+      "name": "mmkv",
+      "exports": [
+        "mmkv"
+      ]
+    },
+    {
+      "filePath": "libs/secureStorage.ts",
+      "name": "secureStorage",
+      "exports": [
+        "getToken",
+        "setToken",
+        "clearToken",
+        "clearAllTokens"
+      ]
+    },
+    {
+      "filePath": "libs/zustandStorage.ts",
+      "name": "zustandStorage",
+      "exports": [
+        "zustandMMKVStorage"
+      ]
+    }
+  ]
+}

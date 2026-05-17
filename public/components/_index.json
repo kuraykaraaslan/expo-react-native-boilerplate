@@ -1,0 +1,27 @@
+{
+  "auth/AuthLayout": {
+    "name": "AuthLayout",
+    "category": "auth",
+    "file": "auth-AuthLayout.md"
+  },
+  "auth/SSOButtons": {
+    "name": "SSOButtons",
+    "category": "auth",
+    "file": "auth-SSOButtons.md"
+  },
+  "ui/Button": {
+    "name": "Button",
+    "category": "ui",
+    "file": "ui-Button.md"
+  },
+  "ui/LoadingSpinner": {
+    "name": "LoadingSpinner",
+    "category": "ui",
+    "file": "ui-LoadingSpinner.md"
+  },
+  "ui/TextInput": {
+    "name": "TextInput",
+    "category": "ui",
+    "file": "ui-TextInput.md"
+  }
+}

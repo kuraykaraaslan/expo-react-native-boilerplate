@@ -1,0 +1,126 @@
+# expo-react-native-boilerplate
+
+> A production-grade Expo + React Native boilerplate for cross-platform
+> mobile (iOS, Android, Web) with multi-tenant SaaS conventions matching
+> the sister project next-boilerplate. Routing via Expo Router v5;
+> styling via NativeWind (Tailwind for RN); state via Zustand + MMKV;
+> tokens in SecureStore; data fetching via a single axiosInstance.
+
+This file follows the llms.txt convention so AI agents can quickly orient
+without grepping the codebase. A full, machine-readable catalog of every
+screen, component, service, store, DTO, and lib primitive is served from
+`public/registry/`.
+
+## Machine-readable catalog
+
+- **Full registry (JSON):** `/registry/registry.json`
+- **Lightweight index (JSON):** `/registry/registry.index.json`
+- **Surface-by-surface:** `/registry/screens.json`, `/registry/components.json`, `/registry/services.json`, `/registry/stores.json`, `/registry/dtos.json`, `/registry/libs.json`
+- **JSON Schema for validation:** `/schemas/registry-v1.json`
+- **Per-component markdown chunks:** `/components/<category>-<name>.md`
+- **Markdown chunk index:** `/components/_index.json`
+
+Rebuild any time the codebase changes:
+
+```bash
+npm run registry:snapshot
+```
+
+The full registry includes for every:
+
+- **Screen** (~22): `filePath`, `route`, `kind` (`screen` | `layout` | `not-found` | `html`), `group` (e.g. `auth`, `tabs`), `dynamic`, `layoutChain[]`.
+- **Component** (~5): `id` (e.g. `ui/Button`), `filePath`, `name`, `category`, named `exports[]`, `props[]`.
+- **Service** (~4 `*.service.client.ts`): `filePath`, `name`, exported `className`, static `methods[]`, axios `endpoints[]`.
+- **Store** (~3): `filePath`, `name`, exported `hook` (e.g. `useAuthStore`), `stateKeys[]`, `persisted` flag.
+- **DTO** (~5 in `dto/`): `filePath`, `name`, Zod `schemas[]` (ending in `Schema` / `Enum`), TS `types[]`.
+- **Lib** (~7 in `libs/`): `filePath`, `name`, named `exports[]`.
+
+## MCP server (Claude Desktop / Cursor / Cline / Windsurf / Zed)
+
+Zero-dependency stdio MCP server. Config in `.mcp.json` at the repo root.
+Tools:
+
+- `list_screens` — filter by `kind` or `group`
+- `get_screen` — by `filePath`, returns route, layout chain, group
+- `search_screens` — substring search over filePath + route
+- `list_components` — filter by `category`
+- `get_component` — by id (e.g. `ui/Button`)
+- `search_components` — substring search over id + name + props
+- `list_services` — every `*.service.client.ts` with class + methods + endpoints
+- `list_stores` — every Zustand store with hook + state keys + persisted flag
+- `list_dtos` — every Zod DTO module with schemas + types
+- `list_libs` — primitives (axios, env, i18n, logger, mmkv, secureStorage, zustandStorage)
+- `get_conventions` — routing / styling / state / tokens / dataFetch / validation / icons / fileNaming
+- `get_component_md` — pre-rendered per-component markdown chunk
+- `read_file` — read any repo file (sandboxed to the repository root)
+
+Reads from `public/registry/registry.json`. Refresh with `npm run registry:snapshot`.
+
+## Editor-native rule files (mirror of AGENTS.md)
+
+- `.cursor/rules/expo-react-native.mdc` — Cursor (modern)
+- `.cursorrules` — Cursor (legacy)
+- `.windsurfrules` — Windsurf
+- `.github/copilot-instructions.md` — GitHub Copilot
+- `.clinerules` — Cline / Continue.dev
+
+## Architecture in one diagram
+
+```
+app/  (screens)  ──→  services/ + stores/  ──→  libs/axios + libs/secureStorage
+              \                            /
+               └──→  components/  ←──── utils/cn
+                          ↑
+                       dto/ (Zod, shared with server)
+```
+
+- **`app/`** — Expo Router file-based screens. `(group)` directories are
+  route groups stripped from URLs. `_layout.tsx` defines layouts.
+- **`components/<category>/`** — reusable UI under `auth/`, `ui/`, etc.
+- **`services/*.service.client.ts`** — data fetchers using `axiosInstance`.
+- **`stores/*Store.ts`** — Zustand, persisted via MMKV (`zustandStorage`).
+- **`dto/*.dto.ts`** — Zod schemas + inferred types (server contracts).
+- **`libs/*.ts`** — primitives (axios, env, i18n, logger, mmkv, secureStorage, zustandStorage).
+- **`utils/cn.ts`** — `cn()` className helper.
+
+## Conventions (must follow)
+
+- **Routing:** Expo Router v5 file-based. Navigate with `router.push/replace` from `expo-router` or `<Link href="...">`.
+- **Styling:** NativeWind (`className` + Tailwind tokens). Combine with `cn()` from `@/utils/cn`.
+- **State:** Zustand + MMKV via `@/libs/zustandStorage`. **Never `AsyncStorage`**.
+- **Tokens:** `expo-secure-store` ONLY (`@/libs/secureStorage`). Tokens NEVER live in Zustand or MMKV.
+- **Data fetching:** `axiosInstance` from `@/libs/axios` ALWAYS. Never `fetch()`. Never ad-hoc axios.
+- **Validation:** Zod everywhere. Parse every response with the matching DTO schema.
+- **Env:** `@/libs/env` (Zod-validated). Never `process.env.*` in app code.
+- **Logging:** `@/libs/logger`. Never `console.*`.
+- **Icons:** FontAwesome 6 only (`@fortawesome/react-native-fontawesome`).
+- **Haptics:** `expo-haptics` on auth + critical actions.
+- **Toasts:** `sonner-native`.
+- **Path alias:** only `@/* → ./*` is configured.
+
+## Where to put new code
+
+- New screen → `app/<route>.tsx` (or under an existing `(group)`)
+- New layout → `app/**/.../_layout.tsx`
+- New UI component → `components/<category>/<Pascal>.tsx`
+- New data fetcher → `services/<name>.service.client.ts` + DTO in `dto/<name>.dto.ts`
+- New persistent client state → `stores/<name>Store.ts` (use `zustandStorage`)
+- New Zod schema → `dto/<name>.dto.ts`
+- New primitive → `libs/<name>.ts`
+- New translation → `locales/<lang>/<namespace>.json`
+- Expo config (icons, splash, plugins) → `app.config.ts`
+- Tests → `__tests__/<name>.test.ts(x)`
+
+## How to use this catalog from an AI agent
+
+1. Fetch `/registry/registry.index.json` for a fast scan of every screen + component + service + store + DTO + lib.
+2. Filter `screens[]` by `group` or `kind` to find the right routing entry.
+3. Look at `stores[].stateKeys` and `services[].methods` to discover what state and data fetching is already wired.
+4. Fetch `/components/<category>-<name>.md` for the per-component import + props summary.
+5. Use `services[].endpoints[]` to see which backend routes the app already talks to.
+
+## More
+
+- `AGENTS.md` — canonical AI-readable orientation guide.
+- `README.md` — human-facing intro.
+- `MODERNIZATION.MD` — current-vs-target architecture plan.

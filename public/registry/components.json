@@ -1,0 +1,84 @@
+{
+  "name": "client",
+  "registryVersion": "1.0",
+  "generatedAt": "2026-05-17T17:02:58.295Z",
+  "components": [
+    {
+      "id": "auth/AuthLayout",
+      "filePath": "components/auth/AuthLayout.tsx",
+      "name": "AuthLayout",
+      "category": "auth",
+      "exports": [
+        "AuthLayout"
+      ],
+      "props": [
+        "title",
+        "subtitle",
+        "children",
+        "showSSO",
+        "onSSOPress"
+      ]
+    },
+    {
+      "id": "auth/SSOButtons",
+      "filePath": "components/auth/SSOButtons.tsx",
+      "name": "SSOButtons",
+      "category": "auth",
+      "exports": [
+        "SSOButtons"
+      ],
+      "props": [
+        "onPress"
+      ]
+    },
+    {
+      "id": "ui/Button",
+      "filePath": "components/ui/Button.tsx",
+      "name": "Button",
+      "category": "ui",
+      "exports": [
+        "Button"
+      ],
+      "props": [
+        "label",
+        "onPress",
+        "variant",
+        "size",
+        "disabled",
+        "loading",
+        "className",
+        "accessibilityLabel"
+      ]
+    },
+    {
+      "id": "ui/LoadingSpinner",
+      "filePath": "components/ui/LoadingSpinner.tsx",
+      "name": "LoadingSpinner",
+      "category": "ui",
+      "exports": [
+        "LoadingSpinner"
+      ],
+      "props": [
+        "size",
+        "color",
+        "label",
+        "className"
+      ]
+    },
+    {
+      "id": "ui/TextInput",
+      "filePath": "components/ui/TextInput.tsx",
+      "name": "TextInput",
+      "category": "ui",
+      "exports": [
+        "TextInput"
+      ],
+      "props": [
+        "label",
+        "error",
+        "helper",
+        "containerClassName"
+      ]
+    }
+  ]
+}

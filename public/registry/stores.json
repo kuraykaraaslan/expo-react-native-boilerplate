@@ -1,0 +1,47 @@
+{
+  "name": "client",
+  "registryVersion": "1.0",
+  "generatedAt": "2026-05-17T17:02:58.295Z",
+  "stores": [
+    {
+      "filePath": "stores/appStore.ts",
+      "name": "appStore",
+      "hook": "useAppStore",
+      "stateKeys": [
+        "locale",
+        "colorScheme",
+        "onboardingCompleted",
+        "setLocale",
+        "setColorScheme",
+        "setOnboardingCompleted"
+      ],
+      "persisted": true
+    },
+    {
+      "filePath": "stores/authStore.ts",
+      "name": "authStore",
+      "hook": "useAuthStore",
+      "stateKeys": [
+        "isAuthenticated",
+        "user",
+        "setUser",
+        "setAuthenticated",
+        "logout"
+      ],
+      "persisted": true
+    },
+    {
+      "filePath": "stores/tenantStore.ts",
+      "name": "tenantStore",
+      "hook": "useTenantStore",
+      "stateKeys": [
+        "selectedTenantMembership",
+        "memberships",
+        "setMemberships",
+        "selectMembership",
+        "flush"
+      ],
+      "persisted": true
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "name": "client",
+  "registryVersion": "1.0",
+  "generatedAt": "2026-05-17T17:02:58.295Z",
+  "dtos": [
+    {
+      "filePath": "dto/auth.dto.ts",
+      "name": "auth.dto",
+      "schemas": [
+        "OTPMethodEnum",
+        "UserRoleEnum",
+        "UserSchema",
+        "SafeUserSchema",
+        "UserSecuritySchema",
+        "SessionStatusEnum",
+        "SessionSchema",
+        "LoginRequestSchema",
+        "RegisterRequestSchema",
+        "OTPSendRequestSchema",
+        "OTPVerifyRequestSchema",
+        "ForgotPasswordRequestSchema",
+        "ChangeEmailRequestSchema",
+        "LoginResponseSchema",
+        "SessionResponseSchema",
+        "SessionsListResponseSchema"
+      ],
+      "types": [
+        "OTPMethod",
+        "UserRole",
+        "User",
+        "SafeUser",
+        "UserSecurity",
+        "SessionStatus",
+        "Session",
+        "LoginRequest",
+        "RegisterRequest",
+        "OTPSendRequest",
+        "OTPVerifyRequest",
+        "ForgotPasswordRequest",
+        "ChangeEmailRequest",
+        "LoginResponse",
+        "SessionResponse",
+        "SessionsListResponse"
+      ]
+    },
+    {
+      "filePath": "dto/common.dto.ts",
+      "name": "common.dto",
+      "schemas": [
+        "PaginationSchema",
+        "ApiErrorSchema",
+        "paginatedResponseSchema"
+      ],
+      "types": [
+        "Pagination",
+        "ApiError"
+      ]
+    },
+    {
+      "filePath": "dto/notification.dto.ts",
+      "name": "notification.dto",
+      "schemas": [
+        "NotificationSchema",
+        "NotificationsResponseSchema"
+      ],
+      "types": [
+        "Notification",
+        "NotificationsResponse"
+      ]
+    },
+    {
+      "filePath": "dto/profile.dto.ts",
+      "name": "profile.dto",
+      "schemas": [
+        "SocialLinkPlatformEnum",
+        "SocialLinkItemSchema",
+        "UserProfileSchema",
+        "UpdateProfileRequestSchema",
+        "ProfileResponseSchema"
+      ],
+      "types": [
+        "SocialLinkPlatform",
+        "SocialLinkItem",
+        "UserProfile",
+        "UpdateProfileRequest",
+        "ProfileResponse"
+      ]
+    },
+    {
+      "filePath": "dto/tenant.dto.ts",
+      "name": "tenant.dto",
+      "schemas": [
+        "MemberRoleEnum",
+        "MemberStatusEnum",
+        "TenantStatusEnum",
+        "InvitationStatusEnum",
+        "TenantDomainSchema",
+        "TenantSchema",
+        "MemberUserSchema",
+        "TenantMemberSchema",
+        "InvitationSchema",
+        "MyTenantsResponseSchema",
+        "MembersListResponseSchema",
+        "InvitationsListResponseSchema",
+        "CreateTenantResponseSchema",
+        "CreateTenantRequestSchema",
+        "SendInvitationRequestSchema",
+        "UpdateMemberRequestSchema"
+      ],
+      "types": [
+        "MemberRole",
+        "MemberStatus",
+        "TenantStatus",
+        "InvitationStatus",
+        "TenantDomain",
+        "Tenant",
+        "MemberUser",
+        "TenantMember",
+        "Invitation",
+        "MyTenantsResponse",
+        "MembersListResponse",
+        "InvitationsListResponse",
+        "CreateTenantResponse",
+        "CreateTenantRequest",
+        "SendInvitationRequest",
+        "UpdateMemberRequest"
+      ]
+    }
+  ]
+}
