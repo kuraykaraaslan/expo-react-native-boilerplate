@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import { toast } from "sonner-native";
 import * as Haptics from "expo-haptics";
-import { AuthClientService } from "@/services/AuthClientService";
+import { AuthClientService } from "@/services/auth.service.client";
 import { extractErrorMessage } from "@/dto/common.dto";
 
 export default function ChangeEmailScreen() {

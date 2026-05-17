@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import { toast } from "sonner-native";
 import { useAuthStore } from "@/stores/authStore";
 import { useTenantStore } from "@/stores/tenantStore";
-import { AuthClientService } from "@/services/AuthClientService";
+import { AuthClientService } from "@/services/auth.service.client";
 import { clearAllTokens } from "@/libs/secureStorage";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faBuilding, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
