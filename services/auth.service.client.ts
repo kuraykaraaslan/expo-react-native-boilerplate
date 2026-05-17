@@ -47,16 +47,12 @@ export class AuthClientService {
   }
 
   static async getSessions(): Promise<Session[]> {
-    const res = await axiosInstance.get("/api/system/auth/sessions");
-    return z.array(SessionSchema).parse(res.data?.sessions ?? res.data ?? []);
+    const res = await axiosInstance.get("/api/system/auth/me/sessions");
+    return z.array(SessionSchema).parse(res.data?.sessions ?? []);
   }
 
   static async revokeSession(sessionId: string): Promise<void> {
-    await axiosInstance.delete(`/api/system/auth/sessions/${sessionId}`);
-  }
-
-  static async revokeAllSessions(): Promise<void> {
-    await axiosInstance.delete("/api/system/auth/sessions");
+    await axiosInstance.delete(`/api/system/auth/me/sessions/${sessionId}`);
   }
 
   static async changeEmail(payload: ChangeEmailRequest): Promise<void> {

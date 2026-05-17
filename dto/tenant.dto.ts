@@ -11,6 +11,9 @@ export type MemberStatus = z.infer<typeof MemberStatusEnum>;
 export const TenantStatusEnum = z.enum(["ACTIVE", "SUSPENDED", "PENDING_DELETION"]);
 export type TenantStatus = z.infer<typeof TenantStatusEnum>;
 
+export const InvitationStatusEnum = z.enum(["PENDING", "ACCEPTED", "DECLINED", "EXPIRED", "REVOKED"]);
+export type InvitationStatus = z.infer<typeof InvitationStatusEnum>;
+
 // ── Tenant Domain ─────────────────────────────────────────────────────────────
 
 export const TenantDomainSchema = z.object({
@@ -33,12 +36,22 @@ export const TenantSchema = z.object({
   language: z.string().optional().nullable(),
   timezone: z.string().optional().nullable(),
   domains: z.array(TenantDomainSchema).optional().default([]),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional(),
+  createdAt: z.string().optional().nullable(),
+  updatedAt: z.string().optional().nullable(),
 });
 export type Tenant = z.infer<typeof TenantSchema>;
 
 // ── Tenant Member ─────────────────────────────────────────────────────────────
+
+export const MemberUserSchema = z.object({
+  userId: z.string(),
+  email: z.string().optional().nullable(),
+  userProfile: z.object({
+    name: z.string().optional().nullable(),
+    profilePicture: z.string().optional().nullable(),
+  }).optional().nullable(),
+});
+export type MemberUser = z.infer<typeof MemberUserSchema>;
 
 export const TenantMemberSchema = z.object({
   tenantMemberId: z.string(),
@@ -46,24 +59,24 @@ export const TenantMemberSchema = z.object({
   userId: z.string(),
   memberRole: MemberRoleEnum.default("USER"),
   memberStatus: MemberStatusEnum.default("ACTIVE"),
-  tenant: TenantSchema.optional(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional(),
+  tenant: TenantSchema.optional().nullable(),
+  user: MemberUserSchema.optional().nullable(),
+  createdAt: z.string().optional().nullable(),
+  updatedAt: z.string().optional().nullable(),
 });
 export type TenantMember = z.infer<typeof TenantMemberSchema>;
 
 // ── Invitation ────────────────────────────────────────────────────────────────
 
-export const InvitationStatusEnum = z.enum(["PENDING", "ACCEPTED", "DECLINED", "EXPIRED", "REVOKED"]);
-
 export const InvitationSchema = z.object({
   invitationId: z.string(),
   tenantId: z.string(),
-  memberRole: z.string(),
+  email: z.string().optional().nullable(),
+  memberRole: MemberRoleEnum.default("USER"),
   status: InvitationStatusEnum,
-  expiresAt: z.string().optional(),
-  createdAt: z.string().optional(),
-  tenant: TenantSchema.optional(),
+  expiresAt: z.string().optional().nullable(),
+  createdAt: z.string().optional().nullable(),
+  tenant: TenantSchema.optional().nullable(),
 });
 export type Invitation = z.infer<typeof InvitationSchema>;
 
@@ -74,3 +87,52 @@ export const MyTenantsResponseSchema = z.object({
   invitations: z.array(InvitationSchema).optional().default([]),
 });
 export type MyTenantsResponse = z.infer<typeof MyTenantsResponseSchema>;
+
+export const MembersListResponseSchema = z.object({
+  members: z.array(TenantMemberSchema),
+  total: z.number().default(0),
+  page: z.number().default(0),
+  pageSize: z.number().default(10),
+});
+export type MembersListResponse = z.infer<typeof MembersListResponseSchema>;
+
+export const InvitationsListResponseSchema = z.object({
+  invitations: z.array(InvitationSchema),
+  total: z.number().default(0),
+  page: z.number().default(1),
+  pageSize: z.number().default(10),
+});
+export type InvitationsListResponse = z.infer<typeof InvitationsListResponseSchema>;
+
+export const CreateTenantResponseSchema = z.object({
+  success: z.boolean(),
+  tenant: z.object({
+    tenantId: z.string(),
+    name: z.string(),
+    description: z.string().optional().nullable(),
+    tenantStatus: TenantStatusEnum.default("ACTIVE"),
+  }),
+  message: z.string().optional(),
+});
+export type CreateTenantResponse = z.infer<typeof CreateTenantResponseSchema>;
+
+// ── Request DTOs ──────────────────────────────────────────────────────────────
+
+export const CreateTenantRequestSchema = z.object({
+  name: z.string().min(2).max(100),
+  description: z.string().optional().nullable(),
+  region: z.string().default("TR"),
+});
+export type CreateTenantRequest = z.infer<typeof CreateTenantRequestSchema>;
+
+export const SendInvitationRequestSchema = z.object({
+  email: z.string().email(),
+  memberRole: MemberRoleEnum.default("USER"),
+});
+export type SendInvitationRequest = z.infer<typeof SendInvitationRequestSchema>;
+
+export const UpdateMemberRequestSchema = z.object({
+  memberRole: MemberRoleEnum.optional().nullable(),
+  memberStatus: MemberStatusEnum.optional().nullable(),
+});
+export type UpdateMemberRequest = z.infer<typeof UpdateMemberRequestSchema>;

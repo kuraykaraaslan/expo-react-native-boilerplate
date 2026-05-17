@@ -38,20 +38,19 @@ export type UserSecurity = z.infer<typeof UserSecuritySchema>;
 
 // ── Session ───────────────────────────────────────────────────────────────────
 
+export const SessionStatusEnum = z.enum(["ACTIVE", "REVOKED", "EXPIRED"]);
+export type SessionStatus = z.infer<typeof SessionStatusEnum>;
+
 export const SessionSchema = z.object({
-  sessionId: z.string().optional(),
+  userSessionId: z.string(),
   userId: z.string(),
-  expiresAt: z.string().optional(),
-  createdAt: z.string().optional(),
-  device: z.string().optional().nullable(),
-  os: z.string().optional().nullable(),
-  platform: z.string().optional().nullable(),
-  ip: z.string().optional().nullable(),
-  region: z.string().optional().nullable(),
-  city: z.string().optional().nullable(),
-  country: z.string().optional().nullable(),
-  isp: z.string().optional().nullable(),
-  isCurrentSession: z.boolean().default(false),
+  userAgent: z.string().optional().nullable(),
+  ipAddress: z.string().optional().nullable(),
+  sessionStatus: SessionStatusEnum.optional(),
+  otpVerifyNeeded: z.boolean().optional().nullable(),
+  sessionExpiry: z.string().optional().nullable(),
+  createdAt: z.string().optional().nullable(),
+  updatedAt: z.string().optional().nullable(),
 });
 export type Session = z.infer<typeof SessionSchema>;
 
@@ -107,6 +106,6 @@ export const SessionResponseSchema = z.object({
 export type SessionResponse = z.infer<typeof SessionResponseSchema>;
 
 export const SessionsListResponseSchema = z.object({
-  sessions: z.array(SessionSchema),
+  sessions: z.array(SessionSchema).default([]),
 });
 export type SessionsListResponse = z.infer<typeof SessionsListResponseSchema>;

@@ -1,31 +1,34 @@
 import { useState, useCallback, useEffect } from "react";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
-import { NotificationClientService } from "@/services/NotificationClientService";
-import { extractErrorMessage } from "@/dto/common.dto";
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Alert } from "react-native";
+import { toast } from "sonner-native";
+import * as Haptics from "expo-haptics";
+import { NotificationClientService } from "@/services/notification.service.client";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faCheckDouble, faTrash } from "@fortawesome/free-solid-svg-icons";
 import type { Notification } from "@/dto/notification.dto";
 
-function NotificationItem({ item }: { item: Notification }) {
-  const typeColors: Record<string, string> = {
-    INFO: "bg-blue-100 dark:bg-blue-900/30",
-    SUCCESS: "bg-green-100 dark:bg-green-900/30",
-    WARNING: "bg-yellow-100 dark:bg-yellow-900/30",
-    ERROR: "bg-red-100 dark:bg-red-900/30",
-    SYSTEM: "bg-gray-100 dark:bg-gray-800",
-  };
-  const dotColors: Record<string, string> = {
-    INFO: "bg-blue-500",
-    SUCCESS: "bg-green-500",
-    WARNING: "bg-yellow-500",
-    ERROR: "bg-red-500",
-    SYSTEM: "bg-gray-500",
-  };
-
+function NotificationItem({
+  item,
+  onMarkRead,
+}: Readonly<{
+  item: Notification;
+  onMarkRead: (id: string) => void;
+}>) {
+  const isUnread = !item.isRead;
   return (
-    <View
-      className={`mx-4 mb-3 rounded-xl p-4 ${typeColors[item.type] ?? typeColors.INFO} ${!item.isRead ? "border-l-4 border-orange-500" : ""}`}
+    <TouchableOpacity
+      className={`mx-4 mb-3 rounded-xl p-4 bg-white dark:bg-gray-900 border ${
+        isUnread
+          ? "border-orange-300 dark:border-orange-700 border-l-4 border-l-orange-500"
+          : "border-gray-100 dark:border-gray-800"
+      }`}
+      onPress={() => { if (isUnread) onMarkRead(item.notificationId); }}
+      activeOpacity={isUnread ? 0.7 : 1}
     >
       <View className="flex-row items-start">
-        <View className={`w-2 h-2 rounded-full mt-1.5 mr-3 ${dotColors[item.type] ?? dotColors.INFO}`} />
+        {isUnread && (
+          <View className="w-2 h-2 rounded-full bg-orange-500 mt-1.5 mr-3 flex-shrink-0" />
+        )}
         <View className="flex-1">
           <Text className="font-semibold text-gray-900 dark:text-white text-sm">{item.title}</Text>
           {item.message && (
@@ -38,27 +41,19 @@ function NotificationItem({ item }: { item: Notification }) {
           )}
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 export default function NotificationsScreen() {
   const [data, setData] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
 
-  const fetchPage = useCallback(async (pageNum: number) => {
+  const fetchAll = useCallback(async () => {
     setLoading(true);
     try {
-      const { notifications, hasNext } = await NotificationClientService.getNotifications(pageNum);
-      if (pageNum === 1) {
-        setData(notifications);
-      } else {
-        setData((prev) => [...prev, ...notifications]);
-      }
-      setHasMore(hasNext);
-      setPage(pageNum);
+      const notifications = await NotificationClientService.getNotifications();
+      setData(notifications);
     } catch {
       // silently fail on background refresh
     } finally {
@@ -66,18 +61,87 @@ export default function NotificationsScreen() {
     }
   }, []);
 
-  useEffect(() => { fetchPage(1); }, [fetchPage]);
+  useEffect(() => { fetchAll(); }, [fetchAll]);
+
+  async function handleMarkRead(notificationId: string) {
+    try {
+      await NotificationClientService.markAsRead(notificationId);
+      setData((prev) =>
+        prev.map((n) => (n.notificationId === notificationId ? { ...n, isRead: true } : n))
+      );
+    } catch (err) {
+      toast.error((err as any)?.response?.data?.message ?? "An error occurred");
+    }
+  }
+
+  async function handleMarkAllRead() {
+    try {
+      await NotificationClientService.markAllAsRead();
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      setData((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      toast.success("All notifications marked as read");
+    } catch (err) {
+      toast.error((err as any)?.response?.data?.message ?? "An error occurred");
+    }
+  }
+
+  function handleClearAll() {
+    Alert.alert(
+      "Clear All Notifications",
+      "This will permanently delete all your notifications. Continue?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Clear All",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await NotificationClientService.clearAll();
+              await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+              setData([]);
+              toast.success("All notifications cleared");
+            } catch (err) {
+              toast.error((err as any)?.response?.data?.message ?? "An error occurred");
+            }
+          },
+        },
+      ]
+    );
+  }
+
+  const hasUnread = data.some((n) => !n.isRead);
 
   return (
     <View className="flex-1 bg-gray-50 dark:bg-gray-950">
+      {data.length > 0 && (
+        <View className="flex-row px-4 pt-4 gap-3 mb-1">
+          {hasUnread && (
+            <TouchableOpacity
+              className="flex-1 flex-row items-center justify-center bg-orange-500 rounded-xl py-2.5 gap-2"
+              onPress={handleMarkAllRead}
+            >
+              <FontAwesomeIcon icon={faCheckDouble} color="#ffffff" size={14} />
+              <Text className="text-white font-semibold text-sm">Mark All Read</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            className="flex-1 flex-row items-center justify-center bg-red-500 rounded-xl py-2.5 gap-2"
+            onPress={handleClearAll}
+          >
+            <FontAwesomeIcon icon={faTrash} color="#ffffff" size={14} />
+            <Text className="text-white font-semibold text-sm">Clear All</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
       <FlatList
         data={data}
         keyExtractor={(item) => item.notificationId}
-        renderItem={({ item }) => <NotificationItem item={item} />}
-        onRefresh={() => fetchPage(1)}
+        renderItem={({ item }) => (
+          <NotificationItem item={item} onMarkRead={handleMarkRead} />
+        )}
+        onRefresh={fetchAll}
         refreshing={loading && data.length === 0}
-        onEndReached={() => { if (!loading && hasMore) fetchPage(page + 1); }}
-        onEndReachedThreshold={0.3}
         contentContainerClassName="pt-4 pb-8"
         ListEmptyComponent={
           loading ? (
@@ -89,13 +153,6 @@ export default function NotificationsScreen() {
               <Text className="text-gray-400 dark:text-gray-500 text-base">No notifications</Text>
             </View>
           )
-        }
-        ListFooterComponent={
-          hasMore && data.length > 0 ? (
-            <View className="py-4 items-center">
-              <ActivityIndicator size="small" color="#f4511e" />
-            </View>
-          ) : null
         }
       />
     </View>

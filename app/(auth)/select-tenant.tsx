@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
 import { router } from "expo-router";
 import { useTenantStore } from "@/stores/tenantStore";
-import { TenantClientService } from "@/services/TenantClientService";
+import { TenantClientService } from "@/services/tenant.service.client";
 import { extractErrorMessage } from "@/dto/common.dto";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import type { TenantMember } from "@/dto/tenant.dto";
 
 export default function SelectTenantScreen() {
@@ -80,8 +82,8 @@ export default function SelectTenantScreen() {
             )}
             <View className="flex-row items-center mt-2">
               <View className="bg-orange-100 dark:bg-orange-900/30 rounded-full px-2 py-0.5">
-                <Text className="text-orange-600 dark:text-orange-400 text-xs font-medium">
-                  {item.memberRole}
+                <Text className="text-orange-600 dark:text-orange-400 text-xs font-medium capitalize">
+                  {item.memberRole.toLowerCase()}
                 </Text>
               </View>
             </View>
@@ -91,6 +93,18 @@ export default function SelectTenantScreen() {
           <View className="items-center py-12">
             <Text className="text-gray-500 dark:text-gray-400">No workspaces found</Text>
           </View>
+        }
+        ListFooterComponent={
+          <TouchableOpacity
+            className="flex-row items-center justify-center border-2 border-dashed border-orange-300 dark:border-orange-700 rounded-xl p-4 mb-3 mt-1"
+            onPress={() => router.push("/create-tenant")}
+            accessible
+            accessibilityLabel="Create a new workspace"
+            accessibilityRole="button"
+          >
+            <FontAwesomeIcon icon={faPlus} color="#f97316" size={14} />
+            <Text className="text-orange-500 font-semibold ml-2">Create New Workspace</Text>
+          </TouchableOpacity>
         }
       />
     </View>
