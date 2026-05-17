@@ -6,7 +6,14 @@
       "Read(///wsl.localhost/Ubuntu/home/kuray/next-boilerplate/app/tenant/[tenantId]/api/subscription/**)",
       "Read(///wsl.localhost/Ubuntu/home/kuray/next-boilerplate/app/system/api/settings/**)",
       "Bash(npx tsc *)",
-      "Read(//c/Users/kuray/Desktop/00_Config_and_AI_Rules/00_Config_and_AI_Rules/Code_Structure_Rules/**)"
+      "Read(//c/Users/kuray/Desktop/00_Config_and_AI_Rules/00_Config_and_AI_Rules/Code_Structure_Rules/**)",
+      "Read(///wsl.localhost/Ubuntu/home/kuray/next-boilerplate/modules/tenant/**)",
+      "Bash(ls \"\\\\\\\\wsl.localhost\\\\Ubuntu\\\\home\\\\kuray\\\\next-boilerplate\" 2>&1)",
+      "Read(//wsl.localhost/Ubuntu/home/kuray/**)",
+      "Read(///wsl.localhost/Ubuntu/home/kuray/next-boilerplate/modules/user/**)",
+      "Read(///wsl.localhost/Ubuntu/home/kuray/next-boilerplate/modules/user_profile/**)",
+      "Bash(cat //wsl.localhost/Ubuntu/home/kuray/next-boilerplate/modules/notification_inapp/notification_inapp.types.ts 2>&1)",
+      "Read(///wsl.localhost/Ubuntu/home/kuray/next-boilerplate/modules/notification_inapp/**)"
     ]
   }
 }
