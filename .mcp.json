@@ -1,0 +1,10 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/v1/mcp.json",
+  "mcpServers": {
+    "expo-react-native-boilerplate-registry": {
+      "command": "node",
+      "args": ["scripts/mcp-server.mjs"],
+      "description": "Exposes the expo-react-native-boilerplate registry (Expo Router screens, components, services, Zustand stores, Zod DTOs, libs, conventions) as MCP tools. Reads from public/registry/registry.json — rebuild via `npm run registry:snapshot`."
+    }
+  }
+}

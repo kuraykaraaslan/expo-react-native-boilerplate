@@ -1,0 +1,80 @@
+# expo-react-native-boilerplate — Windsurf rules
+
+Canonical source: AGENTS.md. When this file and AGENTS.md disagree, AGENTS.md wins. Same content is mirrored to `.cursor/rules/expo-react-native.mdc`, `.cursorrules`, `.github/copilot-instructions.md`, and `.clinerules`.
+
+## Before writing code, fetch the catalog
+
+Static snapshots live under `public/` (rebuild with `npm run registry:snapshot`):
+
+1. `public/registry/registry.json` — full catalog: screens + components + services + stores + DTOs + libs + conventions.
+2. `public/registry/registry.index.json` — same shape, slimmer.
+3. `public/registry/screens.json`, `components.json`, `services.json`, `stores.json`, `dtos.json`, `libs.json` — surface-by-surface.
+4. `public/components/<category>-<name>.md` — per-component markdown chunk.
+5. `public/components/_index.json` — `{ id → { category, file } }`.
+6. `public/schemas/registry-v1.json` — JSON Schema for validation / codegen.
+
+Or use the MCP server in `.mcp.json` (`scripts/mcp-server.mjs`). Tools: `list_screens`, `get_screen`, `search_screens`, `list_components`, `get_component`, `search_components`, `list_services`, `list_stores`, `list_dtos`, `list_libs`, `get_conventions`, `get_component_md`, `read_file`.
+
+## ⚠️ Catalog sync — REQUIRED
+
+**Any time you add, rename, or remove a screen (`app/`), component (`components/`), service (`services/`), Zustand store (`stores/`), DTO (`dto/`), or lib primitive (`libs/`), run:**
+
+```bash
+npm run registry:snapshot
+```
+
+**before committing.** This regenerates `public/registry/*.json` + `public/components/*.md` from filesystem state. The same script runs automatically via the `prebuild` npm hook before `npm run build`, but you must still commit the regenerated files so the catalog stays in lockstep with the code. A stale catalog misleads every AI agent that reads it — treat it as broken-build severity.
+
+## Hard rules
+
+1. **Expo Router file-based routing.** Routes are defined by the filesystem under `app/`. `(group)` directories are stripped from URLs; `_layout.tsx` defines layouts; `+not-found.tsx` is the 404; `+html.tsx` is the web HTML shell. Don't add React Navigation `createStackNavigator` / `createDrawerNavigator`.
+2. **Path alias `@/*` only.** No `~/`, no `src/`. All cross-module imports use `@/...`.
+3. **NativeWind for styling.** Use `className` with Tailwind tokens. Combine classes via `cn()` from `@/utils/cn`. Avoid `StyleSheet.create({...})` unless dynamic styling demands it.
+4. **State = Zustand + MMKV.** Persist via `zustandStorage` from `@/libs/zustandStorage`. **NEVER `AsyncStorage`** — mandate from `Code_Structure_Rules_ReactNative`.
+5. **Tokens in SecureStore — NEVER Zustand.** Use `getToken`/`setToken` from `@/libs/secureStorage` for `accessToken` / `refreshToken`. The axios interceptor injects them at request time.
+6. **All data fetching via `axiosInstance` from `@/libs/axios`.** Never `fetch()`. Never construct ad-hoc axios. The shared instance handles base URL, cookies, and auth header injection.
+7. **DTOs are Zod-validated contracts.** Parse every response with the matching schema. Types are `z.infer<typeof XSchema>`.
+8. **Env access through `@/libs/env`.** Zod-validated. Never read `process.env.*` in app code.
+9. **Logging via `@/libs/logger`.** Never `console.*`.
+10. **Icons: FontAwesome 6 only.** `@fortawesome/react-native-fontawesome` + `free-solid-svg-icons` / `free-brands-svg-icons`.
+11. **Haptic feedback on auth + critical actions.** `expo-haptics`.
+12. **Toasts via `sonner-native`.**
+
+## Where new code goes
+
+| What you're building | Where |
+| --- | --- |
+| New screen | `app/<route>.tsx` (or under an existing `(group)`) |
+| New layout (Stack / Tabs / Slot) | `app/**/.../_layout.tsx` |
+| New UI component | `components/<category>/<Pascal>.tsx` |
+| New data fetcher | `services/<name>.service.client.ts` + DTO in `dto/<name>.dto.ts` |
+| New persistent client state | `stores/<name>Store.ts` (use `zustandStorage`) |
+| New Zod schema | `dto/<name>.dto.ts` |
+| New primitive | `libs/<name>.ts` |
+| New translation key | `locales/<lang>/<namespace>.json` |
+| Expo config (icons, splash, plugins) | `app.config.ts` |
+| Tailwind theme | `tailwind.config.js` |
+| Tests | `__tests__/<name>.test.ts(x)` |
+
+## Adding a new screen — required order
+
+1. Create `app/<route>.tsx` (or `app/(group)/<route>.tsx`).
+2. Default-export a component (this is the screen).
+3. If it needs custom navigation chrome, add a sibling `_layout.tsx`.
+4. Wire data: relevant `services/*.service.client.ts` + matching `stores/*Store.ts`.
+5. New DTOs go in `dto/<x>.dto.ts`.
+6. Tests under `__tests__/`.
+7. Rebuild the AI catalog: `npm run registry:snapshot`.
+
+## Don't
+
+- Don't import `AsyncStorage` from anywhere — use `@/libs/mmkv` or `@/libs/zustandStorage`.
+- Don't store tokens in Zustand — only SecureStore via `@/libs/secureStorage`.
+- Don't call `fetch` or construct ad-hoc axios instances — use `@/libs/axios`.
+- Don't read `process.env.*` directly — use `@/libs/env`.
+- Don't use `console.*` in app code — use `@/libs/logger`.
+- Don't add new path aliases — `@/* → ./*` is the only one.
+- Don't add React Navigation Stack/Drawer factories — Expo Router handles routing.
+- Don't put navigation chrome directly in screens — use `_layout.tsx`.
+- Don't bypass NativeWind — no raw hex / rgb in `style={{}}` unless dynamically computed.
+- Don't add other icon libraries — FontAwesome only.
