@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import { router } from "expo-router";
-import { toast } from "sonner-native";
 import * as Haptics from "expo-haptics";
 import { useAuthStore } from "@/stores/authStore";
 import { AuthClientService } from "@/services/auth.service.client";
-import { extractErrorMessage } from "@/dto/common.dto";
+import { handleApiError } from "@/libs/errorUtils";
+import { toast } from "sonner-native";
 import type { OTPMethod } from "@/dto/auth.dto";
 
 export default function TFAScreen() {
@@ -23,7 +23,7 @@ export default function TFAScreen() {
       toast.success(`OTP sent via ${method.toLowerCase()}`);
       setOtpSent(true);
     } catch (err: unknown) {
-      toast.error(extractErrorMessage(err));
+      handleApiError(err, "TFAScreen.send");
     } finally {
       setLoading(false);
     }
@@ -38,7 +38,7 @@ export default function TFAScreen() {
       router.replace("/select-tenant");
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      toast.error(extractErrorMessage(err));
+      handleApiError(err, "TFAScreen.verify");
     } finally {
       setLoading(false);
     }

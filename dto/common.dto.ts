@@ -1,4 +1,5 @@
 import { z } from "zod";
+import i18n from "@/libs/i18n";
 
 // ── Pagination ────────────────────────────────────────────────────────────────
 
@@ -43,9 +44,9 @@ export function extractErrorMessage(err: unknown): string {
       axiosErr.response?.data?.message ??
       axiosErr.response?.data?.error ??
       axiosErr.message ??
-      "An error occurred"
+      i18n.t("ERRORS.UNEXPECTED")
     );
   }
   if (err instanceof Error) return err.message;
-  return "An unexpected error occurred";
+  return i18n.t("ERRORS.UNEXPECTED");
 }

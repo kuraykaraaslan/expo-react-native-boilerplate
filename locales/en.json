@@ -96,7 +96,9 @@
     "ERRORS" : {
         "AUTH" : {
             "NEED_LOGIN" : "You need to login to access this page"
-        }
+        },
+        "UNEXPECTED": "An unexpected error occurred",
+        "LOAD_FAILED": "Failed to load data"
     },
     "SETTINGS": {
         "LANGUAGE": "Language",

@@ -72,7 +72,28 @@
     "ERRORS": {
       "AUTH": {
         "NEED_LOGIN": "Sie müssen sich anmelden, um auf diese Seite zugreifen zu können"
-      }
+      },
+      "UNEXPECTED": "Ein unerwarteter Fehler ist aufgetreten",
+      "LOAD_FAILED": "Daten konnten nicht geladen werden"
+    },
+    "SETTINGS": {
+      "LANGUAGE": "Sprache",
+      "THEME": "Thema",
+      "DARK_MODE": "Dunkelmodus",
+      "LIGHT_MODE": "Hellmodus",
+      "SYSTEM_MODE": "Systemmodus",
+      "LOGOUT": "Ausloggen",
+      "DELETE_ACCOUNT": "Konto löschen",
+      "DELETE_ACCOUNT_CONFIRM": "Möchten Sie Ihr Konto wirklich löschen?",
+      "ACCOUNT_DELETED": "Konto erfolgreich gelöscht",
+      "ACCOUNT_DELETE_FAILED": "Konto konnte nicht gelöscht werden"
+    },
+    "PROFILE": {
+      "USERNAME": "Benutzername",
+      "EMAIL": "E-Mail",
+      "SAVE": "Speichern",
+      "SAVED": "Profil erfolgreich aktualisiert",
+      "SAVE_FAILED": "Profil konnte nicht gespeichert werden"
     },
     "ANANAS": "Ananas2"
   }

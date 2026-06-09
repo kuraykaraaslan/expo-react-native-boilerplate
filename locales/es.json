@@ -72,7 +72,28 @@
     "ERRORS": {
       "AUTH": {
         "NEED_LOGIN": "Necesitas iniciar sesión para acceder a esta página"
-      }
+      },
+      "UNEXPECTED": "Se produjo un error inesperado",
+      "LOAD_FAILED": "Error al cargar los datos"
+    },
+    "SETTINGS": {
+      "LANGUAGE": "Idioma",
+      "THEME": "Tema",
+      "DARK_MODE": "Modo oscuro",
+      "LIGHT_MODE": "Modo claro",
+      "SYSTEM_MODE": "Modo del sistema",
+      "LOGOUT": "Cerrar sesión",
+      "DELETE_ACCOUNT": "Eliminar cuenta",
+      "DELETE_ACCOUNT_CONFIRM": "¿Estás seguro de que deseas eliminar tu cuenta?",
+      "ACCOUNT_DELETED": "Cuenta eliminada correctamente",
+      "ACCOUNT_DELETE_FAILED": "No se pudo eliminar la cuenta"
+    },
+    "PROFILE": {
+      "USERNAME": "Nombre de usuario",
+      "EMAIL": "Correo electrónico",
+      "SAVE": "Guardar",
+      "SAVED": "Perfil actualizado correctamente",
+      "SAVE_FAILED": "No se pudo guardar el perfil"
     },
     "ANANAS": "Ananas2"
   }

@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { toast } from "sonner-native";
 import * as Haptics from "expo-haptics";
 import { TenantClientService } from "@/services/tenant.service.client";
-import { extractErrorMessage } from "@/dto/common.dto";
+import { handleApiError } from "@/libs/errorUtils";
 
 export default function CreateTenantScreen() {
   const [name, setName] = useState("");
@@ -29,7 +29,7 @@ export default function CreateTenantScreen() {
       router.replace("/select-tenant");
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      toast.error(extractErrorMessage(err));
+      handleApiError(err, "CreateTenantScreen");
     } finally {
       setLoading(false);
     }

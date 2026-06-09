@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { router } from "expo-router";
+import * as Haptics from "expo-haptics";
 import { useTenantStore } from "@/stores/tenantStore";
 import { TenantClientService } from "@/services/tenant.service.client";
-import { extractErrorMessage } from "@/dto/common.dto";
+import { handleApiError } from "@/libs/errorUtils";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import type { TenantMember } from "@/dto/tenant.dto";
@@ -11,20 +13,18 @@ import type { TenantMember } from "@/dto/tenant.dto";
 export default function SelectTenantScreen() {
   const [memberships, setMemberships] = useState<TenantMember[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const selectMembership = useTenantStore((s) => s.selectMembership);
   const setMembershipsInStore = useTenantStore((s) => s.setMemberships);
 
   useEffect(() => {
     async function load() {
       setLoading(true);
-      setError(null);
       try {
         const { tenants } = await TenantClientService.getMyTenants();
         setMemberships(tenants);
         setMembershipsInStore(tenants);
       } catch (err: unknown) {
-        setError(extractErrorMessage(err));
+        handleApiError(err, "SelectTenantScreen");
       } finally {
         setLoading(false);
       }
@@ -32,16 +32,16 @@ export default function SelectTenantScreen() {
     load();
   }, [setMembershipsInStore]);
 
-  function handleSelect(member: TenantMember) {
+  async function handleSelect(member: TenantMember) {
     selectMembership(member);
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     router.replace("/");
   }
 
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center bg-white dark:bg-gray-900">
-        <ActivityIndicator size="large" color="#f4511e" />
-        <Text className="mt-4 text-gray-500 dark:text-gray-400">Loading workspaces...</Text>
+        <LoadingSpinner label="Loading workspaces..." />
       </View>
     );
   }
@@ -54,12 +54,6 @@ export default function SelectTenantScreen() {
       <Text className="text-gray-500 dark:text-gray-400 mb-8">
         Choose a workspace to continue
       </Text>
-
-      {error && (
-        <View className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
-          <Text className="text-red-700 dark:text-red-400">{error}</Text>
-        </View>
-      )}
 
       <FlatList
         data={memberships}

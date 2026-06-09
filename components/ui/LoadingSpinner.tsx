@@ -1,9 +1,5 @@
 import { View, ActivityIndicator, Text } from "react-native";
-import { cn } from "@/utils/cn";
-
-// ============================================================================
-// LoadingSpinner Component
-// ============================================================================
+import { useTheme } from "@/libs/theme/ThemeContext";
 
 interface LoadingSpinnerProps {
   size?: "small" | "large";
@@ -14,21 +10,23 @@ interface LoadingSpinnerProps {
 
 export function LoadingSpinner({
   size = "large",
-  color = "#f4511e",
+  color,
   label,
   className,
 }: LoadingSpinnerProps) {
+  const { tokens: t } = useTheme();
+
   return (
     <View
-      className={cn("items-center justify-center", className)}
+      className={className ?? "items-center justify-center"}
       accessible
       accessibilityLabel={label ?? "Loading"}
       accessibilityRole="progressbar"
       aria-busy
     >
-      <ActivityIndicator size={size} color={color} />
+      <ActivityIndicator size={size} color={color ?? t.primary} />
       {label && (
-        <Text className="mt-2 text-gray-500 dark:text-gray-400 text-sm">
+        <Text className="mt-2 text-sm" style={{ color: t.textSecondary }}>
           {label}
         </Text>
       )}
