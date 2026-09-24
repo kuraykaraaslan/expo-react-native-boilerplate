@@ -43,6 +43,7 @@
     "expo-web-browser": "~57.0.3",
     "google-libphonenumber": "^3.2.40",
     "i18next": "^26.1.0",
+    "kui-native": "git+https://github.com/kuraykaraaslan/kui-native.git#v0.2.0",
     "nativewind": "^4.1.23",
     "react": "19.2.3",
     "react-circle-flags": "^0.0.23",

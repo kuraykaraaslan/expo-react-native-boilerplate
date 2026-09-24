@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Light-mode fallbacks for kui-native's semantic tokens (copied from
+ * kui-native/global.css, primary switched to the brand orange — keep in sync
+ * with libs/theme/brand.ts). At runtime ThemeProvider applies the active
+ * scheme through NativeWind vars(); these only cover web's first paint.
+ */
+:root {
+  --color-primary: #f4511e;
+  --color-primary-hover: #e64a19;
+  --color-primary-active: #d84315;
+  --color-primary-subtle: #fff5f2;
+  --color-primary-fg: #ffffff;
+
+  --color-secondary: #8b5cf6;
+  --color-secondary-hover: #7c3aed;
+  --color-secondary-active: #6d28d9;
+  --color-secondary-subtle: #f5f3ff;
+  --color-secondary-fg: #ffffff;
+
+  --color-surface-base: #ffffff;
+  --color-surface-raised: #f9fafb;
+  --color-surface-overlay: #f3f4f6;
+  --color-surface-sunken: #e5e7eb;
+
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-text-disabled: #9ca3af;
+  --color-text-inverse: #ffffff;
+
+  --color-border: #e5e7eb;
+  --color-border-strong: #d1d5db;
+  --color-border-focus: #f4511e;
+
+  --color-success: #22c55e;
+  --color-success-subtle: #f0fdf4;
+  --color-success-fg: #14532d;
+
+  --color-warning: #f59e0b;
+  --color-warning-subtle: #fffbeb;
+  --color-warning-fg: #78350f;
+
+  --color-error: #ef4444;
+  --color-error-subtle: #fef2f2;
+  --color-error-fg: #7f1d1d;
+
+  --color-info: #06b6d4;
+  --color-info-subtle: #ecfeff;
+  --color-info-fg: #164e63;
+}
