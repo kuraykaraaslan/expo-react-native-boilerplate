@@ -8,7 +8,7 @@ import * as Haptics from "expo-haptics";
 import { useTenantStore } from "@/stores/tenantStore";
 import { TenantClientService } from "@/services/tenant.service.client";
 import { handleApiError } from "@/libs/errorUtils";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Spinner } from "@/components/ui";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrash, faPaperPlane, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import type { Invitation } from "@/dto/tenant.dto";
@@ -198,7 +198,7 @@ export default function InvitationsScreen() {
         ListEmptyComponent={
           loading ? (
             <View className="items-center py-16">
-              <LoadingSpinner />
+              <Spinner size="lg" />
             </View>
           ) : (
             <View className="items-center py-16">

@@ -1,36 +1,40 @@
-import React, { createContext, useContext, useMemo } from 'react';
-import { useColorScheme } from 'react-native';
+import React, { useEffect } from 'react';
+import { View } from 'react-native';
+import { colorScheme as nativewindColorScheme } from 'nativewind';
+import { themes, useResolvedScheme, useThemeMode } from 'kui-native/libs/theme';
 import { useAppStore } from '@/stores/appStore';
-import { lightTokens, darkTokens, ThemeTokens } from './tokens';
 
-type ThemeContextValue = {
-  tokens: ThemeTokens;
-  isDark: boolean;
-  colorScheme: 'light' | 'dark' | 'system';
-  setColorScheme: (scheme: 'light' | 'dark' | 'system') => void;
-};
+export { useThemeTokens } from 'kui-native/libs/theme';
 
-const ThemeContext = createContext<ThemeContextValue | null>(null);
+// ============================================================================
+// Theme — kui-native tokens, driven by the persisted preference in appStore.
+// Raw hex for props that can't take a className: useThemeTokens(), re-exported
+// here so app code never imports kui-native directly.
+// ============================================================================
+
+// appStore (MMKV) is the source of truth; kui-native's mode store follows it.
+// MMKV hydrates synchronously, so this runs before the first render.
+useThemeMode.getState().setMode(useAppStore.getState().colorScheme);
+useAppStore.subscribe((s) => useThemeMode.getState().setMode(s.colorScheme));
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const systemScheme = useColorScheme();
-  const colorScheme = useAppStore((s) => s.colorScheme);
-  const setColorScheme = useAppStore((s) => s.setColorScheme);
+  const scheme = useResolvedScheme();
 
-  const isDark =
-    colorScheme === 'system' ? systemScheme === 'dark' : colorScheme === 'dark';
-
-  const tokens = useMemo(() => (isDark ? darkTokens : lightTokens), [isDark]);
+  // Keep NativeWind's scheme in sync for any `dark:` variants.
+  useEffect(() => {
+    nativewindColorScheme.set(scheme);
+  }, [scheme]);
 
   return (
-    <ThemeContext.Provider value={{ tokens, isDark, colorScheme, setColorScheme }}>
+    <View style={themes[scheme]} className="flex-1 bg-surface-base">
       {children}
-    </ThemeContext.Provider>
+    </View>
   );
 }
 
-export function useTheme(): ThemeContextValue {
-  const ctx = useContext(ThemeContext);
-  if (!ctx) throw new Error('useTheme must be used within ThemeProvider');
-  return ctx;
+export function useTheme() {
+  const isDark = useResolvedScheme() === 'dark';
+  const colorScheme = useAppStore((s) => s.colorScheme);
+  const setColorScheme = useAppStore((s) => s.setColorScheme);
+  return { isDark, colorScheme, setColorScheme };
 }

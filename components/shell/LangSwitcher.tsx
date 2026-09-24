@@ -1,16 +1,27 @@
-import { Pressable, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
+import { DropdownMenu } from '@/components/ui';
+import { SUPPORTED_LOCALES, type Locale } from '@/libs/i18n';
 import { useAppStore } from '@/stores/appStore';
-import { useTheme } from '@/libs/theme/ThemeContext';
 
-const SUPPORTED_LOCALES = ['tr', 'en'] as const;
-type Locale = (typeof SUPPORTED_LOCALES)[number];
+// Endonyms — each language is listed in its own name.
+const LOCALE_NAMES: Record<Locale, string> = {
+  en: 'English',
+  tr: 'Türkçe',
+  de: 'Deutsch',
+  es: 'Español',
+  fr: 'Français',
+  it: 'Italiano',
+};
 
 export function LangSwitcher() {
   const { i18n } = useTranslation();
   const setLocale = useAppStore((s) => s.setLocale);
-  const { tokens: t } = useTheme();
-  const locale = ((i18n.language ?? 'en').split('-')[0]) as Locale;
+  const t = useThemeTokens();
+  const locale = (i18n.language ?? 'en').split('-')[0] as Locale;
 
   const switchTo = (lang: Locale) => {
     i18n.changeLanguage(lang);
@@ -18,33 +29,21 @@ export function LangSwitcher() {
   };
 
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      {SUPPORTED_LOCALES.map((lang, i) => (
-        <View key={lang} style={{ flexDirection: 'row', alignItems: 'center' }}>
-          {i > 0 && (
-            <Text style={{ color: t.border, fontSize: 12, marginHorizontal: 2 }}>
-              |
-            </Text>
-          )}
-          <Pressable
-            onPress={() => switchTo(lang)}
-            accessibilityRole="button"
-            accessibilityLabel={lang === 'tr' ? 'Switch to Turkish' : 'Switch to English'}
-            accessibilityState={{ selected: locale === lang }}
-            style={{ paddingHorizontal: 6, paddingVertical: 4 }}
-          >
-            <Text
-              style={{
-                fontSize: 12,
-                fontWeight: locale === lang ? '700' : '400',
-                color: locale === lang ? t.primary : t.textSecondary,
-              }}
-            >
-              {lang.toUpperCase()}
-            </Text>
-          </Pressable>
+    <DropdownMenu
+      align="right"
+      trigger={
+        <View
+          accessibilityLabel={`Language: ${LOCALE_NAMES[locale] ?? locale}`}
+          className="flex-row items-center gap-1 px-1.5 py-1 rounded-md"
+        >
+          <FontAwesomeIcon icon={faGlobe} color={t['text-secondary']} size={14} />
+          <Text className="text-xs font-bold text-text-secondary">{locale.toUpperCase()}</Text>
         </View>
-      ))}
-    </View>
+      }
+      items={SUPPORTED_LOCALES.map((lang) => ({
+        label: lang === locale ? `${LOCALE_NAMES[lang]} ✓` : LOCALE_NAMES[lang],
+        onPress: () => switchTo(lang),
+      }))}
+    />
   );
 }

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppStore } from '@/stores/appStore';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { useTheme } from '@/libs/theme/ThemeContext';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import * as Haptics from 'expo-haptics';
 
 const LANGUAGES = [
@@ -16,7 +16,7 @@ const LANGUAGES = [
 ];
 
 export default function ChangeLanguageScreen() {
-  const { tokens: t } = useTheme();
+  const t = useThemeTokens();
   const { i18n } = useTranslation();
   const locale   = useAppStore((s) => s.locale);
   const setLocale = useAppStore((s) => s.setLocale);

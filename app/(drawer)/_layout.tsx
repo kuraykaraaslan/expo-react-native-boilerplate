@@ -3,11 +3,11 @@ import { Drawer } from 'expo-router/drawer';
 import { useAuthStore } from '@/stores/authStore';
 import { DrawerContent } from '@/components/shell/DrawerContent';
 import { AppHeader } from '@/components/shell/AppHeader';
-import { useTheme } from '@/libs/theme/ThemeContext';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
 
 export default function DrawerLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const { tokens: t } = useTheme();
+  const t = useThemeTokens();
 
   if (!isAuthenticated) {
     return <Redirect href="/login" />;
@@ -18,7 +18,7 @@ export default function DrawerLayout() {
       drawerContent={(props) => <DrawerContent {...props} />}
       screenOptions={({ navigation }) => ({
         drawerType:       'slide',
-        drawerStyle:      { width: 256, backgroundColor: t.surfaceRaised },
+        drawerStyle:      { width: 256, backgroundColor: t['surface-raised'] },
         overlayColor:     'rgba(0,0,0,0.5)',
         swipeEnabled:     true,
         swipeEdgeWidth:   48,

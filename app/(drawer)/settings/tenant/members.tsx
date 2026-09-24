@@ -5,7 +5,7 @@ import * as Haptics from "expo-haptics";
 import { useTenantStore } from "@/stores/tenantStore";
 import { TenantClientService } from "@/services/tenant.service.client";
 import { handleApiError } from "@/libs/errorUtils";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Spinner } from "@/components/ui";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrash, faUser, faCrown, faShield } from "@fortawesome/free-solid-svg-icons";
 import type { TenantMember } from "@/dto/tenant.dto";
@@ -163,7 +163,7 @@ export default function MembersScreen() {
         ListEmptyComponent={
           loading ? (
             <View className="items-center py-20">
-              <LoadingSpinner />
+              <Spinner size="lg" />
             </View>
           ) : (
             <View className="items-center py-20">

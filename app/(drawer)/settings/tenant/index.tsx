@@ -6,7 +6,7 @@ import {
   faUsers, faEnvelope, faChevronRight,
   faBuilding, faCrown, faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { useTheme } from "@/libs/theme/ThemeContext";
+import { useThemeTokens } from "@/libs/theme/ThemeContext";
 
 const ROLE_ICON: Record<string, any> = {
   OWNER: faCrown,
@@ -45,7 +45,7 @@ const MENU_ITEMS: TenantMenuItem[] = [
 ];
 
 export default function TenantScreen() {
-  const { tokens: t } = useTheme();
+  const t = useThemeTokens();
   const membership = useTenantStore((s) => s.selectedTenantMembership);
   const isAdmin = membership?.memberRole === "ADMIN" || membership?.memberRole === "OWNER";
 

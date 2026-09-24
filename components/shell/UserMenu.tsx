@@ -2,12 +2,12 @@ import { Pressable, Text } from 'react-native';
 import { router } from 'expo-router';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import { useAuthStore } from '@/stores/authStore';
-import { useTheme } from '@/libs/theme/ThemeContext';
 
 export function UserMenu() {
   const user = useAuthStore((s) => s.user);
-  const { tokens: t } = useTheme();
+  const t = useThemeTokens();
 
   const initials = user?.name
     ? user.name
@@ -23,19 +23,10 @@ export function UserMenu() {
       onPress={() => router.push('/settings/profile' as any)}
       accessibilityRole="button"
       accessibilityLabel="Open profile settings"
-      style={({ pressed }) => ({
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        backgroundColor: pressed ? t.primarySubtle : t.primarySubtle,
-        alignItems: 'center',
-        justifyContent: 'center',
-      })}
+      className="w-8 h-8 rounded-full items-center justify-center bg-primary-subtle active:opacity-80"
     >
       {initials ? (
-        <Text style={{ fontSize: 12, fontWeight: '600', color: t.primary }}>
-          {initials}
-        </Text>
+        <Text className="text-xs font-semibold text-primary">{initials}</Text>
       ) : (
         <FontAwesomeIcon icon={faUser} color={t.primary} size={14} />
       )}

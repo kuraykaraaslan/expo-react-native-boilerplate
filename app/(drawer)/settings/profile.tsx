@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import * as Haptics from "expo-haptics";
 import { ProfileClientService } from "@/services/profile.service.client";
 import { handleApiError } from "@/libs/errorUtils";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Spinner } from "@/components/ui";
 import type { UpdateProfileRequest } from "@/dto/profile.dto";
 
 export default function ProfileScreen() {
@@ -56,7 +56,7 @@ export default function ProfileScreen() {
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-950">
-        <LoadingSpinner />
+        <Spinner size="lg" />
       </View>
     );
   }

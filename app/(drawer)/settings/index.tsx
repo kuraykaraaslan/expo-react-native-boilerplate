@@ -8,7 +8,7 @@ import {
   faShield, faRightFromBracket, faChevronRight,
   faBuilding, faUserPen,
 } from "@fortawesome/free-solid-svg-icons";
-import { useTheme } from "@/libs/theme/ThemeContext";
+import { useThemeTokens } from "@/libs/theme/ThemeContext";
 import { logout } from "@/libs/logout";
 
 interface SettingItem {
@@ -29,7 +29,7 @@ const WORKSPACE_SETTINGS: SettingItem[] = [
 ];
 
 function SettingsGroup({ title, items }: Readonly<{ title: string; items: SettingItem[] }>) {
-  const { tokens: t } = useTheme();
+  const t = useThemeTokens();
   return (
     <View className="mb-4">
       <Text className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-4 mb-2">

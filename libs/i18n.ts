@@ -21,6 +21,9 @@ const resources = {
   it: { common: it },
 };
 
+export const SUPPORTED_LOCALES = Object.keys(resources) as Array<keyof typeof resources>;
+export type Locale = (typeof SUPPORTED_LOCALES)[number];
+
 if (!i18n.isInitialized) {
   i18n.use(initReactI18next).init({
     resources,

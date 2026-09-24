@@ -5,7 +5,7 @@ import * as Haptics from "expo-haptics";
 import { useTenantStore } from "@/stores/tenantStore";
 import { TenantClientService } from "@/services/tenant.service.client";
 import { handleApiError } from "@/libs/errorUtils";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Spinner } from "@/components/ui";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import type { TenantMember } from "@/dto/tenant.dto";
@@ -41,7 +41,8 @@ export default function SelectTenantScreen() {
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center bg-white dark:bg-gray-900">
-        <LoadingSpinner label="Loading workspaces..." />
+        <Spinner size="lg" accessibilityLabel="Loading workspaces..." />
+        <Text className="mt-2 text-sm text-text-secondary">Loading workspaces...</Text>
       </View>
     );
   }

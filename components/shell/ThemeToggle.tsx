@@ -1,35 +1,20 @@
 import { Pressable } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
-import { useTheme } from '@/libs/theme/ThemeContext';
+import { useTheme, useThemeTokens } from '@/libs/theme/ThemeContext';
 
 export function ThemeToggle() {
-  const { isDark, colorScheme, setColorScheme, tokens: t } = useTheme();
-
-  const toggle = () => {
-    if (colorScheme === 'system') {
-      setColorScheme(isDark ? 'light' : 'dark');
-    } else {
-      setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
-    }
-  };
+  const { isDark, setColorScheme } = useTheme();
+  const t = useThemeTokens();
 
   return (
     <Pressable
-      onPress={toggle}
+      onPress={() => setColorScheme(isDark ? 'light' : 'dark')}
       accessibilityRole="button"
       accessibilityLabel={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-      style={({ pressed }) => ({
-        padding: 6,
-        borderRadius: 6,
-        backgroundColor: pressed ? t.surfaceOverlay : 'transparent',
-      })}
+      className="p-1.5 rounded-md active:bg-surface-overlay"
     >
-      <FontAwesomeIcon
-        icon={isDark ? faSun : faMoon}
-        color={t.textSecondary}
-        size={16}
-      />
+      <FontAwesomeIcon icon={isDark ? faSun : faMoon} color={t['text-secondary']} size={16} />
     </Pressable>
   );
 }

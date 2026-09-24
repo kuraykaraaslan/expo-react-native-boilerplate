@@ -4,7 +4,7 @@ import { toast } from "sonner-native";
 import * as Haptics from "expo-haptics";
 import { AuthClientService } from "@/services/auth.service.client";
 import { handleApiError } from "@/libs/errorUtils";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Spinner } from "@/components/ui";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrash, faLaptop } from "@fortawesome/free-solid-svg-icons";
 import type { Session } from "@/dto/auth.dto";
@@ -95,7 +95,7 @@ export default function SessionsScreen() {
         ListEmptyComponent={
           loading ? (
             <View className="items-center py-20">
-              <LoadingSpinner />
+              <Spinner size="lg" />
             </View>
           ) : (
             <View className="items-center py-20">

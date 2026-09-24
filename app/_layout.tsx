@@ -1,4 +1,5 @@
 import '../global.css';
+import '@/libs/theme/brand'; // brand tokens before first render
 import '@/libs/i18n'; // initialise i18next before any component renders
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';

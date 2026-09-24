@@ -4,11 +4,11 @@ import { useAuthStore } from "@/stores/authStore";
 import { useTenantStore } from "@/stores/tenantStore";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faBuilding, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
-import { useTheme } from "@/libs/theme/ThemeContext";
+import { useThemeTokens } from "@/libs/theme/ThemeContext";
 import { logout } from "@/libs/logout";
 
 export default function HomeScreen() {
-  const { tokens: t } = useTheme();
+  const t = useThemeTokens();
   const user = useAuthStore((s) => s.user);
   const selectedTenant = useTenantStore((s) => s.selectedTenantMembership);
   const handleLogout = logout;

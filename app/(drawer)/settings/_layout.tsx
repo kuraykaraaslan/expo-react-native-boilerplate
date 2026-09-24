@@ -1,14 +1,14 @@
 import { Stack } from 'expo-router';
-import { useTheme } from '@/libs/theme/ThemeContext';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
 
 export default function SettingsLayout() {
-  const { tokens: t } = useTheme();
+  const t = useThemeTokens();
 
   return (
     <Stack
       screenOptions={{
-        headerStyle:    { backgroundColor: t.surfaceRaised },
-        headerTintColor: t.textPrimary,
+        headerStyle:    { backgroundColor: t['surface-raised'] },
+        headerTintColor: t['text-primary'],
         headerShadowVisible: false,
         headerBackTitle: 'Back',
       }}

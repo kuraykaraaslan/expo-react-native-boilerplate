@@ -4,7 +4,7 @@ import { toast } from "sonner-native";
 import * as Haptics from "expo-haptics";
 import { NotificationClientService } from "@/services/notification.service.client";
 import { handleApiError } from "@/libs/errorUtils";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Spinner } from "@/components/ui";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCheckDouble, faTrash } from "@fortawesome/free-solid-svg-icons";
 import type { Notification } from "@/dto/notification.dto";
@@ -148,7 +148,7 @@ export default function NotificationsScreen() {
         ListEmptyComponent={
           loading ? (
             <View className="flex-1 items-center justify-center py-20">
-              <LoadingSpinner />
+              <Spinner size="lg" />
             </View>
           ) : (
             <View className="flex-1 items-center justify-center py-20">
