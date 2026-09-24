@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-24T12:02:49.296Z",
+  "generatedAt": "2026-09-24T12:10:52.506Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -296,66 +296,415 @@
       "props": []
     },
     {
+      "id": "ui/AlertBanner",
+      "filePath": "node_modules/kui-native/modules/ui/AlertBanner.tsx",
+      "name": "AlertBanner",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "AlertBanner"
+      ],
+      "props": [
+        "variant",
+        "title",
+        "message",
+        "dismissible",
+        "action",
+        "icon",
+        "className"
+      ]
+    },
+    {
+      "id": "ui/Avatar",
+      "filePath": "node_modules/kui-native/modules/ui/Avatar.tsx",
+      "name": "Avatar",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Avatar",
+        "AvatarGroup"
+      ],
+      "props": [
+        "name",
+        "src",
+        "size",
+        "status",
+        "className"
+      ]
+    },
+    {
+      "id": "ui/Badge",
+      "filePath": "node_modules/kui-native/modules/ui/Badge.tsx",
+      "name": "Badge",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Badge"
+      ],
+      "props": [
+        "children",
+        "label",
+        "variant",
+        "size",
+        "dot",
+        "dismissible",
+        "onDismiss",
+        "className"
+      ]
+    },
+    {
       "id": "ui/Button",
-      "filePath": "components/ui/Button.tsx",
+      "filePath": "node_modules/kui-native/modules/ui/Button.tsx",
       "name": "Button",
       "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
       "exports": [
         "Button"
       ],
       "props": [
+        "children",
         "label",
-        "onPress",
         "variant",
         "size",
-        "disabled",
         "loading",
+        "disabled",
+        "fullWidth",
+        "iconLeft",
+        "iconRight",
+        "iconOnly",
+        "selected",
         "className",
-        "accessibilityLabel"
+        "ref"
       ]
     },
     {
-      "id": "ui/LoadingSpinner",
-      "filePath": "components/ui/LoadingSpinner.tsx",
-      "name": "LoadingSpinner",
+      "id": "ui/Card",
+      "filePath": "node_modules/kui-native/modules/ui/Card.tsx",
+      "name": "Card",
       "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
       "exports": [
-        "LoadingSpinner"
+        "Card"
       ],
       "props": [
+        "title",
+        "subtitle",
+        "headerRight",
+        "footer",
+        "variant",
+        "onPress",
+        "hoverable",
+        "loading",
+        "className",
+        "children"
+      ]
+    },
+    {
+      "id": "ui/Checkbox",
+      "filePath": "node_modules/kui-native/modules/ui/Checkbox.tsx",
+      "name": "Checkbox",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Checkbox"
+      ],
+      "props": [
+        "checked",
+        "defaultChecked",
+        "onChange",
+        "label",
+        "hint",
+        "error",
+        "indeterminate",
+        "disabled",
+        "className"
+      ]
+    },
+    {
+      "id": "ui/DropdownMenu",
+      "filePath": "node_modules/kui-native/modules/ui/DropdownMenu.tsx",
+      "name": "DropdownMenu",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "DropdownMenu"
+      ],
+      "props": [
+        "trigger",
+        "items",
+        "header",
+        "align",
+        "className"
+      ]
+    },
+    {
+      "id": "ui/EmptyState",
+      "filePath": "node_modules/kui-native/modules/ui/EmptyState.tsx",
+      "name": "EmptyState",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "EmptyState"
+      ],
+      "props": [
+        "icon",
+        "title",
+        "description",
+        "action",
+        "actionLabel",
+        "onAction",
+        "className"
+      ]
+    },
+    {
+      "id": "ui/Input",
+      "filePath": "node_modules/kui-native/modules/ui/Input.tsx",
+      "name": "Input",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Input"
+      ],
+      "props": [
+        "label",
+        "hint",
+        "error",
+        "success",
+        "required",
+        "prefixIcon",
+        "suffixIcon",
+        "clearable",
+        "onClear",
+        "showCount",
+        "type",
+        "step",
+        "min",
+        "max",
+        "disabled",
+        "className",
+        "inputClassName",
+        "containerClassName",
+        "ref"
+      ]
+    },
+    {
+      "id": "ui/Label",
+      "filePath": "node_modules/kui-native/modules/ui/Label.tsx",
+      "name": "Label",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Label"
+      ],
+      "props": [
+        "children",
+        "required",
+        "disabled",
+        "onPress",
+        "className"
+      ]
+    },
+    {
+      "id": "ui/Modal",
+      "filePath": "node_modules/kui-native/modules/ui/Modal.tsx",
+      "name": "Modal",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Modal"
+      ],
+      "props": [
+        "open",
+        "visible",
+        "onClose",
+        "title",
+        "description",
+        "children",
+        "footer",
         "size",
-        "color",
+        "fullscreen",
+        "scrollable",
+        "closeOnBackdropClick",
+        "className",
+        "ref"
+      ]
+    },
+    {
+      "id": "ui/PageHeader",
+      "filePath": "node_modules/kui-native/modules/ui/PageHeader.tsx",
+      "name": "PageHeader",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "PageHeader"
+      ],
+      "props": [
+        "title",
+        "subtitle",
+        "badge",
+        "actions",
+        "className"
+      ]
+    },
+    {
+      "id": "ui/Progress",
+      "filePath": "node_modules/kui-native/modules/ui/Progress.tsx",
+      "name": "Progress",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Progress"
+      ],
+      "props": [
+        "value",
+        "variant",
+        "size",
+        "shape",
+        "showLabel",
         "label",
         "className"
       ]
     },
     {
-      "id": "ui/SkeletonCard",
-      "filePath": "components/ui/SkeletonCard.tsx",
-      "name": "SkeletonCard",
+      "id": "ui/ScrollArea",
+      "filePath": "node_modules/kui-native/modules/ui/ScrollArea.tsx",
+      "name": "ScrollArea",
       "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
       "exports": [
-        "SkeletonCardProps",
-        "SkeletonCard"
+        "ScrollArea"
       ],
       "props": [
-        "style"
+        "orientation",
+        "className",
+        "children"
+      ]
+    },
+    {
+      "id": "ui/Select",
+      "filePath": "node_modules/kui-native/modules/ui/Select.tsx",
+      "name": "Select",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Select"
+      ],
+      "props": [
+        "id",
+        "label",
+        "options",
+        "value",
+        "onChange",
+        "placeholder",
+        "hint",
+        "error",
+        "disabled",
+        "required",
+        "searchable",
+        "className"
+      ]
+    },
+    {
+      "id": "ui/Separator",
+      "filePath": "node_modules/kui-native/modules/ui/Separator.tsx",
+      "name": "Separator",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Separator"
+      ],
+      "props": [
+        "orientation",
+        "decorative",
+        "label",
+        "className"
+      ]
+    },
+    {
+      "id": "ui/Skeleton",
+      "filePath": "node_modules/kui-native/modules/ui/Skeleton.tsx",
+      "name": "Skeleton",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "SkeletonAvatar",
+        "SkeletonCard",
+        "SkeletonLine",
+        "SkeletonTableRow",
+        "SkeletonText"
+      ],
+      "props": [
+        "className"
+      ]
+    },
+    {
+      "id": "ui/Spinner",
+      "filePath": "node_modules/kui-native/modules/ui/Spinner.tsx",
+      "name": "Spinner",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Spinner"
+      ],
+      "props": [
+        "size",
+        "color",
+        "accessibilityLabel",
+        "className"
+      ]
+    },
+    {
+      "id": "ui/Text",
+      "filePath": "node_modules/kui-native/modules/ui/Text.tsx",
+      "name": "Text",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Text"
+      ],
+      "props": [
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "title",
+        "titleSm",
+        "body",
+        "bodySm",
+        "label",
+        "caption"
       ]
     },
     {
       "id": "ui/TextInput",
-      "filePath": "components/ui/TextInput.tsx",
+      "filePath": "node_modules/kui-native/modules/ui/TextInput.tsx",
       "name": "TextInput",
       "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
       "exports": [
         "TextInput"
       ],
-      "props": [
-        "label",
-        "error",
-        "helper",
-        "containerClassName"
-      ]
+      "props": []
     }
   ],
   "services": [
@@ -643,6 +992,8 @@
       "filePath": "libs/i18n.ts",
       "name": "i18n",
       "exports": [
+        "SUPPORTED_LOCALES",
+        "Locale",
         "default"
       ]
     },

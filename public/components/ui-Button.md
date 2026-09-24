@@ -2,12 +2,13 @@
 
 - **id:** `ui/Button`
 - **category:** ui
-- **filePath:** `components/ui/Button.tsx`
+- **filePath:** `node_modules/kui-native/modules/ui/Button.tsx`
 - **exports:** `Button`
-- **props:** `label`, `onPress`, `variant`, `size`, `disabled`, `loading`, `className`, `accessibilityLabel`
+- **props:** `children`, `label`, `variant`, `size`, `loading`, `disabled`, `fullWidth`, `iconLeft`, `iconRight`, `iconOnly`, `selected`, `className`, `ref`
+- **source:** kui-native (git dependency — fix upstream, never edit or copy)
 
 Import:
 
 ```ts
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui';
 ```

@@ -39,20 +39,100 @@
     "category": "shell",
     "file": "shell-UserMenu.md"
   },
+  "ui/AlertBanner": {
+    "name": "AlertBanner",
+    "category": "ui",
+    "file": "ui-AlertBanner.md"
+  },
+  "ui/Avatar": {
+    "name": "Avatar",
+    "category": "ui",
+    "file": "ui-Avatar.md"
+  },
+  "ui/Badge": {
+    "name": "Badge",
+    "category": "ui",
+    "file": "ui-Badge.md"
+  },
   "ui/Button": {
     "name": "Button",
     "category": "ui",
     "file": "ui-Button.md"
   },
-  "ui/LoadingSpinner": {
-    "name": "LoadingSpinner",
+  "ui/Card": {
+    "name": "Card",
     "category": "ui",
-    "file": "ui-LoadingSpinner.md"
+    "file": "ui-Card.md"
   },
-  "ui/SkeletonCard": {
-    "name": "SkeletonCard",
+  "ui/Checkbox": {
+    "name": "Checkbox",
     "category": "ui",
-    "file": "ui-SkeletonCard.md"
+    "file": "ui-Checkbox.md"
+  },
+  "ui/DropdownMenu": {
+    "name": "DropdownMenu",
+    "category": "ui",
+    "file": "ui-DropdownMenu.md"
+  },
+  "ui/EmptyState": {
+    "name": "EmptyState",
+    "category": "ui",
+    "file": "ui-EmptyState.md"
+  },
+  "ui/Input": {
+    "name": "Input",
+    "category": "ui",
+    "file": "ui-Input.md"
+  },
+  "ui/Label": {
+    "name": "Label",
+    "category": "ui",
+    "file": "ui-Label.md"
+  },
+  "ui/Modal": {
+    "name": "Modal",
+    "category": "ui",
+    "file": "ui-Modal.md"
+  },
+  "ui/PageHeader": {
+    "name": "PageHeader",
+    "category": "ui",
+    "file": "ui-PageHeader.md"
+  },
+  "ui/Progress": {
+    "name": "Progress",
+    "category": "ui",
+    "file": "ui-Progress.md"
+  },
+  "ui/ScrollArea": {
+    "name": "ScrollArea",
+    "category": "ui",
+    "file": "ui-ScrollArea.md"
+  },
+  "ui/Select": {
+    "name": "Select",
+    "category": "ui",
+    "file": "ui-Select.md"
+  },
+  "ui/Separator": {
+    "name": "Separator",
+    "category": "ui",
+    "file": "ui-Separator.md"
+  },
+  "ui/Skeleton": {
+    "name": "Skeleton",
+    "category": "ui",
+    "file": "ui-Skeleton.md"
+  },
+  "ui/Spinner": {
+    "name": "Spinner",
+    "category": "ui",
+    "file": "ui-Spinner.md"
+  },
+  "ui/Text": {
+    "name": "Text",
+    "category": "ui",
+    "file": "ui-Text.md"
   },
   "ui/TextInput": {
     "name": "TextInput",

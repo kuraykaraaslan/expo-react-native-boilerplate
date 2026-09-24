@@ -136,9 +136,11 @@ function isPersistedStore(source) {
   return /from\s+['"]zustand\/middleware['"]/.test(source) && /\bpersist\s*\(/.test(source);
 }
 
-function parsePropsNames(source) {
+function parsePropsNames(source, name) {
   // Look for `type|interface <Name>Props ... { ... }` and grab top-level keys.
-  const m = source.match(/(?:type|interface)\s+\w*Props\b[^{]*\{([\s\S]*?)\n\}/);
+  // Prefer the component's own `<name>Props` over any other *Props type.
+  const own = name && source.match(new RegExp(String.raw`(?:type|interface)\s+${name}Props\b[^{]*\{([\s\S]*?)\n\}`));
+  const m = own || source.match(/(?:type|interface)\s+\w*Props\b[^{]*\{([\s\S]*?)\n\}/);
   if (!m) return [];
   const body = m[1];
   const keys = new Set();
@@ -220,6 +222,10 @@ async function collectComponents() {
   for (const file of files) {
     const src = (await readText(file)) ?? '';
     const r = rel(file);
+    if (r === UI_BARREL) {
+      components.push(...(await collectKuiReexports(src)));
+      continue;
+    }
     const parts = r.split('/');
     const category = parts[1] ?? 'misc';
     const basename = path.basename(file).replace(/\.(tsx?|jsx?)$/, '');
@@ -236,6 +242,36 @@ async function collectComponents() {
   }
   components.sort((a, b) => a.id.localeCompare(b.id));
   return components;
+}
+
+// components/ui/index.ts re-exports kui-native (a git dependency) — expand it
+// into one entry per re-exported module so agents see what the app can use.
+const UI_BARREL = 'components/ui/index.ts';
+
+async function collectKuiReexports(barrelSrc) {
+  const byModule = new Map();
+  const re = /^export\s*\{([^}]*)\}\s*from\s*["']kui-native\/modules\/ui\/([\w/]+)["']/gm;
+  let m;
+  while ((m = re.exec(barrelSrc)) !== null) {
+    const names = m[1].split(',').map((n) => n.trim()).filter(Boolean);
+    byModule.set(m[2], [...(byModule.get(m[2]) ?? []), ...names]);
+  }
+  const out = [];
+  for (const [mod, exports] of byModule) {
+    const sourcePath = `node_modules/kui-native/modules/ui/${mod}.tsx`;
+    const src = (await readText(path.join(REPO_ROOT, sourcePath))) ?? '';
+    out.push({
+      id: `ui/${mod}`,
+      filePath: sourcePath,
+      name: mod,
+      category: 'ui',
+      source: 'kui-native',
+      importPath: '@/components/ui',
+      exports,
+      props: parsePropsNames(src, mod),
+    });
+  }
+  return out;
 }
 
 // --- service collection ---------------------------------------------------
@@ -346,8 +382,10 @@ function markdownForComponent(c) {
   lines.push(`- **filePath:** \`${c.filePath}\``);
   if (c.exports?.length) lines.push(`- **exports:** ${c.exports.map((e) => `\`${e}\``).join(', ')}`);
   if (c.props?.length)   lines.push(`- **props:** ${c.props.map((p) => `\`${p}\``).join(', ')}`);
+  if (c.source)          lines.push(`- **source:** ${c.source} (git dependency — fix upstream, never edit or copy)`);
   lines.push('');
-  lines.push('Import:', '', '```ts', `import { ${c.exports?.find((e) => e !== 'default') ?? c.name} } from '@/${c.filePath.replace(/\.(tsx?|jsx?)$/, '')}';`, '```', '');
+  const importFrom = c.importPath ?? `@/${c.filePath.replace(/\.(tsx?|jsx?)$/, '')}`;
+  lines.push('Import:', '', '```ts', `import { ${c.exports?.find((e) => e !== 'default') ?? c.name} } from '${importFrom}';`, '```', '');
   return lines.join('\n');
 }
 
@@ -428,7 +466,7 @@ async function main() {
 
   const indexMap = {};
   for (const c of components) {
-    const filename = `${c.category}-${path.basename(c.filePath).replace(/\.(tsx?|jsx?)$/, '')}.md`;
+    const filename = `${c.id.replace(/\//g, '-')}.md`;
     await writeFile(path.join(OUT_COMPONENTS_DIR, filename), markdownForComponent(c), 'utf8');
     indexMap[c.id] = { name: c.name, category: c.category, file: filename };
   }

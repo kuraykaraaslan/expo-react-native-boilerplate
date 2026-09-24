@@ -2,12 +2,12 @@
 
 - **id:** `ui/TextInput`
 - **category:** ui
-- **filePath:** `components/ui/TextInput.tsx`
+- **filePath:** `node_modules/kui-native/modules/ui/TextInput.tsx`
 - **exports:** `TextInput`
-- **props:** `label`, `error`, `helper`, `containerClassName`
+- **source:** kui-native (git dependency — fix upstream, never edit or copy)
 
 Import:
 
 ```ts
-import { TextInput } from '@/components/ui/TextInput';
+import { TextInput } from '@/components/ui';
 ```
