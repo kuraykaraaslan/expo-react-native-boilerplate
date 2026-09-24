@@ -38,7 +38,7 @@ Before grepping or guessing — fetch the catalog. Static snapshots live under `
 A **production-grade Expo + React Native boilerplate** for cross-platform mobile (iOS, Android, Web) with multi-tenant SaaS conventions matching the sister project [next-boilerplate](https://github.com/kuraykaraaslan/next-boilerplate).
 
 - **Framework**: Expo SDK 55 · React Native · TypeScript 5 (strict)
-- **Routing**: Expo Router v5 — file-based, with route groups `(auth)` / `(tabs)`
+- **Routing**: Expo Router v5 — file-based, with route groups `(auth)` / `(drawer)`
 - **Styling**: NativeWind (Tailwind CSS for React Native)
 - **State**: Zustand 5 + MMKV (never AsyncStorage)
 - **Tokens**: `expo-secure-store` only — tokens NEVER live in Zustand
@@ -91,7 +91,7 @@ app/  (screens)  ──→  services/ + stores/  ──→  libs/axios + libs/se
 │   ├── +html.tsx             ← web HTML shell
 │   ├── +not-found.tsx        ← 404
 │   ├── (auth)/               ← auth route group (login, register, 2fa, …)
-│   └── (tabs)/               ← bottom tabs (home, notifications, settings/)
+│   └── (drawer)/             ← side drawer (home, notifications, settings/)
 │
 ├── components/               ← shared UI (NativeWind + FontAwesome)
 │   ├── auth/                 ← AuthLayout, SSOButtons
@@ -166,9 +166,9 @@ import { getToken } from "@/libs/secureStorage";
 ## 7. Routing: how Expo Router builds the URL tree
 
 - A file `app/(auth)/login.tsx` → route `/login` (the `(auth)` group is stripped).
-- A file `app/(tabs)/settings/profile.tsx` → route `/settings/profile` (the `(tabs)` group is a layout wrapper, not a URL segment).
+- A file `app/(drawer)/settings/profile.tsx` → route `/settings/profile` (the `(drawer)` group is a layout wrapper, not a URL segment).
 - `app/_layout.tsx` wraps everything (currently `<Slot />` + providers + session restore).
-- `app/(tabs)/_layout.tsx` defines the bottom tabs.
+- `app/(drawer)/_layout.tsx` defines the side drawer (`expo-router/drawer`).
 - `app/(auth)/_layout.tsx` defines the auth stack.
 - Navigate with `router.push("/select-tenant")` / `router.replace(...)` from `expo-router`.
 - Use `<Link href="/...">` for declarative navigation.
