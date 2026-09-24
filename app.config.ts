@@ -10,7 +10,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: "myapp",
   userInterfaceStyle: "automatic",
   splash: {
-    image: "./assets/images/splash-icon.png",
+    image: "./assets/images/splash.png",
     resizeMode: "contain",
     backgroundColor: "#ffffff",
   },
@@ -40,7 +40,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       "expo-splash-screen",
       {
         backgroundColor: "#ffffff",
-        image: "./assets/images/splash-icon.png",
+        image: "./assets/images/splash.png",
         imageWidth: 200,
       },
     ],
