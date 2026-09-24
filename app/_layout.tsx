@@ -6,7 +6,13 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Slot } from 'expo-router';
 import { Toaster } from 'sonner-native';
-import { useFonts } from 'expo-font';
+import {
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  useFonts,
+} from '@expo-google-fonts/inter';
 import * as SplashScreen from 'expo-splash-screen';
 import { useAuthStore } from '@/stores/authStore';
 import { useAppStore } from '@/stores/appStore';
@@ -19,7 +25,8 @@ import logger from '@/libs/logger';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded] = useFonts({});
+  const [loaded, fontError] = useFonts({ Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold });
+  const ready = loaded || Boolean(fontError); // fall back to system fonts rather than block the app
 
   const setUser          = useAuthStore((s) => s.setUser);
   const setAuthenticated = useAuthStore((s) => s.setAuthenticated);
@@ -52,10 +59,10 @@ export default function RootLayout() {
   }, [setUser, setAuthenticated]);
 
   useEffect(() => {
-    if (loaded) SplashScreen.hideAsync();
-  }, [loaded]);
+    if (ready) SplashScreen.hideAsync();
+  }, [ready]);
 
-  if (!loaded) return null;
+  if (!ready) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

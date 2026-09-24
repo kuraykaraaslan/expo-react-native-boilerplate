@@ -18,6 +18,7 @@
     "mcp:server": "node scripts/mcp-server.mjs"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.4.2",
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-brands-svg-icons": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
@@ -43,7 +44,7 @@
     "expo-web-browser": "~57.0.3",
     "google-libphonenumber": "^3.2.40",
     "i18next": "^26.1.0",
-    "kui-native": "git+https://github.com/kuraykaraaslan/kui-native.git#v0.2.0",
+    "kui-native": "git+https://github.com/kuraykaraaslan/kui-native.git#v0.3.1",
     "nativewind": "^4.1.23",
     "react": "19.2.3",
     "react-circle-flags": "^0.0.23",
