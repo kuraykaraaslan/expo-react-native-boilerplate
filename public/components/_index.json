@@ -9,6 +9,36 @@
     "category": "auth",
     "file": "auth-SSOButtons.md"
   },
+  "shell/AppHeader": {
+    "name": "AppHeader",
+    "category": "shell",
+    "file": "shell-AppHeader.md"
+  },
+  "shell/DrawerContent": {
+    "name": "DrawerContent",
+    "category": "shell",
+    "file": "shell-DrawerContent.md"
+  },
+  "shell/DrawerNavLink": {
+    "name": "DrawerNavLink",
+    "category": "shell",
+    "file": "shell-DrawerNavLink.md"
+  },
+  "shell/LangSwitcher": {
+    "name": "LangSwitcher",
+    "category": "shell",
+    "file": "shell-LangSwitcher.md"
+  },
+  "shell/ThemeToggle": {
+    "name": "ThemeToggle",
+    "category": "shell",
+    "file": "shell-ThemeToggle.md"
+  },
+  "shell/UserMenu": {
+    "name": "UserMenu",
+    "category": "shell",
+    "file": "shell-UserMenu.md"
+  },
   "ui/Button": {
     "name": "Button",
     "category": "ui",
@@ -18,6 +48,11 @@
     "name": "LoadingSpinner",
     "category": "ui",
     "file": "ui-LoadingSpinner.md"
+  },
+  "ui/SkeletonCard": {
+    "name": "SkeletonCard",
+    "category": "ui",
+    "file": "ui-SkeletonCard.md"
   },
   "ui/TextInput": {
     "name": "TextInput",

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-05-17T17:02:58.295Z",
+  "generatedAt": "2026-09-24T11:27:48.386Z",
   "libs": [
     {
       "filePath": "libs/axios.ts",
@@ -20,6 +20,13 @@
       ]
     },
     {
+      "filePath": "libs/errorUtils.ts",
+      "name": "errorUtils",
+      "exports": [
+        "handleApiError"
+      ]
+    },
+    {
       "filePath": "libs/i18n.ts",
       "name": "i18n",
       "exports": [
@@ -32,6 +39,13 @@
       "exports": [
         "logger",
         "default"
+      ]
+    },
+    {
+      "filePath": "libs/logout.ts",
+      "name": "logout",
+      "exports": [
+        "logout"
       ]
     },
     {

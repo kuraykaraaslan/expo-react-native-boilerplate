@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-05-17T17:02:58.295Z",
+  "generatedAt": "2026-09-24T11:27:48.386Z",
   "components": [
     {
       "id": "auth/AuthLayout",
@@ -30,6 +30,74 @@
       "props": [
         "onPress"
       ]
+    },
+    {
+      "id": "shell/AppHeader",
+      "filePath": "components/shell/AppHeader.tsx",
+      "name": "AppHeader",
+      "category": "shell",
+      "exports": [
+        "AppHeader"
+      ],
+      "props": [
+        "navigation",
+        "title"
+      ]
+    },
+    {
+      "id": "shell/DrawerContent",
+      "filePath": "components/shell/DrawerContent.tsx",
+      "name": "DrawerContent",
+      "category": "shell",
+      "exports": [
+        "DrawerContent"
+      ],
+      "props": []
+    },
+    {
+      "id": "shell/DrawerNavLink",
+      "filePath": "components/shell/DrawerNavLink.tsx",
+      "name": "DrawerNavLink",
+      "category": "shell",
+      "exports": [
+        "DrawerNavLink"
+      ],
+      "props": [
+        "href",
+        "label",
+        "icon",
+        "exact"
+      ]
+    },
+    {
+      "id": "shell/LangSwitcher",
+      "filePath": "components/shell/LangSwitcher.tsx",
+      "name": "LangSwitcher",
+      "category": "shell",
+      "exports": [
+        "LangSwitcher"
+      ],
+      "props": []
+    },
+    {
+      "id": "shell/ThemeToggle",
+      "filePath": "components/shell/ThemeToggle.tsx",
+      "name": "ThemeToggle",
+      "category": "shell",
+      "exports": [
+        "ThemeToggle"
+      ],
+      "props": []
+    },
+    {
+      "id": "shell/UserMenu",
+      "filePath": "components/shell/UserMenu.tsx",
+      "name": "UserMenu",
+      "category": "shell",
+      "exports": [
+        "UserMenu"
+      ],
+      "props": []
     },
     {
       "id": "ui/Button",
@@ -63,6 +131,19 @@
         "color",
         "label",
         "className"
+      ]
+    },
+    {
+      "id": "ui/SkeletonCard",
+      "filePath": "components/ui/SkeletonCard.tsx",
+      "name": "SkeletonCard",
+      "category": "ui",
+      "exports": [
+        "SkeletonCardProps",
+        "SkeletonCard"
+      ],
+      "props": [
+        "style"
       ]
     },
     {
