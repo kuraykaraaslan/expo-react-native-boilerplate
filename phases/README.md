@@ -30,7 +30,7 @@ Sunucu tarafı ise **hazır**: `audience: 'device'` ile bearer akışı eklenmi�
 
 ## Sahibin kararları (sabit)
 
-1. **kui-native git paketi olarak kurulur** (karar 2026-09-24; önceki "vendor et / kopyala" kararının **yerine geçer**). `package.json` → `"kui-native": "github:kuraykaraaslan/kui-native#<tag>"`. Kaynak kod repoya **kopyalanmaz**. Hatalar kui-native'de düzeltilir, yeni tag çıkarılır.
+1. **kui-native git paketi olarak kurulur** (karar 2026-09-24; önceki "vendor et / kopyala" kararının **yerine geçer**). `package.json` → `"kui-native": "git+https://github.com/kuraykaraaslan/kui-native.git#<tag>"`. Kaynak kod repoya **kopyalanmaz**. Hatalar kui-native'de düzeltilir, yeni tag çıkarılır.
    - **Expo SDK 57'ye yükseltilir.** kui-native ile react / RN / expo tek kopya kalmalı. Önceki "SDK yükseltmesi yok" kararı kaldırıldı.
    - **KUInative reposunda paketleştirme değişikliği yapılabilir:** göreli import'lar, peerDependencies, tema override API'si.
 2. **next-boilerplate'e dokunulmaz.** Mobil (`device`) desteğini sahibi zaten ekledi.
@@ -43,7 +43,7 @@ Sunucu tarafı ise **hazır**: `audience: 'device'` ile bearer akışı eklenmi�
 | 0 | [_foundation/phase-0-build-fix.md](_foundation/phase-0-build-fix.md) | Derlemeyi ayağa kaldır | ✅ `97a185e` |
 | 1A | [_foundation/phase-1a-expo-sdk-57.md](_foundation/phase-1a-expo-sdk-57.md) | Expo SDK 55 → 57 | ✅ `365b597` |
 | 1B | [_foundation/phase-1b-kui-native-package.md](_foundation/phase-1b-kui-native-package.md) | kui-native paketleştirme (**KUInative reposunda**) + `v0.2.0` tag | ✅ KUInative `887ad72` · `v0.2.0` |
-| 1C | [_foundation/phase-1c-kui-native-dependency.md](_foundation/phase-1c-kui-native-dependency.md) | kui-native git bağımlılığı + tek tasarım dili | ⬜ Bekliyor |
+| 1C | [_foundation/phase-1c-kui-native-dependency.md](_foundation/phase-1c-kui-native-dependency.md) | kui-native git bağımlılığı + tek tasarım dili | ✅ `ff2e1e1` |
 | 2 | [_foundation/phase-2-transport.md](_foundation/phase-2-transport.md) | Transport katmanı (device bearer) | ⬜ Bekliyor |
 | 3 | [auth/phase-3-dto-services.md](auth/phase-3-dto-services.md) | DTO + servis hizalaması | ⬜ Bekliyor |
 | 4 | [auth/phase-4-auth-screens.md](auth/phase-4-auth-screens.md) | Auth çekirdek ekranları | ⬜ Bekliyor |

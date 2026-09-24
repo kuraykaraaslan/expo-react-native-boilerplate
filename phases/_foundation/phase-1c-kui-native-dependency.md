@@ -18,7 +18,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 
 ## 1C.1 Bağımlılık
 
-- [ ] `package.json` → `"kui-native": "github:kuraykaraaslan/kui-native#v0.2.0"`. Sürüm **her zaman bir tag'e** sabitlenir, branch'e (`#main`) asla sabitlenmez. `package-lock.json` çözülen commit SHA'sını kaydeder.
+- [x] `package.json` → `"kui-native": "git+https://github.com/kuraykaraaslan/kui-native.git#v0.2.0"`. Sürüm **her zaman bir tag'e** sabitlenir, branch'e (`#main`) asla sabitlenmez. `package-lock.json` çözülen commit SHA'sını kaydeder.
 - [ ] Repo **public**: `github:` kısaltması https üzerinden kimlik bilgisi olmadan çözülür. CI ve EAS için ek ayar gerekmez. `package-lock.json`'da URL'nin `git+ssh` değil `git+https` olarak kaydedildiği doğrulanır; ssh kalırsa SSH anahtarı olmayan CI ortamı klonlayamaz.
 - [ ] Opsiyonel peer'ler (`expo-video`, `react-native-maps`, `leaflet`, …) **kurulmaz**. Boilerplate bu bileşenleri kullanmaz.
 - [ ] Güncelleme prosedürü `README.md`'ye yazılır: kui-native'de yeni tag → `package.json`'da tag değişir → `npm install` → typecheck + test → ayrı commit (`chore(deps): kui-native vX.Y.Z`).
@@ -102,3 +102,21 @@ NEREDE KALDIK: phases/README.md §Sıra
 - **Marka rengi kayması:** `configureTheme` çağrısı ilk render'dan sonra olursa ilk kare mavi görünür. `brand.ts` import'u `app/_layout.tsx`'in **en üstünde** olmalı.
 - **Lock dosyasında ssh URL'si:** yerel git ayarı (`url.<ssh>.insteadOf`) yüzünden lock'a `git+ssh://` yazılırsa CI/EAS klonlayamaz. Lock commit'lenmeden önce kontrol edilir.
 - **Çağrı yeri kaçırma:** yerel bileşenler silindikten sonra typecheck her eksik import'u yakalar. Prop **anlam** farkları (ör. `variant` adları) ise ancak ekranlar gezilerek bulunur.
+
+---
+
+## ✅ KODLANDI — 2026-09-24
+
+Commit'ler: `c854767` (bağımlılık + build entegrasyonu) · `ff2e1e1` (tema + bileşenler + shell) · `d0c18bc` (katalog) · `893158c` (AGENTS.md, 5 kural aynası, README)
+
+Doğrulama: `npm run typecheck` 0 hata (kui-native kaynakları boilerplate'in strict ayarlarıyla birlikte derleniyor) · `npm run test:ci` 2/2 · `npx expo export --platform web` başarılı. Üretilen HTML'in kökünde `--color-primary:#f4511e` var; yalnız kui-native'in kullandığı sınıflar (`min-w-[10rem]`, `border-error`, `shadow-lg`) CSS'e girmiş, yani tailwind `content` yolu çalışıyor. SSH kapalıyken ve temiz cache ile `npm ci`, kui-native'i sorunsuz kuruyor. `git grep "kui-native/" -- app components` yalnız `components/ui/index.ts`'i gösteriyor. MCP kataloğunda 20 bileşen `source: "kui-native"` ile listeleniyor.
+
+**Bilinçli sapmalar:**
+- **Bağımlılık yazımı `git+https://github.com/kuraykaraaslan/kui-native.git#v0.2.0`** (`github:` kısaltması yerine; açık https). npm lock'a her iki yazımda da `git+ssh://…#887ad72` yazıyor. Bu engel değil: public repo için npm https tarball'a düşüyor (SSH kapalı `npm ci` ile doğrulandı).
+- **`useThemeTokens`** `@/libs/theme/ThemeContext`'ten re-export ediliyor. Kural gereği uygulama kodu `kui-native/*` import etmiyor; yalnız `components/ui/index.ts` ve `libs/theme/*` edebiliyor.
+- **Tema tercihi köprüsü modül seviyesinde,** effect'te değil. MMKV senkron hydrate olduğu için ilk karede doğru şema geliyor.
+- **`useTheme()` artık `tokens` döndürmüyor;** yalnız `isDark`, `colorScheme` ve `setColorScheme` döndürüyor. Ham renk için `useThemeTokens()` kullanılıyor.
+- **`LangSwitcher`** altı dili inline listelemek yerine kui-native `DropdownMenu` ile gösteriyor (başlıkta yer yok). Liste `SUPPORTED_LOCALES`'ten (`libs/i18n.ts`) türetiliyor.
+- **Yerel `Button` ve `TextInput` hiçbir yerde kullanılmıyordu,** çağrı yeri düzeltmesi gerekmeden silindi. `LoadingSpinner` 6 ekranda `Spinner size="lg"` ile değiştirildi.
+- **`app/**` ekranları hâlâ ham Tailwind renk sınıfları** (`bg-white dark:bg-gray-900`, `text-orange-500`) ve FontAwesome `color` için hex kullanıyor. Kabul kriteri `components/` için sağlandı. Ekranların token'lara taşınması, ekranları zaten yeniden yazan Faz 4 (auth) ve Faz 5 (tenancy) ile yapılacak; drawer ana sayfası, bildirimler ve ayarlar ekranları için de bu iş açık kalıyor.
+- **Emülatör doğrulaması yapılmadı;** yerine web export kullanıldı. Açık/koyu geçişi ve tercihin yeniden açılışta korunması cihazda elle kontrol edilmeli.

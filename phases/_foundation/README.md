@@ -29,7 +29,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 | 0 | [phase-0-build-fix.md](phase-0-build-fix.md) | Derlemeyi ayağa kaldır | ✅ `97a185e` |
 | 1A | [phase-1a-expo-sdk-57.md](phase-1a-expo-sdk-57.md) | Expo SDK 55 → 57 | ✅ `365b597` |
 | 1B | [phase-1b-kui-native-package.md](phase-1b-kui-native-package.md) | kui-native paketleştirme (**KUInative reposunda**) + `v0.2.0` tag | ✅ KUInative `887ad72` · `v0.2.0` |
-| 1C | [phase-1c-kui-native-dependency.md](phase-1c-kui-native-dependency.md) | kui-native git bağımlılığı + tek tasarım dili | ⬜ Bekliyor |
+| 1C | [phase-1c-kui-native-dependency.md](phase-1c-kui-native-dependency.md) | kui-native git bağımlılığı + tek tasarım dili | ✅ `ff2e1e1` |
 | 2 | [phase-2-transport.md](phase-2-transport.md) | Transport katmanı (device bearer) | ⬜ Bekliyor |
 
 ## Kilitli kararlar
