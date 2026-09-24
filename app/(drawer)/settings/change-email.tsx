@@ -1,78 +1,81 @@
-import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { toast } from "sonner-native";
-import { useTranslation } from "react-i18next";
-import * as Haptics from "expo-haptics";
-import { AuthClientService } from "@/services/auth.service.client";
-import { handleApiError } from "@/libs/errorUtils";
-import { ChangeEmailRequestSchema } from "@/dto/auth.dto";
+import { useState } from 'react';
+import { View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
+import { toast } from 'sonner-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { Screen } from '@/components/common/Screen';
+import { ScreenHeader } from '@/components/common/ScreenHeader';
+import { Button, Card, Input } from '@/components/ui';
+import { ChangeEmailRequestSchema } from '@/dto/auth.dto';
+import { handleApiError } from '@/libs/errorUtils';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
+import { AuthClientService } from '@/services/auth.service.client';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function ChangeEmailScreen() {
   const { t } = useTranslation();
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState<string | undefined>();
-  const [loading, setLoading] = useState(false);
+  const tokens = useThemeTokens();
+  const current = useAuthStore((s) => s.user?.email);
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState<string | undefined>();
+  const [saving, setSaving] = useState(false);
 
-  async function handleSubmit() {
-    const result = ChangeEmailRequestSchema.safeParse({ newEmail: email });
+  async function submit() {
+    const result = ChangeEmailRequestSchema.safeParse({ newEmail: email.trim() });
     if (!result.success) {
-      setEmailError(t("AUTH.EMAIL_INVALID"));
+      setError(t('AUTH_UI.EMAIL_INVALID'));
       return;
     }
-    setEmailError(undefined);
-    setLoading(true);
+    setError(undefined);
+    setSaving(true);
     try {
       await AuthClientService.changeEmail(result.data);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success("Verification email sent. Check your inbox.");
-      setEmail("");
+      toast.success(t('EMAIL_CHANGE.SENT'));
+      setEmail('');
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      handleApiError(err, "ChangeEmailScreen");
+      handleApiError(err, 'ChangeEmailScreen.submit');
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   }
 
   return (
-    <ScrollView
-      className="flex-1 bg-gray-50 dark:bg-gray-950"
-      contentContainerClassName="px-4 py-6"
-      keyboardShouldPersistTaps="handled"
-    >
-      <Text className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-        Enter your new email address. We'll send a verification link to confirm the change.
-      </Text>
-      <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-        New {t("AUTH.EMAIL")}
-      </Text>
-      <TextInput
-        className={`w-full border rounded-lg px-4 py-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 mb-1 ${
-          emailError
-            ? "border-red-400 dark:border-red-500"
-            : "border-gray-300 dark:border-gray-600"
-        }`}
-        placeholder="new@example.com"
-        value={email}
-        onChangeText={(v) => { setEmail(v); setEmailError(undefined); }}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        accessible
-        accessibilityLabel="New email address"
-      />
-      {emailError && (
-        <Text className="text-red-500 text-xs mb-3">{emailError}</Text>
-      )}
-      <TouchableOpacity
-        className={`w-full rounded-lg py-4 items-center mt-4 ${loading ? "bg-orange-300" : "bg-orange-500"}`}
-        onPress={handleSubmit}
-        disabled={loading}
-        accessible
-        accessibilityLabel="Save new email"
-        accessibilityRole="button"
+    <Screen keyboard>
+      <ScreenHeader back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }} title={t('EMAIL_CHANGE.TITLE')} subtitle={t('EMAIL_CHANGE.SUBTITLE')} />
+      <Card
+        title={t('EMAIL_CHANGE.CARD')}
+        subtitle={current ? t('EMAIL_CHANGE.CARD_DESC', { email: current }) : undefined}
+        footer={
+          <View className="flex-row justify-end">
+            <Button loading={saving} onPress={submit} testID="account-email-submit">
+              {saving ? t('COMMON.SAVING') : t('EMAIL_CHANGE.SUBMIT')}
+            </Button>
+          </View>
+        }
       >
-        <Text className="text-white font-semibold">{loading ? "Saving..." : t("PROFILE.SAVE")}</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <Input
+          label={t('EMAIL_CHANGE.NEW_EMAIL')}
+          hint={t('EMAIL_CHANGE.NEW_EMAIL_HINT')}
+          type="email"
+          required
+          value={email}
+          onChangeText={(v) => {
+            setEmail(v);
+            setError(undefined);
+          }}
+          error={error}
+          autoComplete="email"
+          textContentType="emailAddress"
+          returnKeyType="send"
+          onSubmitEditing={submit}
+          prefixIcon={<FontAwesomeIcon icon={faEnvelope} size={14} color={tokens['text-disabled']} />}
+          testID="account-email-input"
+        />
+      </Card>
+    </Screen>
   );
 }

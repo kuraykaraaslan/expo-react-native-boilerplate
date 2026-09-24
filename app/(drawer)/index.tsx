@@ -1,77 +1,111 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import { router } from "expo-router";
-import { useAuthStore } from "@/stores/authStore";
-import { useTenantStore } from "@/stores/tenantStore";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faBuilding, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
-import { useThemeTokens } from "@/libs/theme/ThemeContext";
-import { logout } from "@/libs/logout";
+import { useCallback, useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
+import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import {
+  faBell,
+  faBuilding,
+  faCircleUser,
+  faEnvelopeOpenText,
+  faGear,
+  faLaptop,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
+import { LinkTile } from '@/components/common/LinkTile';
+import { RoleBadge } from '@/components/common/Badges';
+import { Screen } from '@/components/common/Screen';
+import { ScreenHeader } from '@/components/common/ScreenHeader';
+import { SectionLabel } from '@/components/common/SectionLabel';
+import { StatTile } from '@/components/common/StatTile';
+import { Button, Card } from '@/components/ui';
+import logger from '@/libs/logger';
+import { AuthClientService } from '@/services/auth.service.client';
+import { NotificationClientService } from '@/services/notification.service.client';
+import { useNotificationStore } from '@/stores/notificationStore';
+import { useTenantStore } from '@/stores/tenantStore';
 
-export default function HomeScreen() {
-  const t = useThemeTokens();
-  const user = useAuthStore((s) => s.user);
-  const selectedTenant = useTenantStore((s) => s.selectedTenantMembership);
-  const handleLogout = logout;
+export default function DashboardScreen() {
+  const { t } = useTranslation();
+  const membership = useTenantStore((s) => s.selectedTenantMembership);
+  const orgCount = useTenantStore((s) => s.memberships.length);
+  const unread = useNotificationStore((s) => s.unreadCount);
+  const setUnread = useNotificationStore((s) => s.setUnreadCount);
+  const [sessions, setSessions] = useState<number | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Dashboard tiles are glanceable extras: failures are logged, not toasted.
+  const load = useCallback(async () => {
+    const [n, s] = await Promise.allSettled([NotificationClientService.getNotifications(), AuthClientService.getSessions()]);
+    if (n.status === 'fulfilled') setUnread(n.value.filter((x) => !x.isRead).length);
+    else logger.warn('[Dashboard] notifications', n.reason);
+    if (s.status === 'fulfilled') setSessions(s.value.length);
+    else logger.warn('[Dashboard] sessions', s.reason);
+  }, [setUnread]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  async function refresh() {
+    setRefreshing(true);
+    await load();
+    setRefreshing(false);
+  }
 
   return (
-    <ScrollView
-      className="flex-1 bg-gray-50 dark:bg-gray-950"
-      contentContainerClassName="px-4 py-6"
-    >
-      <View className="bg-orange-500 rounded-2xl p-6 mb-6">
-        <View className="flex-row items-center mb-2">
-          <FontAwesomeIcon icon={faBuilding} color="#ffffff" size={20} />
-          <Text className="text-orange-100 text-sm ml-2">Current workspace</Text>
-        </View>
-        <Text className="text-white text-2xl font-bold">
-          {selectedTenant?.tenant?.name ?? "No workspace selected"}
-        </Text>
-        {selectedTenant && (
-          <View className="mt-2 bg-orange-600 rounded-full self-start px-3 py-1">
-            <Text className="text-white text-xs font-medium">{selectedTenant.memberRole}</Text>
+    <Screen refreshing={refreshing} onRefresh={refresh}>
+      <ScreenHeader title={t('DASHBOARD.TITLE')} subtitle={t('DASHBOARD.SUBTITLE')} />
+
+      {membership ? (
+        <Card
+          title={t('DASHBOARD.CURRENT_ORG')}
+          headerRight={
+            <Button size="sm" variant="outline" onPress={() => router.push('/select-tenant')} testID="dashboard-switch-org">
+              {t('DASHBOARD.SWITCH')}
+            </Button>
+          }
+        >
+          <View className="flex-row items-center gap-3">
+            <View className="h-10 w-10 items-center justify-center rounded-lg bg-primary-subtle" accessible={false}>
+              <Text className="text-base font-semibold text-primary">
+                {(membership.tenant?.name ?? membership.tenantId).charAt(0).toUpperCase()}
+              </Text>
+            </View>
+            <View className="min-w-0 flex-1 gap-0.5">
+              <Text className="text-base font-semibold text-text-primary" numberOfLines={1}>
+                {membership.tenant?.name ?? membership.tenantId}
+              </Text>
+              {membership.tenant?.description ? (
+                <Text className="text-xs text-text-secondary" numberOfLines={1}>
+                  {membership.tenant.description}
+                </Text>
+              ) : null}
+            </View>
+            <RoleBadge role={membership.memberRole} />
           </View>
-        )}
+        </Card>
+      ) : null}
+
+      <View className="gap-3">
+        <View className="flex-row gap-3">
+          <StatTile icon={faBell} label={t('DASHBOARD.STAT_UNREAD')} value={unread} />
+          <StatTile icon={faLaptop} label={t('DASHBOARD.STAT_SESSIONS')} value={sessions ?? '–'} loading={sessions === null} />
+        </View>
+        <StatTile icon={faBuilding} label={t('DASHBOARD.STAT_ORGS')} value={orgCount} />
       </View>
 
-      <View className="bg-white dark:bg-gray-900 rounded-2xl p-6 mb-4 border border-gray-100 dark:border-gray-800">
-        <View className="flex-row items-center">
-          <View className="w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/30 items-center justify-center mr-4">
-            <FontAwesomeIcon icon={faUser} color={t.primary} size={20} />
-          </View>
-          <View className="flex-1">
-            <Text className="text-lg font-semibold text-gray-900 dark:text-white">
-              {user?.name ?? "User"}
-            </Text>
-            <Text className="text-sm text-gray-500 dark:text-gray-400">{user?.email ?? ""}</Text>
-          </View>
-        </View>
-      </View>
-
-      <View className="bg-white dark:bg-gray-900 rounded-2xl p-4 mb-4 border border-gray-100 dark:border-gray-800">
-        <Text className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-          Quick Actions
+      <View className="gap-3">
+        <Text accessibilityRole="header" className="text-sm font-semibold text-text-primary">
+          {t('DASHBOARD.IN_WORKSPACE')}
         </Text>
-        <TouchableOpacity
-          className="flex-row items-center py-3 border-b border-gray-100 dark:border-gray-800"
-          onPress={() => router.push("/select-tenant")}
-          accessible
-          accessibilityLabel="Switch workspace"
-          accessibilityRole="button"
-        >
-          <FontAwesomeIcon icon={faBuilding} color="#6b7280" size={16} />
-          <Text className="ml-3 text-gray-700 dark:text-gray-300">Switch Workspace</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          className="flex-row items-center py-3"
-          onPress={handleLogout}
-          accessible
-          accessibilityLabel="Sign out"
-          accessibilityRole="button"
-        >
-          <FontAwesomeIcon icon={faRightFromBracket} color="#ef4444" size={16} />
-          <Text className="ml-3 text-red-500">Sign Out</Text>
-        </TouchableOpacity>
+        <SectionLabel>{t('SHELL.GROUP_ACCOUNT')}</SectionLabel>
+        <LinkTile icon={faCircleUser} title={t('SETTINGS_HUB.PROFILE')} href="/settings/profile" testID="dashboard-link-profile" />
+        <LinkTile icon={faBell} title={t('SHELL.NAV_NOTIFICATIONS')} href="/notifications" testID="dashboard-link-notifications" />
+        <SectionLabel className="mt-2">{t('SHELL.GROUP_ORGANIZATION')}</SectionLabel>
+        <LinkTile icon={faUsers} title={t('SETTINGS_HUB.MEMBERS')} href="/settings/tenant/members" testID="dashboard-link-members" />
+        <LinkTile icon={faEnvelopeOpenText} title={t('SETTINGS_HUB.INVITATIONS')} href="/settings/tenant/invitations" testID="dashboard-link-invitations" />
+        <LinkTile icon={faGear} title={t('SETTINGS_HUB.TITLE')} href="/settings" testID="dashboard-link-settings" />
       </View>
-    </ScrollView>
+    </Screen>
   );
 }

@@ -1,212 +1,145 @@
-import { useState, useEffect, useCallback } from "react";
-import {
-  View, Text, FlatList, TouchableOpacity,
-  ActivityIndicator, TextInput, Alert,
-} from "react-native";
-import { toast } from "sonner-native";
-import * as Haptics from "expo-haptics";
-import { useTenantStore } from "@/stores/tenantStore";
-import { TenantClientService } from "@/services/tenant.service.client";
-import { handleApiError } from "@/libs/errorUtils";
-import { Spinner } from "@/components/ui";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faTrash, faPaperPlane, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import type { Invitation } from "@/dto/tenant.dto";
+import { useCallback, useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
+import { toast } from 'sonner-native';
+import { faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons';
+import { InvitationStatusBadge, RoleBadge } from '@/components/common/Badges';
+import { ConfirmDialog } from '@/components/common/ConfirmDialog';
+import { Screen } from '@/components/common/Screen';
+import { ScreenHeader } from '@/components/common/ScreenHeader';
+import { InviteMemberModal } from '@/components/tenant/InviteMemberModal';
+import { NoOrganization } from '@/components/tenant/NoOrganization';
+import { Button, Card, EmptyState } from '@/components/ui';
+import type { Invitation } from '@/dto/tenant.dto';
+import { handleApiError } from '@/libs/errorUtils';
+import { TenantClientService } from '@/services/tenant.service.client';
+import { useTenantStore } from '@/stores/tenantStore';
+import { formatDate } from '@/utils/format';
 
-const STATUS_COLOR: Record<string, string> = {
-  PENDING: "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400",
-  ACCEPTED: "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400",
-  DECLINED: "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400",
-  EXPIRED: "bg-gray-100 dark:bg-gray-800 text-gray-500",
-  REVOKED: "bg-gray-100 dark:bg-gray-800 text-gray-500",
-};
-
-function InvitationItem({
-  item,
-  onRevoke,
-}: Readonly<{ item: Invitation; onRevoke: (id: string) => void }>) {
-  const statusClass = STATUS_COLOR[item.status] ?? STATUS_COLOR.EXPIRED;
-  const canRevoke = item.status === "PENDING";
-
+function InvitationRow({ item, last, onRevoke }: { item: Invitation; last: boolean; onRevoke?: () => void }) {
+  const { t } = useTranslation();
   return (
-    <View className="bg-white dark:bg-gray-900 mx-4 mb-3 rounded-xl p-4 border border-gray-100 dark:border-gray-800">
-      <View className="flex-row items-center justify-between">
-        <View className="flex-row items-center flex-1">
-          <View className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 items-center justify-center mr-3">
-            <FontAwesomeIcon icon={faEnvelope} color="#6b7280" size={16} />
-          </View>
-          <View className="flex-1">
-            <Text className="font-medium text-gray-900 dark:text-white">{item.email ?? "—"}</Text>
-            <Text className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 capitalize">
-              {item.memberRole.toLowerCase()} role
-            </Text>
-            {item.expiresAt && (
-              <Text className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
-                Expires {new Date(item.expiresAt).toLocaleDateString()}
-              </Text>
-            )}
-          </View>
-        </View>
-        <View className="items-end gap-2">
-          <View className={`rounded-full px-2 py-0.5 ${statusClass}`}>
-            <Text className={`text-xs font-medium ${statusClass}`}>{item.status}</Text>
-          </View>
-          {canRevoke && (
-            <TouchableOpacity
-              className="w-7 h-7 rounded-full bg-red-50 dark:bg-red-900/20 items-center justify-center"
-              onPress={() => onRevoke(item.invitationId)}
-              accessible
-              accessibilityLabel="Revoke invitation"
-              accessibilityRole="button"
-            >
-              <FontAwesomeIcon icon={faTrash} color="#ef4444" size={11} />
-            </TouchableOpacity>
-          )}
-        </View>
+    <View className={`gap-1.5 py-3 ${last ? '' : 'border-b border-border'}`} testID={`invitations-row-${item.invitationId}`}>
+      <View className="flex-row items-center gap-3">
+        <Text className="min-w-0 flex-1 text-sm font-medium text-text-primary" numberOfLines={1}>
+          {item.email ?? '—'}
+        </Text>
+        {onRevoke ? (
+          <Button size="sm" variant="outline" onPress={onRevoke} accessibilityLabel={`${t('INVITATIONS.REVOKE')}: ${item.email ?? ''}`}>
+            <Text className="text-xs font-medium text-error">{t('INVITATIONS.REVOKE')}</Text>
+          </Button>
+        ) : null}
       </View>
+      <View className="flex-row flex-wrap items-center gap-1.5">
+        <RoleBadge role={item.memberRole} />
+        <InvitationStatusBadge status={item.status} />
+      </View>
+      <Text className="text-xs text-text-secondary">
+        {[
+          item.createdAt ? t('INVITATIONS.SENT', { date: formatDate(item.createdAt) }) : null,
+          item.expiresAt ? t('INVITATIONS.EXPIRES', { date: formatDate(item.expiresAt) }) : null,
+        ]
+          .filter(Boolean)
+          .join('  ·  ')}
+      </Text>
     </View>
   );
 }
 
 export default function InvitationsScreen() {
+  const { t } = useTranslation();
   const membership = useTenantStore((s) => s.selectedTenantMembership);
+  const canManage = membership?.memberRole === 'ADMIN' || membership?.memberRole === 'OWNER';
   const [invitations, setInvitations] = useState<Invitation[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [sending, setSending] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [revoking, setRevoking] = useState<Invitation | null>(null);
 
   const load = useCallback(async () => {
     if (!membership) return;
-    setLoading(true);
     try {
       const { invitations: list } = await TenantClientService.getInvitations(membership.tenantId);
       setInvitations(list);
     } catch (err: unknown) {
-      handleApiError(err, "InvitationsScreen.load");
-    } finally {
-      setLoading(false);
+      handleApiError(err, 'InvitationsScreen.load');
     }
   }, [membership]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load().finally(() => setLoading(false));
+  }, [load]);
 
-  async function handleSend() {
-    if (!membership || !email.trim()) return;
-    setSending(true);
+  async function refresh() {
+    setRefreshing(true);
+    await load();
+    setRefreshing(false);
+  }
+
+  async function revoke(inv: Invitation) {
     try {
-      await TenantClientService.sendInvitation(membership.tenantId, {
-        email: email.trim(),
-        memberRole: "USER",
-      });
+      await TenantClientService.revokeInvitation(inv.tenantId, inv.invitationId);
+      setInvitations((prev) => prev.map((i) => (i.invitationId === inv.invitationId ? { ...i, status: 'REVOKED' } : i)));
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success("Invitation sent");
-      setEmail("");
-      load();
+      toast.success(t('INVITATIONS.REVOKED'));
     } catch (err: unknown) {
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      handleApiError(err, "InvitationsScreen.send");
-    } finally {
-      setSending(false);
+      handleApiError(err, 'InvitationsScreen.revoke');
     }
   }
 
-  function confirmRevoke(invitationId: string) {
-    Alert.alert(
-      "Revoke Invitation",
-      "Are you sure you want to revoke this invitation?",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Revoke",
-          style: "destructive",
-          onPress: async () => {
-            if (!membership) return;
-            try {
-              await TenantClientService.revokeInvitation(membership.tenantId, invitationId);
-              await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-              toast.success("Invitation revoked");
-              setInvitations((prev) => prev.filter((i) => i.invitationId !== invitationId));
-            } catch (err: unknown) {
-              handleApiError(err, "InvitationsScreen.revoke");
-            }
-          },
-        },
-      ]
-    );
-  }
+  const header = (
+    <ScreenHeader
+      back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }}
+      title={t('INVITATIONS.TITLE')}
+      subtitle={t('INVITATIONS.SUBTITLE')}
+      actions={membership && canManage ? [{ label: t('INVITATIONS.NEW'), onPress: () => setInviteOpen(true) }] : undefined}
+    />
+  );
 
   if (!membership) {
     return (
-      <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-950 p-8">
-        <Text className="text-gray-500 dark:text-gray-400 text-center">No workspace selected.</Text>
-      </View>
+      <Screen>
+        {header}
+        <NoOrganization />
+      </Screen>
     );
   }
 
   return (
-    <View className="flex-1 bg-gray-50 dark:bg-gray-950">
-      {/* Send invitation form */}
-      <View className="bg-white dark:bg-gray-900 mx-4 mt-4 mb-2 rounded-2xl border border-gray-100 dark:border-gray-800 p-4">
-        <Text className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-          Invite by Email
-        </Text>
-        <View className="flex-row gap-2">
-          <TextInput
-            className="flex-1 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800"
-            value={email}
-            onChangeText={setEmail}
-            placeholder="colleague@example.com"
-            placeholderTextColor="#9ca3af"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
+    <Screen refreshing={refreshing} onRefresh={refresh}>
+      {header}
+      <Card title={t('INVITATIONS.CARD')} subtitle={t('INVITATIONS.CARD_DESC')} loading={loading}>
+        {invitations.length === 0 ? (
+          <EmptyState
+            icon={faEnvelopeOpenText}
+            title={t('INVITATIONS.EMPTY')}
+            description={t('INVITATIONS.EMPTY_DESC')}
+            actionLabel={canManage ? t('INVITATIONS.NEW') : undefined}
+            onAction={canManage ? () => setInviteOpen(true) : undefined}
+            className="py-8"
           />
-          <TouchableOpacity
-            className={`rounded-xl px-4 items-center justify-center ${
-              sending || !email.trim() ? "bg-orange-300" : "bg-orange-500"
-            }`}
-            onPress={handleSend}
-            disabled={sending || !email.trim()}
-          >
-            {sending ? (
-              <ActivityIndicator color="#ffffff" size="small" />
-            ) : (
-              <FontAwesomeIcon icon={faPaperPlane} color="#ffffff" size={16} />
-            )}
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <FlatList
-        data={invitations}
-        keyExtractor={(item) => item.invitationId}
-        renderItem={({ item }) => (
-          <InvitationItem item={item} onRevoke={confirmRevoke} />
+        ) : (
+          invitations.map((inv, i) => (
+            <InvitationRow
+              key={inv.invitationId}
+              item={inv}
+              last={i === invitations.length - 1}
+              onRevoke={canManage && inv.status === 'PENDING' ? () => setRevoking(inv) : undefined}
+            />
+          ))
         )}
-        onRefresh={load}
-        refreshing={loading && invitations.length === 0}
-        contentContainerClassName="pt-2 pb-8"
-        ListHeaderComponent={
-          invitations.length > 0 ? (
-            <View className="px-4 mb-3">
-              <Text className="text-gray-500 dark:text-gray-400 text-sm">
-                {invitations.length} {invitations.length === 1 ? "invitation" : "invitations"}
-              </Text>
-            </View>
-          ) : null
-        }
-        ListEmptyComponent={
-          loading ? (
-            <View className="items-center py-16">
-              <Spinner size="lg" />
-            </View>
-          ) : (
-            <View className="items-center py-16">
-              <Text className="text-gray-400">No invitations yet</Text>
-            </View>
-          )
-        }
+      </Card>
+
+      <InviteMemberModal tenantId={membership.tenantId} open={inviteOpen} onClose={() => setInviteOpen(false)} onInvited={load} />
+      <ConfirmDialog
+        open={revoking !== null}
+        onClose={() => setRevoking(null)}
+        title={t('INVITATIONS.REVOKE_TITLE')}
+        description={t('INVITATIONS.REVOKE_DESC', { email: revoking?.email ?? '' })}
+        confirmLabel={t('INVITATIONS.REVOKE')}
+        onConfirm={() => (revoking ? revoke(revoking) : undefined)}
       />
-    </View>
+    </Screen>
   );
 }

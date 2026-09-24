@@ -1,162 +1,166 @@
-import { useState, useCallback, useEffect } from "react";
-import { View, Text, FlatList, TouchableOpacity, Alert } from "react-native";
-import { toast } from "sonner-native";
-import * as Haptics from "expo-haptics";
-import { NotificationClientService } from "@/services/notification.service.client";
-import { handleApiError } from "@/libs/errorUtils";
-import { Spinner } from "@/components/ui";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faCheckDouble, faTrash } from "@fortawesome/free-solid-svg-icons";
-import type { Notification } from "@/dto/notification.dto";
+import { useCallback, useEffect, useState } from 'react';
+import { FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
+import { toast } from 'sonner-native';
+import { faBellSlash } from '@fortawesome/free-solid-svg-icons';
+import { ConfirmDialog } from '@/components/common/ConfirmDialog';
+import { Screen, useListContentStyle } from '@/components/common/Screen';
+import { ScreenHeader } from '@/components/common/ScreenHeader';
+import { Button, EmptyState, Spinner } from '@/components/ui';
+import type { Notification } from '@/dto/notification.dto';
+import { handleApiError } from '@/libs/errorUtils';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
+import { NotificationClientService } from '@/services/notification.service.client';
+import { useNotificationStore } from '@/stores/notificationStore';
+import { cn } from '@/utils/cn';
+import { formatRelative } from '@/utils/format';
 
-function NotificationItem({
-  item,
-  onMarkRead,
-}: Readonly<{
-  item: Notification;
-  onMarkRead: (id: string) => void;
-}>) {
-  const isUnread = !item.isRead;
+function NotificationRow({ item, onPress }: { item: Notification; onPress: () => void }) {
+  const { t } = useTranslation();
+  const unread = !item.isRead;
   return (
-    <TouchableOpacity
-      className={`mx-4 mb-3 rounded-xl p-4 bg-white dark:bg-gray-900 border ${
-        isUnread
-          ? "border-orange-300 dark:border-orange-700 border-l-4 border-l-orange-500"
-          : "border-gray-100 dark:border-gray-800"
-      }`}
-      onPress={() => { if (isUnread) onMarkRead(item.notificationId); }}
-      activeOpacity={isUnread ? 0.7 : 1}
+    <Pressable
+      onPress={onPress}
+      disabled={!unread}
+      accessibilityRole="button"
+      accessibilityLabel={unread ? t('NOTIFICATIONS.UNREAD_A11Y', { title: item.title }) : item.title}
+      accessibilityState={{ disabled: !unread }}
+      testID={`notifications-row-${item.notificationId}`}
+      className={cn('flex-row gap-3 px-4 py-3', unread && 'bg-primary-subtle/40')}
     >
-      <View className="flex-row items-start">
-        {isUnread && (
-          <View className="w-2 h-2 rounded-full bg-orange-500 mt-1.5 mr-3 flex-shrink-0" />
-        )}
-        <View className="flex-1">
-          <Text className="font-semibold text-gray-900 dark:text-white text-sm">{item.title}</Text>
-          {item.message && (
-            <Text className="text-gray-600 dark:text-gray-400 text-sm mt-1">{item.message}</Text>
-          )}
-          {item.createdAt && (
-            <Text className="text-gray-400 dark:text-gray-500 text-xs mt-2">
-              {new Date(item.createdAt).toLocaleDateString()}
-            </Text>
-          )}
-        </View>
+      <View className={cn('mt-1.5 h-2 w-2 rounded-full', unread ? 'bg-primary' : 'bg-border-strong')} />
+      <View className="min-w-0 flex-1 gap-0.5">
+        <Text className={cn('text-sm text-text-primary', unread && 'font-semibold')}>{item.title}</Text>
+        {item.message ? <Text className="text-sm text-text-secondary">{item.message}</Text> : null}
+        <Text className="text-[11px] text-text-disabled">{formatRelative(item.createdAt)}</Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 
 export default function NotificationsScreen() {
+  const { t } = useTranslation();
+  const tokens = useThemeTokens();
+  const listStyle = useListContentStyle();
+  const setUnread = useNotificationStore((s) => s.setUnreadCount);
   const [data, setData] = useState<Notification[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
 
-  const fetchAll = useCallback(async () => {
-    setLoading(true);
+  const unreadCount = data.filter((n) => !n.isRead).length;
+  useEffect(() => setUnread(unreadCount), [unreadCount, setUnread]);
+
+  const load = useCallback(async () => {
     try {
-      const notifications = await NotificationClientService.getNotifications();
-      setData(notifications);
+      setData(await NotificationClientService.getNotifications());
     } catch (err: unknown) {
-      handleApiError(err, "NotificationsScreen.fetch");
-    } finally {
-      setLoading(false);
+      handleApiError(err, 'NotificationsScreen.load');
     }
   }, []);
 
-  useEffect(() => { fetchAll(); }, [fetchAll]);
+  useEffect(() => {
+    load().finally(() => setLoading(false));
+  }, [load]);
 
-  async function handleMarkRead(notificationId: string) {
+  async function refresh() {
+    setRefreshing(true);
+    await load();
+    setRefreshing(false);
+  }
+
+  async function markRead(id: string) {
     try {
-      await NotificationClientService.markAsRead(notificationId);
-      setData((prev) =>
-        prev.map((n) => (n.notificationId === notificationId ? { ...n, isRead: true } : n))
-      );
+      await NotificationClientService.markAsRead(id);
+      setData((prev) => prev.map((n) => (n.notificationId === id ? { ...n, isRead: true } : n)));
     } catch (err: unknown) {
-      handleApiError(err, "NotificationsScreen.markRead");
+      handleApiError(err, 'NotificationsScreen.markRead');
     }
   }
 
-  async function handleMarkAllRead() {
+  async function markAllRead() {
     try {
       await NotificationClientService.markAllAsRead();
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       setData((prev) => prev.map((n) => ({ ...n, isRead: true })));
-      toast.success("All notifications marked as read");
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      toast.success(t('NOTIFICATIONS.MARKED_ALL'));
     } catch (err: unknown) {
-      handleApiError(err, "NotificationsScreen.markAllRead");
+      handleApiError(err, 'NotificationsScreen.markAllRead');
     }
   }
 
-  function handleClearAll() {
-    Alert.alert(
-      "Clear All Notifications",
-      "This will permanently delete all your notifications. Continue?",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Clear All",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await NotificationClientService.clearAll();
-              await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-              setData([]);
-              toast.success("All notifications cleared");
-            } catch (err: unknown) {
-              handleApiError(err, "NotificationsScreen.clearAll");
-            }
-          },
-        },
-      ]
-    );
+  async function clearAll() {
+    try {
+      await NotificationClientService.clearAll();
+      setData([]);
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      toast.success(t('NOTIFICATIONS.CLEARED'));
+    } catch (err: unknown) {
+      handleApiError(err, 'NotificationsScreen.clearAll');
+    }
   }
 
-  const hasUnread = data.some((n) => !n.isRead);
+  const actions = [
+    ...(unreadCount > 0 ? [{ label: t('NOTIFICATIONS.MARK_ALL_READ'), onPress: markAllRead, variant: 'outline' as const }] : []),
+    ...(data.length > 0 ? [{ label: t('NOTIFICATIONS.CLEAR_ALL'), onPress: () => setConfirmClear(true), variant: 'ghost' as const }] : []),
+  ];
 
   return (
-    <View className="flex-1 bg-gray-50 dark:bg-gray-950">
-      {data.length > 0 && (
-        <View className="flex-row px-4 pt-4 gap-3 mb-1">
-          {hasUnread && (
-            <TouchableOpacity
-              className="flex-1 flex-row items-center justify-center bg-orange-500 rounded-xl py-2.5 gap-2"
-              onPress={handleMarkAllRead}
-            >
-              <FontAwesomeIcon icon={faCheckDouble} color="#ffffff" size={14} />
-              <Text className="text-white font-semibold text-sm">Mark All Read</Text>
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            className="flex-1 flex-row items-center justify-center bg-red-500 rounded-xl py-2.5 gap-2"
-            onPress={handleClearAll}
-          >
-            <FontAwesomeIcon icon={faTrash} color="#ffffff" size={14} />
-            <Text className="text-white font-semibold text-sm">Clear All</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
+    <Screen scroll={false}>
       <FlatList
-        data={data}
-        keyExtractor={(item) => item.notificationId}
-        renderItem={({ item }) => (
-          <NotificationItem item={item} onMarkRead={handleMarkRead} />
+        data={loading ? [] : data}
+        keyExtractor={(n) => n.notificationId}
+        contentContainerStyle={listStyle}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} tintColor={tokens.primary} colors={[tokens.primary]} />}
+        ListHeaderComponent={
+          <View className="mb-6 gap-4">
+            <ScreenHeader
+              title={t('NOTIFICATIONS.TITLE')}
+              subtitle={unreadCount > 0 ? t('NOTIFICATIONS.SUBTITLE', { count: unreadCount }) : t('NOTIFICATIONS.SUBTITLE_NONE')}
+            />
+            {actions.length > 0 ? (
+              // Actions under the header: two labels don't fit beside the title at phone width.
+              <View className="flex-row flex-wrap gap-2">
+                {actions.map((a) => (
+                  <Button key={a.label} size="sm" variant={a.variant} onPress={a.onPress}>
+                    {a.label}
+                  </Button>
+                ))}
+              </View>
+            ) : null}
+          </View>
+        }
+        renderItem={({ item, index }) => (
+          <View
+            className={cn(
+              'overflow-hidden border-x border-border bg-surface-raised',
+              index === 0 && 'rounded-t-xl border-t',
+              index === data.length - 1 ? 'rounded-b-xl border-b' : 'border-b',
+            )}
+          >
+            <NotificationRow item={item} onPress={() => markRead(item.notificationId)} />
+          </View>
         )}
-        onRefresh={fetchAll}
-        refreshing={loading && data.length === 0}
-        contentContainerClassName="pt-4 pb-8"
         ListEmptyComponent={
           loading ? (
-            <View className="flex-1 items-center justify-center py-20">
+            <View className="items-center py-16" accessibilityState={{ busy: true }}>
               <Spinner size="lg" />
             </View>
           ) : (
-            <View className="flex-1 items-center justify-center py-20">
-              <Text className="text-gray-400 dark:text-gray-500 text-base">No notifications</Text>
-            </View>
+            <EmptyState icon={faBellSlash} title={t('NOTIFICATIONS.EMPTY')} description={t('NOTIFICATIONS.EMPTY_DESC')} />
           )
         }
       />
-    </View>
+      <ConfirmDialog
+        open={confirmClear}
+        onClose={() => setConfirmClear(false)}
+        title={t('NOTIFICATIONS.CLEAR_TITLE')}
+        description={t('NOTIFICATIONS.CLEAR_DESC')}
+        confirmLabel={t('NOTIFICATIONS.CLEAR_CONFIRM')}
+        onConfirm={clearAll}
+      />
+    </Screen>
   );
 }
+

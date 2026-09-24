@@ -1,112 +1,71 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import { router } from "expo-router";
-import { useTenantStore } from "@/stores/tenantStore";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  faUsers, faEnvelope, faChevronRight,
-  faBuilding, faCrown, faUser,
-} from "@fortawesome/free-solid-svg-icons";
-import { useThemeTokens } from "@/libs/theme/ThemeContext";
+import type { ReactNode } from 'react';
+import { Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { faEnvelopeOpenText, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { RoleBadge } from '@/components/common/Badges';
+import { LinkTile } from '@/components/common/LinkTile';
+import { Screen } from '@/components/common/Screen';
+import { ScreenHeader } from '@/components/common/ScreenHeader';
+import { SectionLabel } from '@/components/common/SectionLabel';
+import { NoOrganization } from '@/components/tenant/NoOrganization';
+import { Badge, Card } from '@/components/ui';
+import { useTenantStore } from '@/stores/tenantStore';
+import { formatDate } from '@/utils/format';
 
-const ROLE_ICON: Record<string, any> = {
-  OWNER: faCrown,
-  ADMIN: faUser,
-  USER: faUser,
-};
-
-const ROLE_COLOR: Record<string, string> = {
-  OWNER: "#f59e0b",
-  ADMIN: "#3b82f6",
-  USER: "#6b7280",
-};
-
-interface TenantMenuItem {
-  icon: any;
-  label: string;
-  description: string;
-  route: string;
-  requiresAdmin?: boolean;
+function Row({ label, children, last }: { label: string; children: ReactNode; last?: boolean }) {
+  return (
+    <View className={`min-h-[44px] flex-row items-center gap-3 py-3 ${last ? '' : 'border-b border-border'}`}>
+      <Text className="w-28 text-sm text-text-secondary">{label}</Text>
+      <View className="min-w-0 flex-1 flex-row justify-end">{children}</View>
+    </View>
+  );
 }
 
-const MENU_ITEMS: TenantMenuItem[] = [
-  {
-    icon: faUsers,
-    label: "Members",
-    description: "View and manage workspace members",
-    route: "/settings/tenant/members",
-  },
-  {
-    icon: faEnvelope,
-    label: "Invitations",
-    description: "Send and manage invitations",
-    route: "/settings/tenant/invitations",
-    requiresAdmin: true,
-  },
-];
+const STATUS_VARIANT = { ACTIVE: 'success', SUSPENDED: 'error', PENDING_DELETION: 'warning' } as const;
 
-export default function TenantScreen() {
-  const t = useThemeTokens();
+export default function OrganizationScreen() {
+  const { t } = useTranslation();
   const membership = useTenantStore((s) => s.selectedTenantMembership);
-  const isAdmin = membership?.memberRole === "ADMIN" || membership?.memberRole === "OWNER";
-
-  if (!membership) {
-    return (
-      <View className="flex-1 items-center justify-center bg-gray-50 dark:bg-gray-950 p-8">
-        <Text className="text-gray-500 dark:text-gray-400 text-center">
-          No workspace selected. Please select a workspace first.
-        </Text>
-      </View>
-    );
-  }
-
-  const visibleItems = MENU_ITEMS.filter((item) => !item.requiresAdmin || isAdmin);
+  const tenant = membership?.tenant;
 
   return (
-    <ScrollView className="flex-1 bg-gray-50 dark:bg-gray-950" contentContainerClassName="pb-8">
-      {/* Workspace header */}
-      <View className="bg-orange-500 px-6 pt-6 pb-8 mb-4">
-        <View className="w-14 h-14 rounded-2xl bg-orange-400 items-center justify-center mb-3">
-          <FontAwesomeIcon icon={faBuilding} color="#ffffff" size={24} />
-        </View>
-        <Text className="text-white text-xl font-bold">{membership.tenant?.name ?? "Workspace"}</Text>
-        {membership.tenant?.description && (
-          <Text className="text-orange-100 text-sm mt-1">{membership.tenant.description}</Text>
-        )}
-        <View className="flex-row items-center mt-3">
-          <FontAwesomeIcon
-            icon={ROLE_ICON[membership.memberRole] ?? faUser}
-            color={ROLE_COLOR[membership.memberRole] ?? "#ffffff"}
-            size={12}
-          />
-          <Text className="text-orange-100 text-xs ml-1.5 capitalize">
-            {membership.memberRole.toLowerCase()} role
-          </Text>
-        </View>
-      </View>
+    <Screen>
+      <ScreenHeader back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }} title={t('ORGANIZATION.TITLE')} subtitle={t('ORGANIZATION.SUBTITLE')} />
+      {membership ? (
+        <>
+          <Card title={t('ORGANIZATION.CARD')} subtitle={t('ORGANIZATION.CARD_DESC')}>
+            <Row label={t('ORGANIZATION.NAME')}>
+              <Text className="text-sm font-medium text-text-primary" numberOfLines={1}>
+                {tenant?.name ?? membership.tenantId}
+              </Text>
+            </Row>
+            {tenant?.description ? (
+              <Row label={t('ORGANIZATION.DESCRIPTION')}>
+                <Text className="text-right text-sm text-text-primary">{tenant.description}</Text>
+              </Row>
+            ) : null}
+            <Row label={t('ORGANIZATION.STATUS')}>
+              <Badge variant={STATUS_VARIANT[tenant?.tenantStatus ?? 'ACTIVE']} size="sm" dot>
+                {t(`ORGANIZATION.STATUS_${tenant?.tenantStatus ?? 'ACTIVE'}`)}
+              </Badge>
+            </Row>
+            <Row label={t('ORGANIZATION.YOUR_ROLE')}>
+              <RoleBadge role={membership.memberRole} />
+            </Row>
+            <Row label={t('ORGANIZATION.CREATED')} last>
+              <Text className="text-sm text-text-primary">{formatDate(tenant?.createdAt) || '—'}</Text>
+            </Row>
+          </Card>
 
-      <View className="bg-white dark:bg-gray-900 mx-4 rounded-2xl border border-gray-100 dark:border-gray-800">
-        {visibleItems.map((item, idx) => (
-          <TouchableOpacity
-            key={item.route}
-            className={`flex-row items-center px-4 py-4 ${
-              idx < visibleItems.length - 1 ? "border-b border-gray-100 dark:border-gray-800" : ""
-            }`}
-            onPress={() => router.push(item.route as any)}
-            accessible
-            accessibilityLabel={item.label}
-            accessibilityRole="button"
-          >
-            <View className="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-900/20 items-center justify-center mr-3">
-              <FontAwesomeIcon icon={item.icon} color={t.primary} size={16} />
-            </View>
-            <View className="flex-1">
-              <Text className="text-gray-800 dark:text-white font-medium">{item.label}</Text>
-              <Text className="text-gray-500 dark:text-gray-400 text-xs mt-0.5">{item.description}</Text>
-            </View>
-            <FontAwesomeIcon icon={faChevronRight} color="#9ca3af" size={12} />
-          </TouchableOpacity>
-        ))}
-      </View>
-    </ScrollView>
+          <View className="gap-3">
+            <SectionLabel>{t('ORGANIZATION.MANAGE')}</SectionLabel>
+            <LinkTile icon={faUsers} title={t('SETTINGS_HUB.MEMBERS')} description={t('SETTINGS_HUB.MEMBERS_DESC')} href="/settings/tenant/members" testID="organization-members" />
+            <LinkTile icon={faEnvelopeOpenText} title={t('SETTINGS_HUB.INVITATIONS')} description={t('SETTINGS_HUB.INVITATIONS_DESC')} href="/settings/tenant/invitations" testID="organization-invitations" />
+          </View>
+        </>
+      ) : (
+        <NoOrganization />
+      )}
+    </Screen>
   );
 }

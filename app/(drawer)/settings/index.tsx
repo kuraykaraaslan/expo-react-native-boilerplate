@@ -1,104 +1,44 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import { router } from "expo-router";
-import { useAuthStore } from "@/stores/authStore";
-import { useTenantStore } from "@/stores/tenantStore";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import {
-  faEnvelope, faGlobe, faUser,
-  faShield, faRightFromBracket, faChevronRight,
-  faBuilding, faUserPen,
-} from "@fortawesome/free-solid-svg-icons";
-import { useThemeTokens } from "@/libs/theme/ThemeContext";
-import { logout } from "@/libs/logout";
+  faBuilding,
+  faCircleUser,
+  faEnvelope,
+  faEnvelopeOpenText,
+  faLaptop,
+  faRightFromBracket,
+  faSliders,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
+import { LinkTile } from '@/components/common/LinkTile';
+import { Screen } from '@/components/common/Screen';
+import { ScreenHeader } from '@/components/common/ScreenHeader';
+import { SectionLabel } from '@/components/common/SectionLabel';
+import { logout } from '@/libs/logout';
 
-interface SettingItem {
-  icon: any;
-  label: string;
-  route: string;
-}
-
-const ACCOUNT_SETTINGS: SettingItem[] = [
-  { icon: faUserPen, label: "Edit Profile", route: "/settings/profile" },
-  { icon: faEnvelope, label: "Change Email", route: "/settings/change-email" },
-  { icon: faGlobe, label: "Language", route: "/settings/change-language" },
-  { icon: faShield, label: "Active Sessions", route: "/settings/sessions" },
-];
-
-const WORKSPACE_SETTINGS: SettingItem[] = [
-  { icon: faBuilding, label: "Workspace", route: "/settings/tenant" },
-];
-
-function SettingsGroup({ title, items }: Readonly<{ title: string; items: SettingItem[] }>) {
-  const t = useThemeTokens();
+// Settings hub (appshell-compliance "Hub Pattern"): links only, no settings fields.
+export default function SettingsHubScreen() {
+  const { t } = useTranslation();
   return (
-    <View className="mb-4">
-      <Text className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-4 mb-2">
-        {title}
-      </Text>
-      <View className="bg-white dark:bg-gray-900 mx-4 rounded-2xl border border-gray-100 dark:border-gray-800">
-        {items.map((item, idx) => (
-          <TouchableOpacity
-            key={item.route}
-            className={`flex-row items-center px-4 py-4 ${idx < items.length - 1 ? "border-b border-gray-100 dark:border-gray-800" : ""}`}
-            onPress={() => router.push(item.route as any)}
-            accessible
-            accessibilityLabel={item.label}
-            accessibilityRole="button"
-          >
-            <View className="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/20 items-center justify-center mr-3">
-              <FontAwesomeIcon icon={item.icon} color={t.primary} size={14} />
-            </View>
-            <Text className="flex-1 text-gray-700 dark:text-gray-300 font-medium">{item.label}</Text>
-            <FontAwesomeIcon icon={faChevronRight} color="#9ca3af" size={12} />
-          </TouchableOpacity>
-        ))}
-      </View>
-    </View>
-  );
-}
+    <Screen>
+      <ScreenHeader title={t('SETTINGS_HUB.TITLE')} subtitle={t('SETTINGS_HUB.SUBTITLE')} />
 
-export default function SettingsIndexScreen() {
-  const user = useAuthStore((s) => s.user);
-  const selectedTenant = useTenantStore((s) => s.selectedTenantMembership);
-  const handleLogout = logout;
-
-  return (
-    <ScrollView className="flex-1 bg-gray-50 dark:bg-gray-950" contentContainerClassName="pb-8">
-      {/* Profile header */}
-      <View className="bg-orange-500 px-6 pt-6 pb-8">
-        <View className="w-16 h-16 rounded-full bg-orange-400 items-center justify-center mb-3">
-          <FontAwesomeIcon icon={faUser} color="#ffffff" size={28} />
-        </View>
-        <Text className="text-white text-xl font-bold">{user?.name ?? "User"}</Text>
-        <Text className="text-orange-100 text-sm">{user?.email ?? ""}</Text>
-        {selectedTenant?.tenant && (
-          <View className="flex-row items-center mt-2 bg-orange-400/50 rounded-full px-3 py-1 self-start">
-            <FontAwesomeIcon icon={faBuilding} color="#fff" size={10} />
-            <Text className="text-white text-xs ml-1.5">{selectedTenant.tenant.name}</Text>
-          </View>
-        )}
+      <View className="gap-3">
+        <SectionLabel>{t('SETTINGS_HUB.SECTION_ACCOUNT')}</SectionLabel>
+        <LinkTile icon={faCircleUser} title={t('SETTINGS_HUB.PROFILE')} description={t('SETTINGS_HUB.PROFILE_DESC')} href="/settings/profile" testID="settings-hub-profile" />
+        <LinkTile icon={faLaptop} title={t('SETTINGS_HUB.SESSIONS')} description={t('SETTINGS_HUB.SESSIONS_DESC')} href="/settings/sessions" testID="settings-hub-sessions" />
+        <LinkTile icon={faEnvelope} title={t('SETTINGS_HUB.EMAIL')} description={t('SETTINGS_HUB.EMAIL_DESC')} href="/settings/change-email" testID="settings-hub-email" />
+        <LinkTile icon={faSliders} title={t('SETTINGS_HUB.PREFERENCES')} description={t('SETTINGS_HUB.PREFERENCES_DESC')} href="/settings/change-language" testID="settings-hub-preferences" />
       </View>
 
-      <View className="-mt-4 pt-4">
-        <SettingsGroup title="Account" items={ACCOUNT_SETTINGS} />
-        <SettingsGroup title="Workspace" items={WORKSPACE_SETTINGS} />
+      <View className="gap-3">
+        <SectionLabel>{t('SETTINGS_HUB.SECTION_ORGANIZATION')}</SectionLabel>
+        <LinkTile icon={faBuilding} title={t('SETTINGS_HUB.ORGANIZATION')} description={t('SETTINGS_HUB.ORGANIZATION_DESC')} href="/settings/tenant" testID="settings-hub-organization" />
+        <LinkTile icon={faUsers} title={t('SETTINGS_HUB.MEMBERS')} description={t('SETTINGS_HUB.MEMBERS_DESC')} href="/settings/tenant/members" testID="settings-hub-members" />
+        <LinkTile icon={faEnvelopeOpenText} title={t('SETTINGS_HUB.INVITATIONS')} description={t('SETTINGS_HUB.INVITATIONS_DESC')} href="/settings/tenant/invitations" testID="settings-hub-invitations" />
       </View>
 
-      {/* Sign out */}
-      <View className="bg-white dark:bg-gray-900 mx-4 rounded-2xl border border-gray-100 dark:border-gray-800">
-        <TouchableOpacity
-          className="flex-row items-center px-4 py-4"
-          onPress={handleLogout}
-          accessible
-          accessibilityLabel="Sign out"
-          accessibilityRole="button"
-        >
-          <View className="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-900/20 items-center justify-center mr-3">
-            <FontAwesomeIcon icon={faRightFromBracket} color="#ef4444" size={14} />
-          </View>
-          <Text className="text-red-500 font-medium">Sign Out</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      <LinkTile icon={faRightFromBracket} title={t('SHELL.SIGN_OUT')} description={t('SETTINGS_HUB.SIGN_OUT_DESC')} onPress={logout} danger testID="settings-hub-sign-out" />
+    </Screen>
   );
 }
