@@ -91,7 +91,7 @@ UI primitives come from [kui-native](https://github.com/kuraykaraaslan/kui-nativ
 ```
 
 - Import components from `@/components/ui` only. That file re-exports each component by its deep path, so kui-native's optional peers (maps, video) are never pulled in. To use another component, add its lines there.
-- Brand colors are overridden in `libs/theme/brand.ts`; raw token hex for props without `className` comes from `useThemeTokens()` in `@/libs/theme/ThemeContext`.
+- Colors are kui-native's defaults (same palette as next-boilerplate); brand overrides go in `libs/theme/brand.ts`; raw token hex for props without `className` comes from `useThemeTokens()` in `@/libs/theme/ThemeContext`.
 - Never edit `node_modules/kui-native` or copy its source into this repo. Fix bugs in kui-native and release a new tag.
 
 To update kui-native:

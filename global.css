@@ -4,15 +4,15 @@
 
 /*
  * Light-mode fallbacks for kui-native's semantic tokens (copied from
- * kui-native/global.css, primary switched to the brand orange — keep in sync
- * with libs/theme/brand.ts). At runtime ThemeProvider applies the active
- * scheme through NativeWind vars(); these only cover web's first paint.
+ * kui-native/global.css with the next-boilerplate overrides from
+ * libs/theme/brand.ts — keep the two in sync). At runtime ThemeProvider applies the active scheme
+ * through NativeWind vars(); these only cover web's first paint.
  */
 :root {
-  --color-primary: #f4511e;
-  --color-primary-hover: #e64a19;
-  --color-primary-active: #d84315;
-  --color-primary-subtle: #fff5f2;
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-active: #1e40af;
+  --color-primary-subtle: #eff6ff;
   --color-primary-fg: #ffffff;
 
   --color-secondary: #8b5cf6;
@@ -27,13 +27,13 @@
   --color-surface-sunken: #e5e7eb;
 
   --color-text-primary: #111827;
-  --color-text-secondary: #6b7280;
-  --color-text-disabled: #9ca3af;
+  --color-text-secondary: #4b5563;
+  --color-text-disabled: #6b7280;
   --color-text-inverse: #ffffff;
 
   --color-border: #e5e7eb;
   --color-border-strong: #d1d5db;
-  --color-border-focus: #f4511e;
+  --color-border-focus: #3b82f6;
 
   --color-success: #22c55e;
   --color-success-subtle: #f0fdf4;

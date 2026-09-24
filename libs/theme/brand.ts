@@ -1,26 +1,21 @@
 import { configureTheme } from "kui-native/libs/theme";
 
 // ============================================================================
-// Brand tokens — kui-native ships a blue primary; this app is deep orange.
-// Imported once at the top of app/_layout.tsx so it runs before first render
-// (configureTheme does not re-render mounted components).
+// Brand tokens — match next-boilerplate (app/globals.css) so web and mobile
+// read as one product. Only the tokens where next-boilerplate differs from
+// kui-native's defaults are listed. Mirror light values in global.css.
+// Imported first in app/_layout.tsx so it runs before the first render.
 // ============================================================================
 
 configureTheme({
   light: {
-    primary: "#f4511e",
-    "primary-hover": "#e64a19",
-    "primary-active": "#d84315",
-    "primary-subtle": "#fff5f2",
-    "primary-fg": "#ffffff",
-    "border-focus": "#f4511e",
+    primary: "#2563eb",
+    "primary-hover": "#1d4ed8",
+    "primary-active": "#1e40af",
+    "text-secondary": "#4b5563",
+    "text-disabled": "#6b7280",
   },
   dark: {
-    primary: "#f4511e",
-    "primary-hover": "#ff7043",
-    "primary-active": "#e64a19",
-    "primary-subtle": "#431407",
-    "primary-fg": "#ffffff",
-    "border-focus": "#ff7043",
+    "text-disabled": "#8a99b0",
   },
 });
