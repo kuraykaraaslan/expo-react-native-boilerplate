@@ -1,137 +1,117 @@
-import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { router } from "expo-router";
-import * as Haptics from "expo-haptics";
-import { useAuthStore } from "@/stores/authStore";
-import { AuthClientService } from "@/services/auth.service.client";
-import { handleApiError } from "@/libs/errorUtils";
-import { toast } from "sonner-native";
-import type { OTPMethod } from "@/dto/auth.dto";
+import { useState } from 'react';
+import { View } from 'react-native';
+import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
+import { toast } from 'sonner-native';
+import { faShieldHalved } from '@fortawesome/free-solid-svg-icons';
+import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
+import { AuthShell } from '@/components/auth/AuthShell';
+import { Button, ButtonGroup, Input, Label } from '@/components/ui';
+import type { OTPMethod } from '@/dto/auth.dto';
+import { handleApiError } from '@/libs/errorUtils';
+import { AuthClientService } from '@/services/auth.service.client';
+import { useAuthStore } from '@/stores/authStore';
 
-export default function TFAScreen() {
-  const [method, setMethod] = useState<OTPMethod>("EMAIL");
-  const [code, setCode] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
+// next-boilerplate has no OTP page; this follows the same auth card pattern.
+export default function TwoFactorScreen() {
+  const { t } = useTranslation();
+  const [method, setMethod] = useState<OTPMethod>('EMAIL');
+  const [code, setCode] = useState('');
+  const [codeError, setCodeError] = useState<string | undefined>();
+  const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const setUser = useAuthStore((s) => s.setUser);
+  const methodLabel = method === 'EMAIL' ? t('AUTH_UI.OTP_EMAIL') : t('AUTH_UI.OTP_SMS');
 
   async function handleSend() {
     setLoading(true);
     try {
       await AuthClientService.sendOTP(method);
       await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      toast.success(`OTP sent via ${method.toLowerCase()}`);
-      setOtpSent(true);
+      toast.success(t('AUTH_UI.CODE_SENT', { method: methodLabel }));
+      setSent(true);
     } catch (err: unknown) {
-      handleApiError(err, "TFAScreen.send");
+      handleApiError(err, 'TwoFactorScreen.send');
     } finally {
       setLoading(false);
     }
   }
 
   async function handleVerify() {
+    if (!/^\d{6}$/.test(code)) {
+      setCodeError(t('AUTH_UI.OTP_CODE_INVALID'));
+      return;
+    }
+    setCodeError(undefined);
     setLoading(true);
     try {
       const user = await AuthClientService.verifyOTP(code, method);
       setUser(user);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      router.replace("/select-tenant");
+      router.replace('/select-tenant');
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      handleApiError(err, "TFAScreen.verify");
+      handleApiError(err, 'TwoFactorScreen.verify');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <ScrollView
-      className="flex-1 bg-white dark:bg-gray-900"
-      contentContainerClassName="flex-grow items-center justify-center px-6 py-12"
-      keyboardShouldPersistTaps="handled"
+    <AuthShell
+      title={t('AUTH_UI.OTP_TITLE')}
+      subtitle={t('AUTH_UI.OTP_SUBTITLE')}
+      icon={faShieldHalved}
+      footer={<AuthFooterLink label={t('AUTH_UI.BACK_TO_SIGN_IN')} href="/login" testID="auth-2fa-login" />}
     >
-      <View className="w-full max-w-sm">
-        <Text className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-2">
-          Two-Factor Auth
-        </Text>
-        <Text className="text-gray-500 dark:text-gray-400 text-center mb-8">
-          Verify your identity
-        </Text>
-
-        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Choose method
-        </Text>
-        <View className="flex-row gap-3 mb-6">
-          {(["EMAIL", "SMS"] as OTPMethod[]).map((m) => (
-            <TouchableOpacity
-              key={m}
-              className={`flex-1 py-3 rounded-lg border items-center ${
-                method === m
-                  ? "bg-orange-500 border-orange-500"
-                  : "bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-              }`}
-              onPress={() => setMethod(m)}
-              accessible
-              accessibilityLabel={`OTP method: ${m}`}
-            >
-              <Text className={`font-medium text-sm ${method === m ? "text-white" : "text-gray-700 dark:text-gray-300"}`}>
-                {m}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {!otpSent ? (
-          <TouchableOpacity
-            className={`w-full rounded-lg py-4 items-center ${loading ? "bg-orange-300" : "bg-orange-500"}`}
-            onPress={handleSend}
-            disabled={loading}
-            accessible
-            accessibilityLabel="Send OTP"
-            accessibilityRole="button"
-          >
-            <Text className="text-white font-semibold text-base">
-              {loading ? "Sending..." : "Send Code"}
-            </Text>
-          </TouchableOpacity>
-        ) : (
-          <>
-            <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Verification Code
-            </Text>
-            <TextInput
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 mb-6 text-center text-xl tracking-widest"
-              placeholder="000000"
-              value={code}
-              onChangeText={setCode}
-              keyboardType="number-pad"
-              maxLength={6}
-              accessible
-              accessibilityLabel="OTP code"
-            />
-            <TouchableOpacity
-              className={`w-full rounded-lg py-4 items-center ${loading ? "bg-orange-300" : "bg-orange-500"}`}
-              onPress={handleVerify}
-              disabled={loading}
-              accessible
-              accessibilityLabel="Verify code"
-              accessibilityRole="button"
-            >
-              <Text className="text-white font-semibold text-base">
-                {loading ? "Verifying..." : "Verify"}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="mt-3 items-center"
-              onPress={() => setOtpSent(false)}
-              accessible
-              accessibilityLabel="Resend code"
-            >
-              <Text className="text-orange-500 text-sm">Resend code</Text>
-            </TouchableOpacity>
-          </>
-        )}
+      <View className="gap-2">
+        <Label>{t('AUTH_UI.OTP_METHOD')}</Label>
+        <ButtonGroup
+          items={[
+            { value: 'EMAIL', label: t('AUTH_UI.OTP_EMAIL') },
+            { value: 'SMS', label: t('AUTH_UI.OTP_SMS') },
+          ]}
+          value={method}
+          onChange={(v) => {
+            setMethod(v as OTPMethod);
+            setSent(false);
+          }}
+        />
       </View>
-    </ScrollView>
+
+      {sent ? (
+        <View className="gap-4">
+          <Input
+            label={t('AUTH_UI.OTP_CODE')}
+            hint={t('AUTH_UI.OTP_CODE_HINT', { method: methodLabel })}
+            value={code}
+            onChangeText={(v) => {
+              setCode(v.replace(/\D/g, '').slice(0, 6));
+              setCodeError(undefined);
+            }}
+            error={codeError}
+            keyboardType="number-pad"
+            autoComplete="one-time-code"
+            textContentType="oneTimeCode"
+            maxLength={6}
+            inputClassName="text-center text-xl tracking-[8px]"
+            returnKeyType="go"
+            onSubmitEditing={handleVerify}
+            testID="auth-2fa-code"
+          />
+          <Button fullWidth loading={loading} onPress={handleVerify} testID="auth-2fa-verify">
+            {loading ? t('AUTH_UI.VERIFYING') : t('AUTH_UI.VERIFY')}
+          </Button>
+          <Button variant="ghost" fullWidth onPress={handleSend} disabled={loading} testID="auth-2fa-resend">
+            {t('AUTH_UI.RESEND_CODE')}
+          </Button>
+        </View>
+      ) : (
+        <Button fullWidth loading={loading} onPress={handleSend} testID="auth-2fa-send">
+          {loading ? t('AUTH_UI.SENDING') : t('AUTH_UI.SEND_CODE')}
+        </Button>
+      )}
+    </AuthShell>
   );
 }

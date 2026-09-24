@@ -1,137 +1,135 @@
-import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { Link, router } from "expo-router";
-import { toast } from "sonner-native";
-import { useTranslation } from "react-i18next";
-import * as Haptics from "expo-haptics";
-import { AuthClientService } from "@/services/auth.service.client";
-import { handleApiError } from "@/libs/errorUtils";
-import { RegisterRequestSchema } from "@/dto/auth.dto";
+import { useState } from 'react';
+import { View } from 'react-native';
+import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
+import { toast } from 'sonner-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEnvelope, faLock, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
+import { AuthShell } from '@/components/auth/AuthShell';
+import { SSOButtons } from '@/components/auth/SSOButtons';
+import { Button, Input } from '@/components/ui';
+import { RegisterRequestSchema } from '@/dto/auth.dto';
+import { handleApiError } from '@/libs/errorUtils';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
+import { AuthClientService } from '@/services/auth.service.client';
 
-type FieldErrors = { name?: string; email?: string; password?: string };
+type FieldErrors = { email?: string; password?: string; confirm?: string };
 
 export default function RegisterScreen() {
   const { t } = useTranslation();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const tokens = useThemeTokens();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const iconColor = tokens['text-disabled'];
 
   async function handleRegister() {
-    const result = RegisterRequestSchema.safeParse({ email, password, name });
+    const result = RegisterRequestSchema.safeParse({ email: email.trim(), password, name: name.trim() || undefined });
+    const next: FieldErrors = {};
     if (!result.success) {
       const errs = result.error.flatten().fieldErrors;
-      setFieldErrors({
-        email: errs.email ? t("AUTH.EMAIL_INVALID") : undefined,
-        password: errs.password ? t("AUTH.PASSWORD_MIN_LENGTH") : undefined,
-      });
-      return;
+      if (errs.email) next.email = t('AUTH_UI.EMAIL_INVALID');
+      if (errs.password) next.password = t('AUTH_UI.PASSWORD_MIN');
     }
-    setFieldErrors({});
+    if (confirm !== password) next.confirm = t('AUTH_UI.PASSWORD_MATCH');
+    setErrors(next);
+    if (!result.success || next.confirm) return;
+
     setLoading(true);
     try {
       await AuthClientService.register(result.data);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t("AUTH.REGISTER_SUCCESS"));
-      router.replace("/login");
+      toast.success(t('AUTH.REGISTER_SUCCESS'));
+      router.replace('/login');
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      handleApiError(err, "RegisterScreen");
+      handleApiError(err, 'RegisterScreen.register');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <ScrollView
-      className="flex-1 bg-white dark:bg-gray-900"
-      contentContainerClassName="flex-grow items-center justify-center px-6 py-12"
-      keyboardShouldPersistTaps="handled"
+    <AuthShell
+      title={t('AUTH_UI.REGISTER_TITLE')}
+      subtitle={t('AUTH_UI.REGISTER_SUBTITLE')}
+      icon={faUserPlus}
+      footer={<AuthFooterLink prompt={t('AUTH_UI.HAVE_ACCOUNT')} label={t('AUTH_UI.SIGN_IN_LINK')} href="/login" testID="auth-register-login" />}
     >
-      <View className="w-full max-w-sm">
-        <Text className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-2">
-          Create account
-        </Text>
-        <Text className="text-gray-500 dark:text-gray-400 text-center mb-8">
-          Join us today
-        </Text>
+      <SSOButtons
+        dividerLabel={t('AUTH_UI.OR_REGISTER_EMAIL')}
+        onPress={(_, label) => toast.info(t('AUTH_UI.SSO_UNAVAILABLE', { provider: label }))}
+      />
 
-        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Name
-        </Text>
-        <TextInput
-          className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 mb-4"
-          placeholder="Your name"
+      <View className="gap-3">
+        <Input
+          label={t('AUTH_UI.FULL_NAME')}
+          hint={t('COMMON.OPTIONAL')}
           value={name}
           onChangeText={setName}
           autoComplete="name"
-          accessible
-          accessibilityLabel="Full name"
+          textContentType="name"
+          prefixIcon={<FontAwesomeIcon icon={faUser} size={14} color={iconColor} />}
+          testID="auth-register-name"
         />
-
-        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          {t("AUTH.EMAIL")}
-        </Text>
-        <TextInput
-          className={`w-full border rounded-lg px-4 py-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 mb-1 ${
-            fieldErrors.email
-              ? "border-red-400 dark:border-red-500"
-              : "border-gray-300 dark:border-gray-600"
-          }`}
-          placeholder="you@example.com"
+        <Input
+          label={t('AUTH_UI.EMAIL')}
+          type="email"
+          required
           value={email}
-          onChangeText={(v) => { setEmail(v); setFieldErrors((e) => ({ ...e, email: undefined })); }}
-          keyboardType="email-address"
-          autoCapitalize="none"
+          onChangeText={(v) => {
+            setEmail(v);
+            setErrors((e) => ({ ...e, email: undefined }));
+          }}
+          error={errors.email}
           autoComplete="email"
-          accessible
-          accessibilityLabel="Email address"
+          textContentType="emailAddress"
+          prefixIcon={<FontAwesomeIcon icon={faEnvelope} size={14} color={iconColor} />}
+          testID="auth-register-email"
         />
-        {fieldErrors.email && (
-          <Text className="text-red-500 text-xs mb-3">{fieldErrors.email}</Text>
-        )}
-
-        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 mt-3">
-          {t("AUTH.PASSWORD")}
-        </Text>
-        <TextInput
-          className={`w-full border rounded-lg px-4 py-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 mb-1 ${
-            fieldErrors.password
-              ? "border-red-400 dark:border-red-500"
-              : "border-gray-300 dark:border-gray-600"
-          }`}
-          placeholder="••••••••"
+        <Input
+          label={t('AUTH_UI.PASSWORD')}
+          type="password"
+          required
+          hint={t('AUTH_UI.PASSWORD_HINT')}
           value={password}
-          onChangeText={(v) => { setPassword(v); setFieldErrors((e) => ({ ...e, password: undefined })); }}
-          secureTextEntry
+          onChangeText={(v) => {
+            setPassword(v);
+            setErrors((e) => ({ ...e, password: undefined }));
+          }}
+          error={errors.password}
           autoComplete="new-password"
-          accessible
-          accessibilityLabel="Password"
+          textContentType="newPassword"
+          prefixIcon={<FontAwesomeIcon icon={faLock} size={14} color={iconColor} />}
+          testID="auth-register-password"
         />
-        {fieldErrors.password && (
-          <Text className="text-red-500 text-xs mb-3">{fieldErrors.password}</Text>
-        )}
-
-        <TouchableOpacity
-          className={`w-full rounded-lg py-4 items-center mt-4 ${loading ? "bg-orange-300" : "bg-orange-500"}`}
-          onPress={handleRegister}
-          disabled={loading}
-          accessible
-          accessibilityLabel="Create account"
-          accessibilityRole="button"
-        >
-          <Text className="text-white font-semibold text-base">
-            {loading ? "Creating..." : t("AUTH.REGISTER")}
-          </Text>
-        </TouchableOpacity>
-
-        <Link href="/login" asChild>
-          <TouchableOpacity className="mt-4 items-center" accessible accessibilityLabel="Back to login">
-            <Text className="text-orange-500 text-sm">{t("AUTH.HAVE_ACCOUNT")} {t("AUTH.LOGIN_NOW")}</Text>
-          </TouchableOpacity>
-        </Link>
+        <Input
+          label={t('AUTH_UI.CONFIRM_PASSWORD')}
+          type="password"
+          required
+          value={confirm}
+          onChangeText={(v) => {
+            setConfirm(v);
+            setErrors((e) => ({ ...e, confirm: undefined }));
+          }}
+          error={errors.confirm}
+          autoComplete="new-password"
+          textContentType="newPassword"
+          returnKeyType="go"
+          onSubmitEditing={handleRegister}
+          prefixIcon={<FontAwesomeIcon icon={faLock} size={14} color={iconColor} />}
+          testID="auth-register-confirm"
+        />
       </View>
-    </ScrollView>
+
+      <Button fullWidth loading={loading} onPress={handleRegister} testID="auth-register-submit">
+        {loading ? t('AUTH_UI.CREATING_ACCOUNT') : t('AUTH_UI.CREATE_ACCOUNT')}
+      </Button>
+    </AuthShell>
   );
 }

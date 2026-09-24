@@ -1,104 +1,80 @@
-import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
-import { router } from "expo-router";
-import { toast } from "sonner-native";
-import * as Haptics from "expo-haptics";
-import { TenantClientService } from "@/services/tenant.service.client";
-import { handleApiError } from "@/libs/errorUtils";
+import { useState } from 'react';
+import { View } from 'react-native';
+import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
+import { toast } from 'sonner-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBuilding } from '@fortawesome/free-solid-svg-icons';
+import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
+import { AuthShell } from '@/components/auth/AuthShell';
+import { Button, Input, Textarea } from '@/components/ui';
+import { handleApiError } from '@/libs/errorUtils';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
+import { TenantClientService } from '@/services/tenant.service.client';
 
 export default function CreateTenantScreen() {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
+  const tokens = useThemeTokens();
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [nameError, setNameError] = useState<string | undefined>();
+  const [saving, setSaving] = useState(false);
 
   async function handleCreate() {
-    const trimmedName = name.trim();
-    if (trimmedName.length < 2) {
-      toast.error("Workspace name must be at least 2 characters");
+    const trimmed = name.trim();
+    if (trimmed.length < 2) {
+      setNameError(t('AUTH_UI.ORG_NAME_INVALID'));
       return;
     }
-
-    setLoading(true);
+    setNameError(undefined);
+    setSaving(true);
     try {
-      await TenantClientService.createTenant({
-        name: trimmedName,
-        description: description.trim() || null,
-      });
+      await TenantClientService.createTenant({ name: trimmed, description: description.trim() || null });
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success("Workspace created successfully");
-      router.replace("/select-tenant");
+      toast.success(t('AUTH_UI.ORG_CREATED'));
+      router.replace('/select-tenant');
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      handleApiError(err, "CreateTenantScreen");
+      handleApiError(err, 'CreateTenantScreen.create');
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   }
 
   return (
-    <ScrollView
-      className="flex-1 bg-white dark:bg-gray-900"
-      contentContainerClassName="px-6 pt-12 pb-8"
-      keyboardShouldPersistTaps="handled"
+    <AuthShell
+      title={t('AUTH_UI.CREATE_ORG_TITLE')}
+      subtitle={t('AUTH_UI.CREATE_ORG_SUBTITLE')}
+      icon={faBuilding}
+      footer={<AuthFooterLink label={t('AUTH_UI.BACK_TO_ORGS')} href="/select-tenant" testID="auth-create-org-back" />}
     >
-      <TouchableOpacity onPress={() => router.back()} className="mb-6">
-        <Text className="text-orange-500 font-medium">← Back</Text>
-      </TouchableOpacity>
-
-      <Text className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-        Create Workspace
-      </Text>
-      <Text className="text-gray-500 dark:text-gray-400 mb-8">
-        Set up a new workspace for your team
-      </Text>
-
-      <View className="mb-5">
-        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Workspace Name *
-        </Text>
-        <TextInput
-          className="border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3.5 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800"
+      <View className="gap-3">
+        <Input
+          label={t('AUTH_UI.ORG_NAME')}
+          required
           value={name}
-          onChangeText={setName}
-          placeholder="My Company"
-          placeholderTextColor="#9ca3af"
-          autoCapitalize="words"
-          autoCorrect={false}
+          onChangeText={(v) => {
+            setName(v);
+            setNameError(undefined);
+          }}
+          error={nameError}
           maxLength={100}
+          prefixIcon={<FontAwesomeIcon icon={faBuilding} size={14} color={tokens['text-disabled']} />}
+          testID="auth-create-org-name"
         />
-        <Text className="text-xs text-gray-400 mt-1">Minimum 2 characters</Text>
-      </View>
-
-      <View className="mb-8">
-        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Description
-        </Text>
-        <TextInput
-          className="border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3.5 text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800"
+        <Textarea
+          label={t('AUTH_UI.ORG_DESCRIPTION')}
+          hint={t('COMMON.OPTIONAL')}
+          rows={3}
           value={description}
           onChangeText={setDescription}
-          placeholder="Optional description"
-          placeholderTextColor="#9ca3af"
-          multiline
-          numberOfLines={3}
-          textAlignVertical="top"
-          style={{ minHeight: 80 }}
+          testID="auth-create-org-description"
         />
       </View>
-
-      <TouchableOpacity
-        className={`rounded-xl py-4 items-center ${
-          loading || name.trim().length < 2 ? "bg-orange-300" : "bg-orange-500"
-        }`}
-        onPress={handleCreate}
-        disabled={loading || name.trim().length < 2}
-      >
-        {loading ? (
-          <ActivityIndicator color="#ffffff" />
-        ) : (
-          <Text className="text-white font-semibold text-base">Create Workspace</Text>
-        )}
-      </TouchableOpacity>
-    </ScrollView>
+      <Button fullWidth loading={saving} onPress={handleCreate} testID="auth-create-org-submit">
+        {saving ? t('AUTH_UI.CREATING_ORG') : t('AUTH_UI.CREATE_ORG')}
+      </Button>
+    </AuthShell>
   );
 }

@@ -1,136 +1,119 @@
-import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { Link, router } from "expo-router";
-import { useTranslation } from "react-i18next";
-import * as Haptics from "expo-haptics";
-import { useAuthStore } from "@/stores/authStore";
-import { AuthClientService } from "@/services/auth.service.client";
-import { handleApiError } from "@/libs/errorUtils";
-import { LoginRequestSchema } from "@/dto/auth.dto";
+import { useState } from 'react';
+import { Pressable, Text, View } from 'react-native';
+import { Link, router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
+import { toast } from 'sonner-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
+import { AuthShell } from '@/components/auth/AuthShell';
+import { SSOButtons } from '@/components/auth/SSOButtons';
+import { Button, Checkbox, Input } from '@/components/ui';
+import { LoginRequestSchema } from '@/dto/auth.dto';
+import { handleApiError } from '@/libs/errorUtils';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
+import { AuthClientService } from '@/services/auth.service.client';
+import { useAuthStore } from '@/stores/authStore';
 
 type FieldErrors = { email?: string; password?: string };
 
 export default function LoginScreen() {
   const { t } = useTranslation();
-  const [email, setEmail] = useState("admin@admin.com");
-  const [password, setPassword] = useState("admin");
+  const tokens = useThemeTokens();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [errors, setErrors] = useState<FieldErrors>({});
   const setUser = useAuthStore((s) => s.setUser);
 
   async function handleLogin() {
-    const result = LoginRequestSchema.safeParse({ email, password });
+    const result = LoginRequestSchema.safeParse({ email: email.trim(), password });
     if (!result.success) {
       const errs = result.error.flatten().fieldErrors;
-      setFieldErrors({
-        email: errs.email ? t("AUTH.EMAIL_INVALID") : undefined,
-        password: errs.password ? t("AUTH.PASSWORD_REQUIRED") : undefined,
+      setErrors({
+        email: errs.email ? t('AUTH_UI.EMAIL_INVALID') : undefined,
+        password: errs.password ? t('AUTH_UI.PASSWORD_REQUIRED') : undefined,
       });
       return;
     }
-    setFieldErrors({});
+    setErrors({});
     setLoading(true);
     try {
       const { user, userSecurity } = await AuthClientService.login(result.data);
       if (userSecurity?.otpVerifyNeeded) {
         await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-        router.push("/2fa");
+        router.push('/2fa');
         return;
       }
       setUser(user);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      router.replace("/select-tenant");
+      router.replace('/select-tenant');
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      handleApiError(err, "LoginScreen");
+      handleApiError(err, 'LoginScreen.login');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <ScrollView
-      className="flex-1 bg-white dark:bg-gray-900"
-      contentContainerClassName="flex-grow items-center justify-center px-6 py-12"
-      keyboardShouldPersistTaps="handled"
+    <AuthShell
+      title={t('AUTH_UI.LOGIN_TITLE')}
+      subtitle={t('AUTH_UI.LOGIN_SUBTITLE')}
+      footer={<AuthFooterLink prompt={t('AUTH_UI.NO_ACCOUNT')} label={t('AUTH_UI.SIGN_UP')} href="/register" testID="auth-login-register" />}
     >
-      <View className="w-full max-w-sm">
-        <Text className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-2">
-          Welcome back
-        </Text>
-        <Text className="text-gray-500 dark:text-gray-400 text-center mb-8">
-          Sign in to your account
-        </Text>
+      {/* SSO wiring arrives with phase 6 (server change K4). */}
+      <SSOButtons
+        dividerLabel={t('AUTH_UI.OR_CONTINUE_EMAIL')}
+        onPress={(_, label) => toast.info(t('AUTH_UI.SSO_UNAVAILABLE', { provider: label }))}
+      />
 
-        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          {t("AUTH.EMAIL")}
-        </Text>
-        <TextInput
-          className={`w-full border rounded-lg px-4 py-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 mb-1 ${
-            fieldErrors.email
-              ? "border-red-400 dark:border-red-500"
-              : "border-gray-300 dark:border-gray-600"
-          }`}
-          placeholder="you@example.com"
+      <View className="gap-3">
+        <Input
+          label={t('AUTH_UI.EMAIL')}
+          type="email"
           value={email}
-          onChangeText={(v) => { setEmail(v); setFieldErrors((e) => ({ ...e, email: undefined })); }}
-          keyboardType="email-address"
-          autoCapitalize="none"
+          onChangeText={(v) => {
+            setEmail(v);
+            setErrors((e) => ({ ...e, email: undefined }));
+          }}
+          error={errors.email}
           autoComplete="email"
-          accessible
-          accessibilityLabel="Email address"
+          textContentType="emailAddress"
+          prefixIcon={<FontAwesomeIcon icon={faEnvelope} size={14} color={tokens['text-disabled']} />}
+          testID="auth-login-email"
         />
-        {fieldErrors.email && (
-          <Text className="text-red-500 text-xs mb-3">{fieldErrors.email}</Text>
-        )}
-
-        <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 mt-3">
-          {t("AUTH.PASSWORD")}
-        </Text>
-        <TextInput
-          className={`w-full border rounded-lg px-4 py-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 mb-1 ${
-            fieldErrors.password
-              ? "border-red-400 dark:border-red-500"
-              : "border-gray-300 dark:border-gray-600"
-          }`}
-          placeholder="••••••••"
+        <Input
+          label={t('AUTH_UI.PASSWORD')}
+          type="password"
           value={password}
-          onChangeText={(v) => { setPassword(v); setFieldErrors((e) => ({ ...e, password: undefined })); }}
-          secureTextEntry
-          autoComplete="password"
-          accessible
-          accessibilityLabel="Password"
+          onChangeText={(v) => {
+            setPassword(v);
+            setErrors((e) => ({ ...e, password: undefined }));
+          }}
+          error={errors.password}
+          autoComplete="current-password"
+          textContentType="password"
+          returnKeyType="go"
+          onSubmitEditing={handleLogin}
+          prefixIcon={<FontAwesomeIcon icon={faLock} size={14} color={tokens['text-disabled']} />}
+          testID="auth-login-password"
         />
-        {fieldErrors.password && (
-          <Text className="text-red-500 text-xs mb-3">{fieldErrors.password}</Text>
-        )}
-
-        <TouchableOpacity
-          className={`w-full rounded-lg py-4 items-center mt-4 ${loading ? "bg-orange-300" : "bg-orange-500"}`}
-          onPress={handleLogin}
-          disabled={loading}
-          accessible
-          accessibilityLabel="Sign in"
-          accessibilityRole="button"
-        >
-          <Text className="text-white font-semibold text-base">
-            {loading ? "Signing in..." : t("AUTH.LOGIN")}
-          </Text>
-        </TouchableOpacity>
-
-        <View className="flex-row justify-between mt-4">
-          <Link href="/forgot-password" asChild>
-            <TouchableOpacity accessible accessibilityLabel="Forgot password">
-              <Text className="text-orange-500 text-sm">{t("AUTH.FORGOT_PASSWORD")}</Text>
-            </TouchableOpacity>
-          </Link>
-          <Link href="/register" asChild>
-            <TouchableOpacity accessible accessibilityLabel="Create account">
-              <Text className="text-orange-500 text-sm">{t("AUTH.REGISTER_NOW")}</Text>
-            </TouchableOpacity>
-          </Link>
-        </View>
+        <Checkbox checked={remember} onChange={setRemember} label={t('AUTH_UI.REMEMBER_ME')} />
       </View>
-    </ScrollView>
+
+      <View className="gap-4">
+        <Button fullWidth loading={loading} onPress={handleLogin} testID="auth-login-submit">
+          {loading ? t('AUTH_UI.SIGNING_IN') : t('AUTH_UI.SIGN_IN')}
+        </Button>
+        <Link href="/forgot-password" asChild>
+          <Pressable accessibilityRole="link" hitSlop={8} className="self-center" testID="auth-login-forgot">
+            <Text className="text-xs font-medium text-primary">{t('AUTH_UI.FORGOT_PASSWORD')}</Text>
+          </Pressable>
+        </Link>
+      </View>
+    </AuthShell>
   );
 }

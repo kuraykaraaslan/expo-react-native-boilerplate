@@ -1,53 +1,47 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faGoogle, faApple, faGithub, faLinkedin, faFacebook } from "@fortawesome/free-brands-svg-icons";
+import { View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faApple, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { Button, Separator } from '@/components/ui';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
 
-// ============================================================================
-// SSO Buttons Component
-// ============================================================================
+type Provider = { key: string; label: string; icon: IconDefinition; brandColor?: string };
 
-interface SSOProvider {
-  key: string;
-  label: string;
-  icon: any;
-  color: string;
-  bgColor: string;
-}
-
-const SSO_PROVIDERS: SSOProvider[] = [
-  { key: "google", label: "Google", icon: faGoogle, color: "#ea4335", bgColor: "bg-red-50 dark:bg-red-900/20" },
-  { key: "apple", label: "Apple", icon: faApple, color: "#000000", bgColor: "bg-gray-50 dark:bg-gray-800" },
-  { key: "github", label: "GitHub", icon: faGithub, color: "#333333", bgColor: "bg-gray-50 dark:bg-gray-800" },
-  { key: "linkedin", label: "LinkedIn", icon: faLinkedin, color: "#0a66c2", bgColor: "bg-blue-50 dark:bg-blue-900/20" },
+// Third-party brand marks keep their brand color (Google); monochrome marks follow the text token.
+const PROVIDERS: Provider[] = [
+  { key: 'google', label: 'Google', icon: faGoogle, brandColor: '#ea4335' },
+  { key: 'apple', label: 'Apple', icon: faApple },
+  { key: 'github', label: 'GitHub', icon: faGithub },
 ];
 
-interface SSOButtonsProps {
-  onPress?: (provider: string) => void;
-}
+type SSOButtonsProps = {
+  onPress: (provider: string, label: string) => void;
+  /** Divider text under the buttons, e.g. "or continue with email". */
+  dividerLabel: string;
+};
 
-export function SSOButtons({ onPress }: SSOButtonsProps) {
+/** next-boilerplate's OAuth block: full-width outline buttons, then a labelled divider. */
+export function SSOButtons({ onPress, dividerLabel }: SSOButtonsProps) {
+  const { t } = useTranslation();
+  const tokens = useThemeTokens();
+
   return (
-    <View>
-      <View className="flex-row items-center mb-4">
-        <View className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
-        <Text className="mx-3 text-gray-400 dark:text-gray-500 text-sm">or continue with</Text>
-        <View className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
-      </View>
-
-      <View className="flex-row justify-center gap-3">
-        {SSO_PROVIDERS.map((provider) => (
-          <TouchableOpacity
-            key={provider.key}
-            className={`w-12 h-12 rounded-xl items-center justify-center border border-gray-200 dark:border-gray-700 ${provider.bgColor}`}
-            onPress={() => onPress?.(provider.key)}
-            accessible
-            accessibilityLabel={`Sign in with ${provider.label}`}
-            accessibilityRole="button"
-          >
-            <FontAwesomeIcon icon={provider.icon} color={provider.color} size={20} />
-          </TouchableOpacity>
-        ))}
-      </View>
+    <View className="gap-3">
+      {PROVIDERS.map((p) => (
+        <Button
+          key={p.key}
+          variant="outline"
+          fullWidth
+          onPress={() => onPress(p.key, p.label)}
+          iconLeft={<FontAwesomeIcon icon={p.icon} size={16} color={p.brandColor ?? tokens['text-primary']} />}
+          accessibilityLabel={t('AUTH_UI.CONTINUE_WITH', { provider: p.label })}
+          testID={`auth-sso-${p.key}`}
+        >
+          {t('AUTH_UI.CONTINUE_WITH', { provider: p.label })}
+        </Button>
+      ))}
+      <Separator label={dividerLabel} className="my-1" />
     </View>
   );
 }

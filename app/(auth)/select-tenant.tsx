@@ -1,107 +1,105 @@
-import { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
-import { router } from "expo-router";
-import * as Haptics from "expo-haptics";
-import { useTenantStore } from "@/stores/tenantStore";
-import { TenantClientService } from "@/services/tenant.service.client";
-import { handleApiError } from "@/libs/errorUtils";
-import { Spinner } from "@/components/ui";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import type { TenantMember } from "@/dto/tenant.dto";
+import { useEffect, useState } from 'react';
+import { Pressable, Text, View } from 'react-native';
+import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBuilding, faChevronRight, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { AuthShell } from '@/components/auth/AuthShell';
+import { Button, EmptyState, Spinner } from '@/components/ui';
+import type { TenantMember } from '@/dto/tenant.dto';
+import { handleApiError } from '@/libs/errorUtils';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
+import { TenantClientService } from '@/services/tenant.service.client';
+import { useTenantStore } from '@/stores/tenantStore';
+
+function OrgRow({ item, onPress }: { item: TenantMember; onPress: () => void }) {
+  const { t } = useTranslation();
+  const tokens = useThemeTokens();
+  const name = item.tenant?.name ?? item.tenantId;
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={t('AUTH_UI.SELECT_ORG_A11Y', { name })}
+      testID={`auth-select-org-${item.tenantId}`}
+      className="min-h-[60px] flex-row items-center gap-3 rounded-lg border border-border px-4 py-3 active:bg-surface-overlay"
+    >
+      <View className="h-9 w-9 items-center justify-center rounded-lg bg-primary-subtle" accessible={false}>
+        <Text className="text-sm font-semibold text-primary">{name.charAt(0).toUpperCase()}</Text>
+      </View>
+      <View className="min-w-0 flex-1">
+        <Text className="text-sm font-medium text-text-primary" numberOfLines={1}>
+          {name}
+        </Text>
+        {item.tenant?.description ? (
+          <Text className="text-xs text-text-secondary" numberOfLines={1}>
+            {item.tenant.description}
+          </Text>
+        ) : null}
+        <Text className="text-xs text-text-disabled">{item.memberRole.toLowerCase()}</Text>
+      </View>
+      <FontAwesomeIcon icon={faChevronRight} size={12} color={tokens['text-disabled']} />
+    </Pressable>
+  );
+}
 
 export default function SelectTenantScreen() {
+  const { t } = useTranslation();
+  const tokens = useThemeTokens();
   const [memberships, setMemberships] = useState<TenantMember[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const selectMembership = useTenantStore((s) => s.selectMembership);
   const setMembershipsInStore = useTenantStore((s) => s.setMemberships);
 
   useEffect(() => {
-    async function load() {
-      setLoading(true);
-      try {
-        const { tenants } = await TenantClientService.getMyTenants();
+    let cancelled = false;
+    TenantClientService.getMyTenants()
+      .then(({ tenants }) => {
+        if (cancelled) return;
         setMemberships(tenants);
         setMembershipsInStore(tenants);
-      } catch (err: unknown) {
-        handleApiError(err, "SelectTenantScreen");
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
+      })
+      .catch((err: unknown) => handleApiError(err, 'SelectTenantScreen.load'))
+      .finally(() => !cancelled && setLoading(false));
+    return () => {
+      cancelled = true;
+    };
   }, [setMembershipsInStore]);
 
   async function handleSelect(member: TenantMember) {
     selectMembership(member);
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    router.replace("/");
-  }
-
-  if (loading) {
-    return (
-      <View className="flex-1 items-center justify-center bg-white dark:bg-gray-900">
-        <Spinner size="lg" accessibilityLabel="Loading workspaces..." />
-        <Text className="mt-2 text-sm text-text-secondary">Loading workspaces...</Text>
-      </View>
-    );
+    router.replace('/');
   }
 
   return (
-    <View className="flex-1 bg-white dark:bg-gray-900 px-6 pt-12">
-      <Text className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-        Select Workspace
-      </Text>
-      <Text className="text-gray-500 dark:text-gray-400 mb-8">
-        Choose a workspace to continue
-      </Text>
-
-      <FlatList
-        data={memberships}
-        keyExtractor={(item) => item.tenantMemberId}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            className="border border-gray-200 dark:border-gray-700 rounded-xl p-4 mb-3 bg-white dark:bg-gray-800"
-            onPress={() => handleSelect(item)}
-            accessible
-            accessibilityLabel={`Select workspace: ${item.tenant?.name ?? item.tenantId}`}
-            accessibilityRole="button"
-          >
-            <Text className="text-lg font-semibold text-gray-900 dark:text-white">
-              {item.tenant?.name ?? item.tenantId}
-            </Text>
-            {item.tenant?.description && (
-              <Text className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                {item.tenant.description}
-              </Text>
-            )}
-            <View className="flex-row items-center mt-2">
-              <View className="bg-orange-100 dark:bg-orange-900/30 rounded-full px-2 py-0.5">
-                <Text className="text-orange-600 dark:text-orange-400 text-xs font-medium capitalize">
-                  {item.memberRole.toLowerCase()}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        )}
-        ListEmptyComponent={
-          <View className="items-center py-12">
-            <Text className="text-gray-500 dark:text-gray-400">No workspaces found</Text>
-          </View>
-        }
-        ListFooterComponent={
-          <TouchableOpacity
-            className="flex-row items-center justify-center border-2 border-dashed border-orange-300 dark:border-orange-700 rounded-xl p-4 mb-3 mt-1"
-            onPress={() => router.push("/create-tenant")}
-            accessible
-            accessibilityLabel="Create a new workspace"
-            accessibilityRole="button"
-          >
-            <FontAwesomeIcon icon={faPlus} color="#f97316" size={14} />
-            <Text className="text-orange-500 font-semibold ml-2">Create New Workspace</Text>
-          </TouchableOpacity>
-        }
-      />
-    </View>
+    <AuthShell title={t('AUTH_UI.SELECT_ORG_TITLE')} subtitle={t('AUTH_UI.SELECT_ORG_SUBTITLE')} icon={faBuilding}>
+      {loading ? (
+        <View className="items-center py-8" accessibilityState={{ busy: true }}>
+          <Spinner size="lg" />
+        </View>
+      ) : memberships.length === 0 ? (
+        <EmptyState icon={faBuilding} title={t('AUTH_UI.NO_ORGS')} description={t('AUTH_UI.NO_ORGS_DESC')} className="py-6" />
+      ) : (
+        // Short list inside the card — FlatList would nest inside AuthShell's ScrollView.
+        <View className="gap-2">
+          {memberships.map((m) => (
+            <OrgRow key={m.tenantMemberId} item={m} onPress={() => handleSelect(m)} />
+          ))}
+        </View>
+      )}
+      <View className="border-t border-border pt-4">
+        <Button
+          variant="outline"
+          fullWidth
+          onPress={() => router.push('/create-tenant')}
+          iconLeft={<FontAwesomeIcon icon={faPlus} size={12} color={tokens['text-primary']} />}
+          testID="auth-select-org-create"
+        >
+          {t('AUTH_UI.CREATE_ORG_LINK')}
+        </Button>
+      </View>
+    </AuthShell>
   );
 }

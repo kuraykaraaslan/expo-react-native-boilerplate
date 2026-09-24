@@ -1,101 +1,84 @@
-import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { Link } from "expo-router";
-import { toast } from "sonner-native";
-import { useTranslation } from "react-i18next";
-import * as Haptics from "expo-haptics";
-import { AuthClientService } from "@/services/auth.service.client";
-import { handleApiError } from "@/libs/errorUtils";
-import { ForgotPasswordRequestSchema } from "@/dto/auth.dto";
+import { useState } from 'react';
+import { View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
+import { toast } from 'sonner-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEnvelope, faEnvelopeCircleCheck, faKey } from '@fortawesome/free-solid-svg-icons';
+import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
+import { AuthShell } from '@/components/auth/AuthShell';
+import { AlertBanner, Button, Input } from '@/components/ui';
+import { ForgotPasswordRequestSchema } from '@/dto/auth.dto';
+import { handleApiError } from '@/libs/errorUtils';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
+import { AuthClientService } from '@/services/auth.service.client';
 
 export default function ForgotPasswordScreen() {
   const { t } = useTranslation();
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState<string | undefined>();
+  const tokens = useThemeTokens();
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [sentTo, setSentTo] = useState<string | null>(null);
 
   async function handleSend() {
-    const result = ForgotPasswordRequestSchema.safeParse({ email });
+    const result = ForgotPasswordRequestSchema.safeParse({ email: email.trim() });
     if (!result.success) {
-      setEmailError(t("AUTH.EMAIL_INVALID"));
+      setError(t('AUTH_UI.EMAIL_INVALID'));
       return;
     }
-    setEmailError(undefined);
+    setError(undefined);
     setLoading(true);
     try {
       await AuthClientService.forgotPassword(result.data);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t("AUTH.RESET_LINK_SENT"));
-      setSent(true);
+      toast.success(t('AUTH.RESET_LINK_SENT'));
+      setSentTo(result.data.email);
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      handleApiError(err, "ForgotPasswordScreen");
+      handleApiError(err, 'ForgotPasswordScreen.send');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <ScrollView
-      className="flex-1 bg-white dark:bg-gray-900"
-      contentContainerClassName="flex-grow items-center justify-center px-6 py-12"
-      keyboardShouldPersistTaps="handled"
+    <AuthShell
+      title={t('AUTH_UI.FORGOT_TITLE')}
+      subtitle={t('AUTH_UI.FORGOT_SUBTITLE')}
+      icon={sentTo ? faEnvelopeCircleCheck : faKey}
+      footer={<AuthFooterLink prompt={t('AUTH_UI.REMEMBER_PASSWORD')} label={t('AUTH_UI.SIGN_IN_LINK')} href="/login" testID="auth-forgot-login" />}
     >
-      <View className="w-full max-w-sm">
-        <Text className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-2">
-          {t("AUTH.RESET_PASSWORD")}
-        </Text>
-        <Text className="text-gray-500 dark:text-gray-400 text-center mb-8">
-          {sent
-            ? "Check your email for the reset link."
-            : "Enter your email to receive a reset link."}
-        </Text>
-
-        {!sent && (
-          <>
-            <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {t("AUTH.EMAIL")}
-            </Text>
-            <TextInput
-              className={`w-full border rounded-lg px-4 py-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 mb-1 ${
-                emailError
-                  ? "border-red-400 dark:border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
-              }`}
-              placeholder="you@example.com"
-              value={email}
-              onChangeText={(v) => { setEmail(v); setEmailError(undefined); }}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoComplete="email"
-              accessible
-              accessibilityLabel="Email address"
-            />
-            {emailError && (
-              <Text className="text-red-500 text-xs mb-3">{emailError}</Text>
-            )}
-            <TouchableOpacity
-              className={`w-full rounded-lg py-4 items-center mt-4 ${loading ? "bg-orange-300" : "bg-orange-500"}`}
-              onPress={handleSend}
-              disabled={loading}
-              accessible
-              accessibilityLabel="Send reset email"
-              accessibilityRole="button"
-            >
-              <Text className="text-white font-semibold text-base">
-                {loading ? "Sending..." : t("AUTH.SEND_RESET_LINK")}
-              </Text>
-            </TouchableOpacity>
-          </>
-        )}
-
-        <Link href="/login" asChild>
-          <TouchableOpacity className="mt-6 items-center" accessible accessibilityLabel="Back to login">
-            <Text className="text-orange-500 text-sm">Back to Sign In</Text>
-          </TouchableOpacity>
-        </Link>
-      </View>
-    </ScrollView>
+      {sentTo ? (
+        <AlertBanner
+          variant="success"
+          title={t('AUTH_UI.CHECK_INBOX')}
+          message={t('AUTH_UI.CHECK_INBOX_DESC', { email: sentTo })}
+        />
+      ) : (
+        <View className="gap-4">
+          <Input
+            label={t('AUTH_UI.EMAIL')}
+            type="email"
+            required
+            value={email}
+            onChangeText={(v) => {
+              setEmail(v);
+              setError(undefined);
+            }}
+            error={error}
+            autoComplete="email"
+            textContentType="emailAddress"
+            returnKeyType="send"
+            onSubmitEditing={handleSend}
+            prefixIcon={<FontAwesomeIcon icon={faEnvelope} size={14} color={tokens['text-disabled']} />}
+            testID="auth-forgot-email"
+          />
+          <Button fullWidth loading={loading} onPress={handleSend} testID="auth-forgot-submit">
+            {loading ? t('AUTH_UI.SENDING') : t('AUTH_UI.SEND_RESET_LINK')}
+          </Button>
+        </View>
+      )}
+    </AuthShell>
   );
 }
