@@ -24,6 +24,16 @@ const resources = {
 export const SUPPORTED_LOCALES = Object.keys(resources) as Array<keyof typeof resources>;
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 
+// Flag + endonym for language pickers (each language named in itself).
+export const LOCALE_META: Record<Locale, { flag: string; name: string }> = {
+  en: { flag: "🇬🇧", name: "English" },
+  tr: { flag: "🇹🇷", name: "Türkçe" },
+  de: { flag: "🇩🇪", name: "Deutsch" },
+  es: { flag: "🇪🇸", name: "Español" },
+  fr: { flag: "🇫🇷", name: "Français" },
+  it: { flag: "🇮🇹", name: "Italiano" },
+};
+
 if (!i18n.isInitialized) {
   i18n.use(initReactI18next).init({
     resources,
