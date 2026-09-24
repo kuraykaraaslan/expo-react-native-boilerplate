@@ -39,6 +39,7 @@ npm run registry:snapshot
 10. **Icons: FontAwesome 6 only.** `@fortawesome/react-native-fontawesome` + `free-solid-svg-icons` / `free-brands-svg-icons`.
 11. **Haptic feedback on auth + critical actions.** `expo-haptics`.
 12. **Toasts via `sonner-native`.**
+13. **UI primitives come from kui-native via `@/components/ui`.** Tag-pinned git dependency; never copy its source, never import `kui-native/*` from app code (only `components/ui/index.ts` and `libs/theme/*`). Fix bugs upstream and bump the tag.
 
 ## Where new code goes
 
@@ -78,3 +79,4 @@ npm run registry:snapshot
 - Don't put navigation chrome directly in screens — use `_layout.tsx`.
 - Don't bypass NativeWind — no raw hex / rgb in `style={{}}` unless dynamically computed.
 - Don't add other icon libraries — FontAwesome only.
+- Don't pin kui-native to a branch (`#main`), patch `node_modules/kui-native`, or use `patch-package` on it — release a new tag instead.

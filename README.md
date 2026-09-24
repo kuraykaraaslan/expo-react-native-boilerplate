@@ -27,6 +27,7 @@ This boilerplate provides a robust starting point for building mobile applicatio
 - **Prettier & ESLint**: Pre-configured with Prettier and ESLint for consistent code formatting and linting, following best practices.
 - **Axios**: Includes Axios for making HTTP requests, with a pre-configured instance for easy API integration.
 - **i18next**: Supports i18next for internationalization and localization of the app.
+- **kui-native**: UI components and design tokens from [kui-native](https://github.com/kuraykaraaslan/kui-native), installed as a tag-pinned git dependency.
 
 ## Roadmap
 
@@ -80,6 +81,27 @@ Follow these instructions to set up the project locally. These instructions will
     ```
 
 5. Open the Expo Go app on your mobile device and scan the QR code to view the app.
+
+### UI kit (kui-native)
+
+UI primitives come from [kui-native](https://github.com/kuraykaraaslan/kui-native), a public repo installed straight from GitHub (no npm registry, no credentials needed in CI or EAS):
+
+```json
+"kui-native": "git+https://github.com/kuraykaraaslan/kui-native.git#v0.2.0"
+```
+
+- Import components from `@/components/ui` only. That file re-exports each component by its deep path, so kui-native's optional peers (maps, video) are never pulled in. To use another component, add its lines there.
+- Brand colors are overridden in `libs/theme/brand.ts`; raw token hex for props without `className` comes from `useThemeTokens()` in `@/libs/theme/ThemeContext`.
+- Never edit `node_modules/kui-native` or copy its source into this repo. Fix bugs in kui-native and release a new tag.
+
+To update kui-native:
+
+1. Tag a release in kui-native (`vX.Y.Z`) and push the tag.
+2. Change the `#vX.Y.Z` suffix in `package.json`, then run `npm install`.
+3. Run `npm run typecheck && npm run test:ci`.
+4. Commit it alone: `chore(deps): kui-native vX.Y.Z`.
+
+Always pin a tag, never a branch.
 
 ## Usage
 

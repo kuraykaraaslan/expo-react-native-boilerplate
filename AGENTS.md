@@ -45,7 +45,8 @@ A **production-grade Expo + React Native boilerplate** for cross-platform mobile
 - **Data fetch**: `axiosInstance` from `libs/axios.ts` (auth header injected by interceptor from SecureStore)
 - **Validation**: Zod (DTOs in `dto/`)
 - **i18n**: i18next via `libs/i18n.ts`
-- **Icons**: FontAwesome 6 via `@fortawesome/react-native-fontawesome`
+- **UI kit**: [kui-native](https://github.com/kuraykaraaslan/kui-native) — git dependency pinned to a tag, re-exported from `@/components/ui`; semantic tokens (`bg-primary`, `text-text-primary`, `border-border`), brand override in `libs/theme/brand.ts`
+- **Icons**: FontAwesome 7 via `@fortawesome/react-native-fontawesome`
 - **Testing**: Jest + `jest-expo`
 
 See [MODERNIZATION.MD](MODERNIZATION.MD) for the modernization plan / current-vs-target table.
@@ -61,7 +62,7 @@ app/  (screens)  ──→  services/ + stores/  ──→  libs/axios + libs/se
 ```
 
 - **`app/`** — Expo Router file-based screens. Each `.tsx` is a route. `_layout.tsx` defines layouts (Stack / Tabs / Slot). `(group)` directories are route groups stripped from URLs. `+not-found.tsx` is the 404. `+html.tsx` customizes the web HTML shell.
-- **`components/<category>/<Component>.tsx`** — reusable UI. Currently: `auth/` (AuthLayout, SSOButtons), `ui/` (Button, TextInput, LoadingSpinner).
+- **`components/<category>/<Component>.tsx`** — reusable UI. Currently: `auth/` (AuthLayout, SSOButtons), `shell/` (AppHeader, DrawerContent, …), `ui/` (`index.ts` — kui-native re-export barrel: Button, Input, Card, Spinner, …).
 - **`services/<name>.service.client.ts`** — data-fetching layer. Currently service classes with static methods (`AuthClientService.login(...)`). Target per [MODERNIZATION.MD](MODERNIZATION.MD): hook pipeline (`useAuth` → `axiosInstance`).
 - **`stores/<name>Store.ts`** — Zustand stores, persisted via MMKV (`zustandStorage`). E.g. `useAuthStore`, `useTenantStore`, `useAppStore`.
 - **`dto/<name>.dto.ts`** — Zod schemas + inferred types. Shared contracts with the backend.
@@ -95,7 +96,7 @@ app/  (screens)  ──→  services/ + stores/  ──→  libs/axios + libs/se
 │
 ├── components/               ← shared UI (NativeWind + FontAwesome)
 │   ├── auth/                 ← AuthLayout, SSOButtons
-│   └── ui/                   ← Button, TextInput, LoadingSpinner
+│   └── ui/index.ts           ← kui-native re-exports (Button, Input, Card, Spinner, …)
 │
 ├── services/                 ← *.service.client.ts (data fetching via axiosInstance)
 ├── stores/                   ← Zustand stores (MMKV-persisted)
@@ -126,7 +127,7 @@ Examples:
 import { useAuthStore } from "@/stores/authStore";
 import { AuthClientService } from "@/services/auth.service.client";
 import { LoginRequest } from "@/dto/auth.dto";
-import { Button } from "@/components/ui/Button";
+import { Button, Spinner } from "@/components/ui";
 import { cn } from "@/utils/cn";
 import axiosInstance from "@/libs/axios";
 import { getToken } from "@/libs/secureStorage";
@@ -162,6 +163,7 @@ import { getToken } from "@/libs/secureStorage";
 10. **Icons: FontAwesome only.** `@fortawesome/react-native-fontawesome` + `@fortawesome/free-solid-svg-icons` / `free-brands-svg-icons`. No `expo/vector-icons` for new code unless an icon truly doesn't exist in FontAwesome.
 11. **Haptic feedback on auth + critical actions.** `expo-haptics` — `Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success | Error)`.
 12. **Toasts via `sonner-native`.** `toast.success/error/info`. Don't roll your own.
+13. **UI primitives come from kui-native via `@/components/ui`.** kui-native is a tag-pinned git dependency (`package.json`). Never copy its source into this repo and never import `kui-native/*` from app code — only `components/ui/index.ts` and `libs/theme/*` may. Need another component? Add a deep re-export line to `components/ui/index.ts`. Found a bug? Fix it upstream, tag a release, bump the tag here. Raw token hex (for props without `className`): `useThemeTokens()` from `@/libs/theme/ThemeContext`.
 
 ## 7. Routing: how Expo Router builds the URL tree
 
@@ -212,3 +214,4 @@ import { getToken } from "@/libs/secureStorage";
 - Don't put navigation chrome (headers, tabs) directly in screens — use `_layout.tsx`.
 - Don't bypass NativeWind — no raw hex / rgb in `style={{}}` unless dynamically computed.
 - Don't add other icon libraries (`lucide-react`, `heroicons`, etc.) — FontAwesome only.
+- Don't pin kui-native to a branch (`#main`), patch `node_modules/kui-native`, or use `patch-package` on it — release a new tag instead.
