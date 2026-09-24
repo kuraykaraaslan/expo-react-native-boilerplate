@@ -1,10 +1,11 @@
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { router, type Href } from 'expo-router';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import { cn } from '@/utils/cn';
+import { Text } from '@/components/ui';
 import { IconTile } from './IconTile';
 
 type LinkTileProps = {

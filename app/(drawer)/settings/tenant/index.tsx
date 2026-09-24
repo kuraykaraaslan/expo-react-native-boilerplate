@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { faEnvelopeOpenText, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { RoleBadge } from '@/components/common/Badges';
@@ -8,7 +8,7 @@ import { Screen } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { SectionLabel } from '@/components/common/SectionLabel';
 import { NoOrganization } from '@/components/tenant/NoOrganization';
-import { Badge, Card } from '@/components/ui';
+import { Badge, Card, Text } from '@/components/ui';
 import { useTenantStore } from '@/stores/tenantStore';
 import { formatDate } from '@/utils/format';
 

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
+import { FlatList, Pressable, RefreshControl, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
@@ -12,7 +12,7 @@ import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { EditMemberModal } from '@/components/tenant/EditMemberModal';
 import { InviteMemberModal } from '@/components/tenant/InviteMemberModal';
 import { NoOrganization } from '@/components/tenant/NoOrganization';
-import { Avatar, DropdownMenu, EmptyState, SearchBar, Spinner } from '@/components/ui';
+import { Avatar, DropdownMenu, EmptyState, SearchBar, Spinner, Text } from '@/components/ui';
 import type { TenantMember } from '@/dto/tenant.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';

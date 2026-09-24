@@ -1,5 +1,6 @@
-import { Pressable, Text } from 'react-native';
+import { Pressable } from 'react-native';
 import { Link, type Href } from 'expo-router';
+import { Text } from '@/components/ui';
 
 /** "Don't have an account? Sign up" — prompt in secondary, link in primary. */
 export function AuthFooterLink({ prompt, label, href, testID }: { prompt?: string; label: string; href: Href; testID?: string }) {

@@ -1,6 +1,6 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { Spinner } from '@/components/ui';
+import { Spinner, Text } from '@/components/ui';
 import { IconTile } from './IconTile';
 
 type StatTileProps = { icon: IconDefinition; label: string; value: number | string; loading?: boolean };

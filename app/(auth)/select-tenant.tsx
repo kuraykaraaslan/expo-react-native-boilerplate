@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBuilding, faChevronRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { AuthShell } from '@/components/auth/AuthShell';
-import { Button, EmptyState, Spinner } from '@/components/ui';
+import { Button, EmptyState, Spinner, Text } from '@/components/ui';
 import type { TenantMember } from '@/dto/tenant.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';

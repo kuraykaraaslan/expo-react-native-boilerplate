@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
@@ -9,7 +9,7 @@ import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { SSOButtons } from '@/components/auth/SSOButtons';
-import { Button, Checkbox, Input } from '@/components/ui';
+import { Button, Checkbox, Input, Text } from '@/components/ui';
 import { LoginRequestSchema } from '@/dto/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';

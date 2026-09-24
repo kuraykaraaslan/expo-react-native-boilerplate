@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faShieldHalved } from '@fortawesome/free-solid-svg-icons';
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { BrandLogo } from '@/components/ui';
+import { BrandLogo, Text } from '@/components/ui';
 import { LangSwitcher } from '@/components/shell/LangSwitcher';
 import { ThemeToggle } from '@/components/shell/ThemeToggle';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';

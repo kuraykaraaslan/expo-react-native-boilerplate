@@ -220,7 +220,9 @@
         "CREATE_ORG": "Create Organization",
         "CREATING_ORG": "Creating…",
         "ORG_CREATED": "Organization created",
-        "BACK_TO_ORGS": "Back to organizations"
+        "BACK_TO_ORGS": "Back to organizations",
+        "OTP_EMAIL_HINT": "A 6-digit code to your inbox",
+        "OTP_SMS_HINT": "A 6-digit code by text message"
     },
     "DASHBOARD": {
         "TITLE": "Dashboard",

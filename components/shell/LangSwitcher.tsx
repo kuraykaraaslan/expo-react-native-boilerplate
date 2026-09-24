@@ -1,6 +1,6 @@
-import { Pressable, Text } from 'react-native';
+import { Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { DropdownMenu } from '@/components/ui';
+import { DropdownMenu, Text } from '@/components/ui';
 import { LOCALE_META, SUPPORTED_LOCALES, type Locale } from '@/libs/i18n';
 import { useAppStore } from '@/stores/appStore';
 

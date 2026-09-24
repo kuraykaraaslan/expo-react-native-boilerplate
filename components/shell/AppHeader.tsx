@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,7 @@ import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import logger from '@/libs/logger';
 import { NotificationClientService } from '@/services/notification.service.client';
 import { useNotificationStore } from '@/stores/notificationStore';
+import { Text } from '@/components/ui';
 import { LangSwitcher } from './LangSwitcher';
 import { ThemeToggle } from './ThemeToggle';
 import { UserMenu } from './UserMenu';

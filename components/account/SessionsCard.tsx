@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faDesktop, faLaptop, faMobileScreen } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmDialog } from '@/components/common/ConfirmDialog';
-import { Button, Card, EmptyState } from '@/components/ui';
+import { Button, Card, EmptyState, Text } from '@/components/ui';
 import type { Session } from '@/dto/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';

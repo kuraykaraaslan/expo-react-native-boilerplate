@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
@@ -10,7 +10,7 @@ import { Screen } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { InviteMemberModal } from '@/components/tenant/InviteMemberModal';
 import { NoOrganization } from '@/components/tenant/NoOrganization';
-import { Button, Card, EmptyState } from '@/components/ui';
+import { Button, Card, EmptyState, Text } from '@/components/ui';
 import type { Invitation } from '@/dto/tenant.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { TenantClientService } from '@/services/tenant.service.client';

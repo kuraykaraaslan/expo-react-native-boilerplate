@@ -1,8 +1,8 @@
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { router, type Href } from 'expo-router';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import { PageHeader, type PageHeaderProps } from '@/components/ui';
+import { PageHeader, Text, type PageHeaderProps } from '@/components/ui';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 
 type ScreenHeaderProps = PageHeaderProps & {

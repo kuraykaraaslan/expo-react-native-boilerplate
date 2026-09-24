@@ -1,9 +1,10 @@
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Link, usePathname } from 'expo-router';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import { cn } from '@/utils/cn';
+import { Text } from '@/components/ui';
 
 type DrawerNavLinkProps = {
   href: string;

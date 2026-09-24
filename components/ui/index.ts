@@ -58,3 +58,5 @@ export { TabGroup } from "kui-native/modules/ui/TabGroup";
 export type { Tab, TabGroupProps } from "kui-native/modules/ui/TabGroup";
 export { Textarea } from "kui-native/modules/ui/Textarea";
 export type { TextareaProps } from "kui-native/modules/ui/Textarea";
+export { RadioGroup } from "kui-native/modules/ui/RadioGroup";
+export type { RadioGroupProps, RadioOption } from "kui-native/modules/ui/RadioGroup";

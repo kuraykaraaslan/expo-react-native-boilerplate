@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBuilding, faCalendar, faEnvelope, faUserShield } from '@fortawesome/free-solid-svg-icons';
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { RoleBadge } from '@/components/common/Badges';
-import { Badge, Card } from '@/components/ui';
+import { Badge, Card, Text } from '@/components/ui';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import { useAuthStore } from '@/stores/authStore';
 import { useTenantStore } from '@/stores/tenantStore';

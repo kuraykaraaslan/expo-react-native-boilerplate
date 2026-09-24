@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { DrawerContentScrollView } from 'expo-router/drawer';
 import type { DrawerContentComponentProps } from 'expo-router/drawer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,6 +16,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import { useTenantStore } from '@/stores/tenantStore';
+import { Text } from '@/components/ui';
 import { DrawerNavLink } from './DrawerNavLink';
 import { LangSwitcher } from './LangSwitcher';
 import { ThemeToggle } from './ThemeToggle';

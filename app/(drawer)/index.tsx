@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import {
@@ -17,7 +17,7 @@ import { Screen } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { SectionLabel } from '@/components/common/SectionLabel';
 import { StatTile } from '@/components/common/StatTile';
-import { Button, Card } from '@/components/ui';
+import { Button, Card, Text } from '@/components/ui';
 import logger from '@/libs/logger';
 import { AuthClientService } from '@/services/auth.service.client';
 import { NotificationClientService } from '@/services/notification.service.client';

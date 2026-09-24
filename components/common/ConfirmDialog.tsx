@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Button, Modal } from '@/components/ui';
+import { Button, Modal, Text } from '@/components/ui';
 
 type ConfirmDialogProps = {
   open: boolean;

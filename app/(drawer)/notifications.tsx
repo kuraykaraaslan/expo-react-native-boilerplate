@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
+import { FlatList, Pressable, RefreshControl, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
@@ -7,7 +7,7 @@ import { faBellSlash } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { Screen, useListContentStyle } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
-import { Button, EmptyState, Spinner } from '@/components/ui';
+import { Button, EmptyState, Spinner, Text } from '@/components/ui';
 import type { Notification } from '@/dto/notification.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
