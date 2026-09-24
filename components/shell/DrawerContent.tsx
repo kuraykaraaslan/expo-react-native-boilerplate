@@ -1,42 +1,71 @@
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { DrawerContentScrollView } from 'expo-router/drawer';
 import type { DrawerContentComponentProps } from 'expo-router/drawer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { faHome, faBell, faGear } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import {
+  faBell,
+  faCircleUser,
+  faEnvelopeOpenText,
+  faGear,
+  faHouse,
+  faLaptop,
+  faShieldHalved,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
+import { useThemeTokens } from '@/libs/theme/ThemeContext';
+import { useTenantStore } from '@/stores/tenantStore';
 import { DrawerNavLink } from './DrawerNavLink';
 import { LangSwitcher } from './LangSwitcher';
 import { ThemeToggle } from './ThemeToggle';
 
+function GroupLabel({ children }: { children: string }) {
+  return (
+    <Text accessibilityRole="header" className="mb-1 mt-4 px-3 text-[10px] font-semibold uppercase tracking-widest text-text-disabled">
+      {children}
+    </Text>
+  );
+}
+
 export function DrawerContent(props: DrawerContentComponentProps) {
+  const { t } = useTranslation();
+  const tokens = useThemeTokens();
   const insets = useSafeAreaInsets();
+  const tenantName = useTenantStore((s) => s.selectedTenantMembership?.tenant?.name);
 
   return (
     <View className="flex-1 bg-surface-raised">
-
-      {/* Brand header — 56pt + status bar */}
+      {/* Brand row — 56pt + status bar, as next-boilerplate's sidebar header */}
       <View
-        className="justify-center px-4 border-b border-border"
+        className="flex-row items-center gap-2.5 border-b border-border px-4"
         style={{ height: 56 + insets.top, paddingTop: insets.top }}
       >
-        <Text className="text-base font-bold text-text-primary">AppName</Text>
+        <View className="h-7 w-7 items-center justify-center rounded-lg bg-primary" accessible={false}>
+          <FontAwesomeIcon icon={faShieldHalved} size={14} color={tokens['primary-fg']} />
+        </View>
+        <Text className="flex-1 text-sm font-semibold text-text-primary" numberOfLines={1}>
+          {tenantName ?? t('SHELL.PLATFORM')}
+        </Text>
       </View>
 
-      {/* Nav links */}
-      <DrawerContentScrollView
-        {...props}
-        contentContainerClassName="pt-2 px-3"
-        scrollEnabled={false}
-      >
-        <DrawerNavLink href="/"             label="Home"          icon={faHome} exact />
-        <DrawerNavLink href="/notifications" label="Notifications" icon={faBell} />
-        <DrawerNavLink href="/settings"      label="Settings"      icon={faGear} />
+      <DrawerContentScrollView {...props} contentContainerClassName="px-2 pb-4" contentContainerStyle={{ paddingTop: 4 }}>
+        <GroupLabel>{t('SHELL.GROUP_OVERVIEW')}</GroupLabel>
+        <DrawerNavLink href="/" label={t('SHELL.NAV_DASHBOARD')} icon={faHouse} exact />
+        <DrawerNavLink href="/notifications" label={t('SHELL.NAV_NOTIFICATIONS')} icon={faBell} />
+
+        <GroupLabel>{t('SHELL.GROUP_ACCOUNT')}</GroupLabel>
+        <DrawerNavLink href="/settings/profile" label={t('SHELL.NAV_PROFILE')} icon={faCircleUser} />
+        <DrawerNavLink href="/settings/sessions" label={t('SHELL.NAV_SESSIONS')} icon={faLaptop} />
+
+        <GroupLabel>{t('SHELL.GROUP_ORGANIZATION')}</GroupLabel>
+        <DrawerNavLink href="/settings/tenant/members" label={t('SHELL.NAV_MEMBERS')} icon={faUsers} />
+        <DrawerNavLink href="/settings/tenant/invitations" label={t('SHELL.NAV_INVITATIONS')} icon={faEnvelopeOpenText} />
+        <DrawerNavLink href="/settings" label={t('SHELL.NAV_SETTINGS')} icon={faGear} exact />
       </DrawerContentScrollView>
 
-      {/* Footer: lang + theme */}
-      <View
-        className="flex-row items-center gap-1 px-4 pt-3 border-t border-border"
-        style={{ paddingBottom: insets.bottom + 12 }}
-      >
+      {/* Footer: language + theme */}
+      <View className="flex-row items-center gap-1 border-t border-border px-4 pt-3" style={{ paddingBottom: insets.bottom + 12 }}>
         <LangSwitcher />
         <View className="ml-auto">
           <ThemeToggle />
