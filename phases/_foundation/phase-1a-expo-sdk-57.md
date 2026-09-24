@@ -66,3 +66,19 @@ NEREDE KALDIK: phases/README.md §Sıra
 - **MMKV / New Architecture:** persist edilen store'lar okunamazsa oturum ve tercih kaybolur. Yükseltmeden önce ve sonra emülatörde aynı hesapla test edilmeli.
 - **FontAwesome 7 ikon adları:** bazı ikonlar FA 7'de yeniden adlandırıldı. `typecheck` import hatasını yakalar; eksik kalan ikonlar tek tek değiştirilir.
 - **Faz 0 ile karışma:** yükseltme, Faz 0 commit'lendikten **sonra** ayrı commit(ler) olarak yapılır. Böylece bir regresyon SDK yükseltmesine mi Faz 0'a mı ait, ayrılabilir.
+
+---
+
+## ✅ KODLANDI — 2026-09-24
+
+Commit'ler: `365b597` (SDK 57 + hizalama) · `87d7adb` (katalog: yalnız zaman damgası ve shell import yolu)
+
+Doğrulama: `npx expo install --check` → up to date · `npx expo-doctor` 21/21 · `npm run typecheck` 0 hata · `npm run test:ci` 2/2 · `npx expo export --platform web` başarılı · `npm ls` → react 19.2.3 / react-native 0.86.3 / expo 57.0.25 / nativewind 4.2.7 tek kopya.
+
+**Bilinçli sapmalar:**
+- **`@react-navigation/drawer` ve `@react-navigation/native` kaldırıldı.** expo-router 57 drawer'ı ve tiplerini kendisi export ediyor (`expo-router/drawer`). Ayrı paketin tipleri onunkiyle çakışıyordu (TS2322). Shell bileşenleri artık `expo-router/drawer`'dan import ediyor.
+- **`react-i18next` 15 → 17.** v15 TypeScript 6'yı peer olarak kabul etmiyordu.
+- **TypeScript 6** (SDK 57'nin beklediği `~6.0.3`): `@types` artık otomatik yüklenmiyor → `tsconfig.json`'a `"types": ["jest"]` eklendi (kui-native'deki gibi).
+- **`app.config.ts` üst düzey `splash` alanı kaldırıldı.** SDK 57'nin `ExpoConfig` tipinde bu alan yok. Splash'i `expo-splash-screen` plugin'i yönetiyor.
+- **Kalan tek peer uyarısı:** RNTL 14 → `test-renderer` → `react-reconciler@0.34`, `react@^19.3` istiyor. kui-native'de de aynı uyarı var ve testler geçiyor; `--legacy-peer-deps` gerekmiyor.
+- **Emülatör doğrulaması ve MMKV'nin cihazda persist testi yapılmadı** (sahibe kaldı). SDK 56/57 changelog'ları satır satır okunmadı; kırılmalar typecheck, export ve expo-doctor ile yakalandı.
