@@ -44,7 +44,7 @@ Sunucu tarafı ise **hazır**: `audience: 'device'` ile bearer akışı eklenmi�
 | 1A | [_foundation/phase-1a-expo-sdk-57.md](_foundation/phase-1a-expo-sdk-57.md) | Expo SDK 55 → 57 | ✅ `365b597` |
 | 1B | [_foundation/phase-1b-kui-native-package.md](_foundation/phase-1b-kui-native-package.md) | kui-native paketleştirme (**KUInative reposunda**) + `v0.2.0` tag | ✅ KUInative `887ad72` · `v0.2.0` |
 | 1C | [_foundation/phase-1c-kui-native-dependency.md](_foundation/phase-1c-kui-native-dependency.md) | kui-native git bağımlılığı + tek tasarım dili | ✅ `ff2e1e1` |
-| 1D | [_foundation/phase-1d-design-parity.md](_foundation/phase-1d-design-parity.md) | next-boilerplate görsel paritesi (renk, font, tüm ekranlar) | 🔵 Devam ediyor |
+| 1D | [_foundation/phase-1d-design-parity.md](_foundation/phase-1d-design-parity.md) | next-boilerplate görsel paritesi (renk, font, tüm ekranlar) | ✅ `717be69` · kui-native `v0.3.1` |
 | 2 | [_foundation/phase-2-transport.md](_foundation/phase-2-transport.md) | Transport katmanı (device bearer) | ⬜ Bekliyor |
 | 3 | [auth/phase-3-dto-services.md](auth/phase-3-dto-services.md) | DTO + servis hizalaması | ⬜ Bekliyor |
 | 4 | [auth/phase-4-auth-screens.md](auth/phase-4-auth-screens.md) | Auth çekirdek ekranları | ⬜ Bekliyor |

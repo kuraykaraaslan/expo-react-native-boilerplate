@@ -64,53 +64,53 @@ Token'lar kui-native varsayılanlarından yalnız şu noktalarda ayrılır:
 ### 1D.1 Renk + font
 
 - [x] `libs/theme/brand.ts` → next token override'ları. `global.css` açık tema fallback'leri buna göre güncellendi.
-- [ ] kui-native `configureFonts()`: **KUInative reposunda**, yeni tag `v0.3.0`. Tag push'u sahip onayına bağlı.
-- [ ] Inter font: `@expo-google-fonts/inter` paketi, kök layout'ta `useFonts` ile yüklenir, `configureFonts` Inter'e ayarlanır.
+- [x] kui-native `configureFonts()`: v0.3.0 (overlay tema düzeltmesi v0.3.1).
+- [x] Inter font: `@expo-google-fonts/inter`, `useFonts`, `configureFonts`.
 
 ### 1D.2 Kabuk
 
-- [ ] **DrawerContent:**
+- [x] **DrawerContent:**
   - Marka satırı: BrandLogo + organizasyon adı.
   - Gruplar: GENEL (Panel, Bildirimler), HESAP (Profilim, Oturumlar), ORGANİZASYON (Üyeler, Davetler, Ayarlar).
   - Alt kısım: dil + tema.
   - **Genişlik 256pt kalır.** Blocking kural; next'in mobil drawer'ı 288px ama kural önce gelir.
-- [ ] **AppHeader:** solda hamburger; sağda LangSwitcher (bayrak + kod), ThemeToggle, bildirim zili (okunmamış sayısı; bildirimler ekranına gider) ve UserMenu.
-- [ ] **UserMenu:** DropdownMenu. Başlıkta ad ve e-posta; öğeler: Profilim, Çıkış yap (kırmızı, `libs/logout.ts`).
-- [ ] **LangSwitcher:**
+- [x] **AppHeader:** solda hamburger; sağda LangSwitcher (bayrak + kod), ThemeToggle, bildirim zili (okunmamış sayısı; bildirimler ekranına gider) ve UserMenu.
+- [x] **UserMenu:** DropdownMenu. Başlıkta ad ve e-posta; öğeler: Profilim, Çıkış yap (kırmızı, `libs/logout.ts`).
+- [x] **LangSwitcher:**
   - Tetikleyici: bayrak (emoji) + kod.
   - Menü: bayrak + yerel dil adı.
   - Liste `SUPPORTED_LOCALES`'ten gelir.
 
 ### 1D.3 Auth
 
-- [ ] `components/auth/AuthShell.tsx`: next'in auth kartı. Sağ üstte LangSwitcher + ThemeToggle (kuralın istisnası). `KeyboardAvoidingView` + `ScrollView`.
-- [ ] **login:** SSO → ayırıcı → E-posta (zarf ikonu) → Parola (kilit ikonu + göster/gizle) → Beni hatırla → Giriş yap → "Parolanızı mı unuttunuz?". Kart altında "Hesabınız yok mu? Kayıt ol".
+- [x] `components/auth/AuthShell.tsx`: next'in auth kartı. Sağ üstte LangSwitcher + ThemeToggle (kuralın istisnası). `KeyboardAvoidingView` + `ScrollView`.
+- [x] **login:** SSO → ayırıcı → E-posta (zarf ikonu) → Parola (kilit ikonu + göster/gizle) → Beni hatırla → Giriş yap → "Parolanızı mı unuttunuz?". Kart altında "Hesabınız yok mu? Kayıt ol".
   - Önceden doldurulmuş `admin@admin.com` kaldırılır.
-- [ ] **register:** E-posta, Parola ("En az 8 karakter"), Parolayı doğrula. Alanların altında satır içi Zod hataları.
-- [ ] **forgot-password:** form ve "Gelen kutunuzu kontrol edin" başarı durumu.
-- [ ] **2fa:** next'te karşılığı yok. Aynı AuthShell içinde 6 haneli kod girişi.
-- [ ] **select-tenant:** organizasyon satırları (baş harf kutusu, ad, açıklama, rol, sağ ok) ve "Yeni organizasyon oluştur".
-- [ ] **create-tenant:** Organizasyon adı (bina ikonu) + açıklama.
+- [x] **register:** E-posta, Parola ("En az 8 karakter"), Parolayı doğrula. Alanların altında satır içi Zod hataları.
+- [x] **forgot-password:** form ve "Gelen kutunuzu kontrol edin" başarı durumu.
+- [x] **2fa:** next'te karşılığı yok. Aynı AuthShell içinde 6 haneli kod girişi.
+- [x] **select-tenant:** organizasyon satırları (baş harf kutusu, ad, açıklama, rol, sağ ok) ve "Yeni organizasyon oluştur".
+- [x] **create-tenant:** Organizasyon adı (bina ikonu) + açıklama.
 
 ### 1D.4 Uygulama ekranları
 
-- [ ] **Panel:**
+- [x] **Panel:**
   - PageHeader "Panel".
   - StatCard'lar: okunmamış bildirim, etkin oturum, organizasyon sayısı.
   - "Bu çalışma alanında" başlığı altında bağlantı karoları.
-- [ ] **Bildirimler:** PageHeader + "Tümünü okundu işaretle". Satırlarda nokta, başlık, açıklama ve zaman; okunmamışlar hafif renkli zemin. EmptyState.
-- [ ] **Ayarlar (hub):** next'in "Organizasyon ayarları" karo ızgarası. Bölümler: Hesap, Organizasyon. Hub kuralı gereği ayar alanı içermez.
-- [ ] **Profilim:** PageHeader + rol rozeti + TabGroup:
+- [x] **Bildirimler:** PageHeader + "Tümünü okundu işaretle". Satırlarda nokta, başlık, açıklama ve zaman; okunmamışlar hafif renkli zemin. EmptyState.
+- [x] **Ayarlar (hub):** next'in "Organizasyon ayarları" karo ızgarası. Bölümler: Hesap, Organizasyon. Hub kuralı gereği ayar alanı içermez.
+- [x] **Profilim:** PageHeader + rol rozeti + TabGroup:
   - **Profil:** Card içinde avatar, görünen ad, biyografi, "Profili kaydet".
   - **Güvenlik:** "Hesap güvenliği" kartı ve "Etkin oturumlar" kartı.
   - **Tercihler:** tema ve dil.
-- [ ] **Oturumlar / Dil / E-posta değiştir:** aynı kartlar, hub'dan doğrudan erişim için ayrı ekranlar.
-- [ ] **Üyeler:**
+- [x] **Oturumlar / Dil / E-posta değiştir:** aynı kartlar, hub'dan doğrudan erişim için ayrı ekranlar.
+- [x] **Üyeler:**
   - PageHeader ve "Üye davet et" butonu.
   - SearchBar.
   - Card içinde satırlar: avatar, ad/e-posta, rol rozeti, katılım tarihi, kebab menü (Düzenle / Kaldır).
   - Davet Modal'ı: E-posta + Rol.
-- [ ] **Davetler:** PageHeader + "Yeni davet". "Bekleyen davetler" kartı; satırlarda e-posta, rol, durum rozeti, geçerlilik sonu, kebab menü (İptal et).
+- [x] **Davetler:** PageHeader + "Yeni davet". "Bekleyen davetler" kartı; satırlarda e-posta, rol, durum rozeti, geçerlilik sonu, kebab menü (İptal et).
 
 ### 1D.5 Ortak kurallar (internal-ai-rules)
 
@@ -124,9 +124,9 @@ Token'lar kui-native varsayılanlarından yalnız şu noktalarda ayrılır:
 
 ### 1D.6 Doğrulama
 
-- [ ] typecheck, test ve web export yeşil.
-- [ ] Ekran görüntüleri `.junk/screenshots/after/{light,dark}/` altına; öncekiler `before/` içinde.
-- [ ] Katalog snapshot'ı yenilenir. AGENTS.md ve README gerekirse güncellenir.
+- [x] typecheck, test ve web export yeşil.
+- [x] Ekran görüntüleri `.junk/screenshots/after/{light,dark}/` altına; öncekiler `before/` içinde.
+- [x] Katalog snapshot'ı yenilenir. AGENTS.md ve README gerekirse güncellenir.
 
 ## Kural çatışmaları (sahip incelemesi için; bu fazda uygulanan seçim)
 
@@ -150,13 +150,19 @@ Token'lar kui-native varsayılanlarından yalnız şu noktalarda ayrılır:
 
 ---
 
-## 🟡 KISMEN KODLANDI — 2026-09-24 (branch `feat/design-parity`) · font adımı sahip onayını bekliyor
+## ✅ KODLANDI — 2026-09-24 (branch `feat/design-parity` → `main`)
 
 Commit'ler: `f683be8` (palet) · `df888c8` (ortak bileşenler + TR/EN metinler) · `9c8efa6` (kabuk) · `093335b` (auth) · `b0d6af5` (uygulama ekranları) · `5ea333e` (katalog)
 
 Doğrulama: typecheck 0 hata · test:ci 2/2 · web export başarılı · 19 ekran görüntüsü × açık/koyu (TR) `.junk/screenshots/after/{light,dark}/`. Sayfa hatası yok, her rota kendi adresinde açılıyor (drawer ve kullanıcı menüsü açık halleri dahil). Önceki durum `before/` altında.
 
-**Kalan:** `configureFonts()` KUInative'de hazır: branch `feat/configurable-fonts`, `1b0db3a..a7d3117`, v0.3.0; testler 67 suite / 740. Merge, `v0.3.0` tag'i ve push sahip onayına bağlı. Ardından burada `@expo-google-fonts/inter` + `useFonts` + `configureFonts` eklenir ve bağımlılık `#v0.3.0`'a yükseltilir.
+**Font + sonradan gelen düzeltmeler:**
+
+- **kui-native v0.3.0:** `configureFonts` eklendi.
+- **kui-native v0.3.1:** RN `Modal` içinde render edilen overlay'ler (Modal, Drawer, DropdownMenu/Select paneli) artık aktif temanın değişkenlerini kendi içeriklerine yeniden uyguluyor. Önceden koyu temada kullanıcı menüsü beyaz açılıyordu (sahip bildirdi).
+- **Commit'ler:** `dcfccd6` (Inter + v0.3.1), `717be69` (tüm metinler kui `Text` ile, 2FA yöntem seçici kart RadioGroup oldu; sahip dar bulmuştu), `d4dae5d` (katalog).
+- **Inter yükleme:** `@expo-google-fonts/inter` kök layout'ta `useFonts` ile yükleniyor. `configureFonts` `libs/theme/brand.ts`'te çağrılıyor, font yüklenemezse sistem fontuna düşülüyor.
+- **Metin bileşeni:** ekranlar ve bileşenler RN `Text` yerine kui-native `Text` kullanıyor. Böylece ağırlık ailesi (Inter_600SemiBold vb.) Android'de de doğru seçiliyor.
 
 **Bilinçli sapmalar / bulgular:**
 - **1C hatası düzeltildi:** DropdownMenu, `onPress`'i tetikleyici elemana enjekte ediyor. 1C'deki `View` tetikleyicili LangSwitcher bu yüzden **hiç açılmıyordu**. Tüm tetikleyiciler artık `Pressable`.
