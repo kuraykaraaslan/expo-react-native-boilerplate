@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-24T12:10:52.506Z",
+  "generatedAt": "2026-09-24T16:14:24.496Z",
   "libs": [
     {
       "filePath": "libs/axios.ts",
@@ -32,6 +32,7 @@
       "exports": [
         "SUPPORTED_LOCALES",
         "Locale",
+        "LOCALE_META",
         "default"
       ]
     },

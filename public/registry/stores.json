@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-24T12:10:52.506Z",
+  "generatedAt": "2026-09-24T16:14:24.496Z",
   "stores": [
     {
       "filePath": "stores/appStore.ts",
@@ -29,6 +29,16 @@
         "logout"
       ],
       "persisted": true
+    },
+    {
+      "filePath": "stores/notificationStore.ts",
+      "name": "notificationStore",
+      "hook": "useNotificationStore",
+      "stateKeys": [
+        "unreadCount",
+        "setUnreadCount"
+      ],
+      "persisted": false
     },
     {
       "filePath": "stores/tenantStore.ts",

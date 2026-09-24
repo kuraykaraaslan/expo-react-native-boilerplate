@@ -45,7 +45,7 @@ A **production-grade Expo + React Native boilerplate** for cross-platform mobile
 - **Data fetch**: `axiosInstance` from `libs/axios.ts` (auth header injected by interceptor from SecureStore)
 - **Validation**: Zod (DTOs in `dto/`)
 - **i18n**: i18next via `libs/i18n.ts`
-- **UI kit**: [kui-native](https://github.com/kuraykaraaslan/kui-native) — git dependency pinned to a tag, re-exported from `@/components/ui`; semantic tokens (`bg-primary`, `text-text-primary`, `border-border`), brand override in `libs/theme/brand.ts`
+- **UI kit**: [kui-native](https://github.com/kuraykaraaslan/kui-native) — git dependency pinned to a tag, re-exported from `@/components/ui`; semantic tokens (`bg-primary`, `text-text-primary`, `border-border`), same palette as next-boilerplate; brand overrides (if any) in `libs/theme/brand.ts`
 - **Icons**: FontAwesome 7 via `@fortawesome/react-native-fontawesome`
 - **Testing**: Jest + `jest-expo`
 
@@ -62,7 +62,7 @@ app/  (screens)  ──→  services/ + stores/  ──→  libs/axios + libs/se
 ```
 
 - **`app/`** — Expo Router file-based screens. Each `.tsx` is a route. `_layout.tsx` defines layouts (Stack / Tabs / Slot). `(group)` directories are route groups stripped from URLs. `+not-found.tsx` is the 404. `+html.tsx` customizes the web HTML shell.
-- **`components/<category>/<Component>.tsx`** — reusable UI. Currently: `auth/` (AuthLayout, SSOButtons), `shell/` (AppHeader, DrawerContent, …), `ui/` (`index.ts` — kui-native re-export barrel: Button, Input, Card, Spinner, …).
+- **`components/<category>/<Component>.tsx`** — reusable UI. Currently: `auth/` (AuthLayout, SSOButtons), `shell/` (AppHeader, DrawerContent, …), `ui/` (`index.ts` — kui-native re-export barrel: Button, Input, Card, Spinner, …), `common/` (Screen, ScreenHeader, LinkTile, StatTile, Badges, ConfirmDialog — next-boilerplate page patterns), `account/` and `tenant/` (cards/modals shared by several screens). Screens follow next-boilerplate's layout: `Screen` → `ScreenHeader` (PageHeader) → `Card`s; see [phases/_foundation/phase-1d-design-parity.md](phases/_foundation/phase-1d-design-parity.md).
 - **`services/<name>.service.client.ts`** — data-fetching layer. Currently service classes with static methods (`AuthClientService.login(...)`). Target per [MODERNIZATION.MD](MODERNIZATION.MD): hook pipeline (`useAuth` → `axiosInstance`).
 - **`stores/<name>Store.ts`** — Zustand stores, persisted via MMKV (`zustandStorage`). E.g. `useAuthStore`, `useTenantStore`, `useAppStore`.
 - **`dto/<name>.dto.ts`** — Zod schemas + inferred types. Shared contracts with the backend.

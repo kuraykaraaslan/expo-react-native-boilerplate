@@ -1,22 +1,72 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-24T12:10:52.506Z",
+  "generatedAt": "2026-09-24T16:14:24.496Z",
   "components": [
     {
-      "id": "auth/AuthLayout",
-      "filePath": "components/auth/AuthLayout.tsx",
-      "name": "AuthLayout",
+      "id": "account/PreferencesCard",
+      "filePath": "components/account/PreferencesCard.tsx",
+      "name": "PreferencesCard",
+      "category": "account",
+      "exports": [
+        "PreferencesCard"
+      ],
+      "props": []
+    },
+    {
+      "id": "account/ProfileCard",
+      "filePath": "components/account/ProfileCard.tsx",
+      "name": "ProfileCard",
+      "category": "account",
+      "exports": [
+        "ProfileCard"
+      ],
+      "props": []
+    },
+    {
+      "id": "account/SecurityCard",
+      "filePath": "components/account/SecurityCard.tsx",
+      "name": "SecurityCard",
+      "category": "account",
+      "exports": [
+        "SecurityCard"
+      ],
+      "props": []
+    },
+    {
+      "id": "account/SessionsCard",
+      "filePath": "components/account/SessionsCard.tsx",
+      "name": "SessionsCard",
+      "category": "account",
+      "exports": [
+        "SessionsCard"
+      ],
+      "props": []
+    },
+    {
+      "id": "auth/AuthFooterLink",
+      "filePath": "components/auth/AuthFooterLink.tsx",
+      "name": "AuthFooterLink",
       "category": "auth",
       "exports": [
-        "AuthLayout"
+        "AuthFooterLink"
+      ],
+      "props": []
+    },
+    {
+      "id": "auth/AuthShell",
+      "filePath": "components/auth/AuthShell.tsx",
+      "name": "AuthShell",
+      "category": "auth",
+      "exports": [
+        "AuthShell"
       ],
       "props": [
         "title",
         "subtitle",
+        "icon",
         "children",
-        "showSSO",
-        "onSSOPress"
+        "footer"
       ]
     },
     {
@@ -28,7 +78,119 @@
         "SSOButtons"
       ],
       "props": [
-        "onPress"
+        "onPress",
+        "dividerLabel"
+      ]
+    },
+    {
+      "id": "common/Badges",
+      "filePath": "components/common/Badges.tsx",
+      "name": "Badges",
+      "category": "common",
+      "exports": [
+        "RoleBadge",
+        "MemberStatusBadge",
+        "InvitationStatusBadge"
+      ],
+      "props": []
+    },
+    {
+      "id": "common/ConfirmDialog",
+      "filePath": "components/common/ConfirmDialog.tsx",
+      "name": "ConfirmDialog",
+      "category": "common",
+      "exports": [
+        "ConfirmDialog"
+      ],
+      "props": [
+        "open",
+        "onClose",
+        "title",
+        "description",
+        "confirmLabel",
+        "onConfirm"
+      ]
+    },
+    {
+      "id": "common/IconTile",
+      "filePath": "components/common/IconTile.tsx",
+      "name": "IconTile",
+      "category": "common",
+      "exports": [
+        "IconTile"
+      ],
+      "props": [
+        "icon"
+      ]
+    },
+    {
+      "id": "common/LinkTile",
+      "filePath": "components/common/LinkTile.tsx",
+      "name": "LinkTile",
+      "category": "common",
+      "exports": [
+        "LinkTile"
+      ],
+      "props": [
+        "icon",
+        "title",
+        "description",
+        "href",
+        "onPress",
+        "danger",
+        "testID"
+      ]
+    },
+    {
+      "id": "common/Screen",
+      "filePath": "components/common/Screen.tsx",
+      "name": "Screen",
+      "category": "common",
+      "exports": [
+        "Screen",
+        "useListContentStyle"
+      ],
+      "props": [
+        "children",
+        "scroll",
+        "keyboard",
+        "refreshing",
+        "onRefresh",
+        "className"
+      ]
+    },
+    {
+      "id": "common/ScreenHeader",
+      "filePath": "components/common/ScreenHeader.tsx",
+      "name": "ScreenHeader",
+      "category": "common",
+      "exports": [
+        "ScreenHeader"
+      ],
+      "props": [
+        "back"
+      ]
+    },
+    {
+      "id": "common/SectionLabel",
+      "filePath": "components/common/SectionLabel.tsx",
+      "name": "SectionLabel",
+      "category": "common",
+      "exports": [
+        "SectionLabel"
+      ],
+      "props": []
+    },
+    {
+      "id": "common/StatTile",
+      "filePath": "components/common/StatTile.tsx",
+      "name": "StatTile",
+      "category": "common",
+      "exports": [
+        "StatTile"
+      ],
+      "props": [
+        "icon"
       ]
     },
     {
@@ -100,6 +262,45 @@
       "props": []
     },
     {
+      "id": "tenant/EditMemberModal",
+      "filePath": "components/tenant/EditMemberModal.tsx",
+      "name": "EditMemberModal",
+      "category": "tenant",
+      "exports": [
+        "EditMemberModal"
+      ],
+      "props": [
+        "member",
+        "onClose",
+        "onSaved"
+      ]
+    },
+    {
+      "id": "tenant/InviteMemberModal",
+      "filePath": "components/tenant/InviteMemberModal.tsx",
+      "name": "InviteMemberModal",
+      "category": "tenant",
+      "exports": [
+        "InviteMemberModal"
+      ],
+      "props": [
+        "tenantId",
+        "open",
+        "onClose",
+        "onInvited"
+      ]
+    },
+    {
+      "id": "tenant/NoOrganization",
+      "filePath": "components/tenant/NoOrganization.tsx",
+      "name": "NoOrganization",
+      "category": "tenant",
+      "exports": [
+        "NoOrganization"
+      ],
+      "props": []
+    },
+    {
       "id": "ui/AlertBanner",
       "filePath": "node_modules/kui-native/modules/ui/AlertBanner.tsx",
       "name": "AlertBanner",
@@ -160,6 +361,22 @@
       ]
     },
     {
+      "id": "ui/BrandLogo",
+      "filePath": "node_modules/kui-native/modules/ui/BrandLogo.tsx",
+      "name": "BrandLogo",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "BrandLogo"
+      ],
+      "props": [
+        "children",
+        "size",
+        "className"
+      ]
+    },
+    {
       "id": "ui/Button",
       "filePath": "node_modules/kui-native/modules/ui/Button.tsx",
       "name": "Button",
@@ -183,6 +400,25 @@
         "selected",
         "className",
         "ref"
+      ]
+    },
+    {
+      "id": "ui/ButtonGroup",
+      "filePath": "node_modules/kui-native/modules/ui/ButtonGroup.tsx",
+      "name": "ButtonGroup",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "ButtonGroup"
+      ],
+      "props": [
+        "items",
+        "value",
+        "onChange",
+        "variant",
+        "size",
+        "className"
       ]
     },
     {
@@ -399,6 +635,26 @@
       ]
     },
     {
+      "id": "ui/SearchBar",
+      "filePath": "node_modules/kui-native/modules/ui/SearchBar.tsx",
+      "name": "SearchBar",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "SearchBar"
+      ],
+      "props": [
+        "id",
+        "placeholder",
+        "value",
+        "onChange",
+        "onClear",
+        "className",
+        "ref"
+      ]
+    },
+    {
       "id": "ui/Select",
       "filePath": "node_modules/kui-native/modules/ui/Select.tsx",
       "name": "Select",
@@ -476,6 +732,24 @@
       ]
     },
     {
+      "id": "ui/TabGroup",
+      "filePath": "node_modules/kui-native/modules/ui/TabGroup.tsx",
+      "name": "TabGroup",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "TabGroup"
+      ],
+      "props": [
+        "tabs",
+        "defaultTab",
+        "label",
+        "lazy",
+        "className"
+      ]
+    },
+    {
       "id": "ui/Text",
       "filePath": "node_modules/kui-native/modules/ui/Text.tsx",
       "name": "Text",
@@ -499,6 +773,27 @@
       ]
     },
     {
+      "id": "ui/Textarea",
+      "filePath": "node_modules/kui-native/modules/ui/Textarea.tsx",
+      "name": "Textarea",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Textarea"
+      ],
+      "props": [
+        "label",
+        "hint",
+        "error",
+        "disabled",
+        "required",
+        "rows",
+        "className",
+        "ref"
+      ]
+    },
+    {
       "id": "ui/TextInput",
       "filePath": "node_modules/kui-native/modules/ui/TextInput.tsx",
       "name": "TextInput",
@@ -509,6 +804,27 @@
         "TextInput"
       ],
       "props": []
+    },
+    {
+      "id": "ui/Toggle",
+      "filePath": "node_modules/kui-native/modules/ui/Toggle.tsx",
+      "name": "Toggle",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "Toggle"
+      ],
+      "props": [
+        "checked",
+        "onChange",
+        "label",
+        "ariaLabel",
+        "description",
+        "size",
+        "disabled",
+        "className"
+      ]
     }
   ]
 }

@@ -1,13 +1,78 @@
 {
-  "auth/AuthLayout": {
-    "name": "AuthLayout",
+  "account/PreferencesCard": {
+    "name": "PreferencesCard",
+    "category": "account",
+    "file": "account-PreferencesCard.md"
+  },
+  "account/ProfileCard": {
+    "name": "ProfileCard",
+    "category": "account",
+    "file": "account-ProfileCard.md"
+  },
+  "account/SecurityCard": {
+    "name": "SecurityCard",
+    "category": "account",
+    "file": "account-SecurityCard.md"
+  },
+  "account/SessionsCard": {
+    "name": "SessionsCard",
+    "category": "account",
+    "file": "account-SessionsCard.md"
+  },
+  "auth/AuthFooterLink": {
+    "name": "AuthFooterLink",
     "category": "auth",
-    "file": "auth-AuthLayout.md"
+    "file": "auth-AuthFooterLink.md"
+  },
+  "auth/AuthShell": {
+    "name": "AuthShell",
+    "category": "auth",
+    "file": "auth-AuthShell.md"
   },
   "auth/SSOButtons": {
     "name": "SSOButtons",
     "category": "auth",
     "file": "auth-SSOButtons.md"
+  },
+  "common/Badges": {
+    "name": "Badges",
+    "category": "common",
+    "file": "common-Badges.md"
+  },
+  "common/ConfirmDialog": {
+    "name": "ConfirmDialog",
+    "category": "common",
+    "file": "common-ConfirmDialog.md"
+  },
+  "common/IconTile": {
+    "name": "IconTile",
+    "category": "common",
+    "file": "common-IconTile.md"
+  },
+  "common/LinkTile": {
+    "name": "LinkTile",
+    "category": "common",
+    "file": "common-LinkTile.md"
+  },
+  "common/Screen": {
+    "name": "Screen",
+    "category": "common",
+    "file": "common-Screen.md"
+  },
+  "common/ScreenHeader": {
+    "name": "ScreenHeader",
+    "category": "common",
+    "file": "common-ScreenHeader.md"
+  },
+  "common/SectionLabel": {
+    "name": "SectionLabel",
+    "category": "common",
+    "file": "common-SectionLabel.md"
+  },
+  "common/StatTile": {
+    "name": "StatTile",
+    "category": "common",
+    "file": "common-StatTile.md"
   },
   "shell/AppHeader": {
     "name": "AppHeader",
@@ -39,6 +104,21 @@
     "category": "shell",
     "file": "shell-UserMenu.md"
   },
+  "tenant/EditMemberModal": {
+    "name": "EditMemberModal",
+    "category": "tenant",
+    "file": "tenant-EditMemberModal.md"
+  },
+  "tenant/InviteMemberModal": {
+    "name": "InviteMemberModal",
+    "category": "tenant",
+    "file": "tenant-InviteMemberModal.md"
+  },
+  "tenant/NoOrganization": {
+    "name": "NoOrganization",
+    "category": "tenant",
+    "file": "tenant-NoOrganization.md"
+  },
   "ui/AlertBanner": {
     "name": "AlertBanner",
     "category": "ui",
@@ -54,10 +134,20 @@
     "category": "ui",
     "file": "ui-Badge.md"
   },
+  "ui/BrandLogo": {
+    "name": "BrandLogo",
+    "category": "ui",
+    "file": "ui-BrandLogo.md"
+  },
   "ui/Button": {
     "name": "Button",
     "category": "ui",
     "file": "ui-Button.md"
+  },
+  "ui/ButtonGroup": {
+    "name": "ButtonGroup",
+    "category": "ui",
+    "file": "ui-ButtonGroup.md"
   },
   "ui/Card": {
     "name": "Card",
@@ -109,6 +199,11 @@
     "category": "ui",
     "file": "ui-ScrollArea.md"
   },
+  "ui/SearchBar": {
+    "name": "SearchBar",
+    "category": "ui",
+    "file": "ui-SearchBar.md"
+  },
   "ui/Select": {
     "name": "Select",
     "category": "ui",
@@ -129,14 +224,29 @@
     "category": "ui",
     "file": "ui-Spinner.md"
   },
+  "ui/TabGroup": {
+    "name": "TabGroup",
+    "category": "ui",
+    "file": "ui-TabGroup.md"
+  },
   "ui/Text": {
     "name": "Text",
     "category": "ui",
     "file": "ui-Text.md"
   },
+  "ui/Textarea": {
+    "name": "Textarea",
+    "category": "ui",
+    "file": "ui-Textarea.md"
+  },
   "ui/TextInput": {
     "name": "TextInput",
     "category": "ui",
     "file": "ui-TextInput.md"
+  },
+  "ui/Toggle": {
+    "name": "Toggle",
+    "category": "ui",
+    "file": "ui-Toggle.md"
   }
 }
