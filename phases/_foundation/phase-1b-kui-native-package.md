@@ -96,13 +96,13 @@ NEREDE KALDIK: phases/README.md §Sıra
 
 ---
 
-## 🟡 KOD TAMAM — 2026-09-24 · tag ve push sahip onayını bekliyor
+## ✅ KODLANDI — 2026-09-24 · KUInative `main` = `887ad72`, tag `v0.2.0` origin'de
 
 KUInative branch `feat/consumable-package` (base `main` 72705f0): `d9f71ea` (göreli import'lar + lint kuralı) · `ddc0ea8` (peer / files) · `e576edc` (`configureTheme`) · `887ad72` (README, CHANGELOG, 0.2.0)
 
 Doğrulama: typecheck 0 hata · jest 65 suite / 714 test geçti (baseline 64 / 709) · lint temiz · `npm pack --dry-run` 137 dosya içeriyor; `app/`, `modules/showcase/` ve test dosyaları yok · web export başarılı.
 
-**Kalan:** `main`'e merge → `v0.2.0` tag'i → `git push origin main v0.2.0` (sahip onayıyla).
+Sahip onayıyla `main`'e fast-forward merge edildi, `v0.2.0` annotated tag'i oluşturuldu ve `git push origin main v0.2.0` yapıldı.
 
 **Bilinçli sapmalar:**
 - `tokenMaps` / `useThemeTokens()` dönüş tipi `TokenMap & Record<string, string>`. Hesaplanmış string ile token okuyan 7 mevcut çağrı yeri kırılmasın diye. `configureTheme` override'ları sıkı tiplidir.
