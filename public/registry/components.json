@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-24T16:14:24.496Z",
+  "generatedAt": "2026-09-24T19:15:05.293Z",
   "components": [
     {
       "id": "account/PreferencesCard",
@@ -616,6 +616,30 @@
         "showLabel",
         "label",
         "className"
+      ]
+    },
+    {
+      "id": "ui/RadioGroup",
+      "filePath": "node_modules/kui-native/modules/ui/RadioGroup.tsx",
+      "name": "RadioGroup",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "RadioGroup"
+      ],
+      "props": [
+        "name",
+        "legend",
+        "options",
+        "value",
+        "onChange",
+        "error",
+        "disabled",
+        "className",
+        "optionClassName",
+        "variant",
+        "columns"
       ]
     },
     {

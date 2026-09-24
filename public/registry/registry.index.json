@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-24T16:14:24.496Z",
+  "generatedAt": "2026-09-24T19:15:05.293Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -812,6 +812,30 @@
         "showLabel",
         "label",
         "className"
+      ]
+    },
+    {
+      "id": "ui/RadioGroup",
+      "filePath": "node_modules/kui-native/modules/ui/RadioGroup.tsx",
+      "name": "RadioGroup",
+      "category": "ui",
+      "source": "kui-native",
+      "importPath": "@/components/ui",
+      "exports": [
+        "RadioGroup"
+      ],
+      "props": [
+        "name",
+        "legend",
+        "options",
+        "value",
+        "onChange",
+        "error",
+        "disabled",
+        "className",
+        "optionClassName",
+        "variant",
+        "columns"
       ]
     },
     {

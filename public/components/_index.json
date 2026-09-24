@@ -194,6 +194,11 @@
     "category": "ui",
     "file": "ui-Progress.md"
   },
+  "ui/RadioGroup": {
+    "name": "RadioGroup",
+    "category": "ui",
+    "file": "ui-RadioGroup.md"
+  },
   "ui/ScrollArea": {
     "name": "ScrollArea",
     "category": "ui",
