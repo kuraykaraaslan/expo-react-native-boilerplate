@@ -9,6 +9,7 @@ import {
   TenantMember,
   TenantMemberSchema,
   CreateTenantRequest,
+  CreateTenantRequestSchema,
   CreateTenantResponse,
   CreateTenantResponseSchema,
   SendInvitationRequest,
@@ -24,7 +25,7 @@ export class TenantClientService {
   }
 
   static async createTenant(payload: CreateTenantRequest): Promise<CreateTenantResponse> {
-    const res = await axiosInstance.post("/api/system/tenants/create", payload);
+    const res = await axiosInstance.post("/api/system/tenants/create", CreateTenantRequestSchema.parse(payload));
     return CreateTenantResponseSchema.parse(res.data);
   }
 

@@ -123,7 +123,8 @@ export const CreateTenantRequestSchema = z.object({
   description: z.string().optional().nullable(),
   region: z.string().default("TR"),
 });
-export type CreateTenantRequest = z.infer<typeof CreateTenantRequestSchema>;
+// z.input: `region` has a default, so callers may omit it.
+export type CreateTenantRequest = z.input<typeof CreateTenantRequestSchema>;
 
 export const SendInvitationRequestSchema = z.object({
   email: z.string().email(),
