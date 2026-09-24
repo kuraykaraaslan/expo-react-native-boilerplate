@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
-import { DrawerContentScrollView } from '@react-navigation/drawer';
-import type { DrawerContentComponentProps } from '@react-navigation/drawer';
+import { DrawerContentScrollView } from 'expo-router/drawer';
+import type { DrawerContentComponentProps } from 'expo-router/drawer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { faHome, faBell, faGear } from '@fortawesome/free-solid-svg-icons';
 import { DrawerNavLink } from './DrawerNavLink';

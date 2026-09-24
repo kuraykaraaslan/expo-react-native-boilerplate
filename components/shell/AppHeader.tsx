@@ -2,7 +2,7 @@ import { View, Text, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import type { DrawerNavigationProp } from 'expo-router/drawer';
 import { LangSwitcher } from './LangSwitcher';
 import { ThemeToggle } from './ThemeToggle';
 import { UserMenu } from './UserMenu';
