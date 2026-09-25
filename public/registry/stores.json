@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-24T19:15:05.293Z",
+  "generatedAt": "2026-09-25T16:07:34.811Z",
   "stores": [
     {
       "filePath": "stores/appStore.ts",
@@ -24,8 +24,10 @@
       "stateKeys": [
         "isAuthenticated",
         "user",
+        "otpRequired",
         "setUser",
         "setAuthenticated",
+        "requireOtp",
         "logout"
       ],
       "persisted": true
@@ -47,8 +49,13 @@
       "stateKeys": [
         "selectedTenantMembership",
         "memberships",
+        "activeTenantId",
+        "knownTenantIds",
         "setMemberships",
         "selectMembership",
+        "setActiveTenantId",
+        "rememberTenant",
+        "forgetTenant",
         "flush"
       ],
       "persisted": true

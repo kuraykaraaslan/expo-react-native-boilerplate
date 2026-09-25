@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-24T19:15:05.293Z",
+  "generatedAt": "2026-09-25T16:07:34.811Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -1159,8 +1159,10 @@
       "stateKeys": [
         "isAuthenticated",
         "user",
+        "otpRequired",
         "setUser",
         "setAuthenticated",
+        "requireOtp",
         "logout"
       ],
       "persisted": true
@@ -1182,8 +1184,13 @@
       "stateKeys": [
         "selectedTenantMembership",
         "memberships",
+        "activeTenantId",
+        "knownTenantIds",
         "setMemberships",
         "selectMembership",
+        "setActiveTenantId",
+        "rememberTenant",
+        "forgetTenant",
         "flush"
       ],
       "persisted": true
@@ -1209,7 +1216,8 @@
         "ChangeEmailRequestSchema",
         "LoginResponseSchema",
         "SessionResponseSchema",
-        "SessionsListResponseSchema"
+        "SessionsListResponseSchema",
+        "DeviceTokenPairSchema"
       ],
       "types": [
         "OTPMethod",
@@ -1227,7 +1235,8 @@
         "ChangeEmailRequest",
         "LoginResponse",
         "SessionResponse",
-        "SessionsListResponse"
+        "SessionsListResponse",
+        "DeviceTokenPair"
       ]
     },
     {
@@ -1316,11 +1325,34 @@
   ],
   "libs": [
     {
+      "filePath": "libs/apiError.ts",
+      "name": "apiError",
+      "exports": [
+        "ZodIssueLike",
+        "NormalizedApiError",
+        "markHandled",
+        "isHandled",
+        "normalizeApiError"
+      ]
+    },
+    {
       "filePath": "libs/axios.ts",
       "name": "axios",
       "exports": [
+        "POST_REFRESH_GRACE_MS",
+        "tenantPath",
         "axiosInstance",
+        "resetRefreshStateForTests",
         "default"
+      ]
+    },
+    {
+      "filePath": "libs/deviceInfo.ts",
+      "name": "deviceInfo",
+      "exports": [
+        "DeviceType",
+        "DeviceInfo",
+        "getDeviceInfo"
       ]
     },
     {
@@ -1374,9 +1406,12 @@
       "filePath": "libs/secureStorage.ts",
       "name": "secureStorage",
       "exports": [
+        "TokenKind",
+        "TokenPair",
         "getToken",
         "setToken",
-        "clearToken",
+        "setTokens",
+        "clearTenantTokens",
         "clearAllTokens"
       ]
     },

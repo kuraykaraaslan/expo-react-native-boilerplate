@@ -1,14 +1,37 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-24T19:15:05.293Z",
+  "generatedAt": "2026-09-25T16:07:34.811Z",
   "libs": [
+    {
+      "filePath": "libs/apiError.ts",
+      "name": "apiError",
+      "exports": [
+        "ZodIssueLike",
+        "NormalizedApiError",
+        "markHandled",
+        "isHandled",
+        "normalizeApiError"
+      ]
+    },
     {
       "filePath": "libs/axios.ts",
       "name": "axios",
       "exports": [
+        "POST_REFRESH_GRACE_MS",
+        "tenantPath",
         "axiosInstance",
+        "resetRefreshStateForTests",
         "default"
+      ]
+    },
+    {
+      "filePath": "libs/deviceInfo.ts",
+      "name": "deviceInfo",
+      "exports": [
+        "DeviceType",
+        "DeviceInfo",
+        "getDeviceInfo"
       ]
     },
     {
@@ -62,9 +85,12 @@
       "filePath": "libs/secureStorage.ts",
       "name": "secureStorage",
       "exports": [
+        "TokenKind",
+        "TokenPair",
         "getToken",
         "setToken",
-        "clearToken",
+        "setTokens",
+        "clearTenantTokens",
         "clearAllTokens"
       ]
     },

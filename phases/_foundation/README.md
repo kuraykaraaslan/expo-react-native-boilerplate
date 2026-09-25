@@ -31,7 +31,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 | 1B | [phase-1b-kui-native-package.md](phase-1b-kui-native-package.md) | kui-native paketleştirme (**KUInative reposunda**) + `v0.2.0` tag | ✅ KUInative `887ad72` · `v0.2.0` |
 | 1C | [phase-1c-kui-native-dependency.md](phase-1c-kui-native-dependency.md) | kui-native git bağımlılığı + tek tasarım dili | ✅ `ff2e1e1` |
 | 1D | [phase-1d-design-parity.md](phase-1d-design-parity.md) | next-boilerplate görsel paritesi (renk, font, tüm ekranlar) | ✅ `717be69` · kui-native `v0.3.1` |
-| 2 | [phase-2-transport.md](phase-2-transport.md) | Transport katmanı (device bearer) | ⬜ Bekliyor |
+| 2 | [phase-2-transport.md](phase-2-transport.md) | Transport katmanı (device bearer) | ✅ `feat/transport` |
 
 ## Kilitli kararlar
 

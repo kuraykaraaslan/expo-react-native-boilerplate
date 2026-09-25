@@ -155,8 +155,8 @@ import { getToken } from "@/libs/secureStorage";
 2. **Path alias only `@/*`.** No `~/`, no `src/`. Imports from anywhere use `@/...`.
 3. **NativeWind for styling.** Use `className` with Tailwind tokens. Combine classes with `cn()` from `@/utils/cn`. No `StyleSheet.create({...})` for new code unless dynamic styling demands it.
 4. **State = Zustand + MMKV.** Use the `zustandStorage` from `@/libs/zustandStorage` when persistence is required. **Never** `AsyncStorage` (mandate from `Code_Structure_Rules_ReactNative`).
-5. **Tokens live in SecureStore — NEVER Zustand.** Use `getToken`/`setToken` from `@/libs/secureStorage` for `accessToken`/`refreshToken`. The axios interceptor injects them.
-6. **All data fetching via `axiosInstance` from `@/libs/axios`.** Never call `fetch` directly. Don't construct ad-hoc axios instances. The shared instance handles base URL, cookies, and auth header injection.
+5. **Tokens live in SecureStore — NEVER Zustand.** Use `getToken(kind, tenantId)` / `setTokens(tenantId, pair)` from `@/libs/secureStorage` — one `accessToken`/`refreshToken` pair per tenant. The axios interceptor injects them.
+6. **All data fetching via `axiosInstance` from `@/libs/axios`.** Never call `fetch` directly. Don't construct ad-hoc axios instances. The shared instance addresses the active tenant (`/api/tenant/{tenantId}/…` — pass paths like `/auth/me`), sends `Authorization: Bearer`, and refreshes per tenant. Never send cookies: the server would pick the `web` audience and reject the device token.
 7. **DTOs are Zod-validated contracts.** Parse responses with the DTO schema (`SafeUserSchema.parse(res.data)`); never trust raw JSON.
 8. **Env access through `@/libs/env`.** Zod-validated. Never read `process.env.*` directly in app code.
 9. **Logging via `@/libs/logger`.** Never `console.*` in app code.

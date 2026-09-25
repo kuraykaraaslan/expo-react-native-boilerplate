@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-24T19:15:05.293Z",
+  "generatedAt": "2026-09-25T16:07:34.811Z",
   "dtos": [
     {
       "filePath": "dto/auth.dto.ts",
@@ -22,7 +22,8 @@
         "ChangeEmailRequestSchema",
         "LoginResponseSchema",
         "SessionResponseSchema",
-        "SessionsListResponseSchema"
+        "SessionsListResponseSchema",
+        "DeviceTokenPairSchema"
       ],
       "types": [
         "OTPMethod",
@@ -40,7 +41,8 @@
         "ChangeEmailRequest",
         "LoginResponse",
         "SessionResponse",
-        "SessionsListResponse"
+        "SessionsListResponse",
+        "DeviceTokenPair"
       ]
     },
     {

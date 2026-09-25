@@ -114,3 +114,36 @@ NEREDE KALDIK: phases/README.md §Sıra
 - **`activeTenantId` boş:** store hydrate olmadan atılan ilk istek `/api/tenant/undefined/api/...` üretir. Interceptor `activeTenantId` yoksa `EXPO_PUBLIC_DEFAULT_TENANT_ID`'ye düşmeli, asla `undefined` yazmamalı.
 - **Sonsuz refresh döngüsü:** refresh isteğinin kendisi 401 alırsa interceptor onu yeniden refresh'e sokmamalı — refresh çağrısı `_retry` ile işaretlenmeli.
 - **`clearAllTokens` eksikliği:** SecureStore anahtar listelemediği için bilinmeyen bir tenant anahtarı cihazda kalabilir → `knownTenantIds` listesi güncel tutulmazsa oturum sızıntısı olur.
+
+---
+
+## ✅ KODLANDI — 2026-09-25 (branch `feat/transport`)
+
+Doğrulama:
+- typecheck 0 hata.
+- test:ci 20/20: `axios.test.ts` 10, `apiError.test.ts` 8, smoke 2.
+- web export başarılı (`EXPO_PUBLIC_DEFAULT_TENANT_ID` ile).
+- Giden isteklerde `Cookie` ve `x-csrf-token` yok (testle doğrulandı).
+- **Mutasyon kontrolü:** grace penceresi ya da single-flight kaldırılınca ilgili test kırılıyor.
+
+Sözleşme, next-boilerplate kaynağından doğrulandı: `auth-device-{login,refresh}.route.ts`, `user_session.service.next.ts` (bearer yolu), `route-error.ts`, `proxy.ts` ve web istemcisi `common/server/axios/axios.client.ts`.
+
+**Bilinçli sapmalar (plan, kaynak koda göre düzeltildi):**
+- **URL öneki `/api/tenant/{id}`** (plan: `/api/tenant/{id}/api`). Proxy `/api` segmentini kendisi ekliyor. K3 README'de düzeltildi.
+- **401 sınıflandırması mesaja göre yapılıyor, koda göre değil.**
+  - Sunucu, süresi dolmuş access token için `message: TOKEN_EXPIRED, code: SESSION_EXPIRED` dönüyor; gerçekten ölmüş oturum için de `message: SESSION_EXPIRED` ile aynı kod geliyor. Plandaki "`SESSION_EXPIRED` → refresh" kuralı ölü oturumu refresh'e sokardı.
+  - Uygulanan kural next'in kendi istemcisiyle aynı:
+    - Refresh + tekrar: `TOKEN_EXPIRED` / `SESSION_NOT_FOUND` / `USER_NOT_AUTHENTICATED`.
+    - Oturum biter: `SESSION_EXPIRED` / `SESSION_REVOKED` / `INVALID_TOKEN` / `REFRESH_TOKEN_REUSED` / `DEVICE_FINGERPRINT_MISMATCH`.
+    - OTP kapısı: `OTP_REQUIRED` (mesaj ya da kod) ve `TOTP_REQUIRED`.
+- **Refresh sonrası 10 sn grace penceresi eklendi** (plan: yalnız kuyruk). Refresh bittikten hemen sonra eski token'la dönen 401'ler yeniden refresh edilmiyor, doğrudan tekrarlanıyor. next istemcisindeki reuse-detection fırtınası korumasının aynısı.
+- **SecureStore anahtarı `kind.tenantId`** (plan: `kind:tenantId`). SecureStore yalnız `[A-Za-z0-9._-]` kabul ediyor; `:` çalışma anında hata fırlatırdı.
+- **Yönlendirme interceptor'da değil.** appshell-compliance kuralı gereği interceptor store'u güncelliyor, layout guard'ları yönlendiriyor:
+  - Oturum bitince `authStore.logout()` → `/login`.
+  - OTP gerekince `authStore.otpRequired` → `/2fa`. `(auth)` guard'ı `otpRequired` iken kullanıcıyı grupta tutuyor.
+- **Organizasyon erişimi bitince:** `TENANT_*` / `NOT_TENANT_MEMBER` durumunda plan `/select-tenant` diyordu; şimdilik login'e dönülüyor. `select-tenant` `(auth)` grubunda olduğu için oturum açık kullanıcı oraya yönlendirilemiyor; bilinen akış hatası. Faz 4/5'te select-tenant'a çevrilecek.
+- **429 toast'ı interceptor'da değil:** `normalizeApiError` `Retry-After`'lı mesajı üretiyor, ekranın `handleApiError`'ı gösteriyor. Interceptor'ın ele aldığı hatalar (oturum bitti, OTP) `markHandled` ile işaretleniyor; `handleApiError` bunlarda ikinci toast'ı göstermiyor.
+- **Açılışta oturum geri yükleme:** yalnız 401/403 çıkış yaptırıyor. Ağ hatası veya 5xx kalıcı oturumu korur (eskiden her hata çıkış yaptırıyordu).
+- **`EXPO_PUBLIC_DEFAULT_TENANT_ID` zorunlu**, `.env` olmadan uygulama başlangıçta Zod hatasıyla durur. Uuid şartı konmadı (`min(1)`), çünkü sunucu tenantId biçimini zorunlu kılmıyor.
+
+**Kalan (Faz 3):** servisler hâlâ `/api/system/...` çağırıyor ve yeni önekle hâlâ yanlış adrese gidiyor. `deviceInfo` login gövdesine Faz 3'te bağlanacak (`AuthClientService.deviceLogin`). Emülatörde gerçek sunucuyla doğrulama (60 sn access token ile şeffaf refresh) Faz 3'ten sonra yapılabilir.

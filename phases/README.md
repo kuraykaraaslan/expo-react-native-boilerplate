@@ -45,7 +45,7 @@ Sunucu tarafı ise **hazır**: `audience: 'device'` ile bearer akışı eklenmi�
 | 1B | [_foundation/phase-1b-kui-native-package.md](_foundation/phase-1b-kui-native-package.md) | kui-native paketleştirme (**KUInative reposunda**) + `v0.2.0` tag | ✅ KUInative `887ad72` · `v0.2.0` |
 | 1C | [_foundation/phase-1c-kui-native-dependency.md](_foundation/phase-1c-kui-native-dependency.md) | kui-native git bağımlılığı + tek tasarım dili | ✅ `ff2e1e1` |
 | 1D | [_foundation/phase-1d-design-parity.md](_foundation/phase-1d-design-parity.md) | next-boilerplate görsel paritesi (renk, font, tüm ekranlar) | ✅ `717be69` · kui-native `v0.3.1` |
-| 2 | [_foundation/phase-2-transport.md](_foundation/phase-2-transport.md) | Transport katmanı (device bearer) | ⬜ Bekliyor |
+| 2 | [_foundation/phase-2-transport.md](_foundation/phase-2-transport.md) | Transport katmanı (device bearer) | ✅ `feat/transport` |
 | 3 | [auth/phase-3-dto-services.md](auth/phase-3-dto-services.md) | DTO + servis hizalaması | ⬜ Bekliyor |
 | 4 | [auth/phase-4-auth-screens.md](auth/phase-4-auth-screens.md) | Auth çekirdek ekranları | ⬜ Bekliyor |
 | 5 | [tenant/phase-5-tenancy-core.md](tenant/phase-5-tenancy-core.md) | Tenancy çekirdek | ⬜ Bekliyor |
@@ -55,7 +55,7 @@ Sunucu tarafı ise **hazır**: `audience: 'device'` ile bearer akışı eklenmi�
 
 - **K1 — Tenant bootstrap config ile.** Sunucuda kimlik doğrulamasız tenant keşif yüzeyi **yok** (`/api/public/*` taramasında tenant endpoint'i çıkmadı; `GET /api/tenants` GLOBAL scope ister; `GET /auth/me/tenants` oturum ister). Taze kurulum `EXPO_PUBLIC_DEFAULT_TENANT_ID`'ye login olur, sonra gerçek üyelik listesini çeker.
 - **K2 — Tenant başına token çifti.** Device token **tek tenant'a** bağlıdır ve device için tenant-switch endpoint'i **kasıtlı olarak yoktur**. SecureStore anahtarları `accessToken:{tenantId}` / `refreshToken:{tenantId}` olur; daha önce girilmiş tenant'a geçiş parola sormaz.
-- **K3 — Origin + tenant prefix interceptor.** `EXPO_PUBLIC_API_URL` sadece origin'dir; request interceptor her göreli yola `/api/tenant/{activeTenantId}/api` önekini ekler.
+- **K3 — Origin + tenant prefix interceptor.** `EXPO_PUBLIC_API_URL` sadece origin'dir. Request interceptor her göreli yola `/api/tenant/{activeTenantId}` önekini ekler. *(Düzeltme 2026-09-25: önceki metin `/api/tenant/{id}/api` diyordu. `proxy.ts` `/api/tenant/{id}/<rest>` yolunu `/tenant/{id}/api/<rest>`'e çevirdiği için o önek `/api/api/…` üretip 404 verirdi.)*
 - **K4 — SSO cihazda sunucu değişikliği olmadan ÇALIŞMAZ.** OAuth callback `createSession`'ı audience vermeden çağırır → **`web` audience token** üretir, bearer yolu bunu reddeder. Ayrıca https bir web URL'ine yönlendirir, uygulama şemasına değil. İstemci tarafı eksiksiz kurulur; sunucu değişikliği gelmeden Faz 6 `KODLANDI` işaretlenmez.
 - **K5 — kui-native tag'e sabitli git bağımlılığıdır.** Uygulama kodu bileşenleri yalnız `@/components/ui` barrel'ından alır. Barrel, kui-native'den **derin import** ile re-export eder (`kui-native/modules/ui/Button`). Tam barrel (`kui-native/modules/ui`) opsiyonel peer'leri (maps, video) çektiği için kullanılmaz. `node_modules` yaması ve `patch-package` yasaktır. Branch'e (`#main`) sabitleme de yasaktır.
 - **AGENTS.md kuralları bağlayıcıdır:** `@/*` tek alias, NativeWind + `cn()`, Zustand + MMKV, token'lar yalnız SecureStore, tüm fetch `libs/axios` üzerinden, Zod ile parse, env `libs/env`, log `libs/logger`, ikon yalnız FontAwesome, kritik aksiyonlarda `expo-haptics`, toast `sonner-native`.
@@ -74,7 +74,7 @@ Sunucu tarafı ise **hazır**: `audience: 'device'` ile bearer akışı eklenmi�
 
 ## Sunucu sözleşmesi (salt okunur özet)
 
-Adres şekli: **`/api/tenant/{tenantId}/api/<path>`** (`proxy.ts` bunu `/tenant/{tenantId}/api/<path>`'e rewrite eder).
+Adres şekli: **`/api/tenant/{tenantId}/<path>`**. `proxy.ts` bunu `/tenant/{tenantId}/api/<path>`'e rewrite eder; `<path>` modül yolunun `/api` sonrası kısmıdır (ör. `module.json`'daki `/api/auth/me/sessions` → `/auth/me/sessions`).
 
 | Yol | Gövde | Yanıt |
 |---|---|---|
