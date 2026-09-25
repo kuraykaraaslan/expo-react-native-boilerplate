@@ -97,7 +97,11 @@
             "NEED_LOGIN": "Bu sayfaya erişmek için giriş yapmalısınız"
         },
         "UNEXPECTED": "Beklenmeyen bir hata oluştu",
-        "LOAD_FAILED": "Veriler yüklenemedi"
+        "LOAD_FAILED": "Veriler yüklenemedi",
+        "NETWORK": "Sunucuya ulaşılamıyor. Bağlantınızı kontrol edip tekrar deneyin.",
+        "RATE_LIMITED": "Çok fazla istek. {{seconds}} saniye sonra tekrar deneyin.",
+        "SESSION_ENDED": "Oturumunuz sona erdi. Lütfen tekrar giriş yapın.",
+        "ORGANIZATION_UNAVAILABLE": "Bu organizasyona artık erişiminiz yok. Lütfen tekrar giriş yapın."
     },
     "SETTINGS": {
         "LANGUAGE": "Dil",
@@ -390,5 +394,19 @@
         "TITLE": "Sayfa bulunamadı",
         "DESC": "Aradığınız sayfa yok ya da taşınmış.",
         "HOME": "Panele git"
+    },
+    "API_ERRORS": {
+        "INVALID_CREDENTIALS": "E-posta veya parola hatalı.",
+        "USER_NOT_AUTHENTICATED": "Devam etmek için giriş yapın.",
+        "USER_NOT_FOUND": "Hesap bulunamadı.",
+        "TOKEN_EXPIRED": "Oturumunuzun yenilenmesi gerekiyor. Lütfen tekrar deneyin.",
+        "INVALID_TOKEN": "Oturumunuz artık geçerli değil. Lütfen tekrar giriş yapın.",
+        "SESSION_NOT_FOUND": "Oturumunuz bulunamadı. Lütfen tekrar giriş yapın.",
+        "SESSION_EXPIRED": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.",
+        "SESSION_REVOKED": "Bu oturum kapatıldı. Lütfen tekrar giriş yapın.",
+        "REFRESH_TOKEN_REUSED": "Güvenliğiniz için tüm oturumlar kapatıldı. Lütfen tekrar giriş yapın.",
+        "OTP_REQUIRED": "Devam etmek için doğrulama kodunu girin.",
+        "INVALID_OTP": "Doğrulama kodu hatalı.",
+        "OTP_EXPIRED": "Doğrulama kodunun süresi doldu. Yeni kod isteyin."
     }
 }

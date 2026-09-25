@@ -97,7 +97,11 @@
             "NEED_LOGIN": "You need to login to access this page"
         },
         "UNEXPECTED": "An unexpected error occurred",
-        "LOAD_FAILED": "Failed to load data"
+        "LOAD_FAILED": "Failed to load data",
+        "NETWORK": "Can't reach the server. Check your connection and try again.",
+        "RATE_LIMITED": "Too many requests. Try again in {{seconds}} seconds.",
+        "SESSION_ENDED": "Your session has ended. Please sign in again.",
+        "ORGANIZATION_UNAVAILABLE": "This organization is no longer available to you. Please sign in again."
     },
     "SETTINGS": {
         "LANGUAGE": "Language",
@@ -390,5 +394,19 @@
         "TITLE": "Page not found",
         "DESC": "The page you're looking for doesn't exist or was moved.",
         "HOME": "Go to dashboard"
+    },
+    "API_ERRORS": {
+        "INVALID_CREDENTIALS": "Email or password is incorrect.",
+        "USER_NOT_AUTHENTICATED": "Please sign in to continue.",
+        "USER_NOT_FOUND": "Account not found.",
+        "TOKEN_EXPIRED": "Your session needs to be refreshed. Please try again.",
+        "INVALID_TOKEN": "Your session is no longer valid. Please sign in again.",
+        "SESSION_NOT_FOUND": "Your session could not be found. Please sign in again.",
+        "SESSION_EXPIRED": "Your session has expired. Please sign in again.",
+        "SESSION_REVOKED": "This session was signed out. Please sign in again.",
+        "REFRESH_TOKEN_REUSED": "For your security, all sessions were signed out. Please sign in again.",
+        "OTP_REQUIRED": "Enter your verification code to continue.",
+        "INVALID_OTP": "The verification code is incorrect.",
+        "OTP_EXPIRED": "The verification code has expired. Request a new one."
     }
 }

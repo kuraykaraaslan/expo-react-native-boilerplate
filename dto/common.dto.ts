@@ -1,5 +1,5 @@
 import { z } from "zod";
-import i18n from "@/libs/i18n";
+import { normalizeApiError } from "@/libs/apiError";
 
 // ── Pagination ────────────────────────────────────────────────────────────────
 
@@ -34,19 +34,7 @@ export function paginatedResponseSchema<T extends z.ZodType>(itemSchema: T) {
 
 // ── Error Utility ─────────────────────────────────────────────────────────────
 
+/** User-facing message for any thrown value — see libs/apiError.ts for the server's error shapes. */
 export function extractErrorMessage(err: unknown): string {
-  if (err && typeof err === "object" && "response" in err) {
-    const axiosErr = err as {
-      response?: { data?: { message?: string; error?: string } };
-      message?: string;
-    };
-    return (
-      axiosErr.response?.data?.message ??
-      axiosErr.response?.data?.error ??
-      axiosErr.message ??
-      i18n.t("ERRORS.UNEXPECTED")
-    );
-  }
-  if (err instanceof Error) return err.message;
-  return i18n.t("ERRORS.UNEXPECTED");
+  return normalizeApiError(err).message;
 }
