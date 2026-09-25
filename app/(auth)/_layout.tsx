@@ -3,8 +3,10 @@ import { useAuthStore } from "@/stores/authStore";
 
 export default function AuthLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const otpRequired = useAuthStore((s) => s.otpRequired);
 
-  if (isAuthenticated) {
+  // A session waiting on OTP stays in this group so /2fa is reachable.
+  if (isAuthenticated && !otpRequired) {
     return <Redirect href="/" />;
   }
 

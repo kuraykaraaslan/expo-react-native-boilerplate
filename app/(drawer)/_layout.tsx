@@ -7,10 +7,15 @@ import { useThemeTokens } from '@/libs/theme/ThemeContext';
 
 export default function DrawerLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const otpRequired = useAuthStore((s) => s.otpRequired);
   const t = useThemeTokens();
 
   if (!isAuthenticated) {
     return <Redirect href="/login" />;
+  }
+  // The server's OTP gate is closed for this session (401 OTP_REQUIRED).
+  if (otpRequired) {
+    return <Redirect href="/2fa" />;
   }
 
   return (

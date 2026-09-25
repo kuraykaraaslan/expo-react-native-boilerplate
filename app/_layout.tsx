@@ -16,7 +16,9 @@ import {
 import * as SplashScreen from 'expo-splash-screen';
 import { useAuthStore } from '@/stores/authStore';
 import { useAppStore } from '@/stores/appStore';
+import { normalizeApiError } from '@/libs/apiError';
 import { getToken } from '@/libs/secureStorage';
+import { getActiveTenantId } from '@/stores/tenantStore';
 import { AuthClientService } from '@/services/auth.service.client';
 import { ThemeProvider } from '@/libs/theme/ThemeContext';
 import i18n from '@/libs/i18n';
@@ -43,16 +45,19 @@ export default function RootLayout() {
   useEffect(() => {
     async function restoreSession() {
       try {
-        const token = await getToken('accessToken');
+        const token = await getToken('accessToken', getActiveTenantId());
         if (!token) {
           setAuthenticated(false);
           return;
         }
         const user = await AuthClientService.getSession();
         setUser(user);
-      } catch {
-        logger.warn('Session restore failed');
-        setAuthenticated(false);
+      } catch (err: unknown) {
+        // Refresh / session-end is the transport's job; only a refusal signs
+        // out here — offline or a 5xx keeps the persisted session.
+        const { statusCode } = normalizeApiError(err);
+        logger.warn('Session restore failed', statusCode ?? 'no response');
+        if (statusCode === 401 || statusCode === 403) setAuthenticated(false);
       }
     }
     restoreSession();

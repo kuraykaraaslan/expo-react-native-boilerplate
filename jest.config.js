@@ -1,6 +1,7 @@
 /** @type {import('jest-expo').JestPreset} */
 module.exports = {
   preset: "jest-expo",
+  setupFiles: ["<rootDir>/__tests__/env.ts"],
   setupFilesAfterEnv: ["<rootDir>/__tests__/setup.ts"],
   // jest-expo resolves the "react-native" export condition, under which msw
   // hides `msw/node`. Tests run in Node, so resolve exports as Node would.
