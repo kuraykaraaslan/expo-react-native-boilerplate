@@ -109,3 +109,13 @@ export const SessionsListResponseSchema = z.object({
   sessions: z.array(SessionSchema).default([]),
 });
 export type SessionsListResponse = z.infer<typeof SessionsListResponseSchema>;
+
+// ── Device bearer (next-boilerplate auth/device/*) ───────────────────────────
+
+/** Body of POST /auth/device/refresh — both tokens rotate on every refresh. */
+export const DeviceTokenPairSchema = z.object({
+  message: z.string().optional(),
+  accessToken: z.string().min(1),
+  refreshToken: z.string().min(1),
+});
+export type DeviceTokenPair = z.infer<typeof DeviceTokenPairSchema>;
