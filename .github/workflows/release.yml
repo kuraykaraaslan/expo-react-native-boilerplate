@@ -52,7 +52,7 @@ jobs:
 
             ### Artifacts
 
-            - `expo-react-native-boilerplate-web-${{ github.ref_name }}.tar.gz`
+            - `expo-react-native-boilerplate-web-<version>.tar.gz`
               containing the static Expo web output
             - `SHA256SUMS` for integrity verification
 
