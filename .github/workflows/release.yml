@@ -43,4 +43,23 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           generate_release_notes: true
+          body: |
+            ## Expo React Native Boilerplate ${{ github.ref_name }}
+
+            This release contains the validated Expo web export of the boilerplate.
+            It is intended as a portable static web deployment artifact and keeps
+            mobile platform signing outside the repository release job.
+
+            ### Artifacts
+
+            - `expo-react-native-boilerplate-web-${{ github.ref_name }}.tar.gz`
+              containing the static Expo web output
+            - `SHA256SUMS` for integrity verification
+
+            Extract the archive into a web server or CDN document root. Android
+            and iOS binaries are not produced here; use EAS with the project’s
+            platform credentials when mobile store builds are required.
+
+            This release does not contain an executable installer, Debian package,
+            RPM package, or desktop binary.
           files: release/*
