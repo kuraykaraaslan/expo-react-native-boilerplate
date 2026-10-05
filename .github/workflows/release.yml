@@ -26,7 +26,13 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck
       - run: npm run test:ci
-      - run: npm run build
+      - name: Build web export
+        run: npm run build
+        env:
+          EXPO_PUBLIC_API_URL: https://example.invalid
+          EXPO_PUBLIC_DEFAULT_TENANT_ID: release-default
+          EXPO_PUBLIC_APP_NAME: Expo React Native Boilerplate
+          EXPO_PUBLIC_APP_VERSION: ${{ github.ref_name }}
       - name: Create web artifact
         run: |
           mkdir -p release
