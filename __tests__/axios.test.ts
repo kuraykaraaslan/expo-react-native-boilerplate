@@ -10,7 +10,7 @@ jest.mock("sonner-native", () => ({ toast: { error: jest.fn(), success: jest.fn(
 
 const TENANT = "tenant-a";
 const API = `http://api.test/api/tenant/${TENANT}`;
-const user = { userId: "u1", email: "u@example.com", userRole: "USER" as const };
+const user = { userId: "u1", email: "u@example.com", userRole: "USER" as const, userStatus: "ACTIVE" as const };
 
 function unauthorized(message: string, code = "UNAUTHORIZED") {
   return HttpResponse.json({ message, code }, { status: 401 });
