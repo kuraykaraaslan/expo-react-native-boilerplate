@@ -11,10 +11,11 @@ import { AuthShell } from '@/components/auth/AuthShell';
 import { SSOButtons } from '@/components/auth/SSOButtons';
 import { Button, Checkbox, Input, Text } from '@/components/ui';
 import { LoginRequestSchema } from '@/services/auth/auth.dto';
+import { getDeviceInfo } from '@/libs/deviceInfo';
 import { handleApiError } from '@/libs/errorUtils';
+import { startDeviceSession } from '@/libs/session';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import { AuthClientService } from '@/services/auth/auth.service.client';
-import { useAuthStore } from '@/stores/authStore';
 
 type FieldErrors = { email?: string; password?: string };
 
@@ -26,7 +27,6 @@ export default function LoginScreen() {
   const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
-  const setUser = useAuthStore((s) => s.setUser);
 
   async function handleLogin() {
     const result = LoginRequestSchema.safeParse({ email: email.trim(), password });
@@ -41,15 +41,16 @@ export default function LoginScreen() {
     setErrors({});
     setLoading(true);
     try {
-      const { user, userSecurity } = await AuthClientService.login(result.data);
-      if (userSecurity?.otpVerifyNeeded) {
+      const login = await AuthClientService.deviceLogin({ ...result.data, rememberMe: remember, device: getDeviceInfo() });
+      const { otpRequired } = await startDeviceSession(login);
+      if (otpRequired) {
         await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         router.push('/2fa');
         return;
       }
-      setUser(user);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      router.replace('/select-tenant');
+      // The (auth) layout guard now sees a signed-in user and routes to the app.
+      // Phase 4: mustChangePassword / passwordExpiresInDays handling.
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       handleApiError(err, 'LoginScreen.login');

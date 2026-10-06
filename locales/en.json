@@ -178,7 +178,6 @@
         "SIGN_UP": "Sign up",
         "REGISTER_TITLE": "Create Account",
         "REGISTER_SUBTITLE": "Create your account to get started",
-        "FULL_NAME": "Full name",
         "PASSWORD_HINT": "Minimum 8 characters",
         "CONFIRM_PASSWORD": "Confirm Password",
         "CREATE_ACCOUNT": "Create Account",
@@ -226,7 +225,8 @@
         "ORG_CREATED": "Organization created",
         "BACK_TO_ORGS": "Back to organizations",
         "OTP_EMAIL_HINT": "A 6-digit code to your inbox",
-        "OTP_SMS_HINT": "A 6-digit code by text message"
+        "OTP_SMS_HINT": "A 6-digit code by text message",
+        "ORG_SIGN_IN_REQUIRED": "Sign in to {{name}} to switch to it."
     },
     "DASHBOARD": {
         "TITLE": "Dashboard",
@@ -262,8 +262,6 @@
         "PROFILE_DESC": "Display name, bio and security",
         "SESSIONS": "Sessions",
         "SESSIONS_DESC": "Devices signed in to your account",
-        "EMAIL": "Email address",
-        "EMAIL_DESC": "Change the address you sign in with",
         "PREFERENCES": "Preferences",
         "PREFERENCES_DESC": "Language and appearance",
         "ORGANIZATION": "Organization",
@@ -291,8 +289,7 @@
         "ROW_EMAIL": "Email",
         "ROW_GLOBAL_ROLE": "Global role",
         "ROW_TENANT_ROLE": "Tenant role",
-        "ROW_MEMBER_SINCE": "Member since",
-        "CHANGE": "Change"
+        "ROW_MEMBER_SINCE": "Member since"
     },
     "SESSIONS": {
         "TITLE": "Sessions",
@@ -319,16 +316,6 @@
         "THEME_SYSTEM": "System",
         "LANGUAGE": "Language"
     },
-    "EMAIL_CHANGE": {
-        "TITLE": "Email address",
-        "SUBTITLE": "Change the address you sign in with",
-        "CARD": "Change email",
-        "CARD_DESC": "Current address: {{email}}",
-        "NEW_EMAIL": "New email address",
-        "NEW_EMAIL_HINT": "We'll send a verification link to the new address.",
-        "SUBMIT": "Update email",
-        "SENT": "Verification sent to your new address"
-    },
     "ORGANIZATION": {
         "TITLE": "Organization",
         "SUBTITLE": "Details of your current organization",
@@ -345,7 +332,10 @@
         "SELECT": "Select organization",
         "STATUS_ACTIVE": "Active",
         "STATUS_SUSPENDED": "Suspended",
-        "STATUS_PENDING_DELETION": "Pending deletion"
+        "STATUS_INACTIVE": "Inactive",
+        "STATUS_PENDING": "Pending",
+        "STATUS_DELETED": "Deleted",
+        "STATUS_ARCHIVED": "Archived"
     },
     "MEMBERS": {
         "TITLE": "Members",
@@ -368,7 +358,8 @@
         "STATUS_SUSPENDED": "Suspended",
         "STATUS_PENDING": "Pending",
         "YOU": "You",
-        "UPDATED": "Member updated"
+        "UPDATED": "Member updated",
+        "PENDING_APPROVAL": "Role change submitted for approval"
     },
     "INVITATIONS": {
         "TITLE": "Invitations",

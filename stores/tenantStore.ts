@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { env } from "@/libs/env";
 import { zustandMMKVStorage } from "@/libs/zustandStorage";
-import type { TenantMember } from "@/services/tenant/tenant.dto";
+import type { TenantMembership } from "@/services/tenant/tenant.dto";
 
 // ============================================================================
 // Tenant Store
@@ -12,15 +12,15 @@ import type { TenantMember } from "@/services/tenant/tenant.dto";
 // ============================================================================
 
 interface TenantState {
-  selectedTenantMembership: TenantMember | null;
-  memberships: TenantMember[];
+  selectedTenantMembership: TenantMembership | null;
+  memberships: TenantMembership[];
   /** Tenant requests are addressed to; null → EXPO_PUBLIC_DEFAULT_TENANT_ID. */
   activeTenantId: string | null;
   /** Every tenant a token pair was ever stored for — SecureStore can't list keys. */
   knownTenantIds: string[];
   // ── Actions ──────────────────────────────────────────────────────────────
-  setMemberships: (memberships: TenantMember[]) => void;
-  selectMembership: (membership: TenantMember) => void;
+  setMemberships: (memberships: TenantMembership[]) => void;
+  selectMembership: (membership: TenantMembership) => void;
   setActiveTenantId: (tenantId: string) => void;
   rememberTenant: (tenantId: string) => void;
   forgetTenant: (tenantId: string) => void;

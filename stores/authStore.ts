@@ -18,6 +18,7 @@ interface AuthState {
   setUser: (user: SafeUser | null) => void;
   setAuthenticated: (value: boolean) => void;
   requireOtp: () => void;
+  clearOtp: () => void;
   logout: () => void;
 }
 
@@ -35,6 +36,8 @@ export const useAuthStore = create<AuthState>()(
         set({ isAuthenticated: value }),
 
       requireOtp: () => set({ otpRequired: true }),
+
+      clearOtp: () => set({ otpRequired: false }),
 
       logout: () =>
         set({ isAuthenticated: false, user: null, otpRequired: false }),

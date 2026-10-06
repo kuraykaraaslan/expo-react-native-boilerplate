@@ -1,93 +1,132 @@
 import { z } from "zod";
+import { UserProfileSchema } from "@/services/user/profile.dto";
+
+// ============================================================================
+// Tenant DTOs — mirror of next-boilerplate tenant / tenant_member /
+// tenant_invitation / tenant_domain types and the routes that return them.
+// Dates arrive as ISO strings (JSON). Keys the server may leave out are nullish.
+// ============================================================================
 
 // ── Enums ─────────────────────────────────────────────────────────────────────
 
-export const MemberRoleEnum = z.enum(["USER", "ADMIN", "OWNER"]);
+export const MemberRoleEnum = z.enum(["OWNER", "ADMIN", "USER"]);
 export type MemberRole = z.infer<typeof MemberRoleEnum>;
 
 export const MemberStatusEnum = z.enum(["ACTIVE", "INACTIVE", "SUSPENDED", "PENDING"]);
 export type MemberStatus = z.infer<typeof MemberStatusEnum>;
 
-export const TenantStatusEnum = z.enum(["ACTIVE", "SUSPENDED", "PENDING_DELETION"]);
+export const TenantStatusEnum = z.enum(["ACTIVE", "INACTIVE", "PENDING", "SUSPENDED", "DELETED", "ARCHIVED"]);
 export type TenantStatus = z.infer<typeof TenantStatusEnum>;
 
 export const InvitationStatusEnum = z.enum(["PENDING", "ACCEPTED", "DECLINED", "EXPIRED", "REVOKED"]);
 export type InvitationStatus = z.infer<typeof InvitationStatusEnum>;
 
-// ── Tenant Domain ─────────────────────────────────────────────────────────────
+// ── Tenant ────────────────────────────────────────────────────────────────────
 
 export const TenantDomainSchema = z.object({
   tenantDomainId: z.string(),
   domain: z.string(),
-  domainStatus: z.enum(["ACTIVE", "VERIFIED", "PENDING"]).default("PENDING"),
+  isPrimary: z.boolean().nullish(),
+  /** PENDING / VERIFIED / ACTIVE / … — string: the app never branches on it. */
+  domainStatus: z.string(),
 });
 export type TenantDomain = z.infer<typeof TenantDomainSchema>;
 
-// ── Tenant ────────────────────────────────────────────────────────────────────
-
+/** SafeTenant; also the shorter summary embedded in memberships and invitations. */
 export const TenantSchema = z.object({
   tenantId: z.string(),
   name: z.string(),
-  description: z.string().optional().nullable(),
+  description: z.string().nullish(),
+  region: z.string().nullish(),
+  slug: z.string().nullish(),
+  metadata: z.record(z.unknown()).nullish(),
   tenantStatus: TenantStatusEnum.default("ACTIVE"),
-  logo: z.string().url().optional().nullable(),
-  favicon: z.string().url().optional().nullable(),
-  theme: z.string().optional().nullable(),
-  language: z.string().optional().nullable(),
-  timezone: z.string().optional().nullable(),
-  domains: z.array(TenantDomainSchema).optional().default([]),
-  createdAt: z.string().optional().nullable(),
-  updatedAt: z.string().optional().nullable(),
+  createdAt: z.string().nullish(),
+  updatedAt: z.string().nullish(),
+  domains: z.array(TenantDomainSchema).nullish().transform((v) => v ?? []),
 });
 export type Tenant = z.infer<typeof TenantSchema>;
 
-// ── Tenant Member ─────────────────────────────────────────────────────────────
+// ── Members ───────────────────────────────────────────────────────────────────
 
 export const MemberUserSchema = z.object({
   userId: z.string(),
-  email: z.string().optional().nullable(),
-  userProfile: z.object({
-    name: z.string().optional().nullable(),
-    profilePicture: z.string().optional().nullable(),
-  }).optional().nullable(),
+  email: z.string().nullish(),
+  userProfile: UserProfileSchema.nullish(),
 });
 export type MemberUser = z.infer<typeof MemberUserSchema>;
 
+/** One row of GET /members and the `member` of GET|PUT /members/{id}. */
 export const TenantMemberSchema = z.object({
   tenantMemberId: z.string(),
   tenantId: z.string(),
   userId: z.string(),
   memberRole: MemberRoleEnum.default("USER"),
+  roleKeys: z.array(z.string()).nullish().transform((v) => v ?? []),
   memberStatus: MemberStatusEnum.default("ACTIVE"),
-  tenant: TenantSchema.optional().nullable(),
-  user: MemberUserSchema.optional().nullable(),
-  createdAt: z.string().optional().nullable(),
-  updatedAt: z.string().optional().nullable(),
+  externalId: z.string().nullish(),
+  suspensionReason: z.string().nullish(),
+  suspendedUntil: z.string().nullish(),
+  lastActiveAt: z.string().nullish(),
+  createdAt: z.string().nullish(),
+  updatedAt: z.string().nullish(),
+  tenant: TenantSchema.nullish(),
+  user: MemberUserSchema.nullish(),
 });
 export type TenantMember = z.infer<typeof TenantMemberSchema>;
 
-// ── Invitation ────────────────────────────────────────────────────────────────
+/**
+ * One membership of the signed-in user, from GET /auth/me/tenants. The server
+ * sends `{ tenantMemberId, memberRole, memberStatus, tenant }` — no top-level
+ * `tenantId` / `userId` — so `tenantId` is lifted from `tenant.tenantId`.
+ */
+export const TenantMembershipSchema = z
+  .object({
+    tenantMemberId: z.string(),
+    memberRole: MemberRoleEnum,
+    memberStatus: MemberStatusEnum,
+    tenant: TenantSchema,
+  })
+  .transform((m) => ({ ...m, tenantId: m.tenant.tenantId }));
+export type TenantMembership = z.output<typeof TenantMembershipSchema>;
 
+// ── Invitations ───────────────────────────────────────────────────────────────
+
+/** SafeTenantInvitation (lists) and the slimmer shape inside GET /auth/me/tenants (no `email`). */
 export const InvitationSchema = z.object({
   invitationId: z.string(),
   tenantId: z.string(),
-  email: z.string().optional().nullable(),
+  email: z.string().nullish(),
+  invitedByUserId: z.string().nullish(),
   memberRole: MemberRoleEnum.default("USER"),
   status: InvitationStatusEnum,
-  expiresAt: z.string().optional().nullable(),
-  createdAt: z.string().optional().nullable(),
-  tenant: TenantSchema.optional().nullable(),
+  expiresAt: z.string().nullish(),
+  createdAt: z.string().nullish(),
+  updatedAt: z.string().nullish(),
+  tenant: TenantSchema.nullish(),
 });
 export type Invitation = z.infer<typeof InvitationSchema>;
 
 // ── Response DTOs ─────────────────────────────────────────────────────────────
 
+/** A client tenant reachable as a delegate (currently always empty server-side). */
+export const DelegatedTenantSchema = z.object({
+  via: z.literal("delegate"),
+  delegateTenantId: z.string(),
+  tenant: TenantSchema,
+});
+export type DelegatedTenant = z.infer<typeof DelegatedTenantSchema>;
+
+/** GET /auth/me/tenants */
 export const MyTenantsResponseSchema = z.object({
-  tenants: z.array(TenantMemberSchema),
-  invitations: z.array(InvitationSchema).optional().default([]),
+  success: z.boolean().optional(),
+  tenants: z.array(TenantMembershipSchema),
+  delegatedTenants: z.array(DelegatedTenantSchema).nullish().transform((v) => v ?? []),
+  invitations: z.array(InvitationSchema).nullish().transform((v) => v ?? []),
 });
 export type MyTenantsResponse = z.infer<typeof MyTenantsResponseSchema>;
 
+/** GET /members — `page` is 0-based. */
 export const MembersListResponseSchema = z.object({
   members: z.array(TenantMemberSchema),
   total: z.number().default(0),
@@ -96,6 +135,7 @@ export const MembersListResponseSchema = z.object({
 });
 export type MembersListResponse = z.infer<typeof MembersListResponseSchema>;
 
+/** GET /invitations — `page` is 1-based. */
 export const InvitationsListResponseSchema = z.object({
   invitations: z.array(InvitationSchema),
   total: z.number().default(0),
@@ -104,36 +144,67 @@ export const InvitationsListResponseSchema = z.object({
 });
 export type InvitationsListResponse = z.infer<typeof InvitationsListResponseSchema>;
 
+/** POST /tenants/create (201) */
 export const CreateTenantResponseSchema = z.object({
   success: z.boolean(),
   tenant: z.object({
     tenantId: z.string(),
     name: z.string(),
-    description: z.string().optional().nullable(),
-    tenantStatus: TenantStatusEnum.default("ACTIVE"),
+    description: z.string().nullish(),
+    tenantStatus: TenantStatusEnum,
   }),
   message: z.string().optional(),
 });
 export type CreateTenantResponse = z.infer<typeof CreateTenantResponseSchema>;
 
+/** PUT /members/{id}: 200 with `member`, or 202 `pendingApproval` (dual control) with none. */
+export const UpdateMemberResponseSchema = z.object({
+  message: z.string(),
+  member: TenantMemberSchema.optional(),
+  pendingApproval: z.boolean().optional(),
+});
+export type UpdateMemberResponse = z.infer<typeof UpdateMemberResponseSchema>;
+
+/** GET /tenant/profile → `{ name, description }`; PUT adds `message`. */
+export const TenantProfileSchema = z.object({
+  name: z.string(),
+  description: z.string().nullish(),
+  message: z.string().optional(),
+});
+export type TenantProfile = z.infer<typeof TenantProfileSchema>;
+
+/** GET|POST /settings → `{ success, settings }` (string map). */
+export const TenantSettingsResponseSchema = z.object({
+  success: z.boolean().optional(),
+  settings: z.record(z.string()),
+});
+export type TenantSettingsResponse = z.infer<typeof TenantSettingsResponseSchema>;
+
 // ── Request DTOs ──────────────────────────────────────────────────────────────
 
+/** The route rejects names shorter than 2 characters after trimming. */
 export const CreateTenantRequestSchema = z.object({
-  name: z.string().min(2).max(100),
-  description: z.string().optional().nullable(),
+  name: z.string().trim().min(2).max(100),
+  description: z.string().nullish(),
   region: z.string().default("TR"),
 });
-// z.input: `region` has a default, so callers may omit it.
+/** Input type: `region` has a default, so callers may omit it. */
 export type CreateTenantRequest = z.input<typeof CreateTenantRequestSchema>;
+
+export const UpdateTenantProfileRequestSchema = z.object({
+  name: z.string().min(1).max(100).optional(),
+  description: z.string().nullish(),
+});
+export type UpdateTenantProfileRequest = z.infer<typeof UpdateTenantProfileRequestSchema>;
 
 export const SendInvitationRequestSchema = z.object({
   email: z.string().email(),
   memberRole: MemberRoleEnum.default("USER"),
 });
-export type SendInvitationRequest = z.infer<typeof SendInvitationRequestSchema>;
+export type SendInvitationRequest = z.input<typeof SendInvitationRequestSchema>;
 
 export const UpdateMemberRequestSchema = z.object({
-  memberRole: MemberRoleEnum.optional().nullable(),
-  memberStatus: MemberStatusEnum.optional().nullable(),
+  memberRole: MemberRoleEnum.nullish(),
+  memberStatus: MemberStatusEnum.nullish(),
 });
 export type UpdateMemberRequest = z.infer<typeof UpdateMemberRequestSchema>;

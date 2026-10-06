@@ -1,5 +1,6 @@
 import * as Device from 'expo-device';
 import { env } from '@/libs/env';
+import type { DeviceInfo } from '@/services/auth/auth.dto';
 
 // ============================================================================
 // Device info for a device-bearer login (next-boilerplate DeviceInfoDTO).
@@ -8,19 +9,7 @@ import { env } from '@/libs/env';
 // validated with .optional(), so unknown values are omitted, never null.
 // ============================================================================
 
-export type DeviceType = 'phone' | 'tablet' | 'watch' | 'tv' | 'desktop' | 'other';
-
-export type DeviceInfo = {
-  type?: DeviceType;
-  brand?: string;
-  model?: string;
-  name?: string;
-  os?: string;
-  osVersion?: string;
-  appVersion?: string;
-};
-
-const TYPE_BY_EXPO: Partial<Record<Device.DeviceType, DeviceType>> = {
+const TYPE_BY_EXPO: Partial<Record<Device.DeviceType, NonNullable<DeviceInfo['type']>>> = {
   [Device.DeviceType.PHONE]: 'phone',
   [Device.DeviceType.TABLET]: 'tablet',
   [Device.DeviceType.TV]: 'tv',

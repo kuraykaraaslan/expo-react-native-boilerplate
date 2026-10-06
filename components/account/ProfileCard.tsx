@@ -8,6 +8,7 @@ import type { UpdateProfileRequest } from '@/services/user/profile.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { ProfileClientService } from '@/services/user/profile.service.client';
 import { useAuthStore } from '@/stores/authStore';
+import { getUserDisplayName } from '@/utils/user';
 
 const EMPTY: UpdateProfileRequest = { name: null, biography: null, profilePicture: null, headerImage: null, socialLinks: [] };
 
@@ -54,7 +55,7 @@ export function ProfileCard() {
     }
   }
 
-  const displayName = form.name || user?.name || user?.email || '?';
+  const displayName = form.name || getUserDisplayName(user) || '?';
 
   return (
     <Card

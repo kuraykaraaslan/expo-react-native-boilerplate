@@ -21,7 +21,14 @@ function Row({ label, children, last }: { label: string; children: ReactNode; la
   );
 }
 
-const STATUS_VARIANT = { ACTIVE: 'success', SUSPENDED: 'error', PENDING_DELETION: 'warning' } as const;
+const STATUS_VARIANT = {
+  ACTIVE: 'success',
+  INACTIVE: 'neutral',
+  PENDING: 'warning',
+  SUSPENDED: 'error',
+  DELETED: 'error',
+  ARCHIVED: 'neutral',
+} as const;
 
 export default function OrganizationScreen() {
   const { t } = useTranslation();

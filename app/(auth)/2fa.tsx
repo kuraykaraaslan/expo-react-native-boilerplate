@@ -24,13 +24,13 @@ export default function TwoFactorScreen() {
   const [codeError, setCodeError] = useState<string | undefined>();
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const setUser = useAuthStore((s) => s.setUser);
+  const clearOtp = useAuthStore((s) => s.clearOtp);
   const methodLabel = method === 'EMAIL' ? t('AUTH_UI.OTP_EMAIL') : t('AUTH_UI.OTP_SMS');
 
   async function handleSend() {
     setLoading(true);
     try {
-      await AuthClientService.sendOTP(method);
+      await AuthClientService.sendOTP(method, 'authenticate');
       await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       toast.success(t('AUTH_UI.CODE_SENT', { method: methodLabel }));
       setSent(true);
@@ -49,10 +49,12 @@ export default function TwoFactorScreen() {
     setCodeError(undefined);
     setLoading(true);
     try {
-      const user = await AuthClientService.verifyOTP(code, method);
-      setUser(user);
+      await AuthClientService.verifyOTP(method, 'authenticate', code);
+      // The reply carries no user — the session is the same; its OTP gate is open now.
+      await AuthClientService.getSession();
+      clearOtp();
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      router.replace('/select-tenant');
+      router.replace('/');
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       handleApiError(err, 'TwoFactorScreen.verify');

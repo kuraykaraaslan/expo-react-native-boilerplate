@@ -32,10 +32,15 @@ export function EditMemberModal({ member, onClose, onSaved }: EditMemberModalPro
     if (!member) return;
     setSaving(true);
     try {
-      const updated = await TenantClientService.updateMember(member.tenantId, member.tenantMemberId, { memberRole: role, memberStatus: status });
+      const result = await TenantClientService.updateMember(member.tenantId, member.tenantMemberId, { memberRole: role, memberStatus: status });
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('MEMBERS.UPDATED'));
-      onSaved(updated);
+      if (result.member) {
+        toast.success(t('MEMBERS.UPDATED'));
+        onSaved(result.member);
+      } else {
+        // Dual control: the change is queued for approval, the member is unchanged for now.
+        toast.info(t('MEMBERS.PENDING_APPROVAL'));
+      }
       onClose();
     } catch (err: unknown) {
       handleApiError(err, 'EditMemberModal.save');

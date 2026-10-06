@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEnvelope, faLock, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLock, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { SSOButtons } from '@/components/auth/SSOButtons';
@@ -20,7 +20,6 @@ type FieldErrors = { email?: string; password?: string; confirm?: string };
 export default function RegisterScreen() {
   const { t } = useTranslation();
   const tokens = useThemeTokens();
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -29,7 +28,7 @@ export default function RegisterScreen() {
   const iconColor = tokens['text-disabled'];
 
   async function handleRegister() {
-    const result = RegisterRequestSchema.safeParse({ email: email.trim(), password, name: name.trim() || undefined });
+    const result = RegisterRequestSchema.safeParse({ email: email.trim(), password });
     const next: FieldErrors = {};
     if (!result.success) {
       const errs = result.error.flatten().fieldErrors;
@@ -67,16 +66,6 @@ export default function RegisterScreen() {
       />
 
       <View className="gap-3">
-        <Input
-          label={t('AUTH_UI.FULL_NAME')}
-          hint={t('COMMON.OPTIONAL')}
-          value={name}
-          onChangeText={setName}
-          autoComplete="name"
-          textContentType="name"
-          prefixIcon={<FontAwesomeIcon icon={faUser} size={14} color={iconColor} />}
-          testID="auth-register-name"
-        />
         <Input
           label={t('AUTH_UI.EMAIL')}
           type="email"

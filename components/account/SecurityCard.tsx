@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
-import { Pressable, View } from 'react-native';
-import { router } from 'expo-router';
+import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBuilding, faCalendar, faEnvelope, faUserShield } from '@fortawesome/free-solid-svg-icons';
@@ -35,15 +34,6 @@ export function SecurityCard() {
         <Text className="shrink text-sm font-medium text-text-primary" numberOfLines={1}>
           {user?.email ?? '—'}
         </Text>
-        <Pressable
-          onPress={() => router.push('/settings/change-email')}
-          accessibilityRole="link"
-          hitSlop={8}
-          className="ml-3"
-          testID="account-security-change-email"
-        >
-          <Text className="text-xs font-medium text-primary">{t('ACCOUNT.CHANGE')}</Text>
-        </Pressable>
       </InfoRow>
       <InfoRow icon={faUserShield} label={t('ACCOUNT.ROW_GLOBAL_ROLE')}>
         <Badge variant={user?.userRole === 'ADMIN' ? 'error' : 'neutral'} size="sm">
@@ -54,7 +44,7 @@ export function SecurityCard() {
         {membership ? <RoleBadge role={membership.memberRole} /> : <Text className="text-sm text-text-disabled">—</Text>}
       </InfoRow>
       <InfoRow icon={faCalendar} label={t('ACCOUNT.ROW_MEMBER_SINCE')} last>
-        <Text className="text-sm text-text-primary">{formatDate(membership?.createdAt ?? user?.createdAt) || '—'}</Text>
+        <Text className="text-sm text-text-primary">{formatDate(user?.createdAt) || '—'}</Text>
       </InfoRow>
     </Card>
   );

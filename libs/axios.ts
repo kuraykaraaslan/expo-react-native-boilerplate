@@ -1,6 +1,6 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { toast } from "sonner-native";
-import { DeviceTokenPairSchema } from "@/services/auth/auth.dto";
+import { DeviceRefreshResponseSchema } from "@/services/auth/auth.dto";
 import { markHandled, normalizeApiError, type NormalizedApiError } from "@/libs/apiError";
 import { env } from "@/libs/env";
 import i18n from "@/libs/i18n";
@@ -116,7 +116,7 @@ function refreshTenant(tenantId: string): Promise<RefreshOutcome> {
     if (!refreshToken) return "session-dead";
     try {
       const res = await axiosInstance.post(REFRESH_PATH, { refreshToken }, { tenantId, skipAuth: true });
-      const pair = DeviceTokenPairSchema.parse(res.data);
+      const pair = DeviceRefreshResponseSchema.parse(res.data);
       await setTokens(tenantId, pair); // store BOTH — the old refresh token is now burnt
       state.lastRefreshAt = Date.now();
       return "refreshed";

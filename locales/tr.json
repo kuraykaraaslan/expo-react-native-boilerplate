@@ -178,7 +178,6 @@
         "SIGN_UP": "Kayıt ol",
         "REGISTER_TITLE": "Hesap oluştur",
         "REGISTER_SUBTITLE": "Başlamak için hesabınızı oluşturun",
-        "FULL_NAME": "Ad soyad",
         "PASSWORD_HINT": "En az 8 karakter",
         "CONFIRM_PASSWORD": "Parolayı doğrula",
         "CREATE_ACCOUNT": "Hesap oluştur",
@@ -226,7 +225,8 @@
         "ORG_CREATED": "Organizasyon oluşturuldu",
         "BACK_TO_ORGS": "Organizasyonlara dön",
         "OTP_EMAIL_HINT": "Gelen kutunuza 6 haneli kod",
-        "OTP_SMS_HINT": "Kısa mesajla 6 haneli kod"
+        "OTP_SMS_HINT": "Kısa mesajla 6 haneli kod",
+        "ORG_SIGN_IN_REQUIRED": "{{name}} organizasyonuna geçmek için önce giriş yapın."
     },
     "DASHBOARD": {
         "TITLE": "Panel",
@@ -262,8 +262,6 @@
         "PROFILE_DESC": "Görünen ad, biyografi ve güvenlik",
         "SESSIONS": "Oturumlar",
         "SESSIONS_DESC": "Hesabınızda oturum açık cihazlar",
-        "EMAIL": "E-posta adresi",
-        "EMAIL_DESC": "Giriş yaptığınız adresi değiştirin",
         "PREFERENCES": "Tercihler",
         "PREFERENCES_DESC": "Dil ve görünüm",
         "ORGANIZATION": "Organizasyon",
@@ -291,8 +289,7 @@
         "ROW_EMAIL": "E-posta",
         "ROW_GLOBAL_ROLE": "Genel rol",
         "ROW_TENANT_ROLE": "Kiracı rolü",
-        "ROW_MEMBER_SINCE": "Üyelik tarihi",
-        "CHANGE": "Değiştir"
+        "ROW_MEMBER_SINCE": "Üyelik tarihi"
     },
     "SESSIONS": {
         "TITLE": "Oturumlar",
@@ -319,16 +316,6 @@
         "THEME_SYSTEM": "Sistem",
         "LANGUAGE": "Dil"
     },
-    "EMAIL_CHANGE": {
-        "TITLE": "E-posta adresi",
-        "SUBTITLE": "Giriş yaptığınız adresi değiştirin",
-        "CARD": "E-posta değiştir",
-        "CARD_DESC": "Şu anki adres: {{email}}",
-        "NEW_EMAIL": "Yeni e-posta adresi",
-        "NEW_EMAIL_HINT": "Yeni adrese bir doğrulama bağlantısı göndereceğiz.",
-        "SUBMIT": "E-postayı güncelle",
-        "SENT": "Yeni adresinize doğrulama gönderildi"
-    },
     "ORGANIZATION": {
         "TITLE": "Organizasyon",
         "SUBTITLE": "Geçerli organizasyonunuzun bilgileri",
@@ -345,7 +332,10 @@
         "SELECT": "Organizasyon seç",
         "STATUS_ACTIVE": "Etkin",
         "STATUS_SUSPENDED": "Askıda",
-        "STATUS_PENDING_DELETION": "Silinmeyi bekliyor"
+        "STATUS_INACTIVE": "Pasif",
+        "STATUS_PENDING": "Bekliyor",
+        "STATUS_DELETED": "Silindi",
+        "STATUS_ARCHIVED": "Arşivlendi"
     },
     "MEMBERS": {
         "TITLE": "Üyeler",
@@ -368,7 +358,8 @@
         "STATUS_SUSPENDED": "Askıda",
         "STATUS_PENDING": "Bekliyor",
         "YOU": "Siz",
-        "UPDATED": "Üye güncellendi"
+        "UPDATED": "Üye güncellendi",
+        "PENDING_APPROVAL": "Rol değişikliği onaya gönderildi"
     },
     "INVITATIONS": {
         "TITLE": "Davetler",
