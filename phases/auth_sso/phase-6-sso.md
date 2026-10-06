@@ -1,87 +1,87 @@
 <!--
-OTORİTE SIRASI (çakışmada üstteki kazanır):
-  1. AGENTS.md (§6 Hard rules · §5 dosya adlandırma · §0 katalog senkronu)
-  2. next-boilerplate sözleşmesi — SALT OKUNUR referans
-  3. phases/README.md (§Kilitli kararlar K4)
+ORDER OF AUTHORITY (the higher item wins on conflict):
+  1. AGENTS.md (§6 Hard rules · §5 file naming · §0 catalog sync)
+  2. next-boilerplate contract — READ-ONLY reference
+  3. phases/README.md (§Locked decisions K4)
   4. phases/auth_sso/README.md
-  5. BU DOSYA
-TEK İSTİSNA: "Sahibin kararları (sabit)" — kayıtlı sahip kararı bu dosyanın önerisini yener.
-NEREDE KALDIK: phases/README.md §Sıra
+  5. THIS FILE
+ONLY EXCEPTION: "Owner decisions (fixed)" — a recorded owner decision overrides this file's proposal.
+WHERE WE ARE: phases/README.md §Order
 -->
 
-# Faz 6 — SSO / OAuth (⛔ sunucu değişikliğine bağımlı)
+# Phase 6 — SSO / OAuth (⛔ blocked on a server change)
 
-**Hedef:** İstemci tarafını eksiksiz kur; sunucu engelini (K4) kullanıcıya ve geliştiriciye **açıkça** bildir. Sunucu değişikliği geldiği an ek kod yazmadan çalışsın.
+**Goal:** Build the client side completely; report the server blocker (K4) to the user and the developer **explicitly**. The moment the server change lands, it should work without writing extra code.
 
-> **Bu faz, sunucu tarafı tamamlanmadan `KODLANDI` işaretlenmez.** Gerekçe ve istenen değişiklik: `phases/auth_sso/README.md`.
+> **This phase is not marked `CODED` until the server side is complete.** Rationale and the requested change: `phases/auth_sso/README.md`.
 
-## 6.1 Sağlayıcı listesi
+## 6.1 Provider list
 
-- [ ] `services/auth/sso.service.client.ts` (Faz 3'te oluşturuldu) → `getProviders()` `GET /auth/sso` yanıtı `{providers: [...]}`, `SSOProvidersResponseSchema` ile parse edilir.
-- [ ] `components/auth/SSOButtons.tsx` → içindeki **sabit sağlayıcı listesi kaldırılır**; tenant'ın izin verdikleri sunucudan gelir (`SSOService.isProviderEnabled` tenant başına gate'liyor).
-- [ ] Sağlayıcı ikonları `@fortawesome/free-brands-svg-icons`'tan eşlenir (AGENTS.md §6 Kural 10: FontAwesome dışı ikon kütüphanesi yok). Karşılığı olmayan sağlayıcı için nötr fallback.
-- [ ] Liste boşsa SSO bölümü **hiç render edilmez** (ayırıcı çizgi dahil).
+- [ ] `services/auth/sso.service.client.ts` (created in Phase 3) → `getProviders()` `GET /auth/sso` response `{providers: [...]}`, parsed with `SSOProvidersResponseSchema`.
+- [ ] `components/auth/SSOButtons.tsx` → the **hard-coded provider list inside it is removed**; the providers the tenant allows come from the server (`SSOService.isProviderEnabled` gates per tenant).
+- [ ] Provider icons are mapped from `@fortawesome/free-brands-svg-icons` (AGENTS.md §6 Rule 10: no icon library other than FontAwesome). A neutral fallback for providers with no counterpart.
+- [ ] If the list is empty, the SSO section is **not rendered at all** (including the divider line).
 
-## 6.2 Tarayıcı akışı
+## 6.2 Browser flow
 
-- [ ] `GET /auth/sso/{provider}` → `{url, state}`; `state` saklanır ve dönüşte karşılaştırılır (CSRF/karışık akış koruması).
-- [ ] `app.config.ts`'e `scheme` eklenir (örn. `expoboilerplate`) — `reset-password` deep link'i de bunu kullanır.
-- [ ] `expo-web-browser` → `openAuthSessionAsync(url, redirectUrl)`; `redirectUrl` `expo-linking`'in `createURL('/auth/callback')` çıktısı.
-- [ ] `expo-linking` handler'ı `<scheme>://auth/callback?rawAccessToken=…&rawRefreshToken=…` yakalar:
-  - `state` eşleşmesi doğrulanır.
-  - Token'lar `setToken(kind, activeTenantId, value)` ile yazılır.
-  - `GET /auth/session` ile doğrulanır, `authStore` + `tenantStore` doldurulur.
-- [ ] Kullanıcı tarayıcıyı kapatırsa (`type: 'cancel'` / `'dismiss'`) sessizce login ekranında kalınır, hata gösterilmez.
+- [ ] `GET /auth/sso/{provider}` → `{url, state}`; `state` is stored and compared on return (CSRF / mixed-flow protection).
+- [ ] `scheme` is added to `app.config.ts` (e.g. `expoboilerplate`) — the `reset-password` deep link uses it too.
+- [ ] `expo-web-browser` → `openAuthSessionAsync(url, redirectUrl)`; `redirectUrl` is the output of `expo-linking`'s `createURL('/auth/callback')`.
+- [ ] The `expo-linking` handler catches `<scheme>://auth/callback?rawAccessToken=…&rawRefreshToken=…`:
+  - The `state` match is verified.
+  - Tokens are written with `setToken(kind, activeTenantId, value)`.
+  - Verified with `GET /auth/session`, and `authStore` + `tenantStore` are populated.
+- [ ] If the user closes the browser (`type: 'cancel'` / `'dismiss'`), they silently stay on the login screen and no error is shown.
 
-## 6.3 Engel davranışı (sunucu değişikliği gelene kadar)
+## 6.3 Blocker behavior (until the server change lands)
 
-- [ ] Akış **web audience** token ile dönerse (bugünkü durum): `GET /auth/session` 401 döner.
-- [ ] Bu hâl **özel olarak** yakalanır:
-  - `logger.error` ile "SSO callback returned a web-audience token; device bearer flow requires server-side `audience: 'device'` — see phases/auth_sso/README.md" loglanır.
-  - Kullanıcıya `toast.error` ile anlaşılır mesaj: "Sosyal giriş şu an kullanılamıyor, lütfen e-posta ile giriş yapın."
-  - Token'lar **yazılmaz** (yazılırsa her istek 401 döner ve kullanıcı kilitli kalır).
-- [ ] Yönlendirme https bir adrese düşüp tarayıcı kapanmazsa zaman aşımı sonrası aynı mesaj gösterilir.
+- [ ] If the flow returns with a **web-audience** token (today's situation): `GET /auth/session` returns 401.
+- [ ] This case is caught **specifically**:
+  - `logger.error` logs "SSO callback returned a web-audience token; device bearer flow requires server-side `audience: 'device'` — see phases/auth_sso/README.md".
+  - A clear message to the user via `toast.error`: "Sosyal giriş şu an kullanılamıyor, lütfen e-posta ile giriş yapın."
+  - Tokens are **not written** (if they were, every request would return 401 and the user would stay locked out).
+- [ ] If the redirect lands on an https address and the browser does not close, the same message is shown after a timeout.
 
-## 6.4 Bağlı hesaplar (kapsamın sınırı)
+## 6.4 Linked accounts (scope boundary)
 
-- [ ] `GET /auth/me/social-accounts` ile bağlı hesaplar **listelenir** (salt okunur).
-- [ ] Bağlama / çözme (`connect/{provider}`, `DELETE /{provider}`) **bu fazın kapsamı dışıdır** — aynı callback engeline takılır, sunucu değişikliği sonrasına bırakılır.
+- [ ] Linked accounts are **listed** with `GET /auth/me/social-accounts` (read-only).
+- [ ] Linking / unlinking (`connect/{provider}`, `DELETE /{provider}`) is **outside the scope of this phase** — it hits the same callback blocker and is left until after the server change.
 
-## Dokunulan / oluşturulan dosyalar
+## Files touched / created
 
-- Değişen: `components/auth/SSOButtons.tsx`, `app/(auth)/login.tsx` (SSO girişi), `app.config.ts` (+`scheme`), `package.json` (`expo-web-browser` ve `expo-linking` zaten var — doğrulanır)
-- Yeni: `libs/ssoSession.ts` (tarayıcı akışı + deep-link handler), `app/(drawer)/settings/social-accounts.tsx` (salt okunur liste)
-- Test: `__tests__/` altında sağlayıcı listesi, state uyuşmazlığı, web-audience engeli
+- Changed: `components/auth/SSOButtons.tsx`, `app/(auth)/login.tsx` (SSO entry), `app.config.ts` (+`scheme`), `package.json` (`expo-web-browser` and `expo-linking` are already present — verified)
+- New: `libs/ssoSession.ts` (browser flow + deep-link handler), `app/(drawer)/settings/social-accounts.tsx` (read-only list)
+- Test: provider list, state mismatch, web-audience blocker under `__tests__/`
 
-## Yeniden kullan
+## Reuse
 
-- `services/auth/sso.service.client.ts` + `services/auth/sso.dto.ts` — Faz 3'te oluşturuldu, burada yalnız tüketilir.
-- `libs/secureStorage.ts` tenant başına anahtarlar (Faz 2).
-- `stores/tenantStore.ts:activeTenantId` (Faz 5) — `state`'in tenant yarısı buradan.
-- `libs/apiError.ts` (Faz 2), `libs/logger.ts`, `sonner-native`.
-- `expo-web-browser` + `expo-linking` — ikisi de `package.json`'da mevcut, yeni bağımlılık yok.
-- `@/components/ui` (kui-native, Faz 1C): `Button`, `Separator`, `AlertBanner`, `Spinner`.
+- `services/auth/sso.service.client.ts` + `services/auth/sso.dto.ts` — created in Phase 3, only consumed here.
+- `libs/secureStorage.ts` per-tenant keys (Phase 2).
+- `stores/tenantStore.ts:activeTenantId` (Phase 5) — the tenant half of `state` comes from here.
+- `libs/apiError.ts` (Phase 2), `libs/logger.ts`, `sonner-native`.
+- `expo-web-browser` + `expo-linking` — both are already in `package.json`, no new dependency.
+- `@/components/ui` (kui-native, Phase 1C): `Button`, `Separator`, `AlertBanner`, `Spinner`.
 
-## Kabul kriterleri
+## Acceptance criteria
 
-**Sunucu değişikliği YOKKEN** (bu fazın teslim edilebilir hâli):
+**WITHOUT the server change** (this phase's deliverable state):
 
-- `GET /auth/sso` sağlayıcı listesi gelir ve butonlar tenant'ın izin verdiklerini gösterir; liste boşsa bölüm hiç çıkmaz.
-- Butona basınca tarayıcı doğru provider URL'iyle açılır.
-- Dönüşte web-audience engeli **açıkça loglanır** ve kullanıcıya anlaşılır mesaj gösterilir; **token yazılmaz**, kullanıcı kilitlenmez.
-- Kullanıcı tarayıcıyı kapatırsa hata gösterilmez.
-- `state` uyuşmazlığında akış reddedilir.
+- The `GET /auth/sso` provider list arrives and the buttons show the providers the tenant allows; if the list is empty, the section does not appear at all.
+- Pressing a button opens the browser with the correct provider URL.
+- On return, the web-audience blocker is **explicitly logged** and a clear message is shown to the user; **no token is written**, the user is not locked out.
+- If the user closes the browser, no error is shown.
+- On a `state` mismatch the flow is rejected.
 
-**Sunucu değişikliği GELDİKTEN sonra** (fazın `KODLANDI` şartı):
+**AFTER the server change LANDS** (the condition for the phase to be `CODED`):
 
-- Google ile giriş uygulamaya geri döner, token'lar yazılır, `GET /auth/session` 200 döner ve kullanıcı drawer'a girer.
-- Sonraki tüm bearer istekleri çalışır (audience `device`).
+- Signing in with Google returns to the app, tokens are written, `GET /auth/session` returns 200 and the user enters the drawer.
+- All subsequent bearer requests work (audience `device`).
 
-## Riskler
+## Risks
 
-- **Engelin "geçici çözümle" aşılmaya çalışılması:** cookie tutan bir WebView ile oturum taşımak teknik olarak mümkün görünür ama uygulamayı bearer ile cookie arasında bölünmüş bir kimlik modeline sokar ve Faz 2'nin tüm refresh mantığını geçersizleştirir. **Yapılmayacak.**
-- **Token'ın yine de yazılması:** web-audience token SecureStore'a yazılırsa kullanıcı, her isteği 401 dönen bir "giriş yapılmış" duruma kilitlenir ve çıkışı bulamaz. En kötü senaryo.
-- **`scheme` çakışması:** seçilen şema başka bir uygulamayla çakışırsa deep link yanlış uygulamaya gider; yeterince özgün seçilmeli.
-- **`state` saklama yeri:** MMKV'ye yazılırsa uygulama arka plana atılıp dönerse kaybolmaz; bellekte tutulursa kaybolur ve akış her seferinde reddedilir.
-- **Sağlayıcı ikonu eksikliği:** FontAwesome brands'te karşılığı olmayan sağlayıcı (autodesk, weibo, alipay) için fallback yoksa render kırılır.
-- **Faz durumunun yanlış işaretlenmesi:** istemci tarafı bitti diye `KODLANDI` yazılırsa, sonraki okuyucu SSO'yu çalışır sanır. §Sıra satırı sunucu değişikliği gelene kadar `⛔ SUNUCUYA BAĞIMLI` kalmalı.
+- **Trying to bypass the blocker with a "workaround":** carrying the session over with a cookie-holding WebView looks technically possible, but it puts the app into an identity model split between bearer and cookie and invalidates all of Phase 2's refresh logic. **It will not be done.**
+- **Writing the token anyway:** if a web-audience token is written to SecureStore, the user is locked in a "signed-in" state where every request returns 401 and cannot find the way out. The worst scenario.
+- **`scheme` collision:** if the chosen scheme collides with another app, the deep link goes to the wrong app; it must be chosen to be sufficiently unique.
+- **Where `state` is stored:** if written to MMKV it is not lost when the app goes to the background and comes back; if kept in memory it is lost and the flow is rejected every time.
+- **Missing provider icon:** if there is no fallback for providers with no counterpart in FontAwesome brands (autodesk, weibo, alipay), rendering breaks.
+- **Marking the phase status wrongly:** if `CODED` is written because the client side is done, a later reader will assume SSO works. The §Order row must stay `⛔ BLOCKED ON A SERVER CHANGE` until the server change lands.

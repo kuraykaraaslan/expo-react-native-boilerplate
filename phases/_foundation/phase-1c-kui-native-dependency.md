@@ -1,122 +1,122 @@
 <!--
-OTORİTE SIRASI (çakışmada üstteki kazanır):
-  1. AGENTS.md (§6 Hard rules · §5 dosya adlandırma · §0 katalog senkronu)
-  2. next-boilerplate sözleşmesi — SALT OKUNUR referans
-  3. phases/README.md (§Kilitli kararlar)
+ORDER OF AUTHORITY (the higher item wins on conflict):
+  1. AGENTS.md (§6 Hard rules · §5 file naming · §0 catalog sync)
+  2. next-boilerplate contract — READ-ONLY reference
+  3. phases/README.md (§Locked decisions)
   4. phases/_foundation/README.md
-  5. BU DOSYA
-TEK İSTİSNA: "Sahibin kararları (sabit)" — kayıtlı sahip kararı bu dosyanın önerisini yener.
-NEREDE KALDIK: phases/README.md §Sıra
+  5. THIS FILE
+ONLY EXCEPTION: "Owner decisions (fixed)" — a recorded owner decision beats this file's proposal.
+WHERE WE ARE: phases/README.md §Order
 -->
 
-# Faz 1C — kui-native git bağımlılığı + tek tasarım dili
+# Phase 1C — kui-native git dependency + single design language
 
-**Hedef:** kui-native'i `package.json`'a **git bağımlılığı** olarak ekle. İki rakip stil sistemini (`components/ui/*` className ile `components/shell/*` inline `style={{}}`) kui-native token sistemine indir. Uygulama kodu kui-native bileşenlerini yalnız `@/components/ui` barrel'ından alsın.
+**Goal:** Add kui-native to `package.json` as a **git dependency**. Collapse the two competing styling systems (`components/ui/*` with className and `components/shell/*` with inline `style={{}}`) onto the kui-native token system. Application code gets kui-native components only from the `@/components/ui` barrel.
 
-> **Sahibin kararı (sabit, 2026-09-24):** kui-native **git paketi olarak kurulur**, kaynak kod repoya **kopyalanmaz**. Önceki "vendor et, bağımlılık yapma" kararı iptal edildi.
-> Önkoşul: Faz 1A (SDK 57) ve Faz 1B (`v0.2.0` tag'i) tamamlanmış olmalı.
+> **Owner decision (fixed, 2026-09-24):** kui-native is **installed as a git package**; its source code is **not copied** into the repo. The earlier "vendor it, don't make it a dependency" decision is cancelled.
+> Prerequisite: Phase 1A (SDK 57) and Phase 1B (`v0.2.0` tag) must be complete.
 
-## 1C.1 Bağımlılık
+## 1C.1 Dependency
 
-- [x] `package.json` → `"kui-native": "git+https://github.com/kuraykaraaslan/kui-native.git#v0.2.0"`. Sürüm **her zaman bir tag'e** sabitlenir, branch'e (`#main`) asla sabitlenmez. `package-lock.json` çözülen commit SHA'sını kaydeder.
-- [ ] Repo **public**: `github:` kısaltması https üzerinden kimlik bilgisi olmadan çözülür. CI ve EAS için ek ayar gerekmez. `package-lock.json`'da URL'nin `git+ssh` değil `git+https` olarak kaydedildiği doğrulanır; ssh kalırsa SSH anahtarı olmayan CI ortamı klonlayamaz.
-- [ ] Opsiyonel peer'ler (`expo-video`, `react-native-maps`, `leaflet`, …) **kurulmaz**. Boilerplate bu bileşenleri kullanmaz.
-- [ ] Güncelleme prosedürü `README.md`'ye yazılır: kui-native'de yeni tag → `package.json`'da tag değişir → `npm install` → typecheck + test → ayrı commit (`chore(deps): kui-native vX.Y.Z`).
+- [x] `package.json` → `"kui-native": "git+https://github.com/kuraykaraaslan/kui-native.git#v0.2.0"`. The version is **always pinned to a tag**, never to a branch (`#main`). `package-lock.json` records the resolved commit SHA.
+- [ ] The repo is **public**: the `github:` shorthand resolves over https without credentials. No extra setup is needed for CI and EAS. Verify that `package-lock.json` records the URL as `git+https`, not `git+ssh`; if it stays ssh, a CI environment without an SSH key cannot clone.
+- [ ] Optional peers (`expo-video`, `react-native-maps`, `leaflet`, …) are **not installed**. The boilerplate does not use these components.
+- [ ] The update procedure is written into `README.md`: new tag in kui-native → change the tag in `package.json` → `npm install` → typecheck + test → separate commit (`chore(deps): kui-native vX.Y.Z`).
 
-## 1C.2 Build entegrasyonu
+## 1C.2 Build integration
 
-- [ ] `tailwind.config.js` → `content`'e `"./node_modules/kui-native/modules/ui/**/*.{ts,tsx}"` eklenir. Eklenmezse kui-native bileşenlerinin sınıfları üretilmez ve bileşenler **stilsiz** render olur.
+- [ ] `tailwind.config.js` → add `"./node_modules/kui-native/modules/ui/**/*.{ts,tsx}"` to `content`. If it is missing, the classes of kui-native components are not generated and the components render **unstyled**.
 - [ ] `tailwind.config.js` → `theme.extend.colors = require("kui-native/libs/utils/tailwind-tokens").colors`, `darkMode: "class"`.
-- [ ] `jest.config.js` → `transformIgnorePatterns` negatif grubuna `kui-native` eklenir (paket derlenmemiş TS kaynağı olarak gelir).
-- [ ] `babel.config.js` değişmez: `babel-preset-expo` node_modules'taki TS'yi zaten derler. Faz 1B'den sonra kui-native'de `@/` kalmadığı için `module-resolver` alias'ı pakete dokunmaz.
-- [ ] `global.css` → `:root` altına kui-native'in token fallback bloğu eklenir, `--color-primary*` değerleri **turuncu** olarak yazılır. Web'de ilk boyamada mavi yanıp sönmeyi önler. Native'de kökteki `vars()` geçerlidir.
-- [ ] `metro.config.js` değişmez. Doğrulama: `npx expo start --clear` ile kui-native bileşeni render edilir.
+- [ ] `jest.config.js` → add `kui-native` to the negative group of `transformIgnorePatterns` (the package ships as uncompiled TS source).
+- [ ] `babel.config.js` stays unchanged: `babel-preset-expo` already compiles TS in node_modules. Since no `@/` is left in kui-native after Phase 1B, the `module-resolver` alias does not touch the package.
+- [ ] `global.css` → add kui-native's token fallback block under `:root`, writing the `--color-primary*` values as **orange**. This prevents a blue flash on first paint on web. On native, the root `vars()` applies.
+- [ ] `metro.config.js` stays unchanged. Verification: render a kui-native component with `npx expo start --clear`.
 
-## 1C.3 Token / tema katmanı
+## 1C.3 Token / theme layer
 
-- [ ] `libs/theme/brand.ts` (yeni): boilerplate'in marka override'ı. `configureTheme({ light: {...}, dark: {...} })` ile `primary` = `#f4511e`, `-hover` / `-active` / `-subtle` / `border-focus` turuncuya göre hesaplanmış değerler. kui-native'in mavisi **kullanılmaz**.
-- [ ] `configureTheme`, `app/_layout.tsx`'in import zincirinde, ilk render'dan önce **bir kez** çağrılır (`import "@/libs/theme/brand"`).
-- [ ] `libs/theme/ThemeContext.tsx`: kökte `themes[useResolvedScheme()]` (kui-native) `style` olarak uygulanır. Kullanıcının tema tercihi MMKV'de (`zustandStorage`) tutulur ve açılışta `useThemeMode.getState().setMode(...)` ile kui-native'e beslenir.
-- [ ] `libs/theme/tokens.ts` **silinir**. Tüm `surfaceBase` gibi camelCase token kullanımları className'e (`bg-surface-base`) veya ham hex gereken yerde `useThemeTokens()["surface-base"]`'e çevrilir.
-- [ ] `useThemeTokens` boilerplate'te yeniden yazılmaz, `kui-native/libs/theme`'den kullanılır.
+- [ ] `libs/theme/brand.ts` (new): the boilerplate's brand override. Via `configureTheme({ light: {...}, dark: {...} })`, `primary` = `#f4511e`, and `-hover` / `-active` / `-subtle` / `border-focus` are values computed from the orange. kui-native's blue is **not used**.
+- [ ] `configureTheme` is called **once**, in the import chain of `app/_layout.tsx`, before the first render (`import "@/libs/theme/brand"`).
+- [ ] `libs/theme/ThemeContext.tsx`: at the root, `themes[useResolvedScheme()]` (kui-native) is applied as `style`. The user's theme preference is kept in MMKV (`zustandStorage`) and fed to kui-native at startup with `useThemeMode.getState().setMode(...)`.
+- [ ] `libs/theme/tokens.ts` is **deleted**. All camelCase token usages such as `surfaceBase` are converted to className (`bg-surface-base`), or to `useThemeTokens()["surface-base"]` where a raw hex is needed.
+- [ ] `useThemeTokens` is not rewritten in the boilerplate; it is used from `kui-native/libs/theme`.
 
-## 1C.4 UI bileşenleri: `@/components/ui` barrel'ı
+## 1C.4 UI components: the `@/components/ui` barrel
 
-- [ ] `components/ui/index.ts` (yeni): kui-native'den **derin import** ile açık named re-export. Uygulama kodu kui-native'i **doğrudan import etmez**, hep buradan alır.
+- [ ] `components/ui/index.ts` (new): explicit named re-exports from kui-native via **deep imports**. Application code does **not import kui-native directly**; it always takes from here.
   ```ts
   export { Button } from "kui-native/modules/ui/Button";
   export type { ButtonProps } from "kui-native/modules/ui/Button";
   ```
-  `export *` ve `kui-native/modules/ui` tam barrel'ı **kullanılmaz** (opsiyonel peer'leri çeker).
-- [ ] Re-export edilen set: `Button`, `Input`, `TextInput`, `Label`, `Text`, `Card`, `Separator`, `PageHeader`, `ScrollArea`, `Spinner`, `Skeleton`, `SkeletonCard`, `Progress`, `Modal`, `DropdownMenu`, `AlertBanner`, `EmptyState`, `Badge`, `Avatar`, `Select`, `Checkbox`. Sonraki fazlarda gereken bileşen, yalnız bu dosyaya bir satır eklenerek açılır.
-- [ ] Yerel `components/ui/{Button,TextInput,LoadingSpinner,SkeletonCard}.tsx` **silinir**. Tüm çağrı yerleri (auth ekranları, drawer ekranları, shell bileşenleri) `@/components/ui`'ya geçer. Prop farkları çağrı yerinde düzeltilir. `LoadingSpinner` yerine `Spinner` kullanılır.
-- [ ] kui-native'de eksik ya da boilerplate'e uymayan bir davranış çıkarsa boilerplate'te **yama yapılmaz**. Düzeltme kui-native'de yapılır, yeni tag çıkarılır ve bu fazın altına `**Bilinçli sapmalar:**` olarak not düşülür.
-- [ ] `KUInative/docs/audits/kui-react-parity/04-api-differences.md` ve `06-behavior-differences.md` okunur. Kullanılan bileşenlerin bilinen farkları not edilir.
+  `export *` and the full `kui-native/modules/ui` barrel are **not used** (they pull in the optional peers).
+- [ ] Re-exported set: `Button`, `Input`, `TextInput`, `Label`, `Text`, `Card`, `Separator`, `PageHeader`, `ScrollArea`, `Spinner`, `Skeleton`, `SkeletonCard`, `Progress`, `Modal`, `DropdownMenu`, `AlertBanner`, `EmptyState`, `Badge`, `Avatar`, `Select`, `Checkbox`. A component needed in later phases is exposed by adding a single line to this file only.
+- [ ] The local `components/ui/{Button,TextInput,LoadingSpinner,SkeletonCard}.tsx` are **deleted**. All call sites (auth screens, drawer screens, shell components) move to `@/components/ui`. Prop differences are fixed at the call site. `Spinner` is used in place of `LoadingSpinner`.
+- [ ] If a missing behavior, or one that does not fit the boilerplate, turns up in kui-native, it is **not patched** in the boilerplate. The fix is made in kui-native, a new tag is cut, and a note is left under this phase as `**Deliberate deviations:**`.
+- [ ] `KUInative/docs/audits/kui-react-parity/04-api-differences.md` and `06-behavior-differences.md` are read. Known differences for the components in use are noted.
 
-## 1C.5 Shell bileşenlerinin dönüşümü
+## 1C.5 Converting the shell components
 
-- [ ] `components/shell/{AppHeader,DrawerContent,DrawerNavLink,LangSwitcher,ThemeToggle,UserMenu}.tsx`: inline `style={{}}` yerine `className` + `cn()`, token sınıfları (`bg-surface-raised`, `text-text-primary`, `border-border`).
-- [ ] `ThemeToggle`, kui-native'in `useThemeMode` store'unu (1C.3'teki MMKV köprüsü üzerinden) kullanır. İkinci bir tema store'u açılmaz.
-- [ ] `LangSwitcher` bugün yalnız `['tr','en']` sunuyor, oysa `libs/i18n.ts` altı dil kaydediyor (`de,en,es,fr,it,tr`). Liste `i18n` kaynağından türetilir.
+- [ ] `components/shell/{AppHeader,DrawerContent,DrawerNavLink,LangSwitcher,ThemeToggle,UserMenu}.tsx`: `className` + `cn()` instead of inline `style={{}}`, with token classes (`bg-surface-raised`, `text-text-primary`, `border-border`).
+- [ ] `ThemeToggle` uses kui-native's `useThemeMode` store (through the MMKV bridge from 1C.3). No second theme store is opened.
+- [ ] `LangSwitcher` today offers only `['tr','en']`, yet `libs/i18n.ts` registers six languages (`de,en,es,fr,it,tr`). The list is derived from the `i18n` source.
 
-## 1C.6 Katalog ve kurallar
+## 1C.6 Catalog and rules
 
-- [ ] `scripts/build-registry-snapshot.mjs`: `components/ui/index.ts` içindeki kui-native re-export'larını okuyup `components.json`'a `source: "kui-native"` ve `category: "ui"` olarak yazar. Silinen yerel `ui-*.md` dosyaları katalogdan düşer. AI ajanları hangi bileşenin var olduğunu katalogdan görmeye devam eder.
-- [ ] `AGENTS.md` güncellenir:
+- [ ] `scripts/build-registry-snapshot.mjs`: reads the kui-native re-exports in `components/ui/index.ts` and writes them to `components.json` as `source: "kui-native"` and `category: "ui"`. The deleted local `ui-*.md` files drop out of the catalog. AI agents keep seeing which components exist from the catalog.
+- [ ] `AGENTS.md` is updated:
   - §1: `UI kit: kui-native (git dependency, tag-pinned)`.
-  - §2 / §3: `components/ui/` = kui-native re-export barrel'ı.
-  - §6'ya yeni kural: *"UI primitives come from kui-native via `@/components/ui`. Never copy kui-native source into this repo, never import `kui-native/*` directly from app code. Fix bugs upstream and bump the tag."*
-  - §10'a: *"Don't pin kui-native to a branch."*
-- [ ] Editör kural aynaları aynı değişiklikle güncellenir: `.cursor/rules/expo-react-native.mdc`, `.cursorrules`, `.windsurfrules`, `.github/copilot-instructions.md`, `.clinerules`.
-- [ ] `npm run registry:snapshot` çalıştırılır, üretilen dosyalar commit edilir.
+  - §2 / §3: `components/ui/` = kui-native re-export barrel.
+  - New rule in §6: *"UI primitives come from kui-native via `@/components/ui`. Never copy kui-native source into this repo, never import `kui-native/*` directly from app code. Fix bugs upstream and bump the tag."*
+  - In §10: *"Don't pin kui-native to a branch."*
+- [ ] The editor rule mirrors are updated in the same change: `.cursor/rules/expo-react-native.mdc`, `.cursorrules`, `.windsurfrules`, `.github/copilot-instructions.md`, `.clinerules`.
+- [ ] `npm run registry:snapshot` is run and the generated files are committed.
 
-## Dokunulan / oluşturulan dosyalar
+## Files touched / created
 
-- Yeni: `components/ui/index.ts`, `libs/theme/brand.ts`
-- Değişen: `package.json`, `package-lock.json`, `tailwind.config.js`, `jest.config.js`, `global.css`, `libs/theme/ThemeContext.tsx`, `components/shell/*` (6 dosya), `components/auth/{AuthLayout,SSOButtons}.tsx`, çağrı yapan tüm `app/**` ekranları, `scripts/build-registry-snapshot.mjs`, `AGENTS.md` + 5 kural aynası, `README.md`
-- Silinen: `components/ui/{Button,TextInput,LoadingSpinner,SkeletonCard}.tsx`, `libs/theme/tokens.ts`, `public/components/ui-*.md` (snapshot üretir)
+- New: `components/ui/index.ts`, `libs/theme/brand.ts`
+- Changed: `package.json`, `package-lock.json`, `tailwind.config.js`, `jest.config.js`, `global.css`, `libs/theme/ThemeContext.tsx`, `components/shell/*` (6 files), `components/auth/{AuthLayout,SSOButtons}.tsx`, all calling `app/**` screens, `scripts/build-registry-snapshot.mjs`, `AGENTS.md` + 5 rule mirrors, `README.md`
+- Deleted: `components/ui/{Button,TextInput,LoadingSpinner,SkeletonCard}.tsx`, `libs/theme/tokens.ts`, `public/components/ui-*.md` (the snapshot generates them)
 
-## Yeniden kullan
+## Reuse
 
-- `kui-native/libs/theme`: `themes`, `useResolvedScheme`, `useThemeMode`, `useThemeTokens`, `configureTheme`. Boilerplate'te karşılığı yazılmaz.
-- `kui-native/libs/utils/tailwind-tokens`: tailwind renk map'inin tek kaynağı.
-- `utils/cn.ts`: kui-native'in `cn`'i ile birebir aynı. Boilerplate kendi `cn`'ini kullanmaya devam eder (AGENTS.md §6 Kural 3).
-- `libs/zustandStorage.ts`: tema tercihinin persist'i.
-- `libs/i18n.ts`: desteklenen dil listesinin tek kaynağı.
+- `kui-native/libs/theme`: `themes`, `useResolvedScheme`, `useThemeMode`, `useThemeTokens`, `configureTheme`. No equivalent is written in the boilerplate.
+- `kui-native/libs/utils/tailwind-tokens`: the single source of the tailwind color map.
+- `utils/cn.ts`: identical to kui-native's `cn`. The boilerplate keeps using its own `cn` (AGENTS.md §6 Rule 3).
+- `libs/zustandStorage.ts`: persistence of the theme preference.
+- `libs/i18n.ts`: the single source of the supported language list.
 
-## Kabul kriterleri
+## Acceptance criteria
 
-- `package.json`'da `kui-native` bir **tag**'e sabitli; repoda kui-native kaynak kodunun kopyası **yok**.
-- `git grep -n "kui-native/" -- app components/shell components/auth` → **sıfır** (uygulama yalnız `@/components/ui` kullanır).
-- `git grep LoadingSpinner` ve `git grep "libs/theme/tokens"` → sıfır.
-- `components/` altında className kabul eden hiçbir yerde ham hex veya `style={{}}` renk kalmaz. İstisnalar yalnız `placeholderTextColor`, `trackColor`, FontAwesome `color` ve modal backdrop.
-- Açık ve koyu tema drawer, auth ve settings ekranlarının **tamamında** doğru render olur. Tema değiştirince anında yansır, uygulama yeniden açılınca tercih korunur. `primary` turuncudur.
-- `npm run typecheck` ve `npm run test:ci` yeşil. `LangSwitcher` altı dili listeler.
-- `npm run registry:snapshot` sonrası MCP `list_components`, kui-native bileşenlerini `source: "kui-native"` ile döner.
+- In `package.json`, `kui-native` is pinned to a **tag**; the repo contains **no** copy of kui-native source code.
+- `git grep -n "kui-native/" -- app components/shell components/auth` → **zero** (the app uses only `@/components/ui`).
+- `git grep LoadingSpinner` and `git grep "libs/theme/tokens"` → zero.
+- Nowhere under `components/` that accepts className is a raw hex or a `style={{}}` color left. The only exceptions are `placeholderTextColor`, `trackColor`, FontAwesome `color` and the modal backdrop.
+- Light and dark themes render correctly in **all** of the drawer, auth and settings screens. A theme change is reflected immediately, and the preference is kept when the app is reopened. `primary` is orange.
+- `npm run typecheck` and `npm run test:ci` are green. `LangSwitcher` lists the six languages.
+- After `npm run registry:snapshot`, the MCP `list_components` returns the kui-native components with `source: "kui-native"`.
 
-## Riskler
+## Risks
 
-- **Tailwind `content` eksikliği:** en sessiz hata. Bileşen render olur ama sınıfsızdır. İlk entegrasyonda `Button` gözle doğrulanır.
-- **Çift React:** Faz 1B'de peer düzeni eksik kaldıysa `Invalid hook call` alınır. `npm ls react` tek sürüm göstermeli.
-- **Tag dışı düzeltme baskısı:** acil bir hata için `node_modules/kui-native` içinde elle değişiklik yapmak veya `patch-package` kullanmak **yasak**. Düzeltme kui-native'de yapılır ve patch tag'i (`v0.2.1`) çıkarılır.
-- **Marka rengi kayması:** `configureTheme` çağrısı ilk render'dan sonra olursa ilk kare mavi görünür. `brand.ts` import'u `app/_layout.tsx`'in **en üstünde** olmalı.
-- **Lock dosyasında ssh URL'si:** yerel git ayarı (`url.<ssh>.insteadOf`) yüzünden lock'a `git+ssh://` yazılırsa CI/EAS klonlayamaz. Lock commit'lenmeden önce kontrol edilir.
-- **Çağrı yeri kaçırma:** yerel bileşenler silindikten sonra typecheck her eksik import'u yakalar. Prop **anlam** farkları (ör. `variant` adları) ise ancak ekranlar gezilerek bulunur.
+- **Missing Tailwind `content` entry:** the quietest failure. The component renders but has no classes. `Button` is checked by eye during the first integration.
+- **Double React:** if the peer layout was left incomplete in Phase 1B, you get `Invalid hook call`. `npm ls react` must show a single version.
+- **Pressure to fix outside a tag:** for an urgent bug, editing `node_modules/kui-native` by hand or using `patch-package` is **forbidden**. The fix is made in kui-native and a patch tag (`v0.2.1`) is cut.
+- **Brand color drift:** if the `configureTheme` call happens after the first render, the first frame shows blue. The `brand.ts` import must be at the **very top** of `app/_layout.tsx`.
+- **ssh URL in the lock file:** if `git+ssh://` gets written into the lock because of a local git setting (`url.<ssh>.insteadOf`), CI/EAS cannot clone. Check the lock before committing it.
+- **Missed call sites:** after the local components are deleted, typecheck catches every missing import. Prop **semantics** differences (e.g. `variant` names), however, only show up by walking through the screens.
 
 ---
 
-## ✅ KODLANDI — 2026-09-24
+## ✅ CODED — 2026-09-24
 
-Commit'ler: `c854767` (bağımlılık + build entegrasyonu) · `ff2e1e1` (tema + bileşenler + shell) · `d0c18bc` (katalog) · `893158c` (AGENTS.md, 5 kural aynası, README)
+Commits: `c854767` (dependency + build integration) · `ff2e1e1` (theme + components + shell) · `d0c18bc` (catalog) · `893158c` (AGENTS.md, 5 rule mirrors, README)
 
-Doğrulama: `npm run typecheck` 0 hata (kui-native kaynakları boilerplate'in strict ayarlarıyla birlikte derleniyor) · `npm run test:ci` 2/2 · `npx expo export --platform web` başarılı. Üretilen HTML'in kökünde `--color-primary:#f4511e` var; yalnız kui-native'in kullandığı sınıflar (`min-w-[10rem]`, `border-error`, `shadow-lg`) CSS'e girmiş, yani tailwind `content` yolu çalışıyor. SSH kapalıyken ve temiz cache ile `npm ci`, kui-native'i sorunsuz kuruyor. `git grep "kui-native/" -- app components` yalnız `components/ui/index.ts`'i gösteriyor. MCP kataloğunda 20 bileşen `source: "kui-native"` ile listeleniyor.
+Verification: `npm run typecheck` 0 errors (kui-native sources compile together with the boilerplate's strict settings) · `npm run test:ci` 2/2 · `npx expo export --platform web` succeeded. The root of the generated HTML contains `--color-primary:#f4511e`; only the classes used by kui-native (`min-w-[10rem]`, `border-error`, `shadow-lg`) made it into the CSS, which means the tailwind `content` path works. With SSH disabled and a clean cache, `npm ci` installs kui-native without trouble. `git grep "kui-native/" -- app components` shows only `components/ui/index.ts`. The MCP catalog lists 20 components with `source: "kui-native"`.
 
-**Bilinçli sapmalar:**
-- **Bağımlılık yazımı `git+https://github.com/kuraykaraaslan/kui-native.git#v0.2.0`** (`github:` kısaltması yerine; açık https). npm lock'a her iki yazımda da `git+ssh://…#887ad72` yazıyor. Bu engel değil: public repo için npm https tarball'a düşüyor (SSH kapalı `npm ci` ile doğrulandı).
-- **`useThemeTokens`** `@/libs/theme/ThemeContext`'ten re-export ediliyor. Kural gereği uygulama kodu `kui-native/*` import etmiyor; yalnız `components/ui/index.ts` ve `libs/theme/*` edebiliyor.
-- **Tema tercihi köprüsü modül seviyesinde,** effect'te değil. MMKV senkron hydrate olduğu için ilk karede doğru şema geliyor.
-- **`useTheme()` artık `tokens` döndürmüyor;** yalnız `isDark`, `colorScheme` ve `setColorScheme` döndürüyor. Ham renk için `useThemeTokens()` kullanılıyor.
-- **`LangSwitcher`** altı dili inline listelemek yerine kui-native `DropdownMenu` ile gösteriyor (başlıkta yer yok). Liste `SUPPORTED_LOCALES`'ten (`libs/i18n.ts`) türetiliyor.
-- **Yerel `Button` ve `TextInput` hiçbir yerde kullanılmıyordu,** çağrı yeri düzeltmesi gerekmeden silindi. `LoadingSpinner` 6 ekranda `Spinner size="lg"` ile değiştirildi.
-- **`app/**` ekranları hâlâ ham Tailwind renk sınıfları** (`bg-white dark:bg-gray-900`, `text-orange-500`) ve FontAwesome `color` için hex kullanıyor. Kabul kriteri `components/` için sağlandı. Ekranların token'lara taşınması, ekranları zaten yeniden yazan Faz 4 (auth) ve Faz 5 (tenancy) ile yapılacak; drawer ana sayfası, bildirimler ve ayarlar ekranları için de bu iş açık kalıyor.
-- **Emülatör doğrulaması yapılmadı;** yerine web export kullanıldı. Açık/koyu geçişi ve tercihin yeniden açılışta korunması cihazda elle kontrol edilmeli.
+**Deliberate deviations:**
+- **The dependency is written as `git+https://github.com/kuraykaraaslan/kui-native.git#v0.2.0`** (explicit https instead of the `github:` shorthand). With either spelling, npm writes `git+ssh://…#887ad72` to the lock. This is not a blocker: for a public repo npm falls back to the https tarball (verified with an SSH-disabled `npm ci`).
+- **`useThemeTokens`** is re-exported from `@/libs/theme/ThemeContext`. Per the rule, application code does not import `kui-native/*`; only `components/ui/index.ts` and `libs/theme/*` may.
+- **The theme preference bridge is at module level,** not in an effect. Since MMKV hydrates synchronously, the correct scheme is there on the first frame.
+- **`useTheme()` no longer returns `tokens`;** it returns only `isDark`, `colorScheme` and `setColorScheme`. `useThemeTokens()` is used for raw colors.
+- **`LangSwitcher`** shows the six languages with kui-native `DropdownMenu` instead of listing them inline (no room in the header). The list is derived from `SUPPORTED_LOCALES` (`libs/i18n.ts`).
+- **The local `Button` and `TextInput` were not used anywhere,** so they were deleted without any call-site fix. `LoadingSpinner` was replaced with `Spinner size="lg"` in 6 screens.
+- **`app/**` screens still use raw Tailwind color classes** (`bg-white dark:bg-gray-900`, `text-orange-500`) and hex for FontAwesome `color`. The acceptance criterion is met for `components/`. Moving the screens to tokens will happen with Phase 4 (auth) and Phase 5 (tenancy), which rewrite the screens anyway; this work also stays open for the drawer home page, notifications and settings screens.
+- **No emulator verification was done;** a web export was used instead. The light/dark switch and the preference surviving a reopen must be checked by hand on a device.

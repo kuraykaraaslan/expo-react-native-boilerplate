@@ -1,54 +1,54 @@
 <!--
-OTORİTE SIRASI (çakışmada üstteki kazanır):
-  1. AGENTS.md (§6 Hard rules · §5 dosya adlandırma · §0 katalog senkronu)
-  2. next-boilerplate sözleşmesi — SALT OKUNUR referans:
+ORDER OF AUTHORITY (the higher item wins on conflict):
+  1. AGENTS.md (§6 Hard rules · §5 file naming · §0 catalog sync)
+  2. next-boilerplate contract — READ-ONLY reference:
      modules/auth/module.json · modules/auth/server/auth.dto.ts ·
      modules/user/server/user.types.ts · modules/user_session/server/user_session.types.ts
-  3. phases/README.md (§Kilitli kararlar)
+  3. phases/README.md (§Locked decisions)
   4. phases/auth/README.md
-  5. BU DOSYA
-TEK İSTİSNA: "Sahibin kararları (sabit)" — kayıtlı sahip kararı bu dosyanın önerisini yener.
-NEREDE KALDIK: phases/README.md §Sıra
+  5. THIS FILE
+ONLY EXCEPTION: "Owner decisions (fixed)" — a recorded owner decision overrides this file's proposal.
+WHERE WE ARE: phases/README.md §Order
 -->
 
-# auth — device bearer kimlik akışı (Faz Planı index)
+# auth — device bearer identity flow (Phase Plan index)
 
-> **Bu yeni bir modül değildir.** Mevcut `services/auth/auth.dto.ts`, `services/auth/auth.service.client.ts`, `stores/authStore.ts`
-> ve `app/(auth)/**` ekranlarını sunucunun gerçek sözleşmesine hizalar. Hiçbir ekran sıfırdan yazılmaz.
+> **This is not a new module.** It aligns the existing `services/auth/auth.dto.ts`, `services/auth/auth.service.client.ts`, `stores/authStore.ts`
+> and `app/(auth)/**` screens with the server's real contract. No screen is written from scratch.
 
-## Neden (bağlam)
+## Why (context)
 
-İstemcinin auth katmanı bugün **uydurma bir sözleşme** konuşuyor:
+Today the client's auth layer speaks a **made-up contract**:
 
-- `AuthClientService`'in on metodunun tamamı `/api/system/auth/*` çağırıyor — sunucuda bu yol **hiç yok**.
-- `UserSchema` = `{userId, email, name, phone, image, userRole, language, theme, …}`; sunucunun `SafeUser`'ı = `{userId, email, phone, userRole, userStatus, emailVerifiedAt, createdAt, updatedAt, userProfile?}`. `name` / `image` / `language` / `theme` **`SafeUser`'da yok**, `userProfile` ve `preferences` altında.
-- `LoginResponseSchema` = `{user, userSecurity}`; device login'in gerçek yanıtı **dokuz alanlı**.
-- `OTPVerifyRequestSchema` = `{code, method}`; sunucu `{method, action, otpToken}` bekliyor — üç alanın ikisi farklı.
-- `ChangeEmailRequestSchema` var ama sunucuda `/auth/change-email` **yok**.
+- All ten methods of `AuthClientService` call `/api/system/auth/*` — this path **does not exist at all** on the server.
+- `UserSchema` = `{userId, email, name, phone, image, userRole, language, theme, …}`; the server's `SafeUser` = `{userId, email, phone, userRole, userStatus, emailVerifiedAt, createdAt, updatedAt, userProfile?}`. `name` / `image` / `language` / `theme` are **not in `SafeUser`**; they live under `userProfile` and `preferences`.
+- `LoginResponseSchema` = `{user, userSecurity}`; the real device login response has **nine fields**.
+- `OTPVerifyRequestSchema` = `{code, method}`; the server expects `{method, action, otpToken}` — two of the three fields differ.
+- `ChangeEmailRequestSchema` exists but the server has **no** `/auth/change-email`.
 
-Yani bu set olmadan hiçbir auth çağrısı 200 dönmez; dönse bile `.parse()` kırılır.
+In other words, without this set no auth call returns 200; even if it did, `.parse()` would break.
 
-## Sıra
+## Order
 
-| Faz | Dosya | Konu | Öncelik |
+| Phase | File | Topic | Priority |
 |-----|-------|------|---------|
-| 3 | [phase-3-dto-services.md](phase-3-dto-services.md) | DTO + servis hizalaması | ⬜ Bekliyor |
-| 4 | [phase-4-auth-screens.md](phase-4-auth-screens.md) | Auth çekirdek ekranları | ⬜ Bekliyor |
+| 3 | [phase-3-dto-services.md](phase-3-dto-services.md) | DTO + service alignment | ⬜ Pending |
+| 4 | [phase-4-auth-screens.md](phase-4-auth-screens.md) | Core auth screens | ⬜ Pending |
 
-## Kilitli kararlar
+## Locked decisions
 
-- **DTO'lar sunucunun `Safe*` şemalarının aynasıdır.** İstemci kendi rahatı için alan uydurmaz; eksik alan varsa sunucudaki gerçek kaynağından (`userProfile`, `preferences`) çekilir.
-- **Servis yolları interceptor önekine göre görelidir.** Servislerde `/api/tenant/...` yazılmaz; `/auth/device/login` yazılır, öneki Faz 2'nin interceptor'ı ekler.
-- **Token'lar Zustand'a asla girmez** (AGENTS.md §6 Kural 5). `authStore` yalnız `isAuthenticated` + `user` tutar.
-- **Members / invitations / roles kapsam dışıdır.** `services/tenant/tenant.service.client.ts`'teki ilgili metotlar bu sette **dokunulmadan** bırakılır; yalnızca interceptor öneki sayesinde yolları kendiliğinden düzelir.
-- **`change-email` ekranı silinmez**, sunucudaki gerçek karşılığına (`/auth/me/complete-email` + `/auth/verify-email/*`) yeniden bağlanır.
+- **DTOs mirror the server's `Safe*` schemas.** The client does not invent fields for its own convenience; if a field is missing, it is fetched from its real source on the server (`userProfile`, `preferences`).
+- **Service paths are relative to the interceptor prefix.** Services never write `/api/tenant/...`; they write `/auth/device/login`, and Phase 2's interceptor adds the prefix.
+- **Tokens never enter Zustand** (AGENTS.md §6 Rule 5). `authStore` holds only `isAuthenticated` + `user`.
+- **Members / invitations / roles are out of scope.** The related methods in `services/tenant/tenant.service.client.ts` are left **untouched** in this set; their paths only fix themselves thanks to the interceptor prefix.
+- **The `change-email` screen is not deleted**; it is rewired to its real counterpart on the server (`/auth/me/complete-email` + `/auth/verify-email/*`).
 
-## Bağımlılık grafiği (özet)
+## Dependency graph (summary)
 
-- Faz 3, Faz 2'nin interceptor önekine ve `normalizeApiError`'a dayanır.
-- Faz 4, Faz 3'ün DTO'larına ve Faz 1C'nin `@/components/ui` barrel'ına (kui-native git paketi) dayanır.
-- Faz 5 (tenancy) ve Faz 6 (SSO), Faz 4'ün oturum kurma akışına dayanır.
+- Phase 3 depends on Phase 2's interceptor prefix and `normalizeApiError`.
+- Phase 4 depends on Phase 3's DTOs and Phase 1C's `@/components/ui` barrel (kui-native git package).
+- Phase 5 (tenancy) and Phase 6 (SSO) depend on Phase 4's session-establishment flow.
 
-## Her faz dosyasının formatı
+## Format of every phase file
 
-`Hedef` · `Görevler (checkbox)` · `Dokunulan / oluşturulan dosyalar` · `Yeniden kullan` · `Kabul kriterleri` · `Riskler`.
+`Goal` · `Tasks (checkbox)` · `Files touched / created` · `Reuse` · `Acceptance criteria` · `Risks`.

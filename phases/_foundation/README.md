@@ -1,55 +1,55 @@
 <!--
-OTORİTE SIRASI (çakışmada üstteki kazanır):
-  1. AGENTS.md (§6 Hard rules · §5 dosya adlandırma · §0 katalog senkronu)
-  2. next-boilerplate sözleşmesi — SALT OKUNUR referans
-  3. phases/README.md (§Kilitli kararlar)
+ORDER OF AUTHORITY (the higher item wins on conflict):
+  1. AGENTS.md (§6 Hard rules · §5 file naming · §0 catalog sync)
+  2. next-boilerplate contract — READ-ONLY reference
+  3. phases/README.md (§Locked decisions)
   4. phases/_foundation/README.md
-  5. BU DOSYA
-TEK İSTİSNA: "Sahibin kararları (sabit)" — kayıtlı sahip kararı bu dosyanın önerisini yener.
-NEREDE KALDIK: phases/README.md §Sıra
+  5. THIS FILE
+ONLY EXCEPTION: "Owner decisions (fixed)" — a recorded owner decision overrides this file's proposal.
+WHERE WE ARE: phases/README.md §Order
 -->
 
-# _foundation — derleme, tasarım dili ve transport (Faz Planı index)
+# _foundation — build, design language and transport (Phase Plan index)
 
-> **Bu bir modül seti değildir.** Fazların hepsi çapraz kesendir: repoyu derlenir hale getirir,
-> SDK'yı kui-native ile hizalar, kui-native'i git paketi olarak bağlayıp iki rakip stil sistemini
-> tek tasarım diline indirir ve tüm ağ katmanını device-bearer sözleşmesine geçirir. `auth`, `tenant` ve `auth_sso` setlerinin **tamamı** bu setin üstüne oturur.
+> **This is not a module set.** All of the phases are cross-cutting: they make the repo buildable,
+> align the SDK with kui-native, wire kui-native in as a git package and bring the two competing styling systems down to
+> a single design language, and move the entire network layer to the device-bearer contract. **All** of the `auth`, `tenant` and `auth_sso` sets sit on top of this set.
 
-## Neden (bağlam)
+## Why (context)
 
-- Repo bugün **derlenmiyor**: `app/(drawer)/_layout.tsx` ve `components/shell/{AppHeader,DrawerContent}.tsx` `@react-navigation/drawer` import ediyor ama paket `package.json`'da yok.
-- HEAD'de hem `app/(tabs)/**` hem `app/(drawer)/**` duruyor — expo-router için `/`, `/notifications`, `/settings` yollarında çakışan route grubu. Çalışma ağacındaki silmeler bu temizliğin ta kendisi, henüz commit edilmemiş.
-- `components/ui/*` NativeWind `className` + `cn()`, `components/shell/*` inline `style={{}}` + `libs/theme/tokens.ts` kullanıyor. Aynı repoda iki tasarım sistemi.
-- `libs/axios.ts` cookie tabanlı bir web akışı taklit ediyor; sunucunun device yüzeyiyle hiçbir ilgisi yok.
+- The repo **does not build** today: `app/(drawer)/_layout.tsx` and `components/shell/{AppHeader,DrawerContent}.tsx` import `@react-navigation/drawer`, but the package is missing from `package.json`.
+- HEAD contains both `app/(tabs)/**` and `app/(drawer)/**` — for expo-router, a conflicting route group on the `/`, `/notifications` and `/settings` paths. The deletions in the working tree are exactly this cleanup, not yet committed.
+- `components/ui/*` uses NativeWind `className` + `cn()`, `components/shell/*` uses inline `style={{}}` + `libs/theme/tokens.ts`. Two design systems in the same repo.
+- `libs/axios.ts` imitates a cookie-based web flow; it has nothing to do with the server's device surface.
 
-## Sıra
+## Order
 
-| Faz | Dosya | Konu | Öncelik |
+| Phase | File | Topic | Priority |
 |-----|-------|------|---------|
-| 0 | [phase-0-build-fix.md](phase-0-build-fix.md) | Derlemeyi ayağa kaldır | ✅ `97a185e` |
+| 0 | [phase-0-build-fix.md](phase-0-build-fix.md) | Get the build working | ✅ `97a185e` |
 | 1A | [phase-1a-expo-sdk-57.md](phase-1a-expo-sdk-57.md) | Expo SDK 55 → 57 | ✅ `365b597` |
-| 1B | [phase-1b-kui-native-package.md](phase-1b-kui-native-package.md) | kui-native paketleştirme (**KUInative reposunda**) + `v0.2.0` tag | ✅ KUInative `887ad72` · `v0.2.0` |
-| 1C | [phase-1c-kui-native-dependency.md](phase-1c-kui-native-dependency.md) | kui-native git bağımlılığı + tek tasarım dili | ✅ `ff2e1e1` |
-| 1D | [phase-1d-design-parity.md](phase-1d-design-parity.md) | next-boilerplate görsel paritesi (renk, font, tüm ekranlar) | ✅ `717be69` · kui-native `v0.3.1` |
-| 2 | [phase-2-transport.md](phase-2-transport.md) | Transport katmanı (device bearer) | ✅ `feat/transport` |
+| 1B | [phase-1b-kui-native-package.md](phase-1b-kui-native-package.md) | kui-native packaging (**in the KUInative repo**) + `v0.2.0` tag | ✅ KUInative `887ad72` · `v0.2.0` |
+| 1C | [phase-1c-kui-native-dependency.md](phase-1c-kui-native-dependency.md) | kui-native git dependency + single design language | ✅ `ff2e1e1` |
+| 1D | [phase-1d-design-parity.md](phase-1d-design-parity.md) | next-boilerplate visual parity (color, font, all screens) | ✅ `717be69` · kui-native `v0.3.1` |
+| 2 | [phase-2-transport.md](phase-2-transport.md) | Transport layer (device bearer) | ✅ `feat/transport` |
 
-## Kilitli kararlar
+## Locked decisions
 
-- **Faz 0 önce.** Derlenmeyen repoda ne stil birleştirmesi ne transport testi doğrulanabilir.
-- **kui-native git paketi olarak kurulur, kopyalanmaz** (sahip kararı, 2026-09-24; önceki vendor kararının yerine geçer). Sürüm bir **tag**'e sabitlenir.
-- **Expo SDK 57'ye yükseltilir** (Faz 1A). kui-native SDK 57 / RN 0.86 üzerinde; react / RN / expo tek kopya kalmalı.
-- **Paketleştirme upstream'de yapılır** (Faz 1B, KUInative reposu). `@/` import'ları göreli olur, runtime paketleri peerDependencies'e taşınır, `configureTheme` ile marka override'ı eklenir. Boilerplate'te alias hilesi veya `node_modules` yaması yapılmaz.
-- **Tek stil sistemi NativeWind'dir.** Inline `style={{}}` yalnızca className kabul etmeyen RN prop'ları için kalır (`placeholderTextColor`, `trackColor`, FontAwesome `color`, modal backdrop).
-- **Cookie mantığı tamamen silinir** — yarısı bırakılmaz. Bearer ile cookie karışımı, sunucuda audience seçimini (`cookieAccessToken ? 'web' : 'device'`) yanlış tarafa çevirir.
+- **Phase 0 first.** In a repo that does not build, neither the style unification nor the transport tests can be verified.
+- **kui-native is installed as a git package, not copied** (owner decision, 2026-09-24; supersedes the earlier vendor decision). The version is pinned to a **tag**.
+- **Expo SDK is upgraded to 57** (Phase 1A). kui-native is on SDK 57 / RN 0.86; react / RN / expo must remain a single copy.
+- **Packaging is done upstream** (Phase 1B, KUInative repo). `@/` imports become relative, runtime packages move to peerDependencies, a brand override is added with `configureTheme`. No alias tricks or `node_modules` patches in the boilerplate.
+- **The single styling system is NativeWind.** Inline `style={{}}` remains only for RN props that do not accept className (`placeholderTextColor`, `trackColor`, FontAwesome `color`, modal backdrop).
+- **The cookie logic is deleted entirely** — no half-measures. Mixing bearer and cookie flips the server's audience selection (`cookieAccessToken ? 'web' : 'device'`) to the wrong side.
 
-## Bağımlılık grafiği (özet)
+## Dependency graph (summary)
 
-- Faz 1A, Faz 0'ın derlenir reposuna dayanır. Yükseltme, Faz 0 commit'inden **sonra** ayrı commit olarak yapılır.
-- Faz 1B başka hiçbir faza dayanmaz (KUInative reposu). Faz 0 ile paralel başlayabilir.
-- Faz 1C; Faz 1A'ya (aynı SDK), Faz 1B'nin tag'ine ve Faz 0'ın `tailwind.config.js` temizliğine dayanır (daisyui kaldırılmadan token'lar çakışır).
-- Faz 2, Faz 1A'ya dayanır. Faz 1B/1C'den bağımsızdır, paralel yürütülebilir.
-- `auth` seti (Faz 3–4) Faz 2'nin interceptor önekine, `tenant` seti (Faz 5) Faz 2'nin tenant başına SecureStore anahtarlarına dayanır.
+- Phase 1A depends on Phase 0's buildable repo. The upgrade is made as a separate commit **after** the Phase 0 commit.
+- Phase 1B depends on no other phase (KUInative repo). It can start in parallel with Phase 0.
+- Phase 1C depends on Phase 1A (same SDK), Phase 1B's tag and Phase 0's `tailwind.config.js` cleanup (until daisyui is removed, the tokens collide).
+- Phase 2 depends on Phase 1A. It is independent of Phase 1B/1C and can run in parallel.
+- The `auth` set (Phases 3–4) depends on Phase 2's interceptor prefix, the `tenant` set (Phase 5) on Phase 2's per-tenant SecureStore keys.
 
-## Her faz dosyasının formatı
+## Format of every phase file
 
-`Hedef` · `Görevler (checkbox)` · `Dokunulan / oluşturulan dosyalar` · `Yeniden kullan` · `Kabul kriterleri` · `Riskler`.
+`Goal` · `Tasks (checkbox)` · `Files touched / created` · `Reuse` · `Acceptance criteria` · `Risks`.

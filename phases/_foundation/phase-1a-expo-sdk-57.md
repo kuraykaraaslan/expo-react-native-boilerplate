@@ -1,84 +1,84 @@
 <!--
-OTORİTE SIRASI (çakışmada üstteki kazanır):
-  1. AGENTS.md (§6 Hard rules · §5 dosya adlandırma · §0 katalog senkronu)
-  2. next-boilerplate sözleşmesi — SALT OKUNUR referans
-  3. phases/README.md (§Kilitli kararlar)
+ORDER OF AUTHORITY (the higher item wins on conflict):
+  1. AGENTS.md (§6 Hard rules · §5 file naming · §0 catalog sync)
+  2. next-boilerplate contract — READ-ONLY reference
+  3. phases/README.md (§Locked decisions)
   4. phases/_foundation/README.md
-  5. BU DOSYA
-TEK İSTİSNA: "Sahibin kararları (sabit)" — kayıtlı sahip kararı bu dosyanın önerisini yener.
-NEREDE KALDIK: phases/README.md §Sıra
+  5. THIS FILE
+ONLY EXCEPTION: "Owner decisions (fixed)" — a recorded owner decision overrides this file's proposal.
+WHERE WE ARE: phases/README.md §Order
 -->
 
-# Faz 1A — Expo SDK 57 yükseltmesi
+# Phase 1A — Expo SDK 57 upgrade
 
-**Hedef:** Boilerplate'i kui-native ile **aynı** Expo SDK'ya (57 / RN 0.86 / React 19.2.3) taşı. Böylece kui-native git bağımlılığı olarak kurulduğunda `react`, `react-native`, `expo`, `nativewind`, `reanimated` **tek kopya** kalır.
+**Goal:** Move the boilerplate to the **same** Expo SDK as kui-native (57 / RN 0.86 / React 19.2.3). That way, when kui-native is installed as a git dependency, `react`, `react-native`, `expo`, `nativewind` and `reanimated` remain a **single copy**.
 
-> **Sahibin kararı (sabit, 2026-09-24):** Boilerplate SDK 57'ye yükseltilir. Önceki "SDK yükseltmesi yok" kararı, vendor yaklaşımıyla birlikte **kaldırıldı**.
+> **Owner decision (fixed, 2026-09-24):** The boilerplate is upgraded to SDK 57. The earlier "no SDK upgrade" decision was **removed** together with the vendor approach.
 
-## 1A.1 Çekirdek yükseltme
+## 1A.1 Core upgrade
 
-- [ ] `npx expo install expo@^57.0.0` → ardından `npx expo install --fix` (tüm `expo-*` ve RN paketleri SDK 57'nin `bundledNativeModules` sürümlerine hizalanır).
-- [ ] `*` ile yazılmış sürümler sabitlenir: `expo-font`, `expo-image`, `expo-modules-autolinking`, `jest-expo`. `*` sürüm, SDK uyumunu garanti etmez.
-- [ ] Hedef sürümler **kui-native'in `package.json`'ıyla aynı** olmalı: `react` / `react-dom` `19.2.3`, `react-native` `0.86.x`, `react-native-reanimated` `4.5.x`, `react-native-gesture-handler` `~2.32`, `react-native-safe-area-context` `~5.7`, `react-native-screens` `~4.26`, `react-native-svg` `15.15.x`.
+- [ ] `npx expo install expo@^57.0.0` → then `npx expo install --fix` (all `expo-*` and RN packages are aligned to SDK 57's `bundledNativeModules` versions).
+- [ ] Versions written as `*` are pinned: `expo-font`, `expo-image`, `expo-modules-autolinking`, `jest-expo`. A `*` version does not guarantee SDK compatibility.
+- [ ] Target versions must be **the same as kui-native's `package.json`**: `react` / `react-dom` `19.2.3`, `react-native` `0.86.x`, `react-native-reanimated` `4.5.x`, `react-native-gesture-handler` `~2.32`, `react-native-safe-area-context` `~5.7`, `react-native-screens` `~4.26`, `react-native-svg` `15.15.x`.
 
-## 1A.2 Kui-native ile ortak bağımlılık hizalaması
+## 1A.2 Aligning shared dependencies with kui-native
 
-- [ ] FontAwesome 6 → 7: `@fortawesome/{fontawesome-svg-core,free-solid-svg-icons,free-brands-svg-icons}` `^7.3.1`, `@fortawesome/react-native-fontawesome` `^1.0.0`. kui-native bileşenleri FA 7 ikon nesneleriyle derlenir; iki major aynı ağaçta kalmaz.
-- [ ] `react-native-svg` `dependencies`'e **açıkça** eklenir (bugün yalnız transitif; kui-native peer olarak ister).
-- [x] ~~`@types/react` 19, `@types/react-test-renderer` ve `@testing-library/jest-native` kaldırma~~ → Faz 0'da yapıldı (`d045908`).
-- [ ] `react-test-renderer` `19.2.0` → `19.2.3` (react ile birebir). `@testing-library/react-native` `^13` → `^14` (kui-native testleri v14 API'siyle yazıldı).
-- [ ] `@expo/vector-icons` bağımlılığı: `git grep "@expo/vector-icons"` → kullanım yoksa kaldırılır (AGENTS.md §6 Kural 10).
+- [ ] FontAwesome 6 → 7: `@fortawesome/{fontawesome-svg-core,free-solid-svg-icons,free-brands-svg-icons}` `^7.3.1`, `@fortawesome/react-native-fontawesome` `^1.0.0`. kui-native components are built with FA 7 icon objects; two majors cannot remain in the same tree.
+- [ ] `react-native-svg` is added to `dependencies` **explicitly** (today it is only transitive; kui-native requires it as a peer).
+- [x] ~~Removing `@types/react` 19, `@types/react-test-renderer` and `@testing-library/jest-native`~~ → done in Phase 0 (`d045908`).
+- [ ] `react-test-renderer` `19.2.0` → `19.2.3` (exactly matching react). `@testing-library/react-native` `^13` → `^14` (kui-native's tests are written against the v14 API).
+- [ ] `@expo/vector-icons` dependency: `git grep "@expo/vector-icons"` → remove if there is no usage (AGENTS.md §6 Rule 10).
 
-## 1A.3 Kırılma taraması
+## 1A.3 Breaking-change scan
 
-- [ ] Expo SDK 56 ve 57 changelog'larındaki breaking change'ler tek tek kontrol edilir: `expo-router` (layout API, `Stack.Screen` / `Drawer` prop'ları), `expo-secure-store`, `expo-splash-screen`, `expo-web-browser`, `expo-system-ui`.
-- [ ] `react-native-mmkv` v3 → RN 0.86 / New Architecture uyumu doğrulanır. Uyumsuzsa MMKV sürümü yükseltilir, `libs/mmkv.ts` API'si değişirse `libs/zustandStorage.ts` birlikte güncellenir.
-- [ ] `sonner-native`, `react-native-webview`, `@react-native-picker/picker`, `@react-native-community/netinfo` → `npx expo install` ile SDK 57 sürümlerine çekilir.
-- [ ] `npx expo-doctor` sıfır uyarı.
+- [ ] The breaking changes in the Expo SDK 56 and 57 changelogs are checked one by one: `expo-router` (layout API, `Stack.Screen` / `Drawer` props), `expo-secure-store`, `expo-splash-screen`, `expo-web-browser`, `expo-system-ui`.
+- [ ] `react-native-mmkv` v3 → verify RN 0.86 / New Architecture compatibility. If incompatible, upgrade the MMKV version; if the `libs/mmkv.ts` API changes, update `libs/zustandStorage.ts` along with it.
+- [ ] `sonner-native`, `react-native-webview`, `@react-native-picker/picker`, `@react-native-community/netinfo` → pulled to the SDK 57 versions with `npx expo install`.
+- [ ] `npx expo-doctor` zero warnings.
 
-## 1A.4 Doğrulama
+## 1A.4 Verification
 
-- [ ] `npm install` temiz (`--legacy-peer-deps` **gerekmemeli**; gerekiyorsa sebebi bulunup giderilir).
-- [ ] `npm run typecheck` sıfır hata.
-- [ ] `npm run test:ci` geçer.
-- [ ] `npx expo start --android` → Faz 0'ın kabul kriterleri (drawer + üç yol) SDK 57'de de sağlanır.
-- [ ] `npm ls react react-native expo nativewind` → her biri **tek** sürüm.
+- [ ] `npm install` is clean (`--legacy-peer-deps` **must not be needed**; if it is, the cause is found and fixed).
+- [ ] `npm run typecheck` zero errors.
+- [ ] `npm run test:ci` passes.
+- [ ] `npx expo start --android` → Phase 0's acceptance criteria (drawer + three paths) are met on SDK 57 too.
+- [ ] `npm ls react react-native expo nativewind` → each has a **single** version.
 
-## Dokunulan / oluşturulan dosyalar
+## Files touched / created
 
-- Değişen: `package.json`, `package-lock.json`; kırılma taramasında gerekirse `app/**/_layout.tsx`, `libs/mmkv.ts`, `libs/zustandStorage.ts`, FontAwesome ikon import eden dosyalar.
+- Changed: `package.json`, `package-lock.json`; if needed after the breaking-change scan, `app/**/_layout.tsx`, `libs/mmkv.ts`, `libs/zustandStorage.ts`, files that import FontAwesome icons.
 
-## Yeniden kullan
+## Reuse
 
-- `KUInative/package.json` — hedef sürümlerin tek referansı. Sürüm seçiminde tahmin yapılmaz, oradan okunur.
-- `KUInative/README.md` §Run — SDK 57 kurulumunda karşılaşılan `ERESOLVE` notu.
+- `KUInative/package.json` — the only reference for the target versions. No guessing in version selection; read them from there.
+- `KUInative/README.md` §Run — the `ERESOLVE` note encountered during the SDK 57 install.
 
-## Kabul kriterleri
+## Acceptance criteria
 
-- `package.json`'da `expo` `^57`, `react-native` `0.86.x`, `react` `19.2.3`.
-- `npx expo-doctor` temiz, `npm ls react` tek sürüm.
-- typecheck, test ve emülatör doğrulaması Faz 0 seviyesinde yeşil.
-- Katalogda ekran / bileşen değişmediği için snapshot zorunlu değildir; yine de `npm run registry:snapshot` çalıştırılır ve **diff çıkmadığı** doğrulanır.
+- In `package.json`: `expo` `^57`, `react-native` `0.86.x`, `react` `19.2.3`.
+- `npx expo-doctor` is clean, `npm ls react` shows a single version.
+- Typecheck, tests and emulator verification are green at Phase 0's level.
+- Since no screen / component changes in the catalog, a snapshot is not mandatory; still, `npm run registry:snapshot` is run and it is verified that **no diff** appears.
 
-## Riskler
+## Risks
 
-- **İki major birden (55 → 57):** SDK 56'nın breaking change'leri atlanabilir. Changelog'lar 56 ve 57 için **ayrı ayrı** okunmalı.
-- **MMKV / New Architecture:** persist edilen store'lar okunamazsa oturum ve tercih kaybolur. Yükseltmeden önce ve sonra emülatörde aynı hesapla test edilmeli.
-- **FontAwesome 7 ikon adları:** bazı ikonlar FA 7'de yeniden adlandırıldı. `typecheck` import hatasını yakalar; eksik kalan ikonlar tek tek değiştirilir.
-- **Faz 0 ile karışma:** yükseltme, Faz 0 commit'lendikten **sonra** ayrı commit(ler) olarak yapılır. Böylece bir regresyon SDK yükseltmesine mi Faz 0'a mı ait, ayrılabilir.
+- **Two majors at once (55 → 57):** SDK 56's breaking changes could be skipped. The changelogs for 56 and 57 must be read **separately**.
+- **MMKV / New Architecture:** if the persisted stores cannot be read, the session and preferences are lost. Test with the same account in the emulator before and after the upgrade.
+- **FontAwesome 7 icon names:** some icons were renamed in FA 7. `typecheck` catches import errors; any remaining icons are replaced one by one.
+- **Mixing with Phase 0:** the upgrade is made as separate commit(s) **after** Phase 0 is committed. That way, whether a regression belongs to the SDK upgrade or to Phase 0 can be told apart.
 
 ---
 
-## ✅ KODLANDI — 2026-09-24
+## ✅ CODED — 2026-09-24
 
-Commit'ler: `365b597` (SDK 57 + hizalama) · `87d7adb` (katalog: yalnız zaman damgası ve shell import yolu)
+Commits: `365b597` (SDK 57 + alignment) · `87d7adb` (catalog: only the timestamp and the shell import path)
 
-Doğrulama: `npx expo install --check` → up to date · `npx expo-doctor` 21/21 · `npm run typecheck` 0 hata · `npm run test:ci` 2/2 · `npx expo export --platform web` başarılı · `npm ls` → react 19.2.3 / react-native 0.86.3 / expo 57.0.25 / nativewind 4.2.7 tek kopya.
+Verification: `npx expo install --check` → up to date · `npx expo-doctor` 21/21 · `npm run typecheck` 0 errors · `npm run test:ci` 2/2 · `npx expo export --platform web` successful · `npm ls` → react 19.2.3 / react-native 0.86.3 / expo 57.0.25 / nativewind 4.2.7 single copy.
 
-**Bilinçli sapmalar:**
-- **`@react-navigation/drawer` ve `@react-navigation/native` kaldırıldı.** expo-router 57 drawer'ı ve tiplerini kendisi export ediyor (`expo-router/drawer`). Ayrı paketin tipleri onunkiyle çakışıyordu (TS2322). Shell bileşenleri artık `expo-router/drawer`'dan import ediyor.
-- **`react-i18next` 15 → 17.** v15 TypeScript 6'yı peer olarak kabul etmiyordu.
-- **TypeScript 6** (SDK 57'nin beklediği `~6.0.3`): `@types` artık otomatik yüklenmiyor → `tsconfig.json`'a `"types": ["jest"]` eklendi (kui-native'deki gibi).
-- **`app.config.ts` üst düzey `splash` alanı kaldırıldı.** SDK 57'nin `ExpoConfig` tipinde bu alan yok. Splash'i `expo-splash-screen` plugin'i yönetiyor.
-- **Kalan tek peer uyarısı:** RNTL 14 → `test-renderer` → `react-reconciler@0.34`, `react@^19.3` istiyor. kui-native'de de aynı uyarı var ve testler geçiyor; `--legacy-peer-deps` gerekmiyor.
-- **Emülatör doğrulaması ve MMKV'nin cihazda persist testi yapılmadı** (sahibe kaldı). SDK 56/57 changelog'ları satır satır okunmadı; kırılmalar typecheck, export ve expo-doctor ile yakalandı.
+**Deliberate deviations:**
+- **`@react-navigation/drawer` and `@react-navigation/native` were removed.** expo-router 57 exports the drawer and its types itself (`expo-router/drawer`). The separate package's types conflicted with its own (TS2322). The shell components now import from `expo-router/drawer`.
+- **`react-i18next` 15 → 17.** v15 did not accept TypeScript 6 as a peer.
+- **TypeScript 6** (the `~6.0.3` that SDK 57 expects): `@types` is no longer loaded automatically → `"types": ["jest"]` was added to `tsconfig.json` (as in kui-native).
+- **The top-level `splash` field in `app.config.ts` was removed.** SDK 57's `ExpoConfig` type has no such field. The `expo-splash-screen` plugin manages the splash.
+- **The only remaining peer warning:** RNTL 14 → `test-renderer` → `react-reconciler@0.34` wants `react@^19.3`. kui-native has the same warning and the tests pass; `--legacy-peer-deps` is not needed.
+- **Emulator verification and the on-device MMKV persistence test were not done** (left to the owner). The SDK 56/57 changelogs were not read line by line; breakages were caught by typecheck, export and expo-doctor.

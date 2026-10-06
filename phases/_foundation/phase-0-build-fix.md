@@ -1,93 +1,93 @@
 <!--
-OTORİTE SIRASI (çakışmada üstteki kazanır):
-  1. AGENTS.md (§6 Hard rules · §5 dosya adlandırma · §0 katalog senkronu)
-  2. next-boilerplate sözleşmesi — SALT OKUNUR referans
-  3. phases/README.md (§Kilitli kararlar)
+ORDER OF AUTHORITY (the higher item wins on conflict):
+  1. AGENTS.md (§6 Hard rules · §5 file naming · §0 catalog sync)
+  2. next-boilerplate contract — READ-ONLY reference
+  3. phases/README.md (§Locked decisions)
   4. phases/_foundation/README.md
-  5. BU DOSYA
-TEK İSTİSNA: "Sahibin kararları (sabit)" — kayıtlı sahip kararı bu dosyanın önerisini yener.
-NEREDE KALDIK: phases/README.md §Sıra
+  5. THIS FILE
+ONLY EXCEPTION: "Owner decisions (fixed)" — a recorded owner decision overrides this file's proposal.
+WHERE WE ARE: phases/README.md §Order
 -->
 
-# Faz 0 — Derlemeyi ayağa kaldır
+# Phase 0 — Get the build working
 
-**Hedef:** `npm install && npm run typecheck && npx expo start` temiz çalışsın; emülatörde drawer gezilebilsin. Sonraki hiçbir faz bu doğrulanmadan açılmaz.
+**Goal:** `npm install && npm run typecheck && npx expo start` should run cleanly; the drawer should be navigable in the emulator. No later phase is opened until this is verified.
 
-## 0.1 Eksik bağımlılık
+## 0.1 Missing dependency
 
-- [ ] `package.json` → `@react-navigation/drawer` eklenir.
-  - `app/(drawer)/_layout.tsx` `expo-router/drawer` kullanıyor; `components/shell/DrawerContent.tsx` `DrawerContentScrollView` + `DrawerContentComponentProps`, `components/shell/AppHeader.tsx` `DrawerNavigationProp` import ediyor. Paket yok — **derleme burada kırılıyor.**
-  - `package-lock.json`'daki tek iz expo-router'ın optional peer kaydı; gerçek kurulum yok. `react-native-drawer-layout` de yok.
-  - `react-native-gesture-handler` ve `react-native-reanimated` zaten var, ek kurulum gerekmez.
-- [ ] Mevcut SDK 55 ile uyumlu sürüm seçilir (`npx expo install @react-navigation/drawer`). Faz 1A'da SDK 57'ye yükseltilirken `npx expo install --fix` bunu da hizalar.
+- [ ] `package.json` → add `@react-navigation/drawer`.
+  - `app/(drawer)/_layout.tsx` uses `expo-router/drawer`; `components/shell/DrawerContent.tsx` imports `DrawerContentScrollView` + `DrawerContentComponentProps`, and `components/shell/AppHeader.tsx` imports `DrawerNavigationProp`. The package is missing — **the build breaks here.**
+  - The only trace in `package-lock.json` is expo-router's optional peer entry; there is no real install. `react-native-drawer-layout` is missing too.
+  - `react-native-gesture-handler` and `react-native-reanimated` are already present, no extra install needed.
+- [ ] Pick a version compatible with the current SDK 55 (`npx expo install @react-navigation/drawer`). When upgrading to SDK 57 in Phase 1A, `npx expo install --fix` aligns this one too.
 
-## 0.2 Çakışan route grubu
+## 0.2 Conflicting route group
 
-- [ ] Çalışma ağacındaki `app/(tabs)/**` silmeleri (12 dosya) **commit edilir**.
-  - HEAD'de `(tabs)` ve `(drawer)` **birlikte** duruyor; ikisi de `/`, `/notifications`, `/settings` yollarını talep ediyor → expo-router duplicate-route çakışması.
-  - `(drawer)` ekranları `(tabs)`'in kopyası değil, yeniden yazımı (theme token'ları + shell bileşenleri). Hiçbir ekran kaybolmuyor — birebir karşılıkları var.
-  - `git grep '(tabs)'` → `app/(tabs)/` dışında **sıfır** referans; silme kimseyi kırmıyor.
-- [ ] Silinen dosyalar gerekirse `git show HEAD:'app/(tabs)/<dosya>'` ile geri okunabilir; bu faz sonrası geri alınmaz.
+- [ ] **Commit** the `app/(tabs)/**` deletions (12 files) in the working tree.
+  - In HEAD, `(tabs)` and `(drawer)` exist **together**; both claim the `/`, `/notifications` and `/settings` paths → an expo-router duplicate-route conflict.
+  - The `(drawer)` screens are not a copy of `(tabs)` but a rewrite (theme tokens + shell components). No screen is lost — there are one-to-one counterparts.
+  - `git grep '(tabs)'` → **zero** references outside `app/(tabs)/`; the deletion breaks nobody.
+- [ ] If needed, the deleted files can be read back with `git show HEAD:'app/(tabs)/<file>'`; they are not restored after this phase.
 
-## 0.3 Config tekilleştirme
+## 0.3 Config consolidation
 
-- [ ] `app.json` silinir — `app.config.ts` tek kaynaktır (AGENTS.md §6 Kural 1: "Don't add `react-navigation` files outside expo-router integration" ve §3 discovery map `app.json`'ı legacy olarak işaretliyor).
-- [ ] `app.config.ts` → `./assets/images/splash-icon.png` referansı **iki yerde** `./assets/images/splash.png` olur (diskteki gerçek dosya adı).
-- [ ] `app/(auth)/_layout.tsx` → `create-tenant` ekranı `Stack.Screen` listesine eklenir; dosya var ama layout'ta tanımlı değil.
+- [ ] `app.json` is deleted — `app.config.ts` is the single source (AGENTS.md §6 Rule 1: "Don't add `react-navigation` files outside expo-router integration" and the §3 discovery map marks `app.json` as legacy).
+- [ ] In `app.config.ts`, the `./assets/images/splash-icon.png` reference becomes `./assets/images/splash.png` in **two places** (the actual file name on disk).
+- [ ] `app/(auth)/_layout.tsx` → the `create-tenant` screen is added to the `Stack.Screen` list; the file exists but is not defined in the layout.
 
-## 0.4 Stil config temizliği
+## 0.4 Style config cleanup
 
-- [ ] `tailwind.config.js` → `plugins: [require("daisyui")]` ve `daisyui: { themes: [...] }` bloğu **kaldırılır**.
-  - daisyui bir **web** (DOM + CSS) plugin'idir; NativeWind derlemesinde hiçbir sınıf üretmez. Bugün ölü konfigürasyon, Faz 1C'nin kui-native token'larıyla da çakışacak.
-- [ ] `libs/logger.ts` → kullanılmayan `import { env }` kaldırılır (ölü import; dosya zaten `process.env.NODE_ENV` okuyor).
+- [ ] `tailwind.config.js` → the `plugins: [require("daisyui")]` and `daisyui: { themes: [...] }` block is **removed**.
+  - daisyui is a **web** (DOM + CSS) plugin; it generates no classes in a NativeWind build. Today it is dead configuration, and it would also collide with Phase 1C's kui-native tokens.
+- [ ] `libs/logger.ts` → the unused `import { env }` is removed (dead import; the file already reads `process.env.NODE_ENV`).
 
-## 0.5 Doğrulama
+## 0.5 Verification
 
-- [ ] `npm install` temiz.
-- [ ] `npm run typecheck` sıfır hata.
-- [ ] `npm run test:ci` mevcut testler geçiyor.
-- [ ] `npx expo start --android` → uygulama açılıyor, drawer açılıyor, üç sekme (`/`, `/notifications`, `/settings`) geziliyor.
+- [ ] `npm install` is clean.
+- [ ] `npm run typecheck` has zero errors.
+- [ ] `npm run test:ci` existing tests pass.
+- [ ] `npx expo start --android` → the app opens, the drawer opens, the three tabs (`/`, `/notifications`, `/settings`) can be navigated.
 
-## Dokunulan / oluşturulan dosyalar
+## Files touched / created
 
-- Değişen: `package.json` (+`@react-navigation/drawer`), `package-lock.json`, `app.config.ts` (splash yolu), `app/(auth)/_layout.tsx` (+`create-tenant`), `tailwind.config.js` (−daisyui), `libs/logger.ts` (−ölü import)
-- Silinen: `app.json`, `app/(tabs)/**` (12 dosya)
+- Changed: `package.json` (+`@react-navigation/drawer`), `package-lock.json`, `app.config.ts` (splash path), `app/(auth)/_layout.tsx` (+`create-tenant`), `tailwind.config.js` (−daisyui), `libs/logger.ts` (−dead import)
+- Deleted: `app.json`, `app/(tabs)/**` (12 files)
 
-## Yeniden kullan
+## Reuse
 
-- `app/(drawer)/**` — tabs→drawer geçişi zaten tamamlanmış ve commit edilmiş (`b70a1ba`); yeniden yazılmaz.
-- `components/shell/*` — altı bileşen diskte mevcut ve tracked; Faz 1C'ye kadar olduğu gibi kalır.
-- `scripts/auto-snapshot.sh` — bayatlık korumalı `registry:snapshot` sarmalayıcısı; katalog senkronu için kullanılır.
+- `app/(drawer)/**` — the tabs→drawer transition is already complete and committed (`b70a1ba`); it is not rewritten.
+- `components/shell/*` — the six components exist on disk and are tracked; they stay as they are until Phase 1C.
+- `scripts/auto-snapshot.sh` — a staleness-guarded wrapper around `registry:snapshot`; used for catalog sync.
 
-## Kabul kriterleri
+## Acceptance criteria
 
-- `npm run typecheck` **sıfır** hata döner.
-- Emülatörde uygulama açılır ve drawer'daki üç yol da çalışır (bugün paket eksikliğinden açılmıyor).
-- Repoda `app.json` ve `app/(tabs)/` **kalmaz**; `git status` temiz.
-- `tailwind.config.js` içinde daisyui'ye referans kalmaz.
-- `npm run registry:snapshot` çalıştırılır; `public/registry/*.json` ve `public/components/*.md` commit edilir (AGENTS.md §0 zorunluluğu — silinen tabs ekranları katalogdan düşmeli).
+- `npm run typecheck` returns **zero** errors.
+- The app opens in the emulator and all three paths in the drawer work (today it does not open because of the missing package).
+- `app.json` and `app/(tabs)/` **no longer exist** in the repo; `git status` is clean.
+- No reference to daisyui remains in `tailwind.config.js`.
+- `npm run registry:snapshot` is run; `public/registry/*.json` and `public/components/*.md` are committed (AGENTS.md §0 requirement — the deleted tabs screens must drop out of the catalog).
 
-## Riskler
+## Risks
 
-- **`@react-navigation/drawer` sürüm uyumsuzluğu:** SDK 55 / RN 0.83 ile eşleşmeyen bir major, Reanimated ile çakışabilir. `npx expo install` ile seçilmeli, elle sürüm yazılmamalı. SDK 57'ye geçiş bu fazda **yapılmaz** (Faz 1A); önce SDK 55 üzerinde temiz bir taban elde edilir.
-- **`app.json` silinmesi:** içinde `app.config.ts`'te olmayan bir alan varsa (ikon, plugin, scheme) sessizce kaybolur → silmeden **önce** iki dosya alan alan karşılaştırılmalı.
-- **Tabs silmesinin geri alınamazlığı:** commit sonrası geri dönüş `git revert` ile olur; bu yüzden silme **tek başına** bir commit olmalı, başka değişiklikle karışmamalı.
-- **Katalog bayatlaması:** snapshot çalıştırılmazsa `public/registry/screens.json` hâlâ silinmiş tabs ekranlarını gösterir ve her AI ajanını yanıltır.
+- **`@react-navigation/drawer` version mismatch:** a major that does not match SDK 55 / RN 0.83 can conflict with Reanimated. It must be chosen with `npx expo install`, not by writing a version by hand. The move to SDK 57 is **not made** in this phase (Phase 1A); first a clean baseline is obtained on SDK 55.
+- **Deleting `app.json`:** if it contains a field that is not in `app.config.ts` (icon, plugin, scheme), it is silently lost → the two files must be compared field by field **before** deleting.
+- **Irreversibility of the tabs deletion:** after the commit, the way back is `git revert`; so the deletion must be a commit **on its own**, not mixed with any other change.
+- **Catalog staleness:** if the snapshot is not run, `public/registry/screens.json` still shows the deleted tabs screens and misleads every AI agent.
 
 ---
 
-## ✅ KODLANDI — 2026-09-24 (branch `feat/foundation`)
+## ✅ CODED — 2026-09-24 (branch `feat/foundation`)
 
-Commit'ler: `b8ba06c` (tabs silme, tek başına) · `46c5a4d` (root layout) · `d045908` (bağımlılıklar + lock) · `b9e1be6` (config) · `3c9ca1c` (jest) · `c935547` (tenant DTO) · `0e833a9` (AGENTS.md) · `97a185e` (katalog)
+Commits: `b8ba06c` (tabs deletion, on its own) · `46c5a4d` (root layout) · `d045908` (dependencies + lock) · `b9e1be6` (config) · `3c9ca1c` (jest) · `c935547` (tenant DTO) · `0e833a9` (AGENTS.md) · `97a185e` (catalog)
 
-Doğrulama: `npm install` temiz (`--legacy-peer-deps` yok) · `npx expo install --check` → "up to date" · `npm run typecheck` 0 hata · `npm run test:ci` 2/2 · `npx expo export --platform web` tüm drawer + auth route'larını üretiyor.
+Verification: `npm install` clean (no `--legacy-peer-deps`) · `npx expo install --check` → "up to date" · `npm run typecheck` 0 errors · `npm run test:ci` 2/2 · `npx expo export --platform web` produces all drawer + auth routes.
 
-**Bilinçli sapmalar:**
-- **Emülatör doğrulaması yapılmadı.** Onun yerine web export ile tüm route'ların derlendiği doğrulandı. Android'de drawer'ın açılması sahibin elle kontrolüne kaldı.
-- **Test yığını React 19'a Faz 1A'dan öne çekildi** (RNTL 13, react-test-renderer 19.2.0, `@types/react` 19). `@testing-library/jest-native` ve `@types/react-test-renderer` kaldırıldı. Sebep: React 19.2 ile RNTL 12 / react-test-renderer 18 çakıştığı için `npm install` hiç çalışmıyordu.
-- **`package-lock.json` sıfırdan üretildi.** Eski lock, expo-router ile uyumsuz `@expo/log-box` sürümünü kilitliyordu.
-- **Eksik bağımlılıklar açıkça eklendi:** `babel-preset-expo` (~55.0.25), `babel-plugin-module-resolver`, `react-native-worklets` (0.7.4). Bunlar önceden yalnız hoist edilmiş transitive paketlerdi. `expo-modules-autolinking` doğrudan bağımlılık olmaktan çıkarıldı.
-- **Jest harness'ı hiç çalışmıyordu, düzeltildi:** iki ayrı config vardı, `setupFilesAfterFramework` yazım hatası yapılmıştı ve `testPathPattern` geçersiz bir anahtardı. Ayrıca msw için Node export koşulları ve ESM transform ayarı eklendi, msw `~2.14.6`'ya sabitlendi. Repoda test olmadığı için `__tests__/cn.test.ts` smoke testi eklendi.
-- **`CreateTenantRequest` → `z.input`:** typecheck'teki gerçek bir hata. Varsayılan değeri olan `region` alanını çağıran taraf göndermek zorundaydı.
-- **AGENTS.md** `(tabs)` yerine `(drawer)` olarak güncellendi (silinen grup tarif ediliyordu).
-- `app.json` silinmesi `fix(config)` commit'i yerine `d045908` (`fix(deps)`) içine düştü.
+**Deliberate deviations:**
+- **Emulator verification was not done.** Instead, a web export was used to verify that all routes build. Opening the drawer on Android was left to the owner's manual check.
+- **The test stack was pulled forward to React 19 from Phase 1A** (RNTL 13, react-test-renderer 19.2.0, `@types/react` 19). `@testing-library/jest-native` and `@types/react-test-renderer` were removed. Reason: with React 19.2, RNTL 12 / react-test-renderer 18 conflicted, so `npm install` did not work at all.
+- **`package-lock.json` was regenerated from scratch.** The old lock pinned an `@expo/log-box` version incompatible with expo-router.
+- **Missing dependencies were added explicitly:** `babel-preset-expo` (~55.0.25), `babel-plugin-module-resolver`, `react-native-worklets` (0.7.4). These were previously only hoisted transitive packages. `expo-modules-autolinking` was removed as a direct dependency.
+- **The Jest harness never worked, fixed:** there were two separate configs, `setupFilesAfterFramework` was a typo and `testPathPattern` was an invalid key. Also, Node export conditions and an ESM transform setting were added for msw, and msw was pinned to `~2.14.6`. Since the repo had no tests, a `__tests__/cn.test.ts` smoke test was added.
+- **`CreateTenantRequest` → `z.input`:** a real typecheck error. The caller had to send the `region` field, which has a default value.
+- **AGENTS.md** was updated to say `(drawer)` instead of `(tabs)` (it described the deleted group).
+- The `app.json` deletion landed in `d045908` (`fix(deps)`) instead of the `fix(config)` commit.
