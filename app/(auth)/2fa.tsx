@@ -9,10 +9,10 @@ import { faCommentSms, faEnvelope, faShieldHalved } from '@fortawesome/free-soli
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { Button, Input, RadioGroup } from '@/components/ui';
-import type { OTPMethod } from '@/dto/auth.dto';
+import type { OTPMethod } from '@/services/auth/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { AuthClientService } from '@/services/auth.service.client';
+import { AuthClientService } from '@/services/auth/auth.service.client';
 import { useAuthStore } from '@/stores/authStore';
 
 // next-boilerplate has no OTP page; this follows the same auth card pattern.

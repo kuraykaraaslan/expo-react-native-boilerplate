@@ -7,10 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faDesktop, faLaptop, faMobileScreen } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { Button, Card, EmptyState, Text } from '@/components/ui';
-import type { Session } from '@/dto/auth.dto';
+import type { Session } from '@/services/auth/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { AuthClientService } from '@/services/auth.service.client';
+import { AuthClientService } from '@/services/auth/auth.service.client';
 import { formatDate } from '@/utils/format';
 
 /** Best-effort device name from a user agent: "Chrome · Windows", "Expo · iPhone". */

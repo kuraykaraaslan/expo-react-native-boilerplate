@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { env } from "@/libs/env";
 import { zustandMMKVStorage } from "@/libs/zustandStorage";
-import type { TenantMember } from "@/dto/tenant.dto";
+import type { TenantMember } from "@/services/tenant/tenant.dto";
 
 // ============================================================================
 // Tenant Store

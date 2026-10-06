@@ -59,7 +59,7 @@ NEREDE KALDIK: phases/README.md §Sıra
   2. `{message: 'Validation error', issues: [...]}` (ZodError)
   3. `{error: '<string>'}` (login/register 403/404)
   4. `{error: [<zod issues>]}` (device login 400)
-- [ ] `dto/common.dto.ts:extractErrorMessage` ve `libs/errorUtils.ts` buna **delege eder** — ikisi de korunur, mevcut çağrı yerleri kırılmaz.
+- [ ] `services/common.dto.ts:extractErrorMessage` ve `libs/errorUtils.ts` buna **delege eder** — ikisi de korunur, mevcut çağrı yerleri kırılmaz.
 - [ ] Bilinmeyen şekil → `i18n.t('ERRORS.UNEXPECTED')` (bugünkü davranış).
 
 ## 2.5 Cihaz bilgisi
@@ -83,14 +83,14 @@ NEREDE KALDIK: phases/README.md §Sıra
 ## Dokunulan / oluşturulan dosyalar
 
 - Yeni: `libs/apiError.ts`, `libs/deviceInfo.ts`
-- Değişen: `libs/axios.ts` (tam yeniden yazım), `libs/env.ts`, `libs/secureStorage.ts`, `libs/errorUtils.ts`, `dto/common.dto.ts`, `stores/tenantStore.ts` (+`activeTenantId`), `package.json` (+`expo-device`), `.env.example`
+- Değişen: `libs/axios.ts` (tam yeniden yazım), `libs/env.ts`, `libs/secureStorage.ts`, `libs/errorUtils.ts`, `services/common.dto.ts`, `stores/tenantStore.ts` (+`activeTenantId`), `package.json` (+`expo-device`), `.env.example`
 - Test: `__tests__/_handlers.ts`, `__tests__/_server.ts` (MSW), yeni `__tests__/axios.test.ts`, `__tests__/apiError.test.ts`
 
 ## Yeniden kullan
 
 - `libs/secureStorage.ts` — silinmez, imzası genişletilir (AGENTS.md §6 Kural 5: token'lar **yalnız** SecureStore).
 - `libs/logger.ts` — tüm interceptor logları buradan (Kural 9: `console.*` yasak).
-- `dto/common.dto.ts:extractErrorMessage` + `libs/errorUtils.ts` — korunur, `apiError.ts`'e delege eder.
+- `services/common.dto.ts:extractErrorMessage` + `libs/errorUtils.ts` — korunur, `apiError.ts`'e delege eder.
 - `sonner-native` — 429 ve oturum düşme bildirimleri (Kural 12).
 - Mevcut single-flight `isRefreshing` + `failedQueue` deseni — tenant başına kuyruk olacak şekilde genişletilir, sıfırdan yazılmaz.
 

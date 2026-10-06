@@ -1,5 +1,5 @@
 import axiosInstance from "@/libs/axios";
-import { Notification, NotificationsResponseSchema } from "@/dto/notification.dto";
+import { Notification, NotificationsResponseSchema } from "@/services/user/notification.dto";
 
 export class NotificationClientService {
   static async getNotifications(): Promise<Notification[]> {

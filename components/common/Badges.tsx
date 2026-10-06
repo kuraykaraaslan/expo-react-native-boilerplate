@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui';
-import type { InvitationStatus, MemberRole, MemberStatus } from '@/dto/tenant.dto';
+import type { InvitationStatus, MemberRole, MemberStatus } from '@/services/tenant/tenant.dto';
 
 type BadgeVariant = 'primary' | 'warning' | 'neutral' | 'success' | 'error';
 

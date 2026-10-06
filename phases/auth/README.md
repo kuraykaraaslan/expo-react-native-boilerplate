@@ -13,7 +13,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 
 # auth — device bearer kimlik akışı (Faz Planı index)
 
-> **Bu yeni bir modül değildir.** Mevcut `dto/auth.dto.ts`, `services/auth.service.client.ts`, `stores/authStore.ts`
+> **Bu yeni bir modül değildir.** Mevcut `services/auth/auth.dto.ts`, `services/auth/auth.service.client.ts`, `stores/authStore.ts`
 > ve `app/(auth)/**` ekranlarını sunucunun gerçek sözleşmesine hizalar. Hiçbir ekran sıfırdan yazılmaz.
 
 ## Neden (bağlam)
@@ -40,7 +40,7 @@ Yani bu set olmadan hiçbir auth çağrısı 200 dönmez; dönse bile `.parse()`
 - **DTO'lar sunucunun `Safe*` şemalarının aynasıdır.** İstemci kendi rahatı için alan uydurmaz; eksik alan varsa sunucudaki gerçek kaynağından (`userProfile`, `preferences`) çekilir.
 - **Servis yolları interceptor önekine göre görelidir.** Servislerde `/api/tenant/...` yazılmaz; `/auth/device/login` yazılır, öneki Faz 2'nin interceptor'ı ekler.
 - **Token'lar Zustand'a asla girmez** (AGENTS.md §6 Kural 5). `authStore` yalnız `isAuthenticated` + `user` tutar.
-- **Members / invitations / roles kapsam dışıdır.** `services/tenant.service.client.ts`'teki ilgili metotlar bu sette **dokunulmadan** bırakılır; yalnızca interceptor öneki sayesinde yolları kendiliğinden düzelir.
+- **Members / invitations / roles kapsam dışıdır.** `services/tenant/tenant.service.client.ts`'teki ilgili metotlar bu sette **dokunulmadan** bırakılır; yalnızca interceptor öneki sayesinde yolları kendiliğinden düzelir.
 - **`change-email` ekranı silinmez**, sunucudaki gerçek karşılığına (`/auth/me/complete-email` + `/auth/verify-email/*`) yeniden bağlanır.
 
 ## Bağımlılık grafiği (özet)

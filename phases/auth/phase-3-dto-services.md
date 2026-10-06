@@ -16,11 +16,11 @@ NEREDE KALDIK: phases/README.md §Sıra
 
 **Hedef:** Zod şemaları sunucunun `Safe*` şemalarının birebir aynası olsun; servisler gerçek yolları çağırsın. Bu fazdan sonra hiçbir `.parse()` sunucu yanıtında kırılmaz.
 
-## 3.1 `dto/auth.dto.ts`
+## 3.1 `services/auth/auth.dto.ts`
 
 - [ ] `UserSchema` / `SafeUserSchema` → sunucunun `SafeUser`'ı:
   - **Gelen:** `userStatus`, `emailVerifiedAt`, `userProfile?`
-  - **Giden:** `name`, `image`, `language`, `theme` — bunlar `SafeUser`'da yok. `name` + `profilePicture` `userProfile` altında (`dto/profile.dto.ts` zaten modelliyor), `language` / `theme` `/auth/me/preferences` altında.
+  - **Giden:** `name`, `image`, `language`, `theme` — bunlar `SafeUser`'da yok. `name` + `profilePicture` `userProfile` altında (`services/user/profile.dto.ts` zaten modelliyor), `language` / `theme` `/auth/me/preferences` altında.
   - Kalan: `userId`, `email`, `phone` (nullable), `userRole`, `createdAt`, `updatedAt`.
 - [ ] **Yeni** `DeviceInfoSchema` — `{type?: 'phone'|'tablet'|'watch'|'tv'|'desktop'|'other', brand?, model?, name?, os?, osVersion?, appVersion?}`; `DeviceInfoDTO` ile birebir, uzunluk sınırları dahil (`brand`/`model` ≤80, `name` ≤120, `os`/`osVersion`/`appVersion` ≤40).
 - [ ] **Yeni** `DeviceLoginRequestSchema` = `LoginRequestSchema.extend({ captchaToken: optional, rememberMe: optional, device: DeviceInfoSchema.optional() })`.
@@ -37,14 +37,14 @@ NEREDE KALDIK: phases/README.md §Sıra
 - [ ] `ChangeEmailRequestSchema` **kaldırılır** — `/auth/change-email` sunucuda yok.
 - [ ] `RegisterRequestSchema` → `{email, password: min(8), phone?: optional, consentVersion?: optional}`. Bugünkü zorunlu `name` **kaldırılır** (sunucu `RegisterDTO`'da yok).
 
-## 3.2 `dto/tenant.dto.ts`
+## 3.2 `services/tenant/tenant.dto.ts`
 
 - [ ] `TenantSchema` → `SafeTenant`: `{tenantId, name, description (nullable), region?, slug?, metadata?, tenantStatus, createdAt, updatedAt, domains?}`. Bugünkü `logo`, `favicon`, `theme`, `language`, `timezone` alanları `SafeTenant`'ta **yok** — `tenant_branding` / `tenant_setting` altındalar, kapsam dışı.
 - [ ] `MyTenantsResponseSchema` → `{tenants, delegatedTenants, pendingInvitations}` (bugün `{tenants, invitations}` — **iki alan da yanlış adlanmış**).
 - [ ] `CreateTenantRequestSchema` → `{name: min(1).max(100), description?: nullable, region?}`; sunucu `CreateTenantDTO` ile hizalanır (bugünkü `min(2)` gevşetilir).
 - [ ] `MemberRoleEnum` → `['OWNER','ADMIN','USER']` sırası sunucudakiyle aynı tutulur.
 
-## 3.3 `dto/sso.dto.ts` (yeni)
+## 3.3 `services/auth/sso.dto.ts` (yeni)
 
 - [ ] `SSOProviderEnum` — `google, apple, facebook, github, linkedin, microsoft, twitter, slack, tiktok, wechat, autodesk, yandex, vk, qq, weibo, alipay`.
 - [ ] `SSOProvidersResponseSchema` = `{providers: [...]}`.
@@ -54,7 +54,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 
 Tüm `/api/system/...` yolları **silinir**. Yollar Faz 2 interceptor önekine göre **göreli** yazılır.
 
-- [ ] `services/auth.service.client.ts` → `AuthClientService`:
+- [ ] `services/auth/auth.service.client.ts` → `AuthClientService`:
 
   | Metot | Yol | Not |
   |---|---|---|
@@ -73,9 +73,9 @@ Tüm `/api/system/...` yolları **silinir**. Yollar Faz 2 interceptor önekine g
   | `revokeSession(id)` | `DELETE /auth/me/sessions/{id}` | |
   | `changeEmail` | — | **kaldırılır** |
 
-- [ ] `services/profile.service.client.ts` → `GET|PUT /auth/me/profile`; **yeni** `getPreferences()` / `updatePreferences()` → `GET|PUT /auth/me/preferences` (`language`, `theme` buradan gelir).
-- [ ] `services/tenant.service.client.ts` → `getMyTenants()` `GET /auth/me/tenants`, `createTenant()` `POST /tenants/create`, **yeni** `getTenantProfile()` / `updateTenantProfile()` `GET|PUT /tenant/profile`. Members / invitations metotları **dokunulmaz** (kapsam dışı) — yalnız `/api/tenant/{id}` önekleri kaldırılır ki interceptor öneki doğru çalışsın.
-- [ ] `services/sso.service.client.ts` (yeni) → `getProviders()` `GET /auth/sso`, `getAuthUrl(provider)` `GET /auth/sso/{provider}`.
+- [ ] `services/user/profile.service.client.ts` → `GET|PUT /auth/me/profile`; **yeni** `getPreferences()` / `updatePreferences()` → `GET|PUT /auth/me/preferences` (`language`, `theme` buradan gelir).
+- [ ] `services/tenant/tenant.service.client.ts` → `getMyTenants()` `GET /auth/me/tenants`, `createTenant()` `POST /tenants/create`, **yeni** `getTenantProfile()` / `updateTenantProfile()` `GET|PUT /tenant/profile`. Members / invitations metotları **dokunulmaz** (kapsam dışı) — yalnız `/api/tenant/{id}` önekleri kaldırılır ki interceptor öneki doğru çalışsın.
+- [ ] `services/auth/sso.service.client.ts` (yeni) → `getProviders()` `GET /auth/sso`, `getAuthUrl(provider)` `GET /auth/sso/{provider}`.
 - [ ] Her servis yanıtı ilgili DTO ile `.parse()` edilir (AGENTS.md §6 Kural 7), hata `normalizeApiError` ile sarılır.
 
 ## 3.5 Test altyapısı
@@ -86,14 +86,14 @@ Tüm `/api/system/...` yolları **silinir**. Yollar Faz 2 interceptor önekine g
 
 ## Dokunulan / oluşturulan dosyalar
 
-- Yeni: `dto/sso.dto.ts`, `services/sso.service.client.ts`
-- Değişen: `dto/auth.dto.ts`, `dto/tenant.dto.ts`, `services/auth.service.client.ts`, `services/profile.service.client.ts`, `services/tenant.service.client.ts`, `stores/authStore.ts` (yeni `SafeUser` şekli), `__tests__/_handlers.ts`
+- Yeni: `services/auth/sso.dto.ts`, `services/auth/sso.service.client.ts`
+- Değişen: `services/auth/auth.dto.ts`, `services/tenant/tenant.dto.ts`, `services/auth/auth.service.client.ts`, `services/user/profile.service.client.ts`, `services/tenant/tenant.service.client.ts`, `stores/authStore.ts` (yeni `SafeUser` şekli), `__tests__/_handlers.ts`
 - Etkilenen (Faz 4/5'te güncellenecek): `app/(auth)/**`, `app/(drawer)/settings/**`
 
 ## Yeniden kullan
 
-- `dto/profile.dto.ts` — `userProfile` şekli zaten modellenmiş (`name`, `biography`, `profilePicture`, `headerImage`, `socialLinks`); `SafeUser.userProfile` buna bağlanır, yeniden yazılmaz.
-- `dto/common.dto.ts` — `PaginationSchema`, `paginatedResponseSchema`, `ApiErrorSchema` korunur.
+- `services/user/profile.dto.ts` — `userProfile` şekli zaten modellenmiş (`name`, `biography`, `profilePicture`, `headerImage`, `socialLinks`); `SafeUser.userProfile` buna bağlanır, yeniden yazılmaz.
+- `services/common.dto.ts` — `PaginationSchema`, `paginatedResponseSchema`, `ApiErrorSchema` korunur.
 - `libs/apiError.ts` (Faz 2) — tüm servis hataları buradan geçer.
 - `libs/axios.ts` interceptor öneki — servisler tenant yolunu **kendileri kurmaz**.
 - Mevcut `__tests__/_server.ts` MSW kurulumu.

@@ -8,10 +8,10 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { Screen } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { Button, Card, Input } from '@/components/ui';
-import { ChangeEmailRequestSchema } from '@/dto/auth.dto';
+import { ChangeEmailRequestSchema } from '@/services/auth/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { AuthClientService } from '@/services/auth.service.client';
+import { AuthClientService } from '@/services/auth/auth.service.client';
 import { useAuthStore } from '@/stores/authStore';
 
 export default function ChangeEmailScreen() {

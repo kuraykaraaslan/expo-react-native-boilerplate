@@ -7,10 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBuilding, faChevronRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { Button, EmptyState, Spinner, Text } from '@/components/ui';
-import type { TenantMember } from '@/dto/tenant.dto';
+import type { TenantMember } from '@/services/tenant/tenant.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { TenantClientService } from '@/services/tenant.service.client';
+import { TenantClientService } from '@/services/tenant/tenant.service.client';
 import { useTenantStore } from '@/stores/tenantStore';
 
 function OrgRow({ item, onPress }: { item: TenantMember; onPress: () => void }) {

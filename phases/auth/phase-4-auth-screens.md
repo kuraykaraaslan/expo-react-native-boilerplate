@@ -57,7 +57,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 
 ## 4.6 Profil alanlarının yeni kaynağı
 
-- [ ] `SafeUser`'da artık `name` / `image` **yok**. `UserMenu` baş harfleri ve profil başlığı `userProfile.name` / `userProfile.profilePicture`'a bağlanır (`dto/profile.dto.ts` zaten modelliyor).
+- [ ] `SafeUser`'da artık `name` / `image` **yok**. `UserMenu` baş harfleri ve profil başlığı `userProfile.name` / `userProfile.profilePicture`'a bağlanır (`services/user/profile.dto.ts` zaten modelliyor).
 - [ ] `language` / `theme` `GET /auth/me/preferences`'tan okunur; `appStore.locale` / `colorScheme` ile senkronlanır.
 - [ ] `app/(drawer)/settings/change-email.tsx` → `/auth/change-email` **yok**; `POST /auth/me/complete-email` + `POST /auth/verify-email/send|verify` akışına bağlanır.
 
@@ -71,7 +71,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 
 - `components/auth/AuthLayout.tsx` — auth ekranlarının ortak çerçevesi, yeniden yazılmaz.
 - `@/components/ui` (kui-native, Faz 1C): `Button`, `Input`, `Label`, `AlertBanner`, `Spinner`, `Card`, `EmptyState`.
-- `libs/apiError.ts` + `dto/common.dto.ts:extractErrorMessage` — tüm hata mesajları.
+- `libs/apiError.ts` + `services/common.dto.ts:extractErrorMessage` — tüm hata mesajları.
 - `libs/deviceInfo.ts` (Faz 2) — login gövdesindeki `device`.
 - `libs/i18n.ts` + `locales/*.json` — `AUTH`, `ERRORS`, `SETTINGS` namespace'leri zaten var; yeni anahtarlar altı dile de eklenir.
 - `expo-haptics`, `sonner-native` — mevcut kullanım deseni.

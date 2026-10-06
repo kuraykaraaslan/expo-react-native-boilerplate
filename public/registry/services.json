@@ -1,10 +1,11 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-25T16:07:34.811Z",
+  "generatedAt": "2026-10-06T11:10:38.472Z",
   "services": [
     {
-      "filePath": "services/auth.service.client.ts",
+      "filePath": "services/auth/auth.service.client.ts",
+      "module": "auth",
       "name": "auth.service.client",
       "className": "AuthClientService",
       "methods": [
@@ -33,7 +34,8 @@
       ]
     },
     {
-      "filePath": "services/notification.service.client.ts",
+      "filePath": "services/user/notification.service.client.ts",
+      "module": "user",
       "name": "notification.service.client",
       "className": "NotificationClientService",
       "methods": [
@@ -49,7 +51,8 @@
       ]
     },
     {
-      "filePath": "services/profile.service.client.ts",
+      "filePath": "services/user/profile.service.client.ts",
+      "module": "user",
       "name": "profile.service.client",
       "className": "ProfileClientService",
       "methods": [
@@ -61,7 +64,8 @@
       ]
     },
     {
-      "filePath": "services/tenant.service.client.ts",
+      "filePath": "services/tenant/tenant.service.client.ts",
+      "module": "tenant",
       "name": "tenant.service.client",
       "className": "TenantClientService",
       "methods": [

@@ -10,10 +10,10 @@ import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { SSOButtons } from '@/components/auth/SSOButtons';
 import { Button, Input } from '@/components/ui';
-import { RegisterRequestSchema } from '@/dto/auth.dto';
+import { RegisterRequestSchema } from '@/services/auth/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { AuthClientService } from '@/services/auth.service.client';
+import { AuthClientService } from '@/services/auth/auth.service.client';
 
 type FieldErrors = { email?: string; password?: string; confirm?: string };
 

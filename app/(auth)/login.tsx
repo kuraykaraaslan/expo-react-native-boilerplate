@@ -10,10 +10,10 @@ import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { SSOButtons } from '@/components/auth/SSOButtons';
 import { Button, Checkbox, Input, Text } from '@/components/ui';
-import { LoginRequestSchema } from '@/dto/auth.dto';
+import { LoginRequestSchema } from '@/services/auth/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { AuthClientService } from '@/services/auth.service.client';
+import { AuthClientService } from '@/services/auth/auth.service.client';
 import { useAuthStore } from '@/stores/authStore';
 
 type FieldErrors = { email?: string; password?: string };

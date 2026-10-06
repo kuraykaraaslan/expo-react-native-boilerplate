@@ -59,7 +59,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 
 ## Dokunulan / oluşturulan dosyalar
 
-- Değişen: `stores/tenantStore.ts`, `app/(auth)/{select-tenant,create-tenant,login}.tsx`, `app/(drawer)/settings/tenant/index.tsx`, `components/shell/{DrawerContent,UserMenu}.tsx`, `services/tenant.service.client.ts`, `libs/secureStorage.ts` (`knownTenantIds` entegrasyonu)
+- Değişen: `stores/tenantStore.ts`, `app/(auth)/{select-tenant,create-tenant,login}.tsx`, `app/(drawer)/settings/tenant/index.tsx`, `components/shell/{DrawerContent,UserMenu}.tsx`, `services/tenant/tenant.service.client.ts`, `libs/secureStorage.ts` (`knownTenantIds` entegrasyonu)
 - Test: `__tests__/` altında tenant geçişi (token var / yok), `flush()` temizliği, pasif tenant reddi
 
 ## Yeniden kullan
@@ -67,7 +67,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 - **Faz 4'ün login akışı** — tenant geçişindeki login ayrı implementasyon değildir, aynı ekran `tenantId` parametresiyle açılır.
 - `libs/secureStorage.ts` tenant başına anahtarlar (Faz 2) — geçişin tüm mekaniği buna dayanır.
 - `libs/axios.ts` interceptor'ının `TENANT_INACTIVE` / `NOT_TENANT_MEMBER` yönlendirmesi (Faz 2) — ekranlar bu hataları ayrıca yakalamaz.
-- `dto/tenant.dto.ts` (Faz 3'te hizalandı) — `SafeTenant`, `MyTenantsResponseSchema`.
+- `services/tenant/tenant.dto.ts` (Faz 3'te hizalandı) — `SafeTenant`, `MyTenantsResponseSchema`.
 - `@/components/ui` (kui-native, Faz 1C): `Card`, `Badge`, `EmptyState`, `Avatar`, `Select`, `Spinner`.
 - `app/(drawer)/settings/tenant/{members,invitations}.tsx` — **dokunulmaz**, kapsam dışı.
 

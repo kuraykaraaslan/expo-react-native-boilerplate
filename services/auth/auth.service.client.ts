@@ -12,7 +12,7 @@ import {
   SessionSchema,
   ChangeEmailRequest,
   ForgotPasswordRequest,
-} from "@/dto/auth.dto";
+} from "@/services/auth/auth.dto";
 
 export class AuthClientService {
   static async login(payload: LoginRequest): Promise<LoginResponse> {

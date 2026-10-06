@@ -54,7 +54,7 @@ sağlayıcı başına **sabit**.
 
 ## Bağımlılık grafiği (özet)
 
-- Faz 6, Faz 3'ün `dto/sso.dto.ts`'ine ve `services/sso.service.client.ts`'ine dayanır.
+- Faz 6, Faz 3'ün `services/auth/sso.dto.ts`'ine ve `services/auth/sso.service.client.ts`'ine dayanır.
 - Faz 6, Faz 5'in `activeTenantId`'sine dayanır (`state = "{tenantId}.{uuid}"`).
 - `app.config.ts`'e eklenecek `scheme`, Faz 4'ün `reset-password` deep link'i tarafından da kullanılır.
 

@@ -19,8 +19,8 @@ import { SectionLabel } from '@/components/common/SectionLabel';
 import { StatTile } from '@/components/common/StatTile';
 import { Button, Card, Text } from '@/components/ui';
 import logger from '@/libs/logger';
-import { AuthClientService } from '@/services/auth.service.client';
-import { NotificationClientService } from '@/services/notification.service.client';
+import { AuthClientService } from '@/services/auth/auth.service.client';
+import { NotificationClientService } from '@/services/user/notification.service.client';
 import { useNotificationStore } from '@/stores/notificationStore';
 import { useTenantStore } from '@/stores/tenantStore';
 

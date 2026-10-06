@@ -1,10 +1,11 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-09-25T16:07:34.811Z",
+  "generatedAt": "2026-10-06T11:10:38.472Z",
   "dtos": [
     {
-      "filePath": "dto/auth.dto.ts",
+      "filePath": "services/auth/auth.dto.ts",
+      "module": "auth",
       "name": "auth.dto",
       "schemas": [
         "OTPMethodEnum",
@@ -46,7 +47,8 @@
       ]
     },
     {
-      "filePath": "dto/common.dto.ts",
+      "filePath": "services/common.dto.ts",
+      "module": "services",
       "name": "common.dto",
       "schemas": [
         "PaginationSchema",
@@ -59,7 +61,8 @@
       ]
     },
     {
-      "filePath": "dto/notification.dto.ts",
+      "filePath": "services/user/notification.dto.ts",
+      "module": "user",
       "name": "notification.dto",
       "schemas": [
         "NotificationSchema",
@@ -71,7 +74,8 @@
       ]
     },
     {
-      "filePath": "dto/profile.dto.ts",
+      "filePath": "services/user/profile.dto.ts",
+      "module": "user",
       "name": "profile.dto",
       "schemas": [
         "SocialLinkPlatformEnum",
@@ -89,7 +93,8 @@
       ]
     },
     {
-      "filePath": "dto/tenant.dto.ts",
+      "filePath": "services/tenant/tenant.dto.ts",
+      "module": "tenant",
       "name": "tenant.dto",
       "schemas": [
         "MemberRoleEnum",

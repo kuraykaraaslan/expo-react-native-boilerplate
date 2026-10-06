@@ -13,7 +13,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 
 # tenant — tenant seçimi, geçişi ve oluşturma (Faz Planı index)
 
-> **Bu yeni bir modül değildir.** Mevcut `stores/tenantStore.ts`, `services/tenant.service.client.ts`
+> **Bu yeni bir modül değildir.** Mevcut `stores/tenantStore.ts`, `services/tenant/tenant.service.client.ts`
 > ve `app/(auth)/{select-tenant,create-tenant}.tsx` ekranlarını device token'ın tenant bağlamasına göre yeniden bağlar.
 
 ## Neden (bağlam)

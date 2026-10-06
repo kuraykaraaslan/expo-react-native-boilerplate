@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { Avatar, Button, Card, Input, Textarea } from '@/components/ui';
-import type { UpdateProfileRequest } from '@/dto/profile.dto';
+import type { UpdateProfileRequest } from '@/services/user/profile.dto';
 import { handleApiError } from '@/libs/errorUtils';
-import { ProfileClientService } from '@/services/profile.service.client';
+import { ProfileClientService } from '@/services/user/profile.service.client';
 import { useAuthStore } from '@/stores/authStore';
 
 const EMPTY: UpdateProfileRequest = { name: null, biography: null, profilePicture: null, headerImage: null, socialLinks: [] };

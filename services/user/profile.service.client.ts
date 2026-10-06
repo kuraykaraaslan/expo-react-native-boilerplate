@@ -1,5 +1,5 @@
 import axiosInstance from "@/libs/axios";
-import { UserProfile, UserProfileSchema, UpdateProfileRequest } from "@/dto/profile.dto";
+import { UserProfile, UserProfileSchema, UpdateProfileRequest } from "@/services/user/profile.dto";
 
 export class ProfileClientService {
   static async getProfile(): Promise<UserProfile | null> {

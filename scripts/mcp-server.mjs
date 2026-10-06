@@ -105,7 +105,7 @@ const TOOLS = [
   },
   {
     name: 'list_dtos',
-    description: 'List Zod DTO modules under dto/. Each entry includes exported schemas (ending in Schema or Enum) and TypeScript types.',
+    description: 'List Zod DTO modules under services/<module>/*.dto.ts. Each entry includes exported schemas (ending in Schema or Enum) and TypeScript types.',
     inputSchema: { type: 'object', properties: {} },
   },
   {

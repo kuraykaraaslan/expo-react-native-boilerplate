@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { Button, Modal, Select } from '@/components/ui';
-import type { MemberRole, MemberStatus, TenantMember } from '@/dto/tenant.dto';
+import type { MemberRole, MemberStatus, TenantMember } from '@/services/tenant/tenant.dto';
 import { handleApiError } from '@/libs/errorUtils';
-import { TenantClientService } from '@/services/tenant.service.client';
+import { TenantClientService } from '@/services/tenant/tenant.service.client';
 
 type EditMemberModalProps = {
   member: TenantMember | null;

@@ -20,9 +20,9 @@ NEREDE KALDIK: bu dosya §Sıra
 
 Bugün istemci sunucuyla **konuşmuyor**:
 
-- `services/*.service.client.ts` `/api/system/auth/*` çağırıyor — bu yol sunucuda **hiç yok**.
+- `services/**/*.service.client.ts` `/api/system/auth/*` çağırıyor — bu yol sunucuda **hiç yok**.
 - `libs/axios.ts` cookie tabanlı bir web akışı taklit ediyor (`Cookie` header'ı kurma, `Set-Cookie` ayrıştırma) — mobil için gereksiz ve yanlış.
-- `dto/` şemaları sunucunun `Safe*` şemalarıyla uyuşmuyor (`UserSchema`, `MyTenantsResponseSchema`, `OTPVerifyRequestSchema`).
+- `services/**/*.dto.ts` şemaları sunucunun `Safe*` şemalarıyla uyuşmuyor (`UserSchema`, `MyTenantsResponseSchema`, `OTPVerifyRequestSchema`).
 - Repo **derlenmiyor**: `@react-navigation/drawer` `package.json`'da yok ama `app/(drawer)/_layout.tsx` ve `components/shell/*` import ediyor.
 - `components/ui/*` NativeWind `className`, `components/shell/*` inline `style={{}}` kullanıyor — iki rakip stil sistemi.
 
@@ -58,6 +58,7 @@ Sunucu tarafı ise **hazır**: `audience: 'device'` ile bearer akışı eklenmi�
 - **K3 — Origin + tenant prefix interceptor.** `EXPO_PUBLIC_API_URL` sadece origin'dir. Request interceptor her göreli yola `/api/tenant/{activeTenantId}` önekini ekler. *(Düzeltme 2026-09-25: önceki metin `/api/tenant/{id}/api` diyordu. `proxy.ts` `/api/tenant/{id}/<rest>` yolunu `/tenant/{id}/api/<rest>`'e çevirdiği için o önek `/api/api/…` üretip 404 verirdi.)*
 - **K4 — SSO cihazda sunucu değişikliği olmadan ÇALIŞMAZ.** OAuth callback `createSession`'ı audience vermeden çağırır → **`web` audience token** üretir, bearer yolu bunu reddeder. Ayrıca https bir web URL'ine yönlendirir, uygulama şemasına değil. İstemci tarafı eksiksiz kurulur; sunucu değişikliği gelmeden Faz 6 `KODLANDI` işaretlenmez.
 - **K5 — kui-native tag'e sabitli git bağımlılığıdır.** Uygulama kodu bileşenleri yalnız `@/components/ui` barrel'ından alır. Barrel, kui-native'den **derin import** ile re-export eder (`kui-native/modules/ui/Button`). Tam barrel (`kui-native/modules/ui`) opsiyonel peer'leri (maps, video) çektiği için kullanılmaz. `node_modules` yaması ve `patch-package` yasaktır. Branch'e (`#main`) sabitleme de yasaktır.
+- **K6 — DTO + servis alan klasörüyle yan yana.** Üst seviye `dto/` yoktur. `services/<alan>/<alan>.service.client.ts` ile `services/<alan>/<alan>.dto.ts` aynı klasörde durur (next-boilerplate `modules/<ad>/server/<ad>.dto.ts` düzeninin istemci karşılığı). Alanlar: `auth/` (auth + sso), `tenant/`, `user/` (profile + notification); ortak şemalar `services/common.dto.ts`. İstemci küçük olduğu için alt klasör (`dto/`, `tests/`) açılmaz.
 - **AGENTS.md kuralları bağlayıcıdır:** `@/*` tek alias, NativeWind + `cn()`, Zustand + MMKV, token'lar yalnız SecureStore, tüm fetch `libs/axios` üzerinden, Zod ile parse, env `libs/env`, log `libs/logger`, ikon yalnız FontAwesome, kritik aksiyonlarda `expo-haptics`, toast `sonner-native`.
 - **Katalog senkronu zorunlu:** ekran / bileşen / servis / store / DTO / lib değişen her fazın sonunda `npm run registry:snapshot` çalıştırılır ve üretilen dosyalar commit edilir.
 

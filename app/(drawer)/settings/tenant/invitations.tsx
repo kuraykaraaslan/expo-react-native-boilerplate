@@ -11,9 +11,9 @@ import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { InviteMemberModal } from '@/components/tenant/InviteMemberModal';
 import { NoOrganization } from '@/components/tenant/NoOrganization';
 import { Button, Card, EmptyState, Text } from '@/components/ui';
-import type { Invitation } from '@/dto/tenant.dto';
+import type { Invitation } from '@/services/tenant/tenant.dto';
 import { handleApiError } from '@/libs/errorUtils';
-import { TenantClientService } from '@/services/tenant.service.client';
+import { TenantClientService } from '@/services/tenant/tenant.service.client';
 import { useTenantStore } from '@/stores/tenantStore';
 import { formatDate } from '@/utils/format';
 

@@ -8,7 +8,7 @@ import { faBars, faBell } from '@fortawesome/free-solid-svg-icons';
 import type { DrawerNavigationProp } from 'expo-router/drawer';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import logger from '@/libs/logger';
-import { NotificationClientService } from '@/services/notification.service.client';
+import { NotificationClientService } from '@/services/user/notification.service.client';
 import { useNotificationStore } from '@/stores/notificationStore';
 import { Text } from '@/components/ui';
 import { LangSwitcher } from './LangSwitcher';

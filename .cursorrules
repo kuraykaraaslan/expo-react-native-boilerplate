@@ -17,7 +17,7 @@ Or use the MCP server in `.mcp.json` (`scripts/mcp-server.mjs`). Tools: `list_sc
 
 ## ⚠️ Catalog sync — REQUIRED
 
-**Any time you add, rename, or remove a screen (`app/`), component (`components/`), service (`services/`), Zustand store (`stores/`), DTO (`dto/`), or lib primitive (`libs/`), run:**
+**Any time you add, rename, or remove a screen (`app/`), component (`components/`), service (`services/`), Zustand store (`stores/`), DTO (`services/<module>/*.dto.ts`), or lib primitive (`libs/`), run:**
 
 ```bash
 npm run registry:snapshot
@@ -48,9 +48,9 @@ npm run registry:snapshot
 | New screen | `app/<route>.tsx` (or under an existing `(group)`) |
 | New layout (Stack / Tabs / Slot) | `app/**/.../_layout.tsx` |
 | New UI component | `components/<category>/<Pascal>.tsx` |
-| New data fetcher | `services/<name>.service.client.ts` + DTO in `dto/<name>.dto.ts` |
+| New data fetcher | `services/<module>/<module>.service.client.ts` + DTO in `services/<module>/<module>.dto.ts` |
 | New persistent client state | `stores/<name>Store.ts` (use `zustandStorage`) |
-| New Zod schema | `dto/<name>.dto.ts` |
+| New Zod schema | `services/<module>/<module>.dto.ts` |
 | New primitive | `libs/<name>.ts` |
 | New translation key | `locales/<lang>/<namespace>.json` |
 | Expo config (icons, splash, plugins) | `app.config.ts` |
@@ -62,8 +62,8 @@ npm run registry:snapshot
 1. Create `app/<route>.tsx` (or `app/(group)/<route>.tsx`).
 2. Default-export a component (this is the screen).
 3. If it needs custom navigation chrome, add a sibling `_layout.tsx`.
-4. Wire data: relevant `services/*.service.client.ts` + matching `stores/*Store.ts`.
-5. New DTOs go in `dto/<x>.dto.ts`.
+4. Wire data: relevant `services/**/*.service.client.ts` + matching `stores/*Store.ts`.
+5. New DTOs go in `services/<module>/<module>.dto.ts`.
 6. Tests under `__tests__/`.
 7. Rebuild the AI catalog: `npm run registry:snapshot`.
 

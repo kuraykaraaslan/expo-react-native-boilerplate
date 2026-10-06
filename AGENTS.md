@@ -14,7 +14,7 @@ Before grepping or guessing — fetch the catalog. Static snapshots live under `
 | Components | [`public/registry/components.json`](public/registry/components.json) | Every UI component with category, exports |
 | Services | [`public/registry/services.json`](public/registry/services.json) | `*.service.client.ts` files with exported class/methods |
 | Stores | [`public/registry/stores.json`](public/registry/stores.json) | Zustand stores with state shape hints |
-| DTOs | [`public/registry/dtos.json`](public/registry/dtos.json) | Zod schemas in `dto/` |
+| DTOs | [`public/registry/dtos.json`](public/registry/dtos.json) | Zod schemas in `services/<module>/*.dto.ts` |
 | Libs | [`public/registry/libs.json`](public/registry/libs.json) | `libs/` utilities (axios, env, i18n, logger, mmkv, secureStorage, zustandStorage) |
 | Per-component | `public/components/<id>.md` | One markdown per UI component |
 | Component index | [`public/components/_index.json`](public/components/_index.json) | `{ id → { category, file } }` |
@@ -25,7 +25,7 @@ Before grepping or guessing — fetch the catalog. Static snapshots live under `
 
 **Editor-native rule mirrors** of this file: [`.cursor/rules/expo-react-native.mdc`](.cursor/rules/expo-react-native.mdc), [`.cursorrules`](.cursorrules), [`.windsurfrules`](.windsurfrules), [`.github/copilot-instructions.md`](.github/copilot-instructions.md), [`.clinerules`](.clinerules).
 
-> ⚠️ **Keep the catalog in sync (REQUIRED).** Any time you **add, rename, or remove** a screen (`app/`), component (`components/`), service (`services/`), store (`stores/`), DTO (`dto/`), or lib (`libs/`), you **must** rebuild the catalog before committing:
+> ⚠️ **Keep the catalog in sync (REQUIRED).** Any time you **add, rename, or remove** a screen (`app/`), component (`components/`), service (`services/`), store (`stores/`), DTO (`services/<module>/*.dto.ts`), or lib (`libs/`), you **must** rebuild the catalog before committing:
 >
 > ```bash
 > npm run registry:snapshot
@@ -43,7 +43,7 @@ A **production-grade Expo + React Native boilerplate** for cross-platform mobile
 - **State**: Zustand 5 + MMKV (never AsyncStorage)
 - **Tokens**: `expo-secure-store` only — tokens NEVER live in Zustand
 - **Data fetch**: `axiosInstance` from `libs/axios.ts` (auth header injected by interceptor from SecureStore)
-- **Validation**: Zod (DTOs in `dto/`)
+- **Validation**: Zod (DTOs in `services/<module>/`)
 - **i18n**: i18next via `libs/i18n.ts`
 - **UI kit**: [kui-native](https://github.com/kuraykaraaslan/kui-native) — git dependency pinned to a tag, re-exported from `@/components/ui`; semantic tokens (`bg-primary`, `text-text-primary`, `border-border`), same palette as next-boilerplate; brand overrides (if any) in `libs/theme/brand.ts`
 - **Icons**: FontAwesome 7 via `@fortawesome/react-native-fontawesome`
@@ -58,14 +58,14 @@ app/  (screens)  ──→  services/ + stores/  ──→  libs/axios + libs/se
               \                            /
                └──→  components/  ←──── utils/cn
                           ↑
-                       dto/ (Zod, shared with server)
+                       services/<module>/*.dto.ts (Zod, shared with server)
 ```
 
 - **`app/`** — Expo Router file-based screens. Each `.tsx` is a route. `_layout.tsx` defines layouts (Stack / Tabs / Slot). `(group)` directories are route groups stripped from URLs. `+not-found.tsx` is the 404. `+html.tsx` customizes the web HTML shell.
 - **`components/<category>/<Component>.tsx`** — reusable UI. Currently: `auth/` (AuthLayout, SSOButtons), `shell/` (AppHeader, DrawerContent, …), `ui/` (`index.ts` — kui-native re-export barrel: Button, Input, Card, Spinner, …), `common/` (Screen, ScreenHeader, LinkTile, StatTile, Badges, ConfirmDialog — next-boilerplate page patterns), `account/` and `tenant/` (cards/modals shared by several screens). Screens follow next-boilerplate's layout: `Screen` → `ScreenHeader` (PageHeader) → `Card`s; see [phases/_foundation/phase-1d-design-parity.md](phases/_foundation/phase-1d-design-parity.md).
-- **`services/<name>.service.client.ts`** — data-fetching layer. Currently service classes with static methods (`AuthClientService.login(...)`). Target per [MODERNIZATION.MD](MODERNIZATION.MD): hook pipeline (`useAuth` → `axiosInstance`).
+- **`services/<module>/<module>.service.client.ts`** — data-fetching layer. Currently service classes with static methods (`AuthClientService.login(...)`). Target per [MODERNIZATION.MD](MODERNIZATION.MD): hook pipeline (`useAuth` → `axiosInstance`).
 - **`stores/<name>Store.ts`** — Zustand stores, persisted via MMKV (`zustandStorage`). E.g. `useAuthStore`, `useTenantStore`, `useAppStore`.
-- **`dto/<name>.dto.ts`** — Zod schemas + inferred types. Shared contracts with the backend.
+- **`services/<module>/<module>.dto.ts`** — Zod schemas + inferred types. Shared contracts with the backend.
 - **`libs/<name>.ts`** — primitives: `axios.ts`, `env.ts` (Zod-validated env), `i18n.ts`, `logger.ts`, `mmkv.ts`, `secureStorage.ts`, `zustandStorage.ts`.
 - **`utils/cn.ts`** — `cn()` className helper (clsx + tailwind-merge analogue).
 
@@ -98,9 +98,8 @@ app/  (screens)  ──→  services/ + stores/  ──→  libs/axios + libs/se
 │   ├── auth/                 ← AuthLayout, SSOButtons
 │   └── ui/index.ts           ← kui-native re-exports (Button, Input, Card, Spinner, …)
 │
-├── services/                 ← *.service.client.ts (data fetching via axiosInstance)
+├── services/                 ← one folder per domain: <domain>/<name>.service.client.ts + <name>.dto.ts (auth, tenant, user); common.dto.ts at the root
 ├── stores/                   ← Zustand stores (MMKV-persisted)
-├── dto/                      ← Zod schemas + types (shared contract with server)
 ├── libs/                     ← primitives (axios, env, i18n, logger, mmkv, secureStorage, zustandStorage)
 ├── utils/                    ← cn() and other helpers
 ├── config/                   ← runtime config
@@ -126,7 +125,7 @@ Examples:
 ```ts
 import { useAuthStore } from "@/stores/authStore";
 import { AuthClientService } from "@/services/auth.service.client";
-import { LoginRequest } from "@/dto/auth.dto";
+import { LoginRequest } from "@/services/auth/auth.dto";
 import { Button, Spinner } from "@/components/ui";
 import { cn } from "@/utils/cn";
 import axiosInstance from "@/libs/axios";
@@ -142,9 +141,9 @@ import { getToken } from "@/libs/secureStorage";
 | `app/**/+not-found.tsx` | 404 / catch-all |
 | `app/+html.tsx` | Web-only HTML shell |
 | `components/<category>/<Component>.tsx` | Reusable UI; PascalCase, named export preferred |
-| `services/<name>.service.client.ts` | Data-fetching service (class with static methods today; hook pipeline tomorrow) |
+| `services/<module>/<module>.service.client.ts` | Data-fetching service (class with static methods today; hook pipeline tomorrow) |
 | `stores/<name>Store.ts` | Zustand store; export name `use<Name>Store` |
-| `dto/<name>.dto.ts` | Zod schemas + inferred TS types |
+| `services/<module>/<module>.dto.ts` | Zod schemas + inferred TS types |
 | `libs/<name>.ts` | Primitives (axios, env, mmkv, etc.) |
 | `utils/<name>.ts` | Pure helpers |
 | `__tests__/<name>.test.ts(x)` | Jest tests |
@@ -183,9 +182,9 @@ import { getToken } from "@/libs/secureStorage";
 | see the modernization plan (current vs target) | [MODERNIZATION.MD](MODERNIZATION.MD) |
 | add a new screen | `app/<route>.tsx` (or under an existing `(group)`) |
 | add a new component | `components/<category>/<Component>.tsx` |
-| add a new data fetcher | `services/<name>.service.client.ts` + DTO in `dto/<name>.dto.ts` |
+| add a new data fetcher | `services/<module>/<module>.service.client.ts` + DTO in `services/<module>/<module>.dto.ts` |
 | add a new persistent client state | `stores/<name>Store.ts` (use `zustandStorage`) |
-| add a new DTO / schema | `dto/<name>.dto.ts` (Zod) |
+| add a new DTO / schema | `services/<module>/<module>.dto.ts` (Zod) |
 | add a new primitive (axios interceptor, env key, etc.) | `libs/<name>.ts` |
 | add a new translation key | `locales/<lang>/<namespace>.json` |
 | configure Expo (icons, splash, plugins) | [app.config.ts](app.config.ts) |
@@ -197,8 +196,8 @@ import { getToken } from "@/libs/secureStorage";
 1. Create `app/<route>.tsx` (or `app/(group)/<route>.tsx` to put it under an existing layout/group).
 2. Default-export a component (this is the screen).
 3. If it needs custom navigation chrome, add a sibling `_layout.tsx`.
-4. Wire the data path: import the relevant `services/*.service.client.ts` and the matching `stores/*Store.ts`.
-5. If it needs new DTOs, add them to `dto/<x>.dto.ts`.
+4. Wire the data path: import the relevant `services/**/*.service.client.ts` and the matching `stores/*Store.ts`.
+5. If it needs new DTOs, add them to `services/<module>/<module>.dto.ts`.
 6. Add tests under `__tests__/`.
 7. **Rebuild the AI catalog: `npm run registry:snapshot`**.
 

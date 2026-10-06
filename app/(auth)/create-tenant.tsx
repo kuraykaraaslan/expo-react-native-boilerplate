@@ -11,7 +11,7 @@ import { AuthShell } from '@/components/auth/AuthShell';
 import { Button, Input, Textarea } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { TenantClientService } from '@/services/tenant.service.client';
+import { TenantClientService } from '@/services/tenant/tenant.service.client';
 
 export default function CreateTenantScreen() {
   const { t } = useTranslation();

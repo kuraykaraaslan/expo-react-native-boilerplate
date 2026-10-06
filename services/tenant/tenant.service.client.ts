@@ -14,7 +14,7 @@ import {
   CreateTenantResponseSchema,
   SendInvitationRequest,
   UpdateMemberRequest,
-} from "@/dto/tenant.dto";
+} from "@/services/tenant/tenant.dto";
 
 export class TenantClientService {
   // ── System tenant endpoints ────────────────────────────────────────────────

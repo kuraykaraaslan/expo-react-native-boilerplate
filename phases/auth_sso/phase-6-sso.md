@@ -17,7 +17,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 
 ## 6.1 Sağlayıcı listesi
 
-- [ ] `services/sso.service.client.ts` (Faz 3'te oluşturuldu) → `getProviders()` `GET /auth/sso` yanıtı `{providers: [...]}`, `SSOProvidersResponseSchema` ile parse edilir.
+- [ ] `services/auth/sso.service.client.ts` (Faz 3'te oluşturuldu) → `getProviders()` `GET /auth/sso` yanıtı `{providers: [...]}`, `SSOProvidersResponseSchema` ile parse edilir.
 - [ ] `components/auth/SSOButtons.tsx` → içindeki **sabit sağlayıcı listesi kaldırılır**; tenant'ın izin verdikleri sunucudan gelir (`SSOService.isProviderEnabled` tenant başına gate'liyor).
 - [ ] Sağlayıcı ikonları `@fortawesome/free-brands-svg-icons`'tan eşlenir (AGENTS.md §6 Kural 10: FontAwesome dışı ikon kütüphanesi yok). Karşılığı olmayan sağlayıcı için nötr fallback.
 - [ ] Liste boşsa SSO bölümü **hiç render edilmez** (ayırıcı çizgi dahil).
@@ -55,7 +55,7 @@ NEREDE KALDIK: phases/README.md §Sıra
 
 ## Yeniden kullan
 
-- `services/sso.service.client.ts` + `dto/sso.dto.ts` — Faz 3'te oluşturuldu, burada yalnız tüketilir.
+- `services/auth/sso.service.client.ts` + `services/auth/sso.dto.ts` — Faz 3'te oluşturuldu, burada yalnız tüketilir.
 - `libs/secureStorage.ts` tenant başına anahtarlar (Faz 2).
 - `stores/tenantStore.ts:activeTenantId` (Faz 5) — `state`'in tenant yarısı buradan.
 - `libs/apiError.ts` (Faz 2), `libs/logger.ts`, `sonner-native`.

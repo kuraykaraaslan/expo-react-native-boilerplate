@@ -6,10 +6,10 @@ import { toast } from 'sonner-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { Button, Input, Modal, Select } from '@/components/ui';
-import { SendInvitationRequestSchema, type MemberRole } from '@/dto/tenant.dto';
+import { SendInvitationRequestSchema, type MemberRole } from '@/services/tenant/tenant.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { TenantClientService } from '@/services/tenant.service.client';
+import { TenantClientService } from '@/services/tenant/tenant.service.client';
 
 type InviteMemberModalProps = {
   tenantId: string;

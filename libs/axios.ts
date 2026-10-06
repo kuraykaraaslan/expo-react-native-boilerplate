@@ -1,6 +1,6 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { toast } from "sonner-native";
-import { DeviceTokenPairSchema } from "@/dto/auth.dto";
+import { DeviceTokenPairSchema } from "@/services/auth/auth.dto";
 import { markHandled, normalizeApiError, type NormalizedApiError } from "@/libs/apiError";
 import { env } from "@/libs/env";
 import i18n from "@/libs/i18n";

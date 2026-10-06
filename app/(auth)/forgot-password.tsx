@@ -8,10 +8,10 @@ import { faEnvelope, faEnvelopeCircleCheck, faKey } from '@fortawesome/free-soli
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { AlertBanner, Button, Input } from '@/components/ui';
-import { ForgotPasswordRequestSchema } from '@/dto/auth.dto';
+import { ForgotPasswordRequestSchema } from '@/services/auth/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { AuthClientService } from '@/services/auth.service.client';
+import { AuthClientService } from '@/services/auth/auth.service.client';
 
 export default function ForgotPasswordScreen() {
   const { t } = useTranslation();
