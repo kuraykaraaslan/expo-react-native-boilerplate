@@ -46,7 +46,7 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 | 1C | [_foundation/phase-1c-kui-native-dependency.md](_foundation/phase-1c-kui-native-dependency.md) | kui-native git dependency + single design language | ✅ `ff2e1e1` |
 | 1D | [_foundation/phase-1d-design-parity.md](_foundation/phase-1d-design-parity.md) | next-boilerplate visual parity (color, font, all screens) | ✅ `717be69` · kui-native `v0.3.1` |
 | 2 | [_foundation/phase-2-transport.md](_foundation/phase-2-transport.md) | Transport layer (device bearer) | ✅ `feat/transport` |
-| 3 | [auth/phase-3-dto-services.md](auth/phase-3-dto-services.md) | DTO + service alignment | ⬜ Pending |
+| 3 | [auth/phase-3-dto-services.md](auth/phase-3-dto-services.md) | DTO + service alignment | ✅ `feat/dto-services` |
 | 4 | [auth/phase-4-auth-screens.md](auth/phase-4-auth-screens.md) | Auth core screens | ⬜ Pending |
 | 5 | [tenant/phase-5-tenancy-core.md](tenant/phase-5-tenancy-core.md) | Tenancy core | ⬜ Pending |
 | 6 | [auth_sso/phase-6-sso.md](auth_sso/phase-6-sso.md) | SSO / OAuth | ⛔ **BLOCKED ON A SERVER CHANGE** (see K4) |

@@ -32,7 +32,7 @@ In other words, without this set no auth call returns 200; even if it did, `.par
 
 | Phase | File | Topic | Priority |
 |-----|-------|------|---------|
-| 3 | [phase-3-dto-services.md](phase-3-dto-services.md) | DTO + service alignment | ⬜ Pending |
+| 3 | [phase-3-dto-services.md](phase-3-dto-services.md) | DTO + service alignment | ✅ `feat/dto-services` |
 | 4 | [phase-4-auth-screens.md](phase-4-auth-screens.md) | Core auth screens | ⬜ Pending |
 
 ## Locked decisions

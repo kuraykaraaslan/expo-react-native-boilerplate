@@ -114,3 +114,42 @@ All `/api/system/...` paths are **deleted**. Paths are written **relative** to t
 - **Missing `OTPActionEnum`:** an OTP call that does not send `action` returns 400 and the user is shown "Validation error" — verify with `git grep` that all three OTP call sites were updated.
 - **Breaking out-of-scope methods:** if the path is cut wrongly while removing the `/api/tenant/{id}` prefix from the members / invitations methods, out-of-scope screens break; tests for these methods must also be added to the handlers.
 - **`reset-password` field-name trap:** the server accepts `password` but its internal DTO uses `newPassword` — if the client sends `newPassword` it gets 400.
+
+---
+
+## ✅ CODED — 2026-10-06 (branch `feat/dto-services`)
+
+Verification:
+- typecheck 0 errors.
+- test:ci 70/70: 22 auth, 10 user, 26 tenant + SSO, 12 transport.
+- Web export OK, and a smoke render of all 15 screens against mocks that use the server's real shapes: no page errors, and every request goes to `/api/tenant/{activeTenantId}/…` on a known route.
+- Mutation check: reintroducing the plan's mistakes (logout via `POST /auth/logout`, `/read` suffix, `pendingInvitations` key, `newPassword` in reset) fails the tests each time.
+- `git grep "/api/system"` is empty in code (only the old `MODERNIZATION.MD` table still lists it); `git grep "api/tenant/" -- services` is empty.
+
+The server contract was read from **next-boilerplate `main` (`91c9efb`, 2026-10-05)**. The Ubuntu/WSL distro would not start, so the route handlers and `Safe*` schemas were taken from a read-only sparse clone made with the existing GitHub credentials. The device routes in that clone match the ones read from the local working copy earlier.
+
+**Corrections to this plan** (each checked against the server source; the plan was wrong or incomplete):
+- **`MyTenantsResponse` keeps `invitations`.** The handler's variable is named `pendingInvitations`, the JSON key is `invitations`. The plan said both fields were misnamed; only the missing `delegatedTenants` (always `[]` today) is new.
+- **Memberships in `GET /auth/me/tenants` have no top-level `tenantId` or `userId`**, only `{tenantMemberId, memberRole, memberStatus, tenant}`. The schema lifts `tenantId` from `tenant.tenantId` and the store holds that `TenantMembership`.
+- **`TenantStatus` is `ACTIVE | INACTIVE | PENDING | SUSPENDED | DELETED | ARCHIVED`**, not the app's old `ACTIVE | SUSPENDED | PENDING_DELETION`. An `INACTIVE` tenant would have broken `.parse()`. `UserRole` is `USER | ADMIN` (no `GUEST`).
+- **`POST /tenants/create` enforces a 2-character minimum**, so the plan's "loosen to `min(1)`" was dropped.
+- **`GET /auth/session` returns a slim user** (`userId`, `email`, `userRole`) plus `tenant` and `tenantMember`, not a `SafeUser`. Session restore therefore keeps the persisted user instead of replacing it.
+- **`POST /auth/otp/verify` answers `{message}` only**, no user. `verifyOTP` returns nothing; the 2FA screen re-reads the session.
+- **Notifications**: marking one read is `PUT …/notifications/{id}` (no `/read` suffix); there is also `DELETE …/{id}`. Items require `message` and `createdAt`.
+- **`PUT /auth/me/profile` requires all five keys** (nullable, not optional); the schema mirrors that. Social platforms are a 40+ value server enum, kept as a string.
+- **`PUT /members/{id}` can answer `202 {pendingApproval: true}` with no `member`** (dual control). `updateMember` returns `{member?, pendingApproval?}`; the edit modal shows a notice instead of throwing.
+- **Sessions carry `tenantId`** and `metadata` (device, geo); new `getSecurity()` (`GET /auth/me/security`) added for Phase 4's OTP method list.
+
+**Deliberate deviations:**
+- **Sign-out revokes with `DELETE /auth/me/sessions/{id}`, not `POST /auth/logout`.** The logout route only reads the `accessToken` *cookie*; with a bearer token it answers 200 and revokes nothing, leaving the session and its 7-day refresh token alive. The session id is read from the access token (`libs/jwt.ts`, `userSessionId` claim). `libs/logout.ts` now revokes every tenant session the device holds (best effort), then clears local state. Worth reporting to next-boilerplate, which is read-only for this project.
+- **No `deviceRefresh` service method.** The refresh call stays in `libs/axios.ts`; a service method would make `axios` and the auth service import each other.
+- **Minimal call-site work pulled forward from Phases 4/5** so the app compiles and works at this commit: `libs/session.ts` (`startDeviceSession`: tokens → active tenant → user), login uses `deviceLogin` with device info and "remember me", 2FA sends `action: 'authenticate'`, the register form drops `name` (the server has no such field), `UserMenu` / `ProfileCard` read the name from `userProfile` (`utils/user.ts`), `select-tenant` only switches to an organization this device already holds a session for.
+- **The change-email screen is removed**, with its hub tile and the "Change" link in the security card: the server has no `/auth/change-email` route and next-boilerplate has no such UI either.
+- **`MagicLinkRequest` / `MagicLinkConsume` have DTOs but no service methods** (the plan listed no methods and the replies are unverified).
+- **SSO provider lists drop unknown providers** instead of failing the whole parse; the other DTOs use `nullish()` where the server's JSON can omit a key, and plain `string` where the server enum is open-ended (social platform, language, currency, domain status).
+
+**Still open for Phase 4/5** (found while doing this phase):
+- The login `mustChangePassword` screen, the `passwordExpiresInDays` warning, `reset-password`, and gating the splash on session restore.
+- Sessions UI: show `metadata.device` / `metadata.geo` and mark the current session. The current id is readable from the token (`getSessionIdFromToken`); the server does not say which row is current.
+- Signing in to a second organization (select-tenant currently refuses a switch without a stored session) and `deviceLogin(payload, tenantId)` is ready for it.
+- Faz 2's note stands: a lost membership ends the session and returns to login rather than `/select-tenant`, because that screen sits in the `(auth)` group.

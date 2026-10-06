@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-06T11:10:38.472Z",
+  "generatedAt": "2026-10-06T16:34:46.191Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -115,14 +115,6 @@
       "filePath": "app/(drawer)/settings/_layout.tsx",
       "route": "/settings/_layout",
       "kind": "layout",
-      "group": "drawer",
-      "dynamic": false,
-      "layoutChain": []
-    },
-    {
-      "filePath": "app/(drawer)/settings/change-email.tsx",
-      "route": "/settings/change-email",
-      "kind": "screen",
       "group": "drawer",
       "dynamic": false,
       "layoutChain": []
@@ -1054,28 +1046,37 @@
       "name": "auth.service.client",
       "className": "AuthClientService",
       "methods": [
-        "login",
+        "deviceLogin",
         "logout",
         "register",
-        "sendOTP",
-        "verifyOTP",
-        "forgotPassword",
         "getSession",
         "getSessions",
         "revokeSession",
-        "changeEmail"
+        "getSecurity",
+        "sendOTP",
+        "verifyOTP",
+        "setupTOTP",
+        "enableTOTP",
+        "disableTOTP",
+        "forgotPassword",
+        "resetPassword",
+        "changePassword"
       ],
       "endpoints": [
-        "/api/system/auth/login",
-        "/api/system/auth/logout",
-        "/api/system/auth/register",
-        "/api/system/auth/otp/send",
-        "/api/system/auth/otp/verify",
-        "/api/system/auth/forgot-password",
-        "/api/system/auth/session",
-        "/api/system/auth/me/sessions",
-        "/api/system/auth/me/sessions/${sessionId}",
-        "/api/system/auth/change-email"
+        "/auth/device/login",
+        "/auth/register",
+        "/auth/session",
+        "/auth/me/sessions",
+        "/auth/me/sessions/${encodeURIComponent(sessionId)}",
+        "/auth/me/security",
+        "/auth/otp/send",
+        "/auth/otp/verify",
+        "/auth/totp/setup",
+        "/auth/totp/enable",
+        "/auth/totp/disable",
+        "/auth/forgot-password",
+        "/auth/reset-password",
+        "/auth/change-password"
       ]
     },
     {
@@ -1087,12 +1088,13 @@
         "getNotifications",
         "markAsRead",
         "markAllAsRead",
+        "remove",
         "clearAll"
       ],
       "endpoints": [
-        "/api/system/auth/me/notifications",
-        "/api/system/auth/me/notifications/${notificationId}/read",
-        "/api/system/auth/me/notifications/read-all"
+        "/auth/me/notifications",
+        "/auth/me/notifications/${encodeURIComponent(notificationId)}",
+        "/auth/me/notifications/read-all"
       ]
     },
     {
@@ -1102,10 +1104,27 @@
       "className": "ProfileClientService",
       "methods": [
         "getProfile",
-        "updateProfile"
+        "updateProfile",
+        "getPreferences",
+        "updatePreferences"
       ],
       "endpoints": [
-        "/api/system/auth/me/profile"
+        "/auth/me/profile",
+        "/auth/me/preferences"
+      ]
+    },
+    {
+      "filePath": "services/auth/sso.service.client.ts",
+      "module": "auth",
+      "name": "sso.service.client",
+      "className": "SSOClientService",
+      "methods": [
+        "getProviders",
+        "getAuthUrl"
+      ],
+      "endpoints": [
+        "/auth/sso",
+        "/auth/sso/${encodeURIComponent(provider)}"
       ]
     },
     {
@@ -1116,6 +1135,8 @@
       "methods": [
         "getMyTenants",
         "createTenant",
+        "getTenantProfile",
+        "updateTenantProfile",
         "getMembers",
         "getMember",
         "updateMember",
@@ -1129,15 +1150,16 @@
         "updateTenantSettings"
       ],
       "endpoints": [
-        "/api/system/auth/me/tenants",
-        "/api/system/tenants/create",
-        "/api/tenant/${tenantId}/members",
-        "/api/tenant/${tenantId}/members/${memberId}",
-        "/api/tenant/${tenantId}/invitations",
-        "/api/tenant/${tenantId}/invitations/${invitationId}",
-        "/api/tenant/${tenantId}/invitations/accept",
-        "/api/tenant/${tenantId}/invitations/decline",
-        "/api/tenant/${tenantId}/settings"
+        "/auth/me/tenants",
+        "/tenants/create",
+        "/tenant/profile",
+        "/members",
+        "/members/${encodeURIComponent(memberId)}",
+        "/invitations",
+        "/invitations/${encodeURIComponent(invitationId)}",
+        "/invitations/accept",
+        "/invitations/decline",
+        "/settings"
       ]
     }
   ],
@@ -1167,6 +1189,7 @@
         "setUser",
         "setAuthenticated",
         "requireOtp",
+        "clearOtp",
         "logout"
       ],
       "persisted": true
@@ -1207,41 +1230,73 @@
       "name": "auth.dto",
       "schemas": [
         "OTPMethodEnum",
+        "OTPActionEnum",
         "UserRoleEnum",
-        "UserSchema",
-        "SafeUserSchema",
-        "UserSecuritySchema",
+        "UserStatusEnum",
         "SessionStatusEnum",
+        "SafeUserSchema",
+        "SessionUserSchema",
+        "TrustedDeviceSchema",
+        "UserSecuritySchema",
+        "DeviceInfoSchema",
+        "SessionMetaSchema",
         "SessionSchema",
         "LoginRequestSchema",
+        "DeviceLoginRequestSchema",
         "RegisterRequestSchema",
+        "ForgotPasswordRequestSchema",
+        "ResetPasswordRequestSchema",
+        "ChangePasswordRequestSchema",
+        "MagicLinkRequestSchema",
+        "MagicLinkConsumeSchema",
         "OTPSendRequestSchema",
         "OTPVerifyRequestSchema",
-        "ForgotPasswordRequestSchema",
-        "ChangeEmailRequestSchema",
-        "LoginResponseSchema",
+        "TOTPCodeRequestSchema",
+        "DeviceLoginResponseSchema",
+        "DeviceRefreshResponseSchema",
         "SessionResponseSchema",
+        "RegisterResponseSchema",
         "SessionsListResponseSchema",
-        "DeviceTokenPairSchema"
+        "RevokeSessionResponseSchema",
+        "MeSecurityResponseSchema",
+        "TOTPSetupResponseSchema",
+        "TOTPEnableResponseSchema",
+        "AckResponseSchema"
       ],
       "types": [
         "OTPMethod",
+        "OTPAction",
         "UserRole",
-        "User",
-        "SafeUser",
-        "UserSecurity",
+        "UserStatus",
         "SessionStatus",
+        "SafeUser",
+        "SessionUser",
+        "TrustedDevice",
+        "UserSecurity",
+        "DeviceInfo",
+        "SessionMeta",
         "Session",
         "LoginRequest",
+        "DeviceLoginRequest",
         "RegisterRequest",
+        "ForgotPasswordRequest",
+        "ResetPasswordRequest",
+        "ChangePasswordRequest",
+        "MagicLinkRequest",
+        "MagicLinkConsume",
         "OTPSendRequest",
         "OTPVerifyRequest",
-        "ForgotPasswordRequest",
-        "ChangeEmailRequest",
-        "LoginResponse",
+        "TOTPCodeRequest",
+        "DeviceLoginResponse",
+        "DeviceRefreshResponse",
         "SessionResponse",
+        "RegisterResponse",
         "SessionsListResponse",
-        "DeviceTokenPair"
+        "RevokeSessionResponse",
+        "MeSecurityResponse",
+        "TOTPSetupResponse",
+        "TOTPEnableResponse",
+        "AckResponse"
       ]
     },
     {
@@ -1263,6 +1318,7 @@
       "module": "user",
       "name": "notification.dto",
       "schemas": [
+        "NotificationActionSchema",
         "NotificationSchema",
         "NotificationsResponseSchema"
       ],
@@ -1272,22 +1328,55 @@
       ]
     },
     {
+      "filePath": "services/user/preferences.dto.ts",
+      "module": "user",
+      "name": "preferences.dto",
+      "schemas": [
+        "ThemeEnum",
+        "DateFormatEnum",
+        "TimeFormatEnum",
+        "FirstDayOfWeekEnum",
+        "UserPreferencesSchema",
+        "UpdatePreferencesRequestSchema",
+        "PreferencesResponseSchema"
+      ],
+      "types": [
+        "Theme",
+        "UserPreferences",
+        "UpdatePreferencesRequest",
+        "PreferencesResponse"
+      ]
+    },
+    {
       "filePath": "services/user/profile.dto.ts",
       "module": "user",
       "name": "profile.dto",
       "schemas": [
-        "SocialLinkPlatformEnum",
         "SocialLinkItemSchema",
         "UserProfileSchema",
         "UpdateProfileRequestSchema",
         "ProfileResponseSchema"
       ],
       "types": [
-        "SocialLinkPlatform",
         "SocialLinkItem",
         "UserProfile",
         "UpdateProfileRequest",
         "ProfileResponse"
+      ]
+    },
+    {
+      "filePath": "services/auth/sso.dto.ts",
+      "module": "auth",
+      "name": "sso.dto",
+      "schemas": [
+        "SSOProviderEnum",
+        "SSOProvidersResponseSchema",
+        "SSOAuthUrlResponseSchema"
+      ],
+      "types": [
+        "SSOProvider",
+        "SSOProvidersResponse",
+        "SSOAuthUrlResponse"
       ]
     },
     {
@@ -1303,12 +1392,18 @@
         "TenantSchema",
         "MemberUserSchema",
         "TenantMemberSchema",
+        "TenantMembershipSchema",
         "InvitationSchema",
+        "DelegatedTenantSchema",
         "MyTenantsResponseSchema",
         "MembersListResponseSchema",
         "InvitationsListResponseSchema",
         "CreateTenantResponseSchema",
+        "UpdateMemberResponseSchema",
+        "TenantProfileSchema",
+        "TenantSettingsResponseSchema",
         "CreateTenantRequestSchema",
+        "UpdateTenantProfileRequestSchema",
         "SendInvitationRequestSchema",
         "UpdateMemberRequestSchema"
       ],
@@ -1321,12 +1416,18 @@
         "Tenant",
         "MemberUser",
         "TenantMember",
+        "TenantMembership",
         "Invitation",
+        "DelegatedTenant",
         "MyTenantsResponse",
         "MembersListResponse",
         "InvitationsListResponse",
         "CreateTenantResponse",
+        "UpdateMemberResponse",
+        "TenantProfile",
+        "TenantSettingsResponse",
         "CreateTenantRequest",
+        "UpdateTenantProfileRequest",
         "SendInvitationRequest",
         "UpdateMemberRequest"
       ]
@@ -1359,8 +1460,6 @@
       "filePath": "libs/deviceInfo.ts",
       "name": "deviceInfo",
       "exports": [
-        "DeviceType",
-        "DeviceInfo",
         "getDeviceInfo"
       ]
     },
@@ -1387,6 +1486,14 @@
         "Locale",
         "LOCALE_META",
         "default"
+      ]
+    },
+    {
+      "filePath": "libs/jwt.ts",
+      "name": "jwt",
+      "exports": [
+        "decodeJwtPayload",
+        "getSessionIdFromToken"
       ]
     },
     {
@@ -1422,6 +1529,13 @@
         "setTokens",
         "clearTenantTokens",
         "clearAllTokens"
+      ]
+    },
+    {
+      "filePath": "libs/session.ts",
+      "name": "session",
+      "exports": [
+        "startDeviceSession"
       ]
     },
     {

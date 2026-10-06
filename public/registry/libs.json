@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-06T11:10:38.472Z",
+  "generatedAt": "2026-10-06T16:34:46.191Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",
@@ -29,8 +29,6 @@
       "filePath": "libs/deviceInfo.ts",
       "name": "deviceInfo",
       "exports": [
-        "DeviceType",
-        "DeviceInfo",
         "getDeviceInfo"
       ]
     },
@@ -57,6 +55,14 @@
         "Locale",
         "LOCALE_META",
         "default"
+      ]
+    },
+    {
+      "filePath": "libs/jwt.ts",
+      "name": "jwt",
+      "exports": [
+        "decodeJwtPayload",
+        "getSessionIdFromToken"
       ]
     },
     {
@@ -92,6 +98,13 @@
         "setTokens",
         "clearTenantTokens",
         "clearAllTokens"
+      ]
+    },
+    {
+      "filePath": "libs/session.ts",
+      "name": "session",
+      "exports": [
+        "startDeviceSession"
       ]
     },
     {

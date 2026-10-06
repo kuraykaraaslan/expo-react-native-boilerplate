@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-06T11:10:38.472Z",
+  "generatedAt": "2026-10-06T16:34:46.191Z",
   "services": [
     {
       "filePath": "services/auth/auth.service.client.ts",
@@ -9,28 +9,37 @@
       "name": "auth.service.client",
       "className": "AuthClientService",
       "methods": [
-        "login",
+        "deviceLogin",
         "logout",
         "register",
-        "sendOTP",
-        "verifyOTP",
-        "forgotPassword",
         "getSession",
         "getSessions",
         "revokeSession",
-        "changeEmail"
+        "getSecurity",
+        "sendOTP",
+        "verifyOTP",
+        "setupTOTP",
+        "enableTOTP",
+        "disableTOTP",
+        "forgotPassword",
+        "resetPassword",
+        "changePassword"
       ],
       "endpoints": [
-        "/api/system/auth/login",
-        "/api/system/auth/logout",
-        "/api/system/auth/register",
-        "/api/system/auth/otp/send",
-        "/api/system/auth/otp/verify",
-        "/api/system/auth/forgot-password",
-        "/api/system/auth/session",
-        "/api/system/auth/me/sessions",
-        "/api/system/auth/me/sessions/${sessionId}",
-        "/api/system/auth/change-email"
+        "/auth/device/login",
+        "/auth/register",
+        "/auth/session",
+        "/auth/me/sessions",
+        "/auth/me/sessions/${encodeURIComponent(sessionId)}",
+        "/auth/me/security",
+        "/auth/otp/send",
+        "/auth/otp/verify",
+        "/auth/totp/setup",
+        "/auth/totp/enable",
+        "/auth/totp/disable",
+        "/auth/forgot-password",
+        "/auth/reset-password",
+        "/auth/change-password"
       ]
     },
     {
@@ -42,12 +51,13 @@
         "getNotifications",
         "markAsRead",
         "markAllAsRead",
+        "remove",
         "clearAll"
       ],
       "endpoints": [
-        "/api/system/auth/me/notifications",
-        "/api/system/auth/me/notifications/${notificationId}/read",
-        "/api/system/auth/me/notifications/read-all"
+        "/auth/me/notifications",
+        "/auth/me/notifications/${encodeURIComponent(notificationId)}",
+        "/auth/me/notifications/read-all"
       ]
     },
     {
@@ -57,10 +67,27 @@
       "className": "ProfileClientService",
       "methods": [
         "getProfile",
-        "updateProfile"
+        "updateProfile",
+        "getPreferences",
+        "updatePreferences"
       ],
       "endpoints": [
-        "/api/system/auth/me/profile"
+        "/auth/me/profile",
+        "/auth/me/preferences"
+      ]
+    },
+    {
+      "filePath": "services/auth/sso.service.client.ts",
+      "module": "auth",
+      "name": "sso.service.client",
+      "className": "SSOClientService",
+      "methods": [
+        "getProviders",
+        "getAuthUrl"
+      ],
+      "endpoints": [
+        "/auth/sso",
+        "/auth/sso/${encodeURIComponent(provider)}"
       ]
     },
     {
@@ -71,6 +98,8 @@
       "methods": [
         "getMyTenants",
         "createTenant",
+        "getTenantProfile",
+        "updateTenantProfile",
         "getMembers",
         "getMember",
         "updateMember",
@@ -84,15 +113,16 @@
         "updateTenantSettings"
       ],
       "endpoints": [
-        "/api/system/auth/me/tenants",
-        "/api/system/tenants/create",
-        "/api/tenant/${tenantId}/members",
-        "/api/tenant/${tenantId}/members/${memberId}",
-        "/api/tenant/${tenantId}/invitations",
-        "/api/tenant/${tenantId}/invitations/${invitationId}",
-        "/api/tenant/${tenantId}/invitations/accept",
-        "/api/tenant/${tenantId}/invitations/decline",
-        "/api/tenant/${tenantId}/settings"
+        "/auth/me/tenants",
+        "/tenants/create",
+        "/tenant/profile",
+        "/members",
+        "/members/${encodeURIComponent(memberId)}",
+        "/invitations",
+        "/invitations/${encodeURIComponent(invitationId)}",
+        "/invitations/accept",
+        "/invitations/decline",
+        "/settings"
       ]
     }
   ]
