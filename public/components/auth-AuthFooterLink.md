@@ -4,6 +4,7 @@
 - **category:** auth
 - **filePath:** `components/auth/AuthFooterLink.tsx`
 - **exports:** `AuthFooterLink`
+- **props:** `prompt`, `label`, `testID`
 
 Import:
 

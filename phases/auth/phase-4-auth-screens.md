@@ -96,3 +96,27 @@ WHERE WE ARE: phases/README.md §Order
 - **Deep link `resetToken`:** the link scheme (`scheme` in `app.config.ts`) is added in Phase 6; the reset-password link cannot be tested before it → this phase must also offer a field where the token can be entered manually.
 - **Missing i18n key:** if a new key is added only to `en`/`tr`, the raw key shows in the other four languages.
 - **Forgetting the `consentVersion` constant:** if sent empty the server accepts it but the KVKK record is left without a trace — loss of the legal trail, a silent failure.
+
+---
+
+## ✅ CODED — 2026-10-07
+
+Branch `feat/auth-screens`. Typecheck 0 errors, jest 88/88 (18 new in `__tests__/auth-flow.test.ts`), web export includes the new routes.
+
+**What shipped**
+- **Forced password change.** `authStore.mustChangePassword` (persisted) is set by `startDeviceSession` from the login reply and cleared on a clean login. `(drawer)/_layout` redirects to `/change-password` while it is set; `(auth)/_layout` keeps a signed-in user in the group for it, the same way it does for OTP. The screen asks for current + new + confirm, and its only exit besides success is "Sign out".
+- **Expiry warning.** `passwordExpiresInDays` from the login reply shows a plural-aware warning toast.
+- **Login error paths.** A 404 (tenant gone or inactive) goes to `/select-tenant` with a toast; a 403 (not a member) stays on login with the server's message through `handleApiError`.
+- **OTP.** `userSecurity.otpMethods` is kept in `authStore.otpMethods` while the gate is closed. The method picker only appears with more than one method; `TOTP_APP` skips the send step; email/SMS resend is disabled behind a 30 s countdown (`libs/useCountdown.ts`). When enrolment is unknown (gate hit on a restored session) it offers email and SMS.
+- **Register / forgot / reset.** `constants/legal.ts` holds `CONSENT_VERSION`, sent on every sign-up. New `app/(auth)/reset-password.tsx` takes `{email, resetToken, password}` with a manual token field (prefilled from `email` / `resetToken` params); forgot-password links to it after the mail is sent. `AuthFooterLink` now also accepts `onPress`.
+- **Session restore.** The splash stays up until restore finishes (`finally` in `restoreSession`), so a signed-in user never sees login flash by.
+- **Sessions.** `utils/session.ts#describeSession` prefers `metadata.device` (+ OS) and `metadata.geo`, falling back to the user agent. The current session is the one whose id is in the access token (`getSessionIdFromToken`) and is badged "This device"; revoking it is a sign-out (`libs/logout.ts`) with its own confirm copy.
+- **Preferences.** `libs/preferences.ts`: `pullPreferences()` runs once the drawer is open (server wins for `language` / `theme`; a language without a translation is ignored); `pushPreferences()` is called from the preferences card, best effort, never undoing the local change.
+
+**Deliberate deviations:**
+- **No change-email screen** (already removed in Phase 3). `POST /auth/me/complete-email` exists but only replaces the *placeholder* address of SSO / national-ID accounts; there is no general change-email route.
+- **Wrong current password on change-password is a 401 `INVALID_CREDENTIALS`.** It is not in the refresh or session-end lists, so the transport passes it through (covered by a test: no refresh, session intact).
+- **Tokens-before-user is asserted in a test**, as the risks section asked.
+- **New strings were added to `en` and `tr` only.** `de`, `es`, `fr`, `it` have no `AUTH_UI` namespace at all (a gap from Phase 1D, not new here) and fall back to English; translating the whole namespace is a separate task.
+
+**Not verified:** nothing here was run against a live next-boilerplate or an emulator; the reset link cannot be tested end to end until Phase 6 adds a deep-link scheme.

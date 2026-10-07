@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-06T16:34:46.191Z",
+  "generatedAt": "2026-10-07T13:31:32.545Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -48,6 +48,14 @@
       "layoutChain": []
     },
     {
+      "filePath": "app/(auth)/change-password.tsx",
+      "route": "/change-password",
+      "kind": "screen",
+      "group": "auth",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
       "filePath": "app/(auth)/create-tenant.tsx",
       "route": "/create-tenant",
       "kind": "screen",
@@ -74,6 +82,14 @@
     {
       "filePath": "app/(auth)/register.tsx",
       "route": "/register",
+      "kind": "screen",
+      "group": "auth",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
+      "filePath": "app/(auth)/reset-password.tsx",
+      "route": "/reset-password",
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
@@ -239,7 +255,11 @@
       "exports": [
         "AuthFooterLink"
       ],
-      "props": []
+      "props": [
+        "prompt",
+        "label",
+        "testID"
+      ]
     },
     {
       "id": "auth/AuthShell",
@@ -1186,10 +1206,14 @@
         "isAuthenticated",
         "user",
         "otpRequired",
+        "otpMethods",
+        "mustChangePassword",
         "setUser",
         "setAuthenticated",
         "requireOtp",
         "clearOtp",
+        "requirePasswordChange",
+        "clearPasswordChange",
         "logout"
       ],
       "persisted": true
@@ -1519,6 +1543,14 @@
       ]
     },
     {
+      "filePath": "libs/preferences.ts",
+      "name": "preferences",
+      "exports": [
+        "pullPreferences",
+        "pushPreferences"
+      ]
+    },
+    {
       "filePath": "libs/secureStorage.ts",
       "name": "secureStorage",
       "exports": [
@@ -1536,6 +1568,13 @@
       "name": "session",
       "exports": [
         "startDeviceSession"
+      ]
+    },
+    {
+      "filePath": "libs/useCountdown.ts",
+      "name": "useCountdown",
+      "exports": [
+        "useCountdown"
       ]
     },
     {
