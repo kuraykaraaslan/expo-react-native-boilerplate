@@ -22,7 +22,8 @@ const envSchema = z.object({
    */
   EXPO_PUBLIC_DEFAULT_TENANT_ID: z
     .string({ required_error: "EXPO_PUBLIC_DEFAULT_TENANT_ID is required (see .env.example)" })
-    .min(1, "EXPO_PUBLIC_DEFAULT_TENANT_ID is required (see .env.example)"),
+    .min(1, "EXPO_PUBLIC_DEFAULT_TENANT_ID is required (see .env.example)")
+    .uuid("EXPO_PUBLIC_DEFAULT_TENANT_ID must be the tenant's UUID (see .env.example)"),
   EXPO_PUBLIC_APP_NAME: z.string().default("App"),
   EXPO_PUBLIC_APP_VERSION: z.string().default("1.0.0"),
   EXPO_PUBLIC_FRONTEND_URL: z.string().default("http://localhost:3000"),

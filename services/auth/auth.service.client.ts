@@ -79,8 +79,8 @@ export class AuthClientService {
   // ── Session ────────────────────────────────────────────────────────────────
 
   /** GET /auth/session — `user` here is the slim `{userId, email, userRole}`, plus tenant and membership. */
-  static async getSession(): Promise<SessionResponse> {
-    const res = await axiosInstance.get("/auth/session");
+  static async getSession(tenantId?: string): Promise<SessionResponse> {
+    const res = await axiosInstance.get("/auth/session", { tenantId });
     return SessionResponseSchema.parse(res.data);
   }
 

@@ -62,10 +62,9 @@ export default function LoginScreen() {
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       const { statusCode } = normalizeApiError(err);
-      // The tenant is gone or inactive: pick another organization instead of retrying.
+      // The tenant is gone or inactive: retrying cannot help, and there is no session to list other organizations with.
       if (statusCode === 404) {
         toast.error(t('AUTH_UI.TENANT_UNAVAILABLE'));
-        router.push('/select-tenant');
         return;
       }
       handleApiError(err, 'LoginScreen.login');

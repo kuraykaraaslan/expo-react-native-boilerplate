@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { env } from "@/libs/env";
 import { zustandMMKVStorage } from "@/libs/zustandStorage";
-import type { TenantMembership } from "@/services/tenant/tenant.dto";
+import type { DelegatedTenant, Invitation, TenantMembership } from "@/services/tenant/tenant.dto";
 
 // ============================================================================
 // Tenant Store
@@ -14,13 +14,21 @@ import type { TenantMembership } from "@/services/tenant/tenant.dto";
 interface TenantState {
   selectedTenantMembership: TenantMembership | null;
   memberships: TenantMembership[];
+  /** Organizations reachable through delegation (always empty on today's server). */
+  delegatedTenants: DelegatedTenant[];
+  /** Invitations waiting for this user — shown as a notice only. */
+  pendingInvitations: Invitation[];
+  /** The active organization became unusable: layouts send the user to /select-tenant. Not persisted. */
+  needsTenantSelection: boolean;
   /** Tenant requests are addressed to; null → EXPO_PUBLIC_DEFAULT_TENANT_ID. */
   activeTenantId: string | null;
   /** Every tenant a token pair was ever stored for — SecureStore can't list keys. */
   knownTenantIds: string[];
   // ── Actions ──────────────────────────────────────────────────────────────
   setMemberships: (memberships: TenantMembership[]) => void;
-  selectMembership: (membership: TenantMembership) => void;
+  setTenantOverview: (overview: { tenants: TenantMembership[]; delegatedTenants: DelegatedTenant[]; invitations: Invitation[] }) => void;
+  setNeedsTenantSelection: (value: boolean) => void;
+  selectMembership: (membership: TenantMembership | null) => void;
   setActiveTenantId: (tenantId: string) => void;
   rememberTenant: (tenantId: string) => void;
   forgetTenant: (tenantId: string) => void;
@@ -32,10 +40,18 @@ export const useTenantStore = create<TenantState>()(
     (set): TenantState => ({
       selectedTenantMembership: null,
       memberships: [],
+      delegatedTenants: [],
+      pendingInvitations: [],
+      needsTenantSelection: false,
       activeTenantId: null,
       knownTenantIds: [],
 
       setMemberships: (memberships) => set({ memberships }),
+
+      setTenantOverview: ({ tenants, delegatedTenants, invitations }) =>
+        set({ memberships: tenants, delegatedTenants, pendingInvitations: invitations }),
+
+      setNeedsTenantSelection: (needsTenantSelection) => set({ needsTenantSelection }),
 
       selectMembership: (membership) =>
         set({ selectedTenantMembership: membership }),
@@ -50,7 +66,7 @@ export const useTenantStore = create<TenantState>()(
 
       // Keeps knownTenantIds: clearAllTokens still needs it after a logout.
       flush: () =>
-        set({ selectedTenantMembership: null, memberships: [], activeTenantId: null }),
+        set({ selectedTenantMembership: null, memberships: [], delegatedTenants: [], pendingInvitations: [], needsTenantSelection: false, activeTenantId: null }),
     }),
     {
       name: "tenant-storage",

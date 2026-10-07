@@ -30,10 +30,11 @@ export default function CreateTenantScreen() {
     setNameError(undefined);
     setSaving(true);
     try {
-      await TenantClientService.createTenant({ name: trimmed, description: description.trim() || null });
+      const { tenant } = await TenantClientService.createTenant({ name: trimmed, description: description.trim() || null });
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       toast.success(t('AUTH_UI.ORG_CREATED'));
-      router.replace('/select-tenant');
+      // The new organization has no token pair on this device yet: sign in to it as its OWNER.
+      router.replace({ pathname: '/tenant-login', params: { tenantId: tenant.tenantId, name: tenant.name } });
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       handleApiError(err, 'CreateTenantScreen.create');

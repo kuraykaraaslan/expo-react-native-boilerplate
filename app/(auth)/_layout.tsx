@@ -17,8 +17,6 @@ export default function AuthLayout() {
       <Stack.Screen name="login" />
       <Stack.Screen name="register" />
       <Stack.Screen name="2fa" />
-      <Stack.Screen name="select-tenant" />
-      <Stack.Screen name="create-tenant" />
       <Stack.Screen name="forgot-password" />
       <Stack.Screen name="reset-password" />
       <Stack.Screen name="change-password" />

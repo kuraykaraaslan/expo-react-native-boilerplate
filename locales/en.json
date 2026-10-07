@@ -101,7 +101,8 @@
         "NETWORK": "Can't reach the server. Check your connection and try again.",
         "RATE_LIMITED": "Too many requests. Try again in {{seconds}} seconds.",
         "SESSION_ENDED": "Your session has ended. Please sign in again.",
-        "ORGANIZATION_UNAVAILABLE": "This organization is no longer available to you. Please sign in again."
+        "ORGANIZATION_UNAVAILABLE": "This organization is no longer available to you. Please sign in again.",
+        "ORGANIZATION_SWITCH": "That organization is no longer available to you. Pick another one."
     },
     "SETTINGS": {
         "LANGUAGE": "Language",
@@ -159,7 +160,8 @@
         "USER_MENU_A11Y": "Account menu for {{name}}",
         "MY_PROFILE": "My Profile",
         "SIGN_OUT": "Sign out",
-        "PLATFORM": "Platform"
+        "PLATFORM": "Platform",
+        "SWITCH_ORG_A11Y": "Switch organization, current: {{name}}"
     },
     "AUTH_UI": {
         "LOGIN_TITLE": "Welcome back",
@@ -251,7 +253,18 @@
         "OTP_TOTP": "Authenticator app",
         "OTP_TOTP_HINT": "The code shown in your app",
         "OTP_TOTP_CODE_HINT": "Enter the 6-digit code from your authenticator app",
-        "RESEND_IN": "Resend in {{time}}s"
+        "RESEND_IN": "Resend in {{time}}s",
+        "ORG_CURRENT": "Current",
+        "ORGS_UNAVAILABLE": "Unavailable",
+        "MEMBERSHIP_INACTIVE": "Inactive",
+        "MEMBERSHIP_SUSPENDED": "Suspended",
+        "MEMBERSHIP_PENDING": "Pending approval",
+        "PENDING_INVITES_one": "You have {{count}} pending invitation.",
+        "PENDING_INVITES_other": "You have {{count}} pending invitations.",
+        "BACK_TO_APP": "Back to the app",
+        "TENANT_LOGIN_TITLE": "Sign in to {{name}}",
+        "TENANT_LOGIN_SUBTITLE": "Enter your password to continue as {{email}}",
+        "THIS_ORG": "this organization"
     },
     "DASHBOARD": {
         "TITLE": "Dashboard",
@@ -364,7 +377,12 @@
         "STATUS_INACTIVE": "Inactive",
         "STATUS_PENDING": "Pending",
         "STATUS_DELETED": "Deleted",
-        "STATUS_ARCHIVED": "Archived"
+        "STATUS_ARCHIVED": "Archived",
+        "SAVED": "Organization updated",
+        "EDIT_CARD": "Edit organization",
+        "EDIT_CARD_DESC": "Owners and admins can change these",
+        "SAVE": "Save changes",
+        "READ_ONLY": "Only owners and admins can edit the organization."
     },
     "MEMBERS": {
         "TITLE": "Members",

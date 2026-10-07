@@ -135,12 +135,30 @@ function refreshTenant(tenantId: string): Promise<RefreshOutcome> {
 
 // ── Session end ─────────────────────────────────────────────────────────────
 
+async function findOtherSignedInTenant(lostTenantId: string): Promise<string | null> {
+  for (const id of useTenantStore.getState().knownTenantIds) {
+    if (id !== lostTenantId && (await getToken("accessToken", id))) return id;
+  }
+  return null;
+}
+
 async function endTenantSession(tenantId: string, noticeKey: string): Promise<void> {
   await clearTenantTokens(tenantId);
   // Another tenant's stored pair died in the background: stay signed in here.
   if (tenantId !== getActiveTenantId()) return;
   const auth = useAuthStore.getState();
   if (!auth.isAuthenticated) return; // already ended by a concurrent request
+  // The device may hold sessions for other organizations: stay signed in on one of
+  // them and let the guards send the user to /select-tenant instead of to login.
+  const fallback = await findOtherSignedInTenant(tenantId);
+  if (fallback) {
+    const tenantState = useTenantStore.getState();
+    tenantState.setActiveTenantId(fallback);
+    tenantState.selectMembership(null);
+    tenantState.setNeedsTenantSelection(true);
+    toast.error(i18n.t("ERRORS.ORGANIZATION_SWITCH"));
+    return;
+  }
   auth.logout();
   useTenantStore.getState().flush();
   toast.error(i18n.t(noticeKey));

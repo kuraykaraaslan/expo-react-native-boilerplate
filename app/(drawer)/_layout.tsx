@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Redirect } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { useAuthStore } from '@/stores/authStore';
+import { useTenantStore } from '@/stores/tenantStore';
 import { DrawerContent } from '@/components/shell/DrawerContent';
 import { AppHeader } from '@/components/shell/AppHeader';
 import { pullPreferences } from '@/libs/preferences';
@@ -11,6 +12,7 @@ export default function DrawerLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const otpRequired = useAuthStore((s) => s.otpRequired);
   const mustChangePassword = useAuthStore((s) => s.mustChangePassword);
+  const needsTenantSelection = useTenantStore((s) => s.needsTenantSelection);
   const t = useThemeTokens();
   const open = isAuthenticated && !otpRequired && !mustChangePassword;
 
@@ -29,6 +31,10 @@ export default function DrawerLayout() {
   // Expired or admin-forced password: nothing else is reachable until it is changed.
   if (mustChangePassword) {
     return <Redirect href="/change-password" />;
+  }
+  // The active organization became unusable but the device holds another session: pick one.
+  if (needsTenantSelection) {
+    return <Redirect href="/select-tenant" />;
   }
 
   return (

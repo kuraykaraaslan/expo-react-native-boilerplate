@@ -1,4 +1,5 @@
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { router } from 'expo-router';
 import { DrawerContentScrollView } from 'expo-router/drawer';
 import type { DrawerContentComponentProps } from 'expo-router/drawer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,6 +10,7 @@ import {
   faCircleUser,
   faEnvelopeOpenText,
   faGear,
+  faChevronDown,
   faHouse,
   faLaptop,
   faShieldHalved,
@@ -45,9 +47,23 @@ export function DrawerContent(props: DrawerContentComponentProps) {
         <View className="h-7 w-7 items-center justify-center rounded-lg bg-primary" accessible={false}>
           <FontAwesomeIcon icon={faShieldHalved} size={14} color={tokens['primary-fg']} />
         </View>
-        <Text className="flex-1 text-sm font-semibold text-text-primary" numberOfLines={1}>
-          {tenantName ?? t('SHELL.PLATFORM')}
-        </Text>
+        {/* Tapping the organization name opens the switcher. */}
+        <Pressable
+          onPress={() => {
+            props.navigation.closeDrawer();
+            router.push('/select-tenant');
+          }}
+          accessibilityRole="button"
+          accessibilityLabel={t('SHELL.SWITCH_ORG_A11Y', { name: tenantName ?? t('SHELL.PLATFORM') })}
+          hitSlop={8}
+          className="min-w-0 flex-1 flex-row items-center gap-2"
+          testID="shell-switch-org"
+        >
+          <Text className="shrink text-sm font-semibold text-text-primary" numberOfLines={1}>
+            {tenantName ?? t('SHELL.PLATFORM')}
+          </Text>
+          <FontAwesomeIcon icon={faChevronDown} size={10} color={tokens['text-disabled']} />
+        </Pressable>
       </View>
 
       <DrawerContentScrollView {...props} contentContainerClassName="px-2 pb-4" contentContainerStyle={{ paddingTop: 4 }}>

@@ -101,7 +101,8 @@
         "NETWORK": "Sunucuya ulaşılamıyor. Bağlantınızı kontrol edip tekrar deneyin.",
         "RATE_LIMITED": "Çok fazla istek. {{seconds}} saniye sonra tekrar deneyin.",
         "SESSION_ENDED": "Oturumunuz sona erdi. Lütfen tekrar giriş yapın.",
-        "ORGANIZATION_UNAVAILABLE": "Bu organizasyona artık erişiminiz yok. Lütfen tekrar giriş yapın."
+        "ORGANIZATION_UNAVAILABLE": "Bu organizasyona artık erişiminiz yok. Lütfen tekrar giriş yapın.",
+        "ORGANIZATION_SWITCH": "Bu organizasyona artık erişemiyorsunuz. Başka birini seçin."
     },
     "SETTINGS": {
         "LANGUAGE": "Dil",
@@ -159,7 +160,8 @@
         "USER_MENU_A11Y": "{{name}} için hesap menüsü",
         "MY_PROFILE": "Profilim",
         "SIGN_OUT": "Çıkış yap",
-        "PLATFORM": "Platform"
+        "PLATFORM": "Platform",
+        "SWITCH_ORG_A11Y": "Organizasyon değiştir, geçerli: {{name}}"
     },
     "AUTH_UI": {
         "LOGIN_TITLE": "Tekrar hoş geldiniz",
@@ -251,7 +253,18 @@
         "OTP_TOTP": "Doğrulayıcı uygulama",
         "OTP_TOTP_HINT": "Uygulamanızda görünen kod",
         "OTP_TOTP_CODE_HINT": "Doğrulayıcı uygulamanızdaki 6 haneli kodu girin",
-        "RESEND_IN": "{{time}} sn sonra tekrar gönder"
+        "RESEND_IN": "{{time}} sn sonra tekrar gönder",
+        "ORG_CURRENT": "Geçerli",
+        "ORGS_UNAVAILABLE": "Kullanılamıyor",
+        "MEMBERSHIP_INACTIVE": "Pasif",
+        "MEMBERSHIP_SUSPENDED": "Askıya alındı",
+        "MEMBERSHIP_PENDING": "Onay bekliyor",
+        "PENDING_INVITES_one": "{{count}} bekleyen davetiniz var.",
+        "PENDING_INVITES_other": "{{count}} bekleyen davetiniz var.",
+        "BACK_TO_APP": "Uygulamaya dön",
+        "TENANT_LOGIN_TITLE": "{{name}} organizasyonuna giriş",
+        "TENANT_LOGIN_SUBTITLE": "{{email}} olarak devam etmek için şifrenizi girin",
+        "THIS_ORG": "bu organizasyon"
     },
     "DASHBOARD": {
         "TITLE": "Panel",
@@ -364,7 +377,12 @@
         "STATUS_INACTIVE": "Pasif",
         "STATUS_PENDING": "Bekliyor",
         "STATUS_DELETED": "Silindi",
-        "STATUS_ARCHIVED": "Arşivlendi"
+        "STATUS_ARCHIVED": "Arşivlendi",
+        "SAVED": "Organizasyon güncellendi",
+        "EDIT_CARD": "Organizasyonu düzenle",
+        "EDIT_CARD_DESC": "Bunları sahipler ve yöneticiler değiştirebilir",
+        "SAVE": "Değişiklikleri kaydet",
+        "READ_ONLY": "Organizasyonu yalnızca sahipler ve yöneticiler düzenleyebilir."
     },
     "MEMBERS": {
         "TITLE": "Üyeler",
