@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { Card, Select } from '@/components/ui';
 import { LOCALE_META, SUPPORTED_LOCALES, type Locale } from '@/libs/i18n';
+import { pushPreferences } from '@/libs/preferences';
 import { useTheme } from '@/libs/theme/ThemeContext';
 import { useAppStore } from '@/stores/appStore';
 
@@ -16,6 +17,7 @@ export function PreferencesCard() {
   function changeLanguage(code: string) {
     i18n.changeLanguage(code);
     setLocale(code);
+    void pushPreferences({ language: code });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   }
 
@@ -26,7 +28,10 @@ export function PreferencesCard() {
           id="preferences-theme"
           label={t('PREFERENCES.THEME')}
           value={colorScheme}
-          onChange={(v) => setColorScheme(v as 'light' | 'dark' | 'system')}
+          onChange={(v) => {
+            setColorScheme(v as 'light' | 'dark' | 'system');
+            void pushPreferences({ colorScheme: v as 'light' | 'dark' | 'system' });
+          }}
           options={[
             { value: 'light', label: t('PREFERENCES.THEME_LIGHT') },
             { value: 'dark', label: t('PREFERENCES.THEME_DARK') },

@@ -14,11 +14,13 @@ import { useTenantStore } from "@/stores/tenantStore";
  * closed for this session; in that case the user is signed in but flagged
  * `otpRequired`, and the layout guards keep them on /2fa until it opens.
  */
-export async function startDeviceSession(login: DeviceLoginResponse): Promise<{ otpRequired: boolean }> {
+export async function startDeviceSession(login: DeviceLoginResponse): Promise<{ otpRequired: boolean; mustChangePassword: boolean }> {
   const tenantId = login.tenant.tenantId;
   await setTokens(tenantId, { accessToken: login.accessToken, refreshToken: login.refreshToken });
   useTenantStore.getState().setActiveTenantId(tenantId);
   useAuthStore.getState().setUser(login.user);
-  if (login.otpRequired) useAuthStore.getState().requireOtp();
-  return { otpRequired: login.otpRequired };
+  if (login.otpRequired) useAuthStore.getState().requireOtp(login.userSecurity.otpMethods);
+  if (login.mustChangePassword) useAuthStore.getState().requirePasswordChange();
+  else useAuthStore.getState().clearPasswordChange();
+  return { otpRequired: login.otpRequired, mustChangePassword: login.mustChangePassword };
 }

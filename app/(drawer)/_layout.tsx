@@ -1,14 +1,23 @@
+import { useEffect } from 'react';
 import { Redirect } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { useAuthStore } from '@/stores/authStore';
 import { DrawerContent } from '@/components/shell/DrawerContent';
 import { AppHeader } from '@/components/shell/AppHeader';
+import { pullPreferences } from '@/libs/preferences';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 
 export default function DrawerLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const otpRequired = useAuthStore((s) => s.otpRequired);
+  const mustChangePassword = useAuthStore((s) => s.mustChangePassword);
   const t = useThemeTokens();
+  const open = isAuthenticated && !otpRequired && !mustChangePassword;
+
+  // Adopt the account's language and theme once the session is fully open.
+  useEffect(() => {
+    if (open) void pullPreferences();
+  }, [open]);
 
   if (!isAuthenticated) {
     return <Redirect href="/login" />;
@@ -16,6 +25,10 @@ export default function DrawerLayout() {
   // The server's OTP gate is closed for this session (401 OTP_REQUIRED).
   if (otpRequired) {
     return <Redirect href="/2fa" />;
+  }
+  // Expired or admin-forced password: nothing else is reachable until it is changed.
+  if (mustChangePassword) {
+    return <Redirect href="/change-password" />;
   }
 
   return (

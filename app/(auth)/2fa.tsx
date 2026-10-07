@@ -5,27 +5,39 @@ import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCommentSms, faEnvelope, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
+import { faCommentSms, faEnvelope, faMobileScreen, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { Button, Input, RadioGroup } from '@/components/ui';
 import type { OTPMethod } from '@/services/auth/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
+import { useCountdown } from '@/libs/useCountdown';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import { AuthClientService } from '@/services/auth/auth.service.client';
 import { useAuthStore } from '@/stores/authStore';
+
+const RESEND_SECONDS = 30;
+const OTP_HINT_KEYS = { EMAIL: 'AUTH_UI.OTP_EMAIL_HINT', SMS: 'AUTH_UI.OTP_SMS_HINT', TOTP_APP: 'AUTH_UI.OTP_TOTP_HINT' } as const;
+const OTP_ICONS = { EMAIL: faEnvelope, SMS: faCommentSms, TOTP_APP: faMobileScreen } as const;
+const OTP_LABEL_KEYS = { EMAIL: 'AUTH_UI.OTP_EMAIL', SMS: 'AUTH_UI.OTP_SMS', TOTP_APP: 'AUTH_UI.OTP_TOTP' } as const;
+// Unknown enrolment (the gate was hit on a restored session): offer the channels the server can deliver.
+const FALLBACK_METHODS: OTPMethod[] = ['EMAIL', 'SMS'];
 
 // next-boilerplate has no OTP page; this follows the same auth card pattern.
 export default function TwoFactorScreen() {
   const { t } = useTranslation();
   const tokens = useThemeTokens();
-  const [method, setMethod] = useState<OTPMethod>('EMAIL');
+  const enrolled = useAuthStore((s) => s.otpMethods);
+  const methods = enrolled.length > 0 ? enrolled : FALLBACK_METHODS;
+  const [method, setMethod] = useState<OTPMethod>(methods[0]);
+  const { remaining, start: startCountdown } = useCountdown();
   const [code, setCode] = useState('');
   const [codeError, setCodeError] = useState<string | undefined>();
-  const [sent, setSent] = useState(false);
+  // An authenticator app needs no delivery step: its code is already on the phone.
+  const [sent, setSent] = useState(methods[0] === 'TOTP_APP');
   const [loading, setLoading] = useState(false);
   const clearOtp = useAuthStore((s) => s.clearOtp);
-  const methodLabel = method === 'EMAIL' ? t('AUTH_UI.OTP_EMAIL') : t('AUTH_UI.OTP_SMS');
+  const methodLabel = t(OTP_LABEL_KEYS[method]);
 
   async function handleSend() {
     setLoading(true);
@@ -34,6 +46,7 @@ export default function TwoFactorScreen() {
       await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       toast.success(t('AUTH_UI.CODE_SENT', { method: methodLabel }));
       setSent(true);
+      startCountdown(RESEND_SECONDS);
     } catch (err: unknown) {
       handleApiError(err, 'TwoFactorScreen.send');
     } finally {
@@ -70,37 +83,34 @@ export default function TwoFactorScreen() {
       icon={faShieldHalved}
       footer={<AuthFooterLink label={t('AUTH_UI.BACK_TO_SIGN_IN')} href="/login" testID="auth-2fa-login" />}
     >
-      <RadioGroup
-        name="otp-method"
-        legend={t('AUTH_UI.OTP_METHOD')}
-        variant="card"
-        columns={2}
-        value={method}
-        onChange={(v) => {
-          setMethod(v as OTPMethod);
-          setSent(false);
-        }}
-        options={[
-          {
-            value: 'EMAIL',
-            label: t('AUTH_UI.OTP_EMAIL'),
-            hint: t('AUTH_UI.OTP_EMAIL_HINT'),
-            icon: <FontAwesomeIcon icon={faEnvelope} size={16} color={tokens.primary} />,
-          },
-          {
-            value: 'SMS',
-            label: t('AUTH_UI.OTP_SMS'),
-            hint: t('AUTH_UI.OTP_SMS_HINT'),
-            icon: <FontAwesomeIcon icon={faCommentSms} size={16} color={tokens.primary} />,
-          },
-        ]}
-      />
+      {methods.length > 1 ? (
+        <RadioGroup
+          name="otp-method"
+          legend={t('AUTH_UI.OTP_METHOD')}
+          variant="card"
+          columns={1}
+          value={method}
+          onChange={(v) => {
+            const next = v as OTPMethod;
+            setMethod(next);
+            setCode('');
+            setCodeError(undefined);
+            setSent(next === 'TOTP_APP');
+          }}
+          options={methods.map((m) => ({
+            value: m,
+            label: t(OTP_LABEL_KEYS[m]),
+            hint: t(OTP_HINT_KEYS[m]),
+            icon: <FontAwesomeIcon icon={OTP_ICONS[m]} size={16} color={tokens.primary} />,
+          }))}
+        />
+      ) : null}
 
       {sent ? (
         <View className="gap-4">
           <Input
             label={t('AUTH_UI.OTP_CODE')}
-            hint={t('AUTH_UI.OTP_CODE_HINT', { method: methodLabel })}
+            hint={method === 'TOTP_APP' ? t('AUTH_UI.OTP_TOTP_CODE_HINT') : t('AUTH_UI.OTP_CODE_HINT', { method: methodLabel })}
             value={code}
             onChangeText={(v) => {
               setCode(v.replace(/\D/g, '').slice(0, 6));
@@ -119,9 +129,11 @@ export default function TwoFactorScreen() {
           <Button fullWidth loading={loading} onPress={handleVerify} testID="auth-2fa-verify">
             {loading ? t('AUTH_UI.VERIFYING') : t('AUTH_UI.VERIFY')}
           </Button>
-          <Button variant="ghost" fullWidth onPress={handleSend} disabled={loading} testID="auth-2fa-resend">
-            {t('AUTH_UI.RESEND_CODE')}
-          </Button>
+          {method !== 'TOTP_APP' ? (
+            <Button variant="ghost" fullWidth onPress={handleSend} disabled={loading || remaining > 0} testID="auth-2fa-resend">
+              {remaining > 0 ? t('AUTH_UI.RESEND_IN', { time: remaining }) : t('AUTH_UI.RESEND_CODE')}
+            </Button>
+          ) : null}
         </View>
       ) : (
         <Button fullWidth loading={loading} onPress={handleSend} testID="auth-2fa-send">

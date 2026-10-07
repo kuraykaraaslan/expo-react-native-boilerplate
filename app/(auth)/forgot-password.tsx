@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { View } from 'react-native';
+import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
@@ -50,11 +51,16 @@ export default function ForgotPasswordScreen() {
       footer={<AuthFooterLink prompt={t('AUTH_UI.REMEMBER_PASSWORD')} label={t('AUTH_UI.SIGN_IN_LINK')} href="/login" testID="auth-forgot-login" />}
     >
       {sentTo ? (
+        <View className="gap-4">
         <AlertBanner
           variant="success"
           title={t('AUTH_UI.CHECK_INBOX')}
           message={t('AUTH_UI.CHECK_INBOX_DESC', { email: sentTo })}
         />
+          <Button fullWidth variant="outline" onPress={() => router.push({ pathname: '/reset-password', params: { email: sentTo } })} testID="auth-forgot-have-token">
+            {t('AUTH_UI.HAVE_RESET_TOKEN')}
+          </Button>
+        </View>
       ) : (
         <View className="gap-4">
           <Input

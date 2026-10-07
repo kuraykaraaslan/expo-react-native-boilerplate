@@ -1,7 +1,7 @@
 import '../global.css';
 import '@/libs/theme/brand'; // brand tokens before first render
 import '@/libs/i18n'; // initialise i18next before any component renders
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Slot } from 'expo-router';
@@ -32,6 +32,8 @@ export default function RootLayout() {
 
   const setAuthenticated = useAuthStore((s) => s.setAuthenticated);
   const locale           = useAppStore((s) => s.locale);
+  // The splash stays up until the stored session is confirmed, so a signed-in user never sees the login screen flash by.
+  const [restored, setRestored] = useState(false);
 
   // Sync persisted locale → i18next on mount
   useEffect(() => {
@@ -60,16 +62,18 @@ export default function RootLayout() {
         const { statusCode } = normalizeApiError(err);
         logger.warn('Session restore failed', statusCode ?? 'no response');
         if (statusCode === 401 || statusCode === 403) setAuthenticated(false);
+      } finally {
+        setRestored(true);
       }
     }
     restoreSession();
   }, [setAuthenticated]);
 
   useEffect(() => {
-    if (ready) SplashScreen.hideAsync();
-  }, [ready]);
+    if (ready && restored) SplashScreen.hideAsync();
+  }, [ready, restored]);
 
-  if (!ready) return null;
+  if (!ready || !restored) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

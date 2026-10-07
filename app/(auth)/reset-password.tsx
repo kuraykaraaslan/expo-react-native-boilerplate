@@ -1,54 +1,60 @@
 import { useState } from 'react';
 import { View } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEnvelope, faLock, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faKey, faLock } from '@fortawesome/free-solid-svg-icons';
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
-import { SSOButtons } from '@/components/auth/SSOButtons';
 import { Button, Input } from '@/components/ui';
-import { RegisterRequestSchema } from '@/services/auth/auth.dto';
-import { CONSENT_VERSION } from '@/constants/legal';
+import { ResetPasswordRequestSchema } from '@/services/auth/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import { AuthClientService } from '@/services/auth/auth.service.client';
 
-type FieldErrors = { email?: string; password?: string; confirm?: string };
+type FieldErrors = { email?: string; token?: string; password?: string; confirm?: string };
 
-export default function RegisterScreen() {
+/**
+ * Finishes a password reset. The e-mail carries a web link; until the app has a
+ * deep-link scheme (phase 6) the user pastes the token. `email` and
+ * `resetToken` query params prefill the fields when a link does reach the app.
+ */
+export default function ResetPasswordScreen() {
   const { t } = useTranslation();
   const tokens = useThemeTokens();
-  const [email, setEmail] = useState('');
+  const params = useLocalSearchParams<{ email?: string; resetToken?: string }>();
+  const [email, setEmail] = useState(params.email ?? '');
+  const [token, setToken] = useState(params.resetToken ?? '');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
   const iconColor = tokens['text-disabled'];
 
-  async function handleRegister() {
-    const result = RegisterRequestSchema.safeParse({ email: email.trim(), password, consentVersion: CONSENT_VERSION });
-    const next: FieldErrors = {};
+  async function handleReset() {
+    const result = ResetPasswordRequestSchema.safeParse({ email: email.trim(), resetToken: token.trim(), password });
+    const errs: FieldErrors = {};
     if (!result.success) {
-      const errs = result.error.flatten().fieldErrors;
-      if (errs.email) next.email = t('AUTH_UI.EMAIL_INVALID');
-      if (errs.password) next.password = t('AUTH_UI.PASSWORD_MIN');
+      const f = result.error.flatten().fieldErrors;
+      if (f.email) errs.email = t('AUTH_UI.EMAIL_INVALID');
+      if (f.resetToken) errs.token = t('AUTH_UI.RESET_TOKEN_REQUIRED');
+      if (f.password) errs.password = t('AUTH_UI.PASSWORD_MIN');
     }
-    if (confirm !== password) next.confirm = t('AUTH_UI.PASSWORD_MATCH');
-    setErrors(next);
-    if (!result.success || next.confirm) return;
+    if (confirm !== password) errs.confirm = t('AUTH_UI.PASSWORD_MATCH');
+    setErrors(errs);
+    if (!result.success || errs.confirm) return;
 
     setLoading(true);
     try {
-      await AuthClientService.register(result.data);
+      await AuthClientService.resetPassword(result.data);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('AUTH.REGISTER_SUCCESS'));
+      toast.success(t('AUTH_UI.PASSWORD_RESET_DONE'));
       router.replace('/login');
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      handleApiError(err, 'RegisterScreen.register');
+      handleApiError(err, 'ResetPasswordScreen.reset');
     } finally {
       setLoading(false);
     }
@@ -56,16 +62,11 @@ export default function RegisterScreen() {
 
   return (
     <AuthShell
-      title={t('AUTH_UI.REGISTER_TITLE')}
-      subtitle={t('AUTH_UI.REGISTER_SUBTITLE')}
-      icon={faUserPlus}
-      footer={<AuthFooterLink prompt={t('AUTH_UI.HAVE_ACCOUNT')} label={t('AUTH_UI.SIGN_IN_LINK')} href="/login" testID="auth-register-login" />}
+      title={t('AUTH_UI.RESET_TITLE')}
+      subtitle={t('AUTH_UI.RESET_SUBTITLE')}
+      icon={faKey}
+      footer={<AuthFooterLink prompt={t('AUTH_UI.REMEMBER_PASSWORD')} label={t('AUTH_UI.SIGN_IN_LINK')} href="/login" testID="auth-reset-login" />}
     >
-      <SSOButtons
-        dividerLabel={t('AUTH_UI.OR_REGISTER_EMAIL')}
-        onPress={(_, label) => toast.info(t('AUTH_UI.SSO_UNAVAILABLE', { provider: label }))}
-      />
-
       <View className="gap-3">
         <Input
           label={t('AUTH_UI.EMAIL')}
@@ -80,10 +81,24 @@ export default function RegisterScreen() {
           autoComplete="email"
           textContentType="emailAddress"
           prefixIcon={<FontAwesomeIcon icon={faEnvelope} size={14} color={iconColor} />}
-          testID="auth-register-email"
+          testID="auth-reset-email"
         />
         <Input
-          label={t('AUTH_UI.PASSWORD')}
+          label={t('AUTH_UI.RESET_TOKEN')}
+          required
+          value={token}
+          onChangeText={(v) => {
+            setToken(v);
+            setErrors((e) => ({ ...e, token: undefined }));
+          }}
+          error={errors.token}
+          autoCapitalize="none"
+          autoCorrect={false}
+          prefixIcon={<FontAwesomeIcon icon={faKey} size={14} color={iconColor} />}
+          testID="auth-reset-token"
+        />
+        <Input
+          label={t('AUTH_UI.NEW_PASSWORD')}
           type="password"
           required
           hint={t('AUTH_UI.PASSWORD_HINT')}
@@ -96,7 +111,7 @@ export default function RegisterScreen() {
           autoComplete="new-password"
           textContentType="newPassword"
           prefixIcon={<FontAwesomeIcon icon={faLock} size={14} color={iconColor} />}
-          testID="auth-register-password"
+          testID="auth-reset-password"
         />
         <Input
           label={t('AUTH_UI.CONFIRM_PASSWORD')}
@@ -111,14 +126,13 @@ export default function RegisterScreen() {
           autoComplete="new-password"
           textContentType="newPassword"
           returnKeyType="go"
-          onSubmitEditing={handleRegister}
+          onSubmitEditing={handleReset}
           prefixIcon={<FontAwesomeIcon icon={faLock} size={14} color={iconColor} />}
-          testID="auth-register-confirm"
+          testID="auth-reset-confirm"
         />
       </View>
-
-      <Button fullWidth loading={loading} onPress={handleRegister} testID="auth-register-submit">
-        {loading ? t('AUTH_UI.CREATING_ACCOUNT') : t('AUTH_UI.CREATE_ACCOUNT')}
+      <Button fullWidth loading={loading} onPress={handleReset} testID="auth-reset-submit">
+        {loading ? t('AUTH_UI.SAVING') : t('AUTH_UI.RESET_PASSWORD')}
       </Button>
     </AuthShell>
   );

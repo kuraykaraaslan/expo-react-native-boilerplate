@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { zustandMMKVStorage } from "@/libs/zustandStorage";
-import type { SafeUser } from "@/services/auth/auth.dto";
+import type { OTPMethod, SafeUser } from "@/services/auth/auth.dto";
 
 // ============================================================================
 // Auth Store
@@ -14,11 +14,17 @@ interface AuthState {
   user: SafeUser | null;
   /** Session exists but the server's OTP gate is closed (401 OTP_REQUIRED) — layouts route to /2fa. */
   otpRequired: boolean;
+  /** Second factors the account has enrolled; empty when unknown (e.g. the gate was hit on a restored session). */
+  otpMethods: OTPMethod[];
+  /** The server demands a new password (expired or admin-forced) — layouts route to /change-password. */
+  mustChangePassword: boolean;
   // ── Actions ──────────────────────────────────────────────────────────────
   setUser: (user: SafeUser | null) => void;
   setAuthenticated: (value: boolean) => void;
-  requireOtp: () => void;
+  requireOtp: (methods?: OTPMethod[]) => void;
   clearOtp: () => void;
+  requirePasswordChange: () => void;
+  clearPasswordChange: () => void;
   logout: () => void;
 }
 
@@ -28,6 +34,8 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       user: null,
       otpRequired: false,
+      otpMethods: [],
+      mustChangePassword: false,
 
       setUser: (user) =>
         set({ user, isAuthenticated: user !== null, otpRequired: false }),
@@ -35,12 +43,16 @@ export const useAuthStore = create<AuthState>()(
       setAuthenticated: (value) =>
         set({ isAuthenticated: value }),
 
-      requireOtp: () => set({ otpRequired: true }),
+      requireOtp: (methods) => set((state) => ({ otpRequired: true, otpMethods: methods ?? state.otpMethods })),
 
-      clearOtp: () => set({ otpRequired: false }),
+      clearOtp: () => set({ otpRequired: false, otpMethods: [] }),
+
+      requirePasswordChange: () => set({ mustChangePassword: true }),
+
+      clearPasswordChange: () => set({ mustChangePassword: false }),
 
       logout: () =>
-        set({ isAuthenticated: false, user: null, otpRequired: false }),
+        set({ isAuthenticated: false, user: null, otpRequired: false, otpMethods: [], mustChangePassword: false }),
     }),
     {
       name: "auth-storage",
@@ -49,6 +61,8 @@ export const useAuthStore = create<AuthState>()(
         isAuthenticated: state.isAuthenticated,
         user: state.user,
         otpRequired: state.otpRequired,
+        otpMethods: state.otpMethods,
+        mustChangePassword: state.mustChangePassword,
       }),
     },
   ),

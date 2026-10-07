@@ -12,6 +12,7 @@ import { SSOButtons } from '@/components/auth/SSOButtons';
 import { Button, Checkbox, Input, Text } from '@/components/ui';
 import { LoginRequestSchema } from '@/services/auth/auth.dto';
 import { getDeviceInfo } from '@/libs/deviceInfo';
+import { normalizeApiError } from '@/libs/apiError';
 import { handleApiError } from '@/libs/errorUtils';
 import { startDeviceSession } from '@/libs/session';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
@@ -42,17 +43,31 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       const login = await AuthClientService.deviceLogin({ ...result.data, rememberMe: remember, device: getDeviceInfo() });
-      const { otpRequired } = await startDeviceSession(login);
+      const { otpRequired, mustChangePassword } = await startDeviceSession(login);
       if (otpRequired) {
         await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         router.push('/2fa');
         return;
       }
+      if (mustChangePassword) {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        router.replace('/change-password');
+        return;
+      }
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      if (login.passwordExpiresInDays != null) {
+        toast.warning(t('AUTH_UI.PASSWORD_EXPIRES_SOON', { count: login.passwordExpiresInDays }));
+      }
       // The (auth) layout guard now sees a signed-in user and routes to the app.
-      // Phase 4: mustChangePassword / passwordExpiresInDays handling.
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      const { statusCode } = normalizeApiError(err);
+      // The tenant is gone or inactive: pick another organization instead of retrying.
+      if (statusCode === 404) {
+        toast.error(t('AUTH_UI.TENANT_UNAVAILABLE'));
+        router.push('/select-tenant');
+        return;
+      }
       handleApiError(err, 'LoginScreen.login');
     } finally {
       setLoading(false);
