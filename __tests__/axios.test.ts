@@ -65,7 +65,7 @@ describe("request addressing", () => {
       }),
     );
     await axiosInstance.get("/ping");
-    expect(path).toBe("/api/tenant/tenant-default/ping");
+    expect(path).toBe("/api/tenant/6f1c2a3b-4d5e-4f60-8a7b-0000000000f0/ping");
   });
 });
 

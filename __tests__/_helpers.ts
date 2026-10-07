@@ -1,5 +1,5 @@
 import { http, HttpResponse, type HttpResponseInit } from "msw";
-import { setTokens } from "@/libs/secureStorage";
+import { clearAllTokens, setTokens } from "@/libs/secureStorage";
 import { resetRefreshStateForTests } from "@/libs/axios";
 import { useAuthStore } from "@/stores/authStore";
 import { useTenantStore } from "@/stores/tenantStore";
@@ -52,6 +52,7 @@ export const fail = (status: number, body: unknown, headers?: Record<string, str
 
 /** Device holds a live session for `tenantId` (tokens stored, tenant active, user signed in). */
 export async function signIn(tenantId: string = TENANT_ID) {
+  await clearAllTokens(); // pairs left by the previous test must not leak into this one
   resetRefreshStateForTests();
   useTenantStore.setState({ activeTenantId: tenantId, knownTenantIds: [], selectedTenantMembership: null, memberships: [] });
   useAuthStore.setState({ isAuthenticated: true, user: null, otpRequired: false });
