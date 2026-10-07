@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-07T13:31:32.545Z",
+  "generatedAt": "2026-10-07T18:42:24.804Z",
   "screens": [
     {
       "filePath": "app/_layout.tsx",
@@ -35,14 +35,6 @@
       "layoutChain": []
     },
     {
-      "filePath": "app/(auth)/create-tenant.tsx",
-      "route": "/create-tenant",
-      "kind": "screen",
-      "group": "auth",
-      "dynamic": false,
-      "layoutChain": []
-    },
-    {
       "filePath": "app/(auth)/forgot-password.tsx",
       "route": "/forgot-password",
       "kind": "screen",
@@ -69,14 +61,6 @@
     {
       "filePath": "app/(auth)/reset-password.tsx",
       "route": "/reset-password",
-      "kind": "screen",
-      "group": "auth",
-      "dynamic": false,
-      "layoutChain": []
-    },
-    {
-      "filePath": "app/(auth)/select-tenant.tsx",
-      "route": "/select-tenant",
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
@@ -167,6 +151,38 @@
       "route": "/settings/tenant/members",
       "kind": "screen",
       "group": "drawer",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
+      "filePath": "app/(tenant)/_layout.tsx",
+      "route": "/_layout",
+      "kind": "layout",
+      "group": "tenant",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
+      "filePath": "app/(tenant)/create-tenant.tsx",
+      "route": "/create-tenant",
+      "kind": "screen",
+      "group": "tenant",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
+      "filePath": "app/(tenant)/select-tenant.tsx",
+      "route": "/select-tenant",
+      "kind": "screen",
+      "group": "tenant",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
+      "filePath": "app/(tenant)/tenant-login.tsx",
+      "route": "/tenant-login",
+      "kind": "screen",
+      "group": "tenant",
       "dynamic": false,
       "layoutChain": []
     },

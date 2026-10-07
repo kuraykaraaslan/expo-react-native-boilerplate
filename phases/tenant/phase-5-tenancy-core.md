@@ -89,3 +89,32 @@ WHERE WE ARE: phases/README.md §Order
 - **Empty bootstrap:** if `EXPO_PUBLIC_DEFAULT_TENANT_ID` is a wrong / inactive uuid, the app becomes impossible to log in to on first launch and shows the user a meaningless 404 → env validation and a clear error message are mandatory.
 - **Role mix-up on switching:** `tenantMember.memberRole` is tenant-specific; if it is not refreshed on switching, the user appears as ADMIN in the wrong tenant and screens they have no authority for open.
 - **Invitation display causing scope creep:** if an accept/decline button is added while showing the "pending invitations" list, we step out of scope; in this phase **only information** is shown.
+
+---
+
+## ✅ CODED — 2026-10-07
+
+Branch `feat/tenancy-core`. Typecheck 0 errors, jest 100/100 (12 new in `__tests__/tenancy.test.ts`), web export includes the new routes.
+
+**Corrections to this plan** (found while reading the code, not the server):
+- **`select-tenant` and `create-tenant` could not be opened while signed in.** They sat in the `(auth)` group, whose guard redirects every signed-in user to `/`, so the dashboard's "switch organization" button bounced straight back (this was the original "select tenant is broken" report). They now live in a new `app/(tenant)/` group with its own guard (signed in; OTP and forced password change still come first). URLs are unchanged. The spec's file paths (`app/(auth)/…`) are therefore out of date.
+- **Phase 4's "404 on login → `/select-tenant`" was wrong**: without a session there is nothing to list organizations with. Login now shows the "organization unavailable" toast and stays put.
+
+**What shipped**
+- **Store.** `tenantStore` gained `delegatedTenants`, `pendingInvitations` (both filled by `setTenantOverview`) and a non-persisted `needsTenantSelection`. `flush()` clears all of them; `knownTenantIds` already existed (Phase 2) and still drives `clearAllTokens`.
+- **Switching (K2).** `libs/tenantSwitch.ts#switchToTenant`: no stored pair → `login-required`; a pair → `GET /auth/session` **addressed to the target tenant** with its own token, and the selected membership takes the role from that reply (not from the cached list). A dead pair is cleared by the interceptor and reported as `login-required` without ending the session of the tenant the user is in; an outage is an error, not a login prompt.
+- **Signing in to another organization.** New `app/(tenant)/tenant-login.tsx`: the account's e-mail is fixed, only the password is asked (`deviceLogin(payload, tenantId)` → `startDeviceSession` → `activateSignedInTenant`, which refreshes the list and selects the tenant with the login reply's role). The plan said to reuse the login screen with a `tenantId` param; that screen sits behind the `(auth)` guard, so a small dedicated screen is used instead.
+- **Create organization.** After `POST /tenants/create` the user is sent to `tenant-login` for the new tenant (no token exists for it yet) and enters as `OWNER`. Region is not sent: the create route takes `{name, description?}` only.
+- **Select screen.** Active organizations first; inactive/suspended/pending memberships and non-`ACTIVE` organizations are listed separately, flagged and not selectable (`utils/tenant.ts`). The current one is badged; pending invitations are a notice only (no accept/decline). Empty state offers "Create organization". Footer is "Back to the app", or "Sign out" when a selection is forced.
+- **Lost access.** When the active organization's session ends (suspended, inactive, not a member) and the device holds a live pair for another one, the interceptor keeps the user signed in, makes that tenant active, clears the selected membership and sets `needsTenantSelection`; the drawer guard redirects to `/select-tenant`. With no other pair it signs out as before.
+- **Shell.** The drawer header shows the active organization and opens the switcher.
+- **Tenant profile.** `settings/tenant` has an edit card (name ≥ 2, description) for `OWNER`/`ADMIN`; `USER` sees a read-only note.
+- **Env.** `EXPO_PUBLIC_DEFAULT_TENANT_ID` must now be a UUID, so a typo fails at startup with a clear message instead of a 404 on first login.
+- **Tests.** Switch with/without/dead pair, role taken from the server, fall-back and sign-out on lost access, sign-out clearing every organization's pair, selectability rules. `signIn()` now clears leftover tokens so tests cannot leak into each other.
+
+**Deliberate deviations**
+- `authStore.user` is not replaced on a switch: `GET /auth/session` only returns the slim user, and it is the same person. The per-tenant part that changes (role) is refreshed in `selectedTenantMembership`.
+- The tenant profile edit card does not show `region`: the server's tenant payloads carry none.
+- Strings added to `en` and `tr` only (see Phase 4 note on the other four languages).
+
+**Not verified:** nothing was run against a live server or emulator.

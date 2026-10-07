@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-07T13:31:32.545Z",
+  "generatedAt": "2026-10-07T18:42:24.804Z",
   "stores": [
     {
       "filePath": "stores/appStore.ts",
@@ -54,9 +54,14 @@
       "stateKeys": [
         "selectedTenantMembership",
         "memberships",
+        "delegatedTenants",
+        "pendingInvitations",
+        "needsTenantSelection",
         "activeTenantId",
         "knownTenantIds",
         "setMemberships",
+        "setTenantOverview",
+        "setNeedsTenantSelection",
         "selectMembership",
         "setActiveTenantId",
         "rememberTenant",
