@@ -53,9 +53,11 @@ describe("providers", () => {
 });
 
 describe("browser flow", () => {
-  it("opens the provider URL and returns to the app scheme", async () => {
+  it("tells the server where to hand the tokens back, and opens the provider URL", async () => {
+    const seen = mockRoute("get", "/auth/sso/google", { url: "https://accounts.example.com/auth", state: STATE });
     open.mockResolvedValue({ type: "cancel" });
     await signInWithProvider("google");
+    expect(seen[0].query.redirect_uri).toBe("expoboilerplate://auth/callback");
     expect(open).toHaveBeenCalledWith("https://accounts.example.com/auth", "expoboilerplate://auth/callback");
   });
 

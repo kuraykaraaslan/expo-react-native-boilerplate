@@ -14,7 +14,12 @@ WHERE WE ARE: phases/README.md §Order
 
 # auth_sso — social login (Phase Plan index)
 
-> ⛔ **THIS SET IS BLOCKED ON A SERVER CHANGE.** The client side is built completely, but
+> 🟢 **UPDATE 2026-10-08: the server change has been written** in next-boilerplate (`GET /auth/sso/{provider}?redirect_uri=…`
+> gated by `SSO_DEVICE_REDIRECT_URIS`, and a `device`-audience redirect from the callback; see
+> `modules/auth_sso/README.md` there and the end of [phase-6-sso.md](phase-6-sso.md)). The text below describes the problem it solves.
+> What remains is deploying it and verifying a Google sign-in on a device.
+>
+> ⛔ **(Original status) THIS SET IS BLOCKED ON A SERVER CHANGE.** The client side is built completely, but
 > unless the owner makes the two changes below in `next-boilerplate`, the flow **cannot work** and the phase
 > is not marked `CODED`. By owner decision, the server is not touched from this repo.
 

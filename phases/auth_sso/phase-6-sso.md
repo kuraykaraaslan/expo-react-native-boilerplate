@@ -105,3 +105,17 @@ Branch `chore/remaining-fixes`. Typecheck 0 errors, jest 127/127 (12 new in `__t
 - `POST /auth/session/exchange` exists but is cookie-only by the owner's decision (one tenant's credentials per device), so it is not a way around K4.
 
 **Still needed from the server (unchanged):** the OAuth callback must create a `device`-audience session and redirect to the app scheme. Until then Phase 6 stays blocked and SSO shows the e-mail fallback message.
+
+---
+
+## 🟢 SERVER CHANGE WRITTEN — 2026-10-08 (live verification pending)
+
+The server side of K4 now exists in next-boilerplate (commit `feat(auth_sso): device (native app) SSO return path`, local `main`; not yet released/deployed):
+
+- `GET /auth/sso/{provider}?redirect_uri=<deep link>`: accepted only when the URI is listed in the server env `SSO_DEVICE_REDIRECT_URIS` (exact match). The redirect is remembered against `state` for 10 minutes, single use.
+- The OAuth callback finds it by `state`, mints a **`device`-audience** session (no cookies) and redirects to `<redirect_uri>?rawAccessToken=…&rawRefreshToken=…&state=…` (`?error=…&state=…` on failure).
+- `POST /auth/logout` now also revokes by bearer token (the bug found in Phase 3).
+
+The app now sends `redirect_uri` (`Linking.createURL('/auth/callback')`, i.e. `expoboilerplate://auth/callback` in a build) and keeps verifying the returned bearer before storing it.
+
+**To finish the phase:** (1) deploy that server build; (2) set `SSO_DEVICE_REDIRECT_URIS=expoboilerplate://auth/callback` (add the `exp://…/--/auth/callback` URL for Expo Go if wanted); (3) sign in with Google on a device or emulator and confirm the drawer opens and later requests work. Only then change the §Order row to `CODED`; it stays `⛔`/pending until then. Against an older server the flow still fails safe with the e-mail fallback message.

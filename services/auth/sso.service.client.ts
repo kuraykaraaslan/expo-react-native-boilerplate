@@ -22,9 +22,16 @@ export class SSOClientService {
     return SSOProvidersResponseSchema.parse(res.data).providers;
   }
 
-  /** The provider's authorization URL and the OAuth `state` (`{tenantId}.{uuid}`). */
-  static async getAuthUrl(provider: SSOProvider): Promise<SSOAuthUrlResponse> {
-    const res = await axiosInstance.get(`/auth/sso/${encodeURIComponent(provider)}`, { skipAuth: true });
+  /**
+   * The provider's authorization URL and the OAuth `state` (`{tenantId}.{uuid}`).
+   * `redirectUri` is the app deep link the server hands the device tokens to; it must be
+   * listed in the server's SSO_DEVICE_REDIRECT_URIS or the call is a 400.
+   */
+  static async getAuthUrl(provider: SSOProvider, redirectUri?: string): Promise<SSOAuthUrlResponse> {
+    const res = await axiosInstance.get(`/auth/sso/${encodeURIComponent(provider)}`, {
+      skipAuth: true,
+      params: redirectUri ? { redirect_uri: redirectUri } : undefined,
+    });
     return SSOAuthUrlResponseSchema.parse(res.data);
   }
 

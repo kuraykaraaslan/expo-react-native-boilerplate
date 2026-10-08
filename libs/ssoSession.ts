@@ -13,11 +13,11 @@ import { useTenantStore } from "@/stores/tenantStore";
 // ============================================================================
 // SSO browser flow (phase 6).
 //
-// K4: today the server's OAuth callback mints a `web`-audience token and
-// redirects to a web URL, so a device cannot finish the flow. Everything here is
-// written for the day it does (redirect to <scheme>://auth/callback with
-// rawAccessToken / rawRefreshToken / state), and until then it fails SAFE: a
-// token is verified before it is stored, so a web-audience token is never kept.
+// K4 (resolved server-side): the app sends its deep link as `redirect_uri`; the
+// server (listed in SSO_DEVICE_REDIRECT_URIS) then mints a `device`-audience pair
+// and redirects to <scheme>://auth/callback?rawAccessToken&rawRefreshToken&state.
+// Against a server without that change the callback still yields a web-audience
+// token, so the flow keeps failing SAFE: a token is verified before it is stored.
 // ============================================================================
 
 export type SSOOutcome =
@@ -69,9 +69,9 @@ async function openBrowser(url: string, redirectUrl: string): Promise<WebBrowser
 }
 
 export async function signInWithProvider(provider: SSOProvider): Promise<SSOOutcome> {
-  const { url, state } = await SSOClientService.getAuthUrl(provider);
-  useSSOStore.getState().setPendingState(state);
   const redirectUrl = Linking.createURL(REDIRECT_PATH);
+  const { url, state } = await SSOClientService.getAuthUrl(provider, redirectUrl);
+  useSSOStore.getState().setPendingState(state);
 
   const result = await openBrowser(url, redirectUrl);
   if (result === "timeout") {
