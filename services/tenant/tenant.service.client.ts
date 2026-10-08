@@ -21,6 +21,9 @@ import {
   TenantMember,
   TenantMemberSchema,
   TenantProfile,
+  TransitionMemberRequest,
+  TransitionMemberRequestSchema,
+  TransitionMemberResponseSchema,
   TenantProfileSchema,
   TenantSettingsResponseSchema,
   UpdateMemberRequest,
@@ -87,6 +90,13 @@ export class TenantClientService {
     const body = UpdateMemberRequestSchema.parse(payload);
     const res = await axiosInstance.put(`/members/${encodeURIComponent(memberId)}`, body, { tenantId });
     return UpdateMemberResponseSchema.parse(res.data);
+  }
+
+  /** Suspends (revokes the member's sessions) or reactivates a member (ADMIN+; only an OWNER may act on an OWNER). */
+  static async transitionMember(tenantId: string, memberId: string, payload: TransitionMemberRequest): Promise<TenantMember> {
+    const body = TransitionMemberRequestSchema.parse(payload);
+    const res = await axiosInstance.post(`/members/${encodeURIComponent(memberId)}/transition`, body, { tenantId });
+    return TransitionMemberResponseSchema.parse(res.data).member;
   }
 
   static async removeMember(tenantId: string, memberId: string): Promise<void> {

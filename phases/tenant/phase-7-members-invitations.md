@@ -51,7 +51,8 @@ Modules: `tenant_member`, `tenant_invitation`. Priority 1.
 
 - ✅ Phase 3 had already aligned the member/invitation DTOs and `getMembers/getMember/updateMember/removeMember/getInvitations/sendInvitation/revokeInvitation/acceptInvitation/declineInvitation`; the list shape inside `GET /auth/me/tenants` is already the slim one **without `email` and without a token**, which confirms accept cannot be one-tap from that list.
 - ✅ `resendInvitation` and `remindInvitation` added (`POST /invitations/{id}/resend|remind`, no body, answer `{message, invitation}`), with the screen's Remind / Resend / Revoke actions for `PENDING` invitations, haptics and toasts, strings in all six locales, and a service test.
-- ⬜ Still open: `transitionMember` (+ the member detail sheet), accept/decline flow (blocked on the two unread items above), the invitation-decision screen and deep link, last-owner error surfacing, pagination controls on both lists.
+- ✅ `transitionMember` added (`POST /members/{id}/transition`, body `{action: 'suspend'|'reactivate', reason?, until?}`, answer `{message, member}`; OWNER cannot be suspended and only an OWNER may act on an OWNER). The members row menu offers Suspend (with confirmation) / Reactivate; no reason field yet.
+- ⬜ Still open: a member detail sheet, accept/decline flow (blocked on the two unread items above), the invitation-decision screen and deep link, last-owner error surfacing, pagination controls on both lists.
 
 ## Files touched / created
 

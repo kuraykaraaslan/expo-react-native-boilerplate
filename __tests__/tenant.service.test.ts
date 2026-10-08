@@ -109,6 +109,24 @@ describe("members", () => {
   });
 });
 
+describe("member transition", () => {
+  it("posts the action and returns the updated member", async () => {
+    const member = { ...membersJson.members[0], memberStatus: "SUSPENDED" };
+    const seen = mockRoute("post", "/members/:id/transition", { message: "Member updated successfully", member });
+    const res = await TenantClientService.transitionMember(TENANT_ID, MEMBER_ID, { action: "suspend", reason: "audit" });
+    expect(seen[0].path).toBe(`/members/${MEMBER_ID}/transition`);
+    expect(seen[0].body).toEqual({ action: "suspend", reason: "audit" });
+    expect(res.memberStatus).toBe("SUSPENDED");
+  });
+
+  it("rejects an unknown action before sending", async () => {
+    const seen = mockRoute("post", "/members/:id/transition", { message: "x" });
+    // @ts-expect-error not a valid action
+    await expect(TenantClientService.transitionMember(TENANT_ID, MEMBER_ID, { action: "delete" })).rejects.toBeDefined();
+    expect(seen).toHaveLength(0);
+  });
+});
+
 describe("invitations", () => {
   it("getInvitations parses SafeTenantInvitation (page is 1-based)", async () => {
     const seen = mockRoute("get", "/invitations", invitationsJson);

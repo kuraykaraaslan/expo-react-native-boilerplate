@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEllipsisVertical, faPen, faTrash, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faPen, faTrash, faUserCheck, faUserSlash, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { MemberStatusBadge, RoleBadge } from '@/components/common/Badges';
 import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { Screen, useListContentStyle } from '@/components/common/Screen';
@@ -41,6 +41,7 @@ export default function MembersScreen() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [editing, setEditing] = useState<TenantMember | null>(null);
   const [removing, setRemoving] = useState<TenantMember | null>(null);
+  const [suspending, setSuspending] = useState<TenantMember | null>(null);
 
   const load = useCallback(async () => {
     if (!membership) return;
@@ -70,6 +71,17 @@ export default function MembersScreen() {
       toast.success(t('MEMBERS.REMOVED'));
     } catch (err: unknown) {
       handleApiError(err, 'MembersScreen.remove');
+    }
+  }
+
+  async function transition(m: TenantMember, action: 'suspend' | 'reactivate') {
+    try {
+      const updated = await TenantClientService.transitionMember(m.tenantId, m.tenantMemberId, { action });
+      setMembers((prev) => prev.map((x) => (x.tenantMemberId === m.tenantMemberId ? { ...x, ...updated } : x)));
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      toast.success(t(action === 'suspend' ? 'MEMBERS.SUSPENDED' : 'MEMBERS.REACTIVATED'));
+    } catch (err: unknown) {
+      handleApiError(err, `MembersScreen.${action}`);
     }
   }
 
@@ -155,6 +167,9 @@ export default function MembersScreen() {
                   }
                   items={[
                     { label: t('COMMON.EDIT'), icon: <FontAwesomeIcon icon={faPen} size={12} color={tokens['text-secondary']} />, onPress: () => setEditing(item) },
+                    item.memberStatus === 'SUSPENDED'
+                      ? { label: t('MEMBERS.REACTIVATE'), icon: <FontAwesomeIcon icon={faUserCheck} size={12} color={tokens['text-secondary']} />, onPress: () => transition(item, 'reactivate') }
+                      : { label: t('MEMBERS.SUSPEND'), icon: <FontAwesomeIcon icon={faUserSlash} size={12} color={tokens['text-secondary']} />, onPress: () => setSuspending(item) },
                     { label: t('COMMON.REMOVE'), icon: <FontAwesomeIcon icon={faTrash} size={12} color={tokens.error} />, danger: true, onPress: () => setRemoving(item) },
                   ]}
                 />
@@ -187,6 +202,14 @@ export default function MembersScreen() {
         member={editing}
         onClose={() => setEditing(null)}
         onSaved={(u) => setMembers((prev) => prev.map((m) => (m.tenantMemberId === u.tenantMemberId ? { ...m, ...u } : m)))}
+      />
+      <ConfirmDialog
+        open={suspending !== null}
+        onClose={() => setSuspending(null)}
+        title={t('MEMBERS.SUSPEND_TITLE')}
+        description={t('MEMBERS.SUSPEND_DESC', { email: suspending ? memberName(suspending) : '' })}
+        confirmLabel={t('MEMBERS.SUSPEND')}
+        onConfirm={() => (suspending ? transition(suspending, 'suspend') : undefined)}
       />
       <ConfirmDialog
         open={removing !== null}

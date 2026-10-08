@@ -144,6 +144,19 @@ export const InvitationsListResponseSchema = z.object({
 });
 export type InvitationsListResponse = z.infer<typeof InvitationsListResponseSchema>;
 
+/** POST /members/{id}/transition — suspend revokes the member's sessions; reactivate lifts it. OWNERs cannot be suspended. */
+export const TransitionMemberRequestSchema = z.object({
+  action: z.enum(["suspend", "reactivate"]),
+  reason: z.string().max(500).optional(),
+  until: z.string().datetime().optional(),
+});
+export type TransitionMemberRequest = z.infer<typeof TransitionMemberRequestSchema>;
+
+export const TransitionMemberResponseSchema = z.object({
+  message: z.string(),
+  member: TenantMemberSchema,
+});
+
 /** POST /invitations/{id}/resend and /remind: `{ message, invitation }` (the rotated token is only e-mailed). */
 export const InvitationActionResponseSchema = z.object({
   message: z.string(),
