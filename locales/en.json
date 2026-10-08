@@ -378,6 +378,38 @@
         "LOCKED_DESC": "Unlock to continue.",
         "UNLOCK": "Unlock"
     },
+    "PRIVACY": {
+        "TITLE": "Privacy & legal",
+        "SUBTITLE": "Policies and your data choices",
+        "POLICIES_CARD": "Policies",
+        "PRIVACY_POLICY": "Privacy policy",
+        "TERMS": "Terms of service",
+        "NO_POLICIES": "Your organization has not published any policy links.",
+        "CHOICES_CARD": "Privacy choices",
+        "CHOICES_DESC": "Choose which optional uses of your data you allow.",
+        "REQUIRED": "Always on",
+        "SAVE": "Save choices",
+        "SAVED": "Privacy choices saved",
+        "CHOICES_OFF": "Privacy choices are not enabled for this organization.",
+        "TILE_DESC": "Policies and your data choices"
+    },
+    "AUDIT": {
+        "TITLE": "Audit log",
+        "SUBTITLE": "Security-relevant activity in this organization",
+        "FILTER_SEVERITY": "Severity",
+        "ALL": "All",
+        "SEV_low": "Low",
+        "SEV_medium": "Medium",
+        "SEV_high": "High",
+        "SEV_critical": "Critical",
+        "ACTOR_SYSTEM": "System",
+        "ACTOR_API_KEY": "API key",
+        "ACTOR_UNKNOWN": "Unknown",
+        "EMPTY": "No audit entries",
+        "EMPTY_DESC": "Nothing matches this filter.",
+        "ADMIN_ONLY": "Only owners and admins can read the audit log.",
+        "TILE_DESC": "Who did what, and when"
+    },
     "SESSIONS": {
         "TITLE": "Sessions",
         "SUBTITLE": "Devices signed in to your account",

@@ -378,6 +378,38 @@
         "LOCKED_DESC": "Devam etmek için kilidi açın.",
         "UNLOCK": "Kilidi aç"
     },
+    "PRIVACY": {
+        "TITLE": "Gizlilik ve yasal",
+        "SUBTITLE": "Politikalar ve veri tercihleriniz",
+        "POLICIES_CARD": "Politikalar",
+        "PRIVACY_POLICY": "Gizlilik politikası",
+        "TERMS": "Hizmet şartları",
+        "NO_POLICIES": "Organizasyonunuz herhangi bir politika bağlantısı yayınlamadı.",
+        "CHOICES_CARD": "Gizlilik tercihleri",
+        "CHOICES_DESC": "Verilerinizin hangi isteğe bağlı kullanımlarına izin verdiğinizi seçin.",
+        "REQUIRED": "Her zaman açık",
+        "SAVE": "Tercihleri kaydet",
+        "SAVED": "Gizlilik tercihleri kaydedildi",
+        "CHOICES_OFF": "Bu organizasyon için gizlilik tercihleri etkin değil.",
+        "TILE_DESC": "Politikalar ve veri tercihleriniz"
+    },
+    "AUDIT": {
+        "TITLE": "Denetim günlüğü",
+        "SUBTITLE": "Bu organizasyondaki güvenlikle ilgili etkinlikler",
+        "FILTER_SEVERITY": "Önem",
+        "ALL": "Tümü",
+        "SEV_low": "Düşük",
+        "SEV_medium": "Orta",
+        "SEV_high": "Yüksek",
+        "SEV_critical": "Kritik",
+        "ACTOR_SYSTEM": "Sistem",
+        "ACTOR_API_KEY": "API anahtarı",
+        "ACTOR_UNKNOWN": "Bilinmiyor",
+        "EMPTY": "Denetim kaydı yok",
+        "EMPTY_DESC": "Bu filtreyle eşleşen kayıt yok.",
+        "ADMIN_ONLY": "Denetim günlüğünü yalnızca sahipler ve yöneticiler okuyabilir.",
+        "TILE_DESC": "Kim ne zaman ne yaptı"
+    },
     "SESSIONS": {
         "TITLE": "Oturumlar",
         "SUBTITLE": "Hesabınızda oturum açık cihazlar",

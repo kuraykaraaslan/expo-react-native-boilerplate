@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T15:06:46.999Z",
+  "generatedAt": "2026-10-08T23:34:43.775Z",
   "screens": [
     {
       "filePath": "app/_layout.tsx",
@@ -115,6 +115,14 @@
       "layoutChain": []
     },
     {
+      "filePath": "app/(drawer)/settings/legal.tsx",
+      "route": "/settings/legal",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
       "filePath": "app/(drawer)/settings/profile.tsx",
       "route": "/settings/profile",
       "kind": "screen",
@@ -141,6 +149,14 @@
     {
       "filePath": "app/(drawer)/settings/social-accounts.tsx",
       "route": "/settings/social-accounts",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
+      "filePath": "app/(drawer)/settings/tenant/audit-log.tsx",
+      "route": "/settings/tenant/audit-log",
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,

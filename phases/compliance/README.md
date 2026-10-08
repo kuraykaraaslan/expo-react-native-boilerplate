@@ -19,7 +19,7 @@ App stores require an in-app way to see the terms and privacy policy, and (Apple
 
 | Phase | File | Topic | Priority |
 |-----|-------|------|---------|
-| 13 | [phase-13-consent-privacy.md](phase-13-consent-privacy.md) | Agreements, consent, privacy requests, account deletion, audit viewer | ⬜ Pending |
+| 13 | [phase-13-consent-privacy.md](phase-13-consent-privacy.md) | Agreements, consent, privacy requests, account deletion, audit viewer | 🟡 Partly coded 2026-10-09 (account deletion blocked on the server) |
 
 ## Locked decisions
 

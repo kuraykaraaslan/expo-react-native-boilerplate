@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T15:06:46.999Z",
+  "generatedAt": "2026-10-08T23:34:43.775Z",
   "dtos": [
     {
       "filePath": "services/auth/auth.dto.ts",
@@ -101,6 +101,30 @@
       "types": [
         "Pagination",
         "ApiError"
+      ]
+    },
+    {
+      "filePath": "services/compliance/compliance.dto.ts",
+      "module": "compliance",
+      "name": "compliance.dto",
+      "schemas": [
+        "ConsentPurposeEnum",
+        "BannerPurposeSchema",
+        "ConsentConfigResponseSchema",
+        "ConsentStateResponseSchema",
+        "RecordConsentRequestSchema",
+        "AuditSeverityEnum",
+        "AuditLogSchema",
+        "AuditLogsResponseSchema"
+      ],
+      "types": [
+        "ConsentPurpose",
+        "BannerPurpose",
+        "ConsentConfig",
+        "RecordConsentRequest",
+        "AuditSeverity",
+        "AuditLog",
+        "AuditLogsResponse"
       ]
     },
     {

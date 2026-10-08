@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T15:06:46.999Z",
+  "generatedAt": "2026-10-08T23:34:43.775Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",

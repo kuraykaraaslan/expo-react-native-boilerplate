@@ -378,6 +378,38 @@
         "LOCKED_DESC": "Sblocca per continuare.",
         "UNLOCK": "Sblocca"
     },
+    "PRIVACY": {
+        "TITLE": "Privacy e note legali",
+        "SUBTITLE": "Politiche e le tue scelte sui dati",
+        "POLICIES_CARD": "Politiche",
+        "PRIVACY_POLICY": "Informativa sulla privacy",
+        "TERMS": "Termini di servizio",
+        "NO_POLICIES": "La tua organizzazione non ha pubblicato link alle politiche.",
+        "CHOICES_CARD": "Scelte sulla privacy",
+        "CHOICES_DESC": "Scegli quali usi facoltativi dei tuoi dati consenti.",
+        "REQUIRED": "Sempre attivo",
+        "SAVE": "Salva scelte",
+        "SAVED": "Scelte sulla privacy salvate",
+        "CHOICES_OFF": "Le scelte sulla privacy non sono abilitate per questa organizzazione.",
+        "TILE_DESC": "Politiche e le tue scelte sui dati"
+    },
+    "AUDIT": {
+        "TITLE": "Registro di audit",
+        "SUBTITLE": "Attività rilevanti per la sicurezza in questa organizzazione",
+        "FILTER_SEVERITY": "Gravità",
+        "ALL": "Tutte",
+        "SEV_low": "Bassa",
+        "SEV_medium": "Media",
+        "SEV_high": "Alta",
+        "SEV_critical": "Critica",
+        "ACTOR_SYSTEM": "Sistema",
+        "ACTOR_API_KEY": "Chiave API",
+        "ACTOR_UNKNOWN": "Sconosciuto",
+        "EMPTY": "Nessuna voce di audit",
+        "EMPTY_DESC": "Nulla corrisponde a questo filtro.",
+        "ADMIN_ONLY": "Solo proprietari e amministratori possono leggere il registro di audit.",
+        "TILE_DESC": "Chi ha fatto cosa e quando"
+    },
     "SESSIONS": {
         "TITLE": "Sessioni",
         "SUBTITLE": "Dispositivi connessi al tuo account",

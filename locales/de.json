@@ -378,6 +378,38 @@
         "LOCKED_DESC": "Entsperren Sie, um fortzufahren.",
         "UNLOCK": "Entsperren"
     },
+    "PRIVACY": {
+        "TITLE": "Datenschutz & Rechtliches",
+        "SUBTITLE": "Richtlinien und Ihre Datenauswahl",
+        "POLICIES_CARD": "Richtlinien",
+        "PRIVACY_POLICY": "Datenschutzerklärung",
+        "TERMS": "Nutzungsbedingungen",
+        "NO_POLICIES": "Ihre Organisation hat keine Richtlinien-Links veröffentlicht.",
+        "CHOICES_CARD": "Datenschutzauswahl",
+        "CHOICES_DESC": "Legen Sie fest, welche optionalen Verwendungen Ihrer Daten Sie erlauben.",
+        "REQUIRED": "Immer aktiv",
+        "SAVE": "Auswahl speichern",
+        "SAVED": "Datenschutzauswahl gespeichert",
+        "CHOICES_OFF": "Die Datenschutzauswahl ist für diese Organisation nicht aktiviert.",
+        "TILE_DESC": "Richtlinien und Ihre Datenauswahl"
+    },
+    "AUDIT": {
+        "TITLE": "Audit-Protokoll",
+        "SUBTITLE": "Sicherheitsrelevante Aktivitäten in dieser Organisation",
+        "FILTER_SEVERITY": "Schweregrad",
+        "ALL": "Alle",
+        "SEV_low": "Niedrig",
+        "SEV_medium": "Mittel",
+        "SEV_high": "Hoch",
+        "SEV_critical": "Kritisch",
+        "ACTOR_SYSTEM": "System",
+        "ACTOR_API_KEY": "API-Schlüssel",
+        "ACTOR_UNKNOWN": "Unbekannt",
+        "EMPTY": "Keine Audit-Einträge",
+        "EMPTY_DESC": "Nichts entspricht diesem Filter.",
+        "ADMIN_ONLY": "Nur Inhaber und Admins können das Audit-Protokoll lesen.",
+        "TILE_DESC": "Wer was wann getan hat"
+    },
     "SESSIONS": {
         "TITLE": "Sitzungen",
         "SUBTITLE": "Geräte, die bei Ihrem Konto angemeldet sind",

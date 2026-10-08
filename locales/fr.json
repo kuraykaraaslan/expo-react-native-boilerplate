@@ -378,6 +378,38 @@
         "LOCKED_DESC": "Déverrouillez pour continuer.",
         "UNLOCK": "Déverrouiller"
     },
+    "PRIVACY": {
+        "TITLE": "Confidentialité et mentions légales",
+        "SUBTITLE": "Politiques et vos choix de données",
+        "POLICIES_CARD": "Politiques",
+        "PRIVACY_POLICY": "Politique de confidentialité",
+        "TERMS": "Conditions d'utilisation",
+        "NO_POLICIES": "Votre organisation n'a publié aucun lien de politique.",
+        "CHOICES_CARD": "Choix de confidentialité",
+        "CHOICES_DESC": "Choisissez les utilisations facultatives de vos données que vous autorisez.",
+        "REQUIRED": "Toujours actif",
+        "SAVE": "Enregistrer les choix",
+        "SAVED": "Choix de confidentialité enregistrés",
+        "CHOICES_OFF": "Les choix de confidentialité ne sont pas activés pour cette organisation.",
+        "TILE_DESC": "Politiques et vos choix de données"
+    },
+    "AUDIT": {
+        "TITLE": "Journal d'audit",
+        "SUBTITLE": "Activité liée à la sécurité dans cette organisation",
+        "FILTER_SEVERITY": "Gravité",
+        "ALL": "Toutes",
+        "SEV_low": "Faible",
+        "SEV_medium": "Moyenne",
+        "SEV_high": "Élevée",
+        "SEV_critical": "Critique",
+        "ACTOR_SYSTEM": "Système",
+        "ACTOR_API_KEY": "Clé API",
+        "ACTOR_UNKNOWN": "Inconnu",
+        "EMPTY": "Aucune entrée d'audit",
+        "EMPTY_DESC": "Rien ne correspond à ce filtre.",
+        "ADMIN_ONLY": "Seuls les propriétaires et administrateurs peuvent lire le journal d'audit.",
+        "TILE_DESC": "Qui a fait quoi, et quand"
+    },
     "SESSIONS": {
         "TITLE": "Sessions",
         "SUBTITLE": "Appareils connectés à votre compte",

@@ -378,6 +378,38 @@
         "LOCKED_DESC": "Desbloquea para continuar.",
         "UNLOCK": "Desbloquear"
     },
+    "PRIVACY": {
+        "TITLE": "Privacidad y legal",
+        "SUBTITLE": "Políticas y tus opciones de datos",
+        "POLICIES_CARD": "Políticas",
+        "PRIVACY_POLICY": "Política de privacidad",
+        "TERMS": "Términos del servicio",
+        "NO_POLICIES": "Tu organización no ha publicado enlaces de políticas.",
+        "CHOICES_CARD": "Opciones de privacidad",
+        "CHOICES_DESC": "Elige qué usos opcionales de tus datos permites.",
+        "REQUIRED": "Siempre activo",
+        "SAVE": "Guardar opciones",
+        "SAVED": "Opciones de privacidad guardadas",
+        "CHOICES_OFF": "Las opciones de privacidad no están activadas para esta organización.",
+        "TILE_DESC": "Políticas y tus opciones de datos"
+    },
+    "AUDIT": {
+        "TITLE": "Registro de auditoría",
+        "SUBTITLE": "Actividad relevante para la seguridad en esta organización",
+        "FILTER_SEVERITY": "Gravedad",
+        "ALL": "Todas",
+        "SEV_low": "Baja",
+        "SEV_medium": "Media",
+        "SEV_high": "Alta",
+        "SEV_critical": "Crítica",
+        "ACTOR_SYSTEM": "Sistema",
+        "ACTOR_API_KEY": "Clave de API",
+        "ACTOR_UNKNOWN": "Desconocido",
+        "EMPTY": "Sin entradas de auditoría",
+        "EMPTY_DESC": "Nada coincide con este filtro.",
+        "ADMIN_ONLY": "Solo propietarios y administradores pueden leer el registro de auditoría.",
+        "TILE_DESC": "Quién hizo qué y cuándo"
+    },
     "SESSIONS": {
         "TITLE": "Sesiones",
         "SUBTITLE": "Dispositivos con sesión iniciada en tu cuenta",

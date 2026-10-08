@@ -56,7 +56,7 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 | 10 | [auth_security/phase-10-security-2fa.md](auth_security/phase-10-security-2fa.md) | Security screen, TOTP, biometric lock (`user_security`, `auth`) | ✅ Coded 2026-10-08 · P1 |
 | 11 | [auth_security/phase-11-passkey.md](auth_security/phase-11-passkey.md) | Passkeys (`auth_passkey`) | 🔴 Planned · P1 · **login half needs a server change** (K7) |
 | 12 | [account/phase-12-account-tenant-settings.md](account/phase-12-account-tenant-settings.md) | Account audit, tenant settings, branding (`account`, `tenant_setting`, `tenant_branding`) | ✅ Coded 2026-10-08 (settings + primary-colour branding; audit & logos open) · P1 |
-| 13 | [compliance/phase-13-consent-privacy.md](compliance/phase-13-consent-privacy.md) | Agreements, privacy requests, account deletion, audit viewer (`terms_consent`, `privacy`, `audit_log`) | ⬜ Planned · P2 |
+| 13 | [compliance/phase-13-consent-privacy.md](compliance/phase-13-consent-privacy.md) | Agreements, privacy requests, account deletion, audit viewer (`terms_consent`, `privacy`, `audit_log`) | 🟡 Coded: legal links, consent choices, audit viewer · ⛔ account deletion needs a server route (C1) · P2 |
 | 14 | [platform/phase-14-locale-and-flags.md](platform/phase-14-locale-and-flags.md) | Server-aligned locale, feature flags and gates | ⬜ Planned · P2 |
 | 15 | [platform/phase-15-files.md](platform/phase-15-files.md) | Uploads, avatar, media gallery, drive | ⬜ Planned · P2 |
 | 16 | [platform/phase-16-realtime-messaging.md](platform/phase-16-realtime-messaging.md) | Socket.IO transport and messaging | ⬜ Planned · P2 |

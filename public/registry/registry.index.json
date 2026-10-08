@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T15:06:46.999Z",
+  "generatedAt": "2026-10-08T23:34:43.775Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -136,6 +136,14 @@
       "layoutChain": []
     },
     {
+      "filePath": "app/(drawer)/settings/legal.tsx",
+      "route": "/settings/legal",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
       "filePath": "app/(drawer)/settings/profile.tsx",
       "route": "/settings/profile",
       "kind": "screen",
@@ -162,6 +170,14 @@
     {
       "filePath": "app/(drawer)/settings/social-accounts.tsx",
       "route": "/settings/social-accounts",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
+      "filePath": "app/(drawer)/settings/tenant/audit-log.tsx",
+      "route": "/settings/tenant/audit-log",
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
@@ -1194,6 +1210,23 @@
       ]
     },
     {
+      "filePath": "services/compliance/compliance.service.client.ts",
+      "module": "compliance",
+      "name": "compliance.service.client",
+      "className": "ComplianceClientService",
+      "methods": [
+        "getConsentConfig",
+        "getConsentState",
+        "recordConsent",
+        "getAuditLogs"
+      ],
+      "endpoints": [
+        "/consent/config",
+        "/consent",
+        "/audit-logs"
+      ]
+    },
+    {
       "filePath": "services/user/notification.service.client.ts",
       "module": "user",
       "name": "notification.service.client",
@@ -1476,6 +1509,30 @@
       "types": [
         "Pagination",
         "ApiError"
+      ]
+    },
+    {
+      "filePath": "services/compliance/compliance.dto.ts",
+      "module": "compliance",
+      "name": "compliance.dto",
+      "schemas": [
+        "ConsentPurposeEnum",
+        "BannerPurposeSchema",
+        "ConsentConfigResponseSchema",
+        "ConsentStateResponseSchema",
+        "RecordConsentRequestSchema",
+        "AuditSeverityEnum",
+        "AuditLogSchema",
+        "AuditLogsResponseSchema"
+      ],
+      "types": [
+        "ConsentPurpose",
+        "BannerPurpose",
+        "ConsentConfig",
+        "RecordConsentRequest",
+        "AuditSeverity",
+        "AuditLog",
+        "AuditLogsResponse"
       ]
     },
     {

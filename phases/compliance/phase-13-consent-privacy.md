@@ -64,3 +64,30 @@ Modules: `terms_consent`, `privacy`, `audit_log`. Priority 2.
 - **Irreversible action.** Erasure needs an explicit second confirmation and re-authentication; test the cancel path.
 - **Legal text rendering.** Never truncate or restyle in a way that hides the clause the hash covers.
 - **Audit data volume.** Always paginate; never prefetch the whole log.
+
+---
+
+## 🟡 CODED (partial) — 2026-10-09 · **account deletion is blocked on the server (C1)**
+
+On `main`. Typecheck 0 errors, jest 169/169 (5 new), web export OK. Screenshots: `.junk/screenshots/phase-13-consent-privacy/` (6 images).
+
+**Corrections to this plan (13.1 contract check — read from `terms_consent`, `privacy`, `audit_log` server source)**
+- **`privacy` is a DPO/admin workflow, not self-service.** `POST /privacy/requests` needs `privacy.requests.create` (**ADMIN**), takes a `subjectType`/`subjectId` of the data subject, and an erasure then goes verify → dossier (**OWNER**) → `erasure` with a preview `confirmToken` (**OWNER**). There is **no route anywhere in `account` or `auth` that lets a signed-in user delete their own account or file their own request.** So 13.3's "Delete account" cannot be built without a server change, and the "continue on the web" interim does not exist either (the web would need the same admin role).
+- **No user-facing way to read agreement text.** `GET /agreements` and `/agreements/{id}` are ADMIN (`terms_consent.agreements.read`); the public/GUEST routes are only `POST /agreements/accept`, `/consent` (GET state / POST record) and `GET /consent/config`. The login/registration answers carry **no "pending acceptance" flag** either, so the blocking-acceptance guard (13.2) has nothing to key on.
+- **Consent routes identify the subject by a `userId` in the request, not by the session** (they are GUEST routes). The client sends the signed-in user's own id; the server does not check it against the token — worth a server-side look, not something the app can fix.
+- `audit_log`: `GET /audit-logs` is ADMIN (`audit_log.logs.read`), **1-based** pages, filters `severity/action/actorId/resourceType/fromDate/toDate`, and the route is plan-gated (`assertAuditLogEntitled` — a 403 on plans without it, surfaced by the generic error handler).
+
+**What shipped**
+- `services/compliance/{compliance.dto,compliance.service.client}.ts`: consent config / state / record and the audit list, with tests of the real shapes.
+- **Privacy & legal** (`app/(drawer)/settings/legal.tsx` + hub tile): Privacy policy and Terms of service links taken from the tenant's **public branding** (`privacyPolicyUrl`, `termsOfServiceUrl`) and opened in the in-app browser — only http(s) is ever opened (`safeWebUrl`); and **Privacy choices** from `consent/config` (required purposes are always-on and disabled, optional ones default to off until answered) saved as one batch tagged with the policy version. The two reads are independent: a tenant without consent configured still shows its policy links and vice versa.
+- **Audit log** (`app/(drawer)/settings/tenant/audit-log.tsx` + tile on the organization page): admin-only (others get a note and no request), severity filter, 20 per page with Load more, stale answers dropped.
+- Strings in all six locales.
+
+**Not done / blocked**
+- ⛔ **Account deletion (13.3) — release-blocking for store submission** (Apple 5.1.1(v), Google Play data-deletion policy). Needs a server route a signed-in user can call for themselves, e.g. `POST /auth/me/deletion-request` (re-auth required, then the `privacy` erasure pipeline) or `DELETE /auth/me`. Once it exists the client part is small: re-authenticate, call it, then `flush()` all tenants' tokens and Phase 8's `unregisterPush`.
+- Data-export request (13.3) — same reason.
+- Blocking acceptance of a new agreement version (13.2) — needs a server-side signal and a member-readable agreement route.
+
+**Deliberate deviations:** no agreement reader (no route to read from — the policy links open the web pages instead); audit log has no free-text/date filters or detail sheet (severity filter only); consent history is not shown.
+
+**Not verified:** nothing ran against a live server; the web build was driven against a mock built from the server's shapes.
