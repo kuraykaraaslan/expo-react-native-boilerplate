@@ -22,7 +22,7 @@ Phase 4 signs in with email + password and handles the OTP/2FA challenge. What i
 
 | Phase | File | Topic | Priority |
 |-----|-------|------|---------|
-| 10 | [phase-10-security-2fa.md](phase-10-security-2fa.md) | Security screen, TOTP, OTP channels, biometric app lock | ⬜ Pending |
+| 10 | [phase-10-security-2fa.md](phase-10-security-2fa.md) | Security screen, TOTP, OTP channels, biometric app lock | ✅ Coded 2026-10-08 |
 | 11 | [phase-11-passkey.md](phase-11-passkey.md) | Passkeys (**needs a server change**) | ⬜ Pending |
 
 ## Locked decisions

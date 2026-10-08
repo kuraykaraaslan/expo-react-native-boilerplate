@@ -53,7 +53,7 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 | 7 | [tenant/phase-7-members-invitations.md](tenant/phase-7-members-invitations.md) | Members and invitations (`tenant_member`, `tenant_invitation`) | 🟡 **Coded except accept/decline (see file)** · P1 |
 | 8 | [notifications/phase-8-push.md](notifications/phase-8-push.md) | Push registration (`notification_push`) | 🔴 Planned · P1 · **needs a server change** (K7) |
 | 9 | [notifications/phase-9-inapp-feed.md](notifications/phase-9-inapp-feed.md) | In-app feed and unread badge (`notification_inapp`) | ✅ Coded 2026-10-08 · P1 |
-| 10 | [auth_security/phase-10-security-2fa.md](auth_security/phase-10-security-2fa.md) | Security screen, TOTP, biometric lock (`user_security`, `auth`) | ⬜ Planned · P1 |
+| 10 | [auth_security/phase-10-security-2fa.md](auth_security/phase-10-security-2fa.md) | Security screen, TOTP, biometric lock (`user_security`, `auth`) | ✅ Coded 2026-10-08 · P1 |
 | 11 | [auth_security/phase-11-passkey.md](auth_security/phase-11-passkey.md) | Passkeys (`auth_passkey`) | 🔴 Planned · P1 · **login half needs a server change** (K7) |
 | 12 | [account/phase-12-account-tenant-settings.md](account/phase-12-account-tenant-settings.md) | Account audit, tenant settings, branding (`account`, `tenant_setting`, `tenant_branding`) | ⬜ Planned · P1 |
 | 13 | [compliance/phase-13-consent-privacy.md](compliance/phase-13-consent-privacy.md) | Agreements, privacy requests, account deletion, audit viewer (`terms_consent`, `privacy`, `audit_log`) | ⬜ Planned · P2 |

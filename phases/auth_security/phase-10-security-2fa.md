@@ -59,3 +59,28 @@ Modules: `user_security`, `auth` (totp/otp), `account`. Priority 1. No server ch
 - **Secret exposure.** The TOTP secret and recovery codes must never reach logs, Sentry breadcrumbs or persisted stores.
 - **Lockout.** Disabling the only second factor or the app lock failing on a device with no biometrics enrolled must have a safe fallback.
 - **QR dependency.** A native QR component adds a dependency; prefer an SVG-only library compatible with SDK 57.
+
+---
+
+## ✅ CODED — 2026-10-08
+
+Committed straight to `main` (`cd47626`). Typecheck 0 errors, jest 144/144 (9 new), web export OK.
+
+**Corrections to this plan**
+- **No new service work**: `setupTOTP` / `enableTOTP` / `disableTOTP` / `getSecurity` and their DTOs already matched the server from Phase 3. Contract read: `setup` takes `{}` (400 "TOTP already enabled" if on) and answers `{secret, otpauthUrl}`; `enable` takes a 6-digit `otpToken` and answers `{backupCodes}`; **`disable` needs only a current 6-digit code — not the password** (the plan said "code/password").
+- **There is no OTP-channel preference route.** `user_security` has no routes and the OTP methods in `GET /auth/me/security` are read-only facts (`otpMethods`), so 10.2's "OTP channels toggles" is not buildable; only the TOTP state is shown.
+- **No QR code.** The plan asked for one, but the QR would be shown on the same phone that has to scan it. The flow is instead "Open in authenticator app" (`otpauth://` deep link) plus the secret in groups of four with a copy button — which also avoids a new QR dependency.
+
+**What shipped**
+- `app/(drawer)/settings/security.tsx` (+ a Security tile on the settings hub): two-step status, enable/disable, last sign-in, app lock.
+- `components/security/TotpSetupModal`: setup → secret + open-in-app + copy → confirm code → backup codes shown once with copy and an explicit "I've saved them"; `TotpDisableModal` asks for a current code. The secret and codes live in component state only (never stored or logged).
+- **App lock (S2)**: `libs/appLock.ts` (persisted on/off in MMKV; a cold start with it on begins locked; locks after 30 s in the background; `shouldLock` is pure and tested), `libs/biometrics.ts` (expo-local-authentication; any device screen lock counts, so passcode-only devices work), `libs/useAppLockWatcher.ts` (AppState), `AppLockScreen` overlay mounted in the drawer layout, `AppLockCard` toggle (turning it on requires a successful prompt first). Cancel keeps it locked; the only other exit is **Sign out**. Logout resets the lock so the next account does not inherit it.
+- New deps: `expo-clipboard`, `expo-local-authentication` (+ the config plugin with the Face ID string). Strings in all six locales.
+- Screenshots: `.junk/screenshots/phase-10-security-2fa/` (9 images, local).
+
+**Deliberate deviations**
+- No voluntary "change password" entry: `/change-password` sits in the `(auth)` group, whose guard bounces signed-in users, so it is only reachable in the forced flow. A settings entry needs the screen moved to a signed-in group — left for a follow-up.
+- No trusted-devices list / recovery-code regeneration: no matching routes in the module list.
+- The grace period (30 s) is a constant, not a setting.
+
+**Not verified:** nothing was run against a live server, on a device, or with real biometrics (the screenshots use a web build with an in-memory SecureStore and a stand-in for expo-local-authentication). A development build is required for the config plugin (Face ID string); `otpauth://` hand-off to a real authenticator app was not exercised.
