@@ -433,6 +433,24 @@
         "SAVE": "Salva modifiche",
         "READ_ONLY": "Solo proprietari e amministratori possono modificare l'organizzazione."
     },
+    "TENANT_SETTINGS": {
+        "TITLE": "Impostazioni dell'organizzazione",
+        "SUBTITLE": "Valori predefiniti di questa organizzazione",
+        "MEMBERSHIP_CARD": "Appartenenza",
+        "ROLE_LABEL": "Ruolo predefinito dei membri",
+        "ROLE_DESC": "Ruolo assegnato ai nuovi membri quando accettano un invito.",
+        "DUAL_LABEL": "Richiedi approvazione per modifiche sensibili ai membri",
+        "DUAL_DESC": "Concedere o rimuovere proprietario o amministratore attende un secondo revisore.",
+        "LANGUAGE_CARD": "Lingua",
+        "LANGUAGE_LABEL": "Lingua predefinita",
+        "LANGUAGE_DESC": "I nuovi membri iniziano in questa lingua finché non scelgono la propria.",
+        "SAVE": "Salva modifiche",
+        "SAVED": "Impostazioni salvate",
+        "PENDING": "{{count}} modifica inviata per approvazione",
+        "READ_ONLY": "Solo proprietari e amministratori possono modificare queste impostazioni.",
+        "TILE": "Impostazioni",
+        "TILE_DESC": "Valori predefiniti dei membri e lingua"
+    },
     "MEMBERS": {
         "TITLE": "Membri",
         "SUBTITLE": "Persone con accesso a questa organizzazione",

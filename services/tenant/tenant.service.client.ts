@@ -155,7 +155,16 @@ export class TenantClientService {
   }
 
   static async updateTenantSettings(tenantId: string, settings: Record<string, string>): Promise<Record<string, string>> {
+    return (await this.saveTenantSettings(tenantId, settings)).settings;
+  }
+
+  /** Like updateTenantSettings, but also reports the keys that were queued for approval instead of written. */
+  static async saveTenantSettings(
+    tenantId: string,
+    settings: Record<string, string>,
+  ): Promise<{ settings: Record<string, string>; pending: { key: string; approvalItemId: string }[] }> {
     const res = await axiosInstance.post("/settings", { settings }, { tenantId });
-    return TenantSettingsResponseSchema.parse(res.data).settings;
+    const parsed = TenantSettingsResponseSchema.parse(res.data);
+    return { settings: parsed.settings, pending: parsed.pending };
   }
 }

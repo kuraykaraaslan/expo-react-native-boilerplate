@@ -60,3 +60,14 @@ Modules: `account`, `tenant_setting`, `tenant_branding`. Priority 1.
 - **Brand colors vs. accessibility.** Arbitrary tenant colors can break contrast on buttons and badges; the guard is mandatory.
 - **Font loading.** A tenant font name the app has not bundled must fall back to Inter (Phase 1D), never block rendering.
 - **Settings key drift.** Modules add keys over time; the allowlist is explicit so new keys do not appear half-supported.
+
+---
+
+## 🟡 Progress — 2026-10-08 (12.2 done; 12.1 and 12.3 open)
+
+**12.2 tenant settings — done** (on `main`). Contract read from `tenant_setting/server/settings.route.ts`: `GET /settings` → `{success, settings}` (every key as a string, secrets masked `***SET***`; permission `tenant_setting.config.read`), `POST /settings` `{settings}` → `{success, settings: <applied only>, pending: [{key, approvalItemId}]}` (permission `tenant_setting.config.update`; with the tenant's maker-checker gate on, gated keys are **queued** and absent from `settings`). The route's `PUT` is "get by keys", not an update.
+- `utils/tenantSettings.ts`: the allowlist (A3) — `defaultMemberRole` (USER|ADMIN; OWNER is excluded by the server), `tenantMemberDualControl` (boolean string), `defaultLanguage` (the app's six languages) — taken from the server's field files, since the field definitions are TypeScript metadata, **not served by any API** (so a generic server-driven form is not possible). `pickSettings` / `changedSettings` (send only what changed).
+- `saveTenantSettings` returns `{settings, pending}`; `updateTenantSettings` keeps its old shape. Keys parked for approval are shown at the value in force and announced ("N change sent for approval").
+- `app/(drawer)/settings/tenant/settings.tsx` (+ tile on the organization page): admin-only (non-admins see a read-only note and no request is made), reloads on tenant switch, save disabled until something changed. Strings in all six locales; 5 new tests (149 total).
+
+**Still open:** 12.1 account audit (`/auth/me/*` DTO drift, `device-info`), 12.3 branding — see the finding that `GET /settings/public` is a **GUEST** route (works before sign-in) returning `{success, settings: {brandName, brandPrimaryColor, …}, tenant: {name}}`, and that kui-native's `configureTheme` merges onto defaults and does **not** re-render mounted components, so branding must be applied at startup (from an MMKV cache) or on a tenant switch.

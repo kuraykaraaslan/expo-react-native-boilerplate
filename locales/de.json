@@ -433,6 +433,24 @@
         "SAVE": "Änderungen speichern",
         "READ_ONLY": "Nur Inhaber und Administratoren können die Organisation bearbeiten."
     },
+    "TENANT_SETTINGS": {
+        "TITLE": "Organisationseinstellungen",
+        "SUBTITLE": "Standardwerte dieser Organisation",
+        "MEMBERSHIP_CARD": "Mitgliedschaft",
+        "ROLE_LABEL": "Standardrolle für Mitglieder",
+        "ROLE_DESC": "Rolle, die neue Mitglieder beim Annehmen einer Einladung erhalten.",
+        "DUAL_LABEL": "Genehmigung für sensible Mitgliederänderungen verlangen",
+        "DUAL_DESC": "Das Vergeben oder Entziehen von Inhaber- oder Admin-Rechten wartet auf eine zweite Prüfung.",
+        "LANGUAGE_CARD": "Sprache",
+        "LANGUAGE_LABEL": "Standardsprache",
+        "LANGUAGE_DESC": "Neue Mitglieder starten in dieser Sprache, bis sie eine eigene wählen.",
+        "SAVE": "Änderungen speichern",
+        "SAVED": "Einstellungen gespeichert",
+        "PENDING": "{{count}} Änderung zur Genehmigung gesendet",
+        "READ_ONLY": "Nur Inhaber und Admins können diese Einstellungen ändern.",
+        "TILE": "Einstellungen",
+        "TILE_DESC": "Mitglieder-Standards und Sprache"
+    },
     "MEMBERS": {
         "TITLE": "Mitglieder",
         "SUBTITLE": "Personen mit Zugriff auf diese Organisation",

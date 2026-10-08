@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T13:02:58.219Z",
+  "generatedAt": "2026-10-08T14:33:46.386Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -186,6 +186,14 @@
     {
       "filePath": "app/(drawer)/settings/tenant/members.tsx",
       "route": "/settings/tenant/members",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
+      "filePath": "app/(drawer)/settings/tenant/settings.tsx",
+      "route": "/settings/tenant/settings",
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
@@ -1258,7 +1266,8 @@
         "acceptInvitation",
         "declineInvitation",
         "getTenantSettings",
-        "updateTenantSettings"
+        "updateTenantSettings",
+        "saveTenantSettings"
       ],
       "endpoints": [
         "/auth/me/tenants",

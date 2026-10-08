@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { faEnvelopeOpenText, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelopeOpenText, faSliders, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { RoleBadge } from '@/components/common/Badges';
 import { LinkTile } from '@/components/common/LinkTile';
 import { Screen } from '@/components/common/Screen';
@@ -131,6 +131,7 @@ export default function OrganizationScreen() {
 
           <View className="gap-3">
             <SectionLabel>{t('ORGANIZATION.MANAGE')}</SectionLabel>
+            <LinkTile icon={faSliders} title={t('TENANT_SETTINGS.TILE')} description={t('TENANT_SETTINGS.TILE_DESC')} href="/settings/tenant/settings" testID="organization-settings" />
             <LinkTile icon={faUsers} title={t('SETTINGS_HUB.MEMBERS')} description={t('SETTINGS_HUB.MEMBERS_DESC')} href="/settings/tenant/members" testID="organization-members" />
             <LinkTile icon={faEnvelopeOpenText} title={t('SETTINGS_HUB.INVITATIONS')} description={t('SETTINGS_HUB.INVITATIONS_DESC')} href="/settings/tenant/invitations" testID="organization-invitations" />
           </View>

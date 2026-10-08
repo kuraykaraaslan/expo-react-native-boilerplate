@@ -193,10 +193,15 @@ export const TenantProfileSchema = z.object({
 });
 export type TenantProfile = z.infer<typeof TenantProfileSchema>;
 
-/** GET|POST /settings → `{ success, settings }` (string map). */
+/**
+ * GET|POST /settings → `{ success, settings }` (string map). POST also answers `pending`:
+ * keys parked in the approval queue (maker-checker) instead of being written — they are
+ * absent from `settings`.
+ */
 export const TenantSettingsResponseSchema = z.object({
   success: z.boolean().optional(),
   settings: z.record(z.string()),
+  pending: z.array(z.object({ key: z.string(), approvalItemId: z.string() })).nullish().transform((v) => v ?? []),
 });
 export type TenantSettingsResponse = z.infer<typeof TenantSettingsResponseSchema>;
 

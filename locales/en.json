@@ -433,6 +433,24 @@
         "SAVE": "Save changes",
         "READ_ONLY": "Only owners and admins can edit the organization."
     },
+    "TENANT_SETTINGS": {
+        "TITLE": "Organization settings",
+        "SUBTITLE": "Defaults for this organization",
+        "MEMBERSHIP_CARD": "Membership",
+        "ROLE_LABEL": "Default member role",
+        "ROLE_DESC": "Role given to new members when they accept an invitation.",
+        "DUAL_LABEL": "Require approval for sensitive member changes",
+        "DUAL_DESC": "Granting or removing owner or admin waits for a second reviewer.",
+        "LANGUAGE_CARD": "Language",
+        "LANGUAGE_LABEL": "Default language",
+        "LANGUAGE_DESC": "New members start in this language until they choose their own.",
+        "SAVE": "Save changes",
+        "SAVED": "Settings saved",
+        "PENDING": "{{count}} change sent for approval",
+        "READ_ONLY": "Only owners and admins can change these settings.",
+        "TILE": "Settings",
+        "TILE_DESC": "Member defaults and language"
+    },
     "MEMBERS": {
         "TITLE": "Members",
         "SUBTITLE": "People with access to this organization",

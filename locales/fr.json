@@ -433,6 +433,24 @@
         "SAVE": "Enregistrer les modifications",
         "READ_ONLY": "Seuls les propriétaires et les administrateurs peuvent modifier l'organisation."
     },
+    "TENANT_SETTINGS": {
+        "TITLE": "Paramètres de l'organisation",
+        "SUBTITLE": "Valeurs par défaut de cette organisation",
+        "MEMBERSHIP_CARD": "Adhésion",
+        "ROLE_LABEL": "Rôle par défaut des membres",
+        "ROLE_DESC": "Rôle attribué aux nouveaux membres lorsqu'ils acceptent une invitation.",
+        "DUAL_LABEL": "Exiger une approbation pour les changements sensibles de membres",
+        "DUAL_DESC": "Accorder ou retirer propriétaire ou administrateur attend un second validateur.",
+        "LANGUAGE_CARD": "Langue",
+        "LANGUAGE_LABEL": "Langue par défaut",
+        "LANGUAGE_DESC": "Les nouveaux membres démarrent dans cette langue jusqu'à ce qu'ils choisissent la leur.",
+        "SAVE": "Enregistrer les modifications",
+        "SAVED": "Paramètres enregistrés",
+        "PENDING": "{{count}} modification envoyée pour approbation",
+        "READ_ONLY": "Seuls les propriétaires et administrateurs peuvent modifier ces paramètres.",
+        "TILE": "Paramètres",
+        "TILE_DESC": "Valeurs des membres et langue"
+    },
     "MEMBERS": {
         "TITLE": "Membres",
         "SUBTITLE": "Personnes ayant accès à cette organisation",

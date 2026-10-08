@@ -178,6 +178,24 @@ describe("settings", () => {
   });
 });
 
+describe("saveTenantSettings", () => {
+  it("separates applied keys from the ones queued for approval", async () => {
+    mockRoute("post", "/settings", {
+      success: true,
+      settings: { defaultLanguage: "tr" },
+      pending: [{ key: "tenantMemberDualControl", approvalItemId: "ap-1" }],
+    });
+    const res = await TenantClientService.saveTenantSettings(TENANT_ID, { defaultLanguage: "tr", tenantMemberDualControl: "true" });
+    expect(res.settings).toEqual({ defaultLanguage: "tr" });
+    expect(res.pending).toEqual([{ key: "tenantMemberDualControl", approvalItemId: "ap-1" }]);
+  });
+
+  it("treats a missing pending list as none", async () => {
+    mockRoute("post", "/settings", { success: true, settings: {} });
+    expect((await TenantClientService.saveTenantSettings(TENANT_ID, {})).pending).toEqual([]);
+  });
+});
+
 describe("SSO", () => {
   it("getProviders keeps the known providers and drops ones this app version does not know", async () => {
     const seen = mockRoute("get", "/auth/sso", { providers: ["google", "github", "some-new-idp"] });

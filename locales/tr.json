@@ -433,6 +433,24 @@
         "SAVE": "Değişiklikleri kaydet",
         "READ_ONLY": "Organizasyonu yalnızca sahipler ve yöneticiler düzenleyebilir."
     },
+    "TENANT_SETTINGS": {
+        "TITLE": "Organizasyon ayarları",
+        "SUBTITLE": "Bu organizasyonun varsayılanları",
+        "MEMBERSHIP_CARD": "Üyelik",
+        "ROLE_LABEL": "Varsayılan üye rolü",
+        "ROLE_DESC": "Daveti kabul eden yeni üyelere verilen rol.",
+        "DUAL_LABEL": "Hassas üye değişiklikleri için onay iste",
+        "DUAL_DESC": "Sahip veya yönetici verme/kaldırma işlemi ikinci bir onaylayıcıyı bekler.",
+        "LANGUAGE_CARD": "Dil",
+        "LANGUAGE_LABEL": "Varsayılan dil",
+        "LANGUAGE_DESC": "Yeni üyeler kendi dillerini seçene kadar bu dille başlar.",
+        "SAVE": "Değişiklikleri kaydet",
+        "SAVED": "Ayarlar kaydedildi",
+        "PENDING": "{{count}} değişiklik onaya gönderildi",
+        "READ_ONLY": "Bu ayarları yalnızca sahipler ve yöneticiler değiştirebilir.",
+        "TILE": "Ayarlar",
+        "TILE_DESC": "Üye varsayılanları ve dil"
+    },
     "MEMBERS": {
         "TITLE": "Üyeler",
         "SUBTITLE": "Bu organizasyona erişimi olan kişiler",
