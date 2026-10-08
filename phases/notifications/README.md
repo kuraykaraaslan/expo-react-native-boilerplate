@@ -23,7 +23,7 @@ The client has a notifications screen that lists `GET /auth/me/notifications` an
 | Phase | File | Topic | Priority |
 |-----|-------|------|---------|
 | 8 | [phase-8-push.md](phase-8-push.md) | Push registration (**needs a server change**) | ⬜ Pending |
-| 9 | [phase-9-inapp-feed.md](phase-9-inapp-feed.md) | In-app feed, unread badge, preferences | ⬜ Pending |
+| 9 | [phase-9-inapp-feed.md](phase-9-inapp-feed.md) | In-app feed, unread badge, preferences | ✅ Coded 2026-10-08 |
 
 ## Locked decisions
 

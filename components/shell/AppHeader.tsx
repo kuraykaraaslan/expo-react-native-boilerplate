@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,8 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBars, faBell } from '@fortawesome/free-solid-svg-icons';
 import type { DrawerNavigationProp } from 'expo-router/drawer';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import logger from '@/libs/logger';
-import { NotificationClientService } from '@/services/user/notification.service.client';
+import { useUnreadPolling } from '@/libs/useUnreadPolling';
 import { useNotificationStore } from '@/stores/notificationStore';
 import { Text } from '@/components/ui';
 import { LangSwitcher } from './LangSwitcher';
@@ -24,13 +22,8 @@ function NotificationBell() {
   const { t } = useTranslation();
   const tokens = useThemeTokens();
   const unread = useNotificationStore((s) => s.unreadCount);
-  const setUnread = useNotificationStore((s) => s.setUnreadCount);
 
-  useEffect(() => {
-    NotificationClientService.getNotifications()
-      .then((list) => setUnread(list.filter((n) => !n.isRead).length))
-      .catch((err) => logger.warn('[AppHeader] unread count', err)); // background badge — no toast
-  }, [setUnread]);
+  useUnreadPolling();
 
   return (
     <Pressable
@@ -43,7 +36,7 @@ function NotificationBell() {
       <FontAwesomeIcon icon={faBell} color={tokens['text-secondary']} size={16} />
       {unread > 0 ? (
         <View className="absolute right-0.5 top-0.5 h-4 min-w-[16px] items-center justify-center rounded-full bg-error px-1">
-          <Text className="text-[10px] font-bold text-text-inverse">{unread > 9 ? '9+' : unread}</Text>
+          <Text className="text-[10px] font-bold text-text-inverse">{unread > 99 ? '99+' : unread}</Text>
         </View>
       ) : null}
     </Pressable>

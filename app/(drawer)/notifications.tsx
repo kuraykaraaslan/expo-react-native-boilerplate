@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FlatList, Pressable, RefreshControl, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
+import * as WebBrowser from 'expo-web-browser';
 import { toast } from 'sonner-native';
 import { faBellSlash } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmDialog } from '@/components/common/ConfirmDialog';
@@ -9,23 +10,27 @@ import { Screen, useListContentStyle } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { Button, EmptyState, Spinner, Text } from '@/components/ui';
 import type { Notification } from '@/services/user/notification.dto';
+import { env } from '@/libs/env';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import { NotificationClientService } from '@/services/user/notification.service.client';
 import { useNotificationStore } from '@/stores/notificationStore';
+import { useTenantStore } from '@/stores/tenantStore';
 import { cn } from '@/utils/cn';
 import { formatRelative } from '@/utils/format';
+import { notificationTarget } from '@/utils/notification';
 
 function NotificationRow({ item, onPress }: { item: Notification; onPress: () => void }) {
   const { t } = useTranslation();
   const unread = !item.isRead;
+  const hasTarget = notificationTarget(item, env.EXPO_PUBLIC_FRONTEND_URL) !== null;
   return (
     <Pressable
       onPress={onPress}
-      disabled={!unread}
+      disabled={!unread && !hasTarget}
       accessibilityRole="button"
       accessibilityLabel={unread ? t('NOTIFICATIONS.UNREAD_A11Y', { title: item.title }) : item.title}
-      accessibilityState={{ disabled: !unread }}
+      accessibilityState={{ disabled: !unread && !hasTarget }}
       testID={`notifications-row-${item.notificationId}`}
       className={cn('flex-row gap-3 px-4 py-3', unread && 'bg-primary-subtle/40')}
     >
@@ -44,6 +49,7 @@ export default function NotificationsScreen() {
   const tokens = useThemeTokens();
   const listStyle = useListContentStyle();
   const setUnread = useNotificationStore((s) => s.setUnreadCount);
+  const tenantId = useTenantStore((s) => s.activeTenantId);
   const [data, setData] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -60,9 +66,12 @@ export default function NotificationsScreen() {
     }
   }, []);
 
+  // The drawer keeps this screen mounted: after an organization switch show that inbox, not the old one.
   useEffect(() => {
+    setData([]);
+    setLoading(true);
     load().finally(() => setLoading(false));
-  }, [load]);
+  }, [load, tenantId]);
 
   async function refresh() {
     setRefreshing(true);
@@ -77,6 +86,12 @@ export default function NotificationsScreen() {
     } catch (err: unknown) {
       handleApiError(err, 'NotificationsScreen.markRead');
     }
+  }
+
+  async function open(item: Notification) {
+    if (!item.isRead) await markRead(item.notificationId);
+    const url = notificationTarget(item, env.EXPO_PUBLIC_FRONTEND_URL);
+    if (url) await WebBrowser.openBrowserAsync(url).catch(() => undefined);
   }
 
   async function markAllRead() {
@@ -139,7 +154,7 @@ export default function NotificationsScreen() {
               index === data.length - 1 ? 'rounded-b-xl border-b' : 'border-b',
             )}
           >
-            <NotificationRow item={item} onPress={() => markRead(item.notificationId)} />
+            <NotificationRow item={item} onPress={() => open(item)} />
           </View>
         )}
         ListEmptyComponent={

@@ -57,3 +57,27 @@ React Native has no `EventSource`; the SSE endpoint holds a connection open with
 - **Battery / rate limiting.** Polling too fast trips the limiter; keep the interval configurable and pause in background.
 - **Stale badge after tenant switch** if the hook is not keyed on `activeTenantId`.
 - **SSE through RN's fetch** is not uniformly supported on Hermes; do not depend on it for correctness.
+
+---
+
+## ✅ CODED — 2026-10-08
+
+Branch `feat/inapp-feed`. Typecheck 0 errors, jest 136/136 (6 new), web export OK.
+
+**Corrections to this plan** (found reading the code and the server, not the plan)
+- **Most of 9.3 already existed**: the notifications screen (pull-to-refresh, empty state, mark read, mark all read, clear all, haptics), `notificationStore` and the header bell with a badge. The work was the gaps, not a rebuild.
+- **The inbox is not paged and has no unread count.** `GET /auth/me/notifications` returns `{notifications}` — the whole inbox — so the count is derived from the list. The "paginated / unread-count fields" in 9.1 do not exist.
+- **The route is `scope: 'ACCOUNT'` but the inbox is per tenant** (the handler passes `{tenantId}` from the URL; the comment says notifications pushed against other tenants are invisible). So the badge and the list follow the **active** tenant.
+
+**What shipped**
+- `libs/useUnreadPolling.ts`: the bell's one-time fetch became a foreground poll — on mount, on tenant switch, on resume, then every 60 s; stopped in the background; the count resets to 0 on a switch and an answer that arrives after a switch is dropped; a failed refresh keeps the last count.
+- The notifications screen reloads (and clears the old list) when `activeTenantId` changes — the drawer keeps the screen mounted, so before this it kept showing the previous organization's inbox.
+- Tapping a notification marks it read and opens its target (`action.url`, else `path`) in the in-app browser. Targets are **web** locations, so relative paths resolve against `EXPO_PUBLIC_FRONTEND_URL`; only http(s) is ever opened (`utils/notification.ts`, tested). Already-read items with a target are tappable too.
+- Badge cap is `99+` (was `9+`).
+
+**Deliberate deviations**
+- **Polling only**; no SSE. React Native has no `EventSource` and the stream is Redis pub/sub per user; the hook is the one place to swap it in if latency matters.
+- **No day grouping** and no deep link into app screens: server targets are web URLs, and there is no web→app route map yet (revisit with Phase 17 search routing).
+- The notifications screen still seeds the store from its own list; the poll and the screen agree because both count `!isRead`.
+
+**Not verified:** nothing was run against a live server; polling cadence and resume behavior were not exercised on a device. The 60 s interval is a constant (`UNREAD_POLL_MS`).
