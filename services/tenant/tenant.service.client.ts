@@ -5,6 +5,8 @@ import {
   CreateTenantRequestSchema,
   CreateTenantResponse,
   CreateTenantResponseSchema,
+  Invitation,
+  InvitationActionResponseSchema,
   InvitationsListResponse,
   InvitationsListResponseSchema,
   InvitationStatus,
@@ -111,6 +113,18 @@ export class TenantClientService {
   static async revokeInvitation(tenantId: string, invitationId: string): Promise<void> {
     const res = await axiosInstance.delete(`/invitations/${encodeURIComponent(invitationId)}`, { tenantId });
     AckResponseSchema.parse(res.data);
+  }
+
+  /** Rotates the token, extends the expiry and re-sends the e-mail for a PENDING invitation (ADMIN+). */
+  static async resendInvitation(tenantId: string, invitationId: string): Promise<Invitation> {
+    const res = await axiosInstance.post(`/invitations/${encodeURIComponent(invitationId)}/resend`, undefined, { tenantId });
+    return InvitationActionResponseSchema.parse(res.data).invitation;
+  }
+
+  /** E-mails a reminder for a still-PENDING invitation; keeps the original expiry (ADMIN+). */
+  static async remindInvitation(tenantId: string, invitationId: string): Promise<Invitation> {
+    const res = await axiosInstance.post(`/invitations/${encodeURIComponent(invitationId)}/remind`, undefined, { tenantId });
+    return InvitationActionResponseSchema.parse(res.data).invitation;
   }
 
   static async acceptInvitation(tenantId: string, token: string): Promise<void> {

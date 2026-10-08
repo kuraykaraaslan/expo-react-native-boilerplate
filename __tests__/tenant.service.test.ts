@@ -124,6 +124,19 @@ describe("invitations", () => {
     expect(seen[0].body).toEqual({ email: "zeynep@example.com", memberRole: "USER" });
   });
 
+  it("resend and remind post without a body and return the invitation", async () => {
+    const inv = invitationsJson.invitations[0];
+    const resend = mockRoute("post", "/invitations/:id/resend", { message: "Invitation sent successfully", invitation: inv });
+    const remind = mockRoute("post", "/invitations/:id/remind", { message: "Reminder sent", invitation: inv });
+    const a = await TenantClientService.resendInvitation(TENANT_ID, inv.invitationId);
+    const b = await TenantClientService.remindInvitation(TENANT_ID, inv.invitationId);
+    expect(resend[0].path).toBe(`/invitations/${inv.invitationId}/resend`);
+    expect(resend[0].body).toBeUndefined();
+    expect(remind[0].path).toBe(`/invitations/${inv.invitationId}/remind`);
+    expect(a).toMatchObject({ email: "zeynep@example.com", status: "PENDING" });
+    expect(b.invitationId).toBe(inv.invitationId);
+  });
+
   it("revoke, accept and decline", async () => {
     const del = mockRoute("delete", "/invitations/:id", { message: "Invitation revoked successfully" });
     const accept = mockRoute("post", "/invitations/accept", { message: "Invitation accepted successfully" });

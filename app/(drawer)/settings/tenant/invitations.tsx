@@ -17,20 +17,31 @@ import { TenantClientService } from '@/services/tenant/tenant.service.client';
 import { useTenantStore } from '@/stores/tenantStore';
 import { formatDate } from '@/utils/format';
 
-function InvitationRow({ item, last, onRevoke }: { item: Invitation; last: boolean; onRevoke?: () => void }) {
+type RowActions = { onRevoke: () => void; onResend: () => void; onRemind: () => void };
+
+function InvitationRow({ item, last, actions }: { item: Invitation; last: boolean; actions?: RowActions }) {
   const { t } = useTranslation();
+  const who = item.email ?? '';
   return (
     <View className={`gap-1.5 py-3 ${last ? '' : 'border-b border-border'}`} testID={`invitations-row-${item.invitationId}`}>
       <View className="flex-row items-center gap-3">
         <Text className="min-w-0 flex-1 text-sm font-medium text-text-primary" numberOfLines={1}>
           {item.email ?? '—'}
         </Text>
-        {onRevoke ? (
-          <Button size="sm" variant="outline" onPress={onRevoke} accessibilityLabel={`${t('INVITATIONS.REVOKE')}: ${item.email ?? ''}`}>
+      </View>
+      {actions ? (
+        <View className="flex-row flex-wrap gap-2">
+          <Button size="sm" variant="outline" onPress={actions.onRemind} accessibilityLabel={`${t('INVITATIONS.REMIND')}: ${who}`}>
+            <Text className="text-xs font-medium text-text-primary">{t('INVITATIONS.REMIND')}</Text>
+          </Button>
+          <Button size="sm" variant="outline" onPress={actions.onResend} accessibilityLabel={`${t('INVITATIONS.RESEND')}: ${who}`}>
+            <Text className="text-xs font-medium text-text-primary">{t('INVITATIONS.RESEND')}</Text>
+          </Button>
+          <Button size="sm" variant="outline" onPress={actions.onRevoke} accessibilityLabel={`${t('INVITATIONS.REVOKE')}: ${who}`}>
             <Text className="text-xs font-medium text-error">{t('INVITATIONS.REVOKE')}</Text>
           </Button>
-        ) : null}
-      </View>
+        </View>
+      ) : null}
       <View className="flex-row flex-wrap items-center gap-1.5">
         <RoleBadge role={item.memberRole} />
         <InvitationStatusBadge status={item.status} />
@@ -88,6 +99,21 @@ export default function InvitationsScreen() {
     }
   }
 
+  // Resend rotates the token and extends the expiry; remind keeps the expiry. Both re-send the e-mail.
+  async function mail(inv: Invitation, kind: 'resend' | 'remind') {
+    try {
+      const updated =
+        kind === 'resend'
+          ? await TenantClientService.resendInvitation(inv.tenantId, inv.invitationId)
+          : await TenantClientService.remindInvitation(inv.tenantId, inv.invitationId);
+      setInvitations((prev) => prev.map((i) => (i.invitationId === inv.invitationId ? { ...i, ...updated } : i)));
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      toast.success(t(kind === 'resend' ? 'INVITATIONS.RESENT' : 'INVITATIONS.REMINDED'));
+    } catch (err: unknown) {
+      handleApiError(err, `InvitationsScreen.${kind}`);
+    }
+  }
+
   const header = (
     <ScreenHeader
       back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }}
@@ -125,7 +151,11 @@ export default function InvitationsScreen() {
               key={inv.invitationId}
               item={inv}
               last={i === invitations.length - 1}
-              onRevoke={canManage && inv.status === 'PENDING' ? () => setRevoking(inv) : undefined}
+              actions={
+                canManage && inv.status === 'PENDING'
+                  ? { onRevoke: () => setRevoking(inv), onResend: () => mail(inv, 'resend'), onRemind: () => mail(inv, 'remind') }
+                  : undefined
+              }
             />
           ))
         )}

@@ -144,6 +144,13 @@ export const InvitationsListResponseSchema = z.object({
 });
 export type InvitationsListResponse = z.infer<typeof InvitationsListResponseSchema>;
 
+/** POST /invitations/{id}/resend and /remind: `{ message, invitation }` (the rotated token is only e-mailed). */
+export const InvitationActionResponseSchema = z.object({
+  message: z.string(),
+  invitation: InvitationSchema,
+});
+export type InvitationActionResponse = z.infer<typeof InvitationActionResponseSchema>;
+
 /** POST /tenants/create (201) */
 export const CreateTenantResponseSchema = z.object({
   success: z.boolean(),

@@ -47,6 +47,12 @@ Modules: `tenant_member`, `tenant_invitation`. Priority 1.
 - `SendInvitationDTO = {email, memberRole (default 'USER')}`; list is `GET /invitations?page&pageSize&status` returning `{invitations, total, page, pageSize}`; statuses `PENDING | ACCEPTED | DECLINED | EXPIRED | REVOKED`. Sending enforces an invitation quota and seat capacity (plan limits can reject).
 - Members: `GET /members?page&pageSize&search&memberRole&memberStatus` → `{members, total, page, pageSize}` (permission `members.view`, floor USER; note the route defaults `page` to **0** when omitted). `UpdateTenantMemberDTO = {memberRole|null, memberStatus|null, roleKeys?}` — both fields are nullable-required, so partial updates must send `null`, not omit. `POST /members` adds a member directly (`members.invite`, floor ADMIN) with seat-limit checks.
 
+## Progress (checkpoint, branch `feat/members-invitations`)
+
+- ✅ Phase 3 had already aligned the member/invitation DTOs and `getMembers/getMember/updateMember/removeMember/getInvitations/sendInvitation/revokeInvitation/acceptInvitation/declineInvitation`; the list shape inside `GET /auth/me/tenants` is already the slim one **without `email` and without a token**, which confirms accept cannot be one-tap from that list.
+- ✅ `resendInvitation` and `remindInvitation` added (`POST /invitations/{id}/resend|remind`, no body, answer `{message, invitation}`), with the screen's Remind / Resend / Revoke actions for `PENDING` invitations, haptics and toasts, strings in all six locales, and a service test.
+- ⬜ Still open: `transitionMember` (+ the member detail sheet), accept/decline flow (blocked on the two unread items above), the invitation-decision screen and deep link, last-owner error surfacing, pagination controls on both lists.
+
 ## Files touched / created
 
 - Changed: `services/tenant/{tenant.dto,tenant.service.client}.ts`, the two settings screens, `app/(tenant)/select-tenant.tsx`, `locales/*.json`
