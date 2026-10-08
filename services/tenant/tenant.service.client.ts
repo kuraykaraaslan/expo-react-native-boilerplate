@@ -1,5 +1,6 @@
 import axiosInstance from "@/libs/axios";
 import { AckResponseSchema } from "@/services/auth/auth.dto";
+import { PublicBrandingResponseSchema, type PublicBrandingResponse } from "@/services/tenant/branding.dto";
 import {
   CreateTenantRequest,
   CreateTenantRequestSchema,
@@ -145,6 +146,13 @@ export class TenantClientService {
   static async declineInvitation(tenantId: string, token: string): Promise<void> {
     const res = await axiosInstance.post("/invitations/decline", { token }, { tenantId });
     AckResponseSchema.parse(res.data);
+  }
+
+  // ── Public branding (GUEST route: works before sign-in) ────────────────────
+
+  static async getPublicBranding(tenantId?: string): Promise<PublicBrandingResponse> {
+    const res = await axiosInstance.get("/settings/public", { tenantId, skipAuth: true });
+    return PublicBrandingResponseSchema.parse(res.data);
   }
 
   // ── Settings ───────────────────────────────────────────────────────────────

@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T14:33:46.386Z",
+  "generatedAt": "2026-10-08T15:06:46.999Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -1265,6 +1265,7 @@
         "remindInvitation",
         "acceptInvitation",
         "declineInvitation",
+        "getPublicBranding",
         "getTenantSettings",
         "updateTenantSettings",
         "saveTenantSettings"
@@ -1282,6 +1283,7 @@
         "/invitations/${encodeURIComponent(invitationId)}/remind",
         "/invitations/accept",
         "/invitations/decline",
+        "/settings/public",
         "/settings"
       ]
     }
@@ -1318,6 +1320,16 @@
         "requirePasswordChange",
         "clearPasswordChange",
         "logout"
+      ],
+      "persisted": true
+    },
+    {
+      "filePath": "stores/brandingStore.ts",
+      "name": "brandingStore",
+      "hook": "useBrandingStore",
+      "stateKeys": [
+        "byTenant",
+        "setBrand"
       ],
       "persisted": true
     },
@@ -1439,6 +1451,17 @@
         "TOTPSetupResponse",
         "TOTPEnableResponse",
         "AckResponse"
+      ]
+    },
+    {
+      "filePath": "services/tenant/branding.dto.ts",
+      "module": "tenant",
+      "name": "branding.dto",
+      "schemas": [
+        "PublicBrandingResponseSchema"
+      ],
+      "types": [
+        "PublicBrandingResponse"
       ]
     },
     {

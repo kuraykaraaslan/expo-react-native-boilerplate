@@ -8,7 +8,8 @@ import { configureFonts } from "kui-native/libs/utils/typography";
 // Imported first in app/_layout.tsx so it runs before the first render.
 // ============================================================================
 
-configureTheme({
+/** The product palette. A tenant's brand color (libs/theme/branding.ts) is layered on top of this. */
+export const BASE_THEME = {
   light: {
     primary: "#2563eb",
     "primary-hover": "#1d4ed8",
@@ -19,7 +20,9 @@ configureTheme({
   dark: {
     "text-disabled": "#8a99b0",
   },
-});
+};
+
+configureTheme(BASE_THEME);
 
 // Inter, as next-boilerplate. Per-weight families from @expo-google-fonts/inter
 // (loaded by useFonts in app/_layout.tsx); kui-native picks the family per weight,

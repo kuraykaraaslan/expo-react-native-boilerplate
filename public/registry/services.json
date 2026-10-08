@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T14:33:46.386Z",
+  "generatedAt": "2026-10-08T15:06:46.999Z",
   "services": [
     {
       "filePath": "services/auth/auth.service.client.ts",
@@ -114,6 +114,7 @@
         "remindInvitation",
         "acceptInvitation",
         "declineInvitation",
+        "getPublicBranding",
         "getTenantSettings",
         "updateTenantSettings",
         "saveTenantSettings"
@@ -131,6 +132,7 @@
         "/invitations/${encodeURIComponent(invitationId)}/remind",
         "/invitations/accept",
         "/invitations/decline",
+        "/settings/public",
         "/settings"
       ]
     }

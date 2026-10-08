@@ -21,7 +21,7 @@ The client has a tenant-settings service method (`getTenantSettings` / `updateTe
 
 | Phase | File | Topic | Priority |
 |-----|-------|------|---------|
-| 12 | [phase-12-account-tenant-settings.md](phase-12-account-tenant-settings.md) | Account audit, tenant settings, per-tenant branding | ⬜ Pending |
+| 12 | [phase-12-account-tenant-settings.md](phase-12-account-tenant-settings.md) | Account audit, tenant settings, per-tenant branding | ✅ Coded 2026-10-08 (audit & logos open) |
 
 ## Locked decisions
 

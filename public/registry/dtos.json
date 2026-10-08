@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T14:33:46.386Z",
+  "generatedAt": "2026-10-08T15:06:46.999Z",
   "dtos": [
     {
       "filePath": "services/auth/auth.dto.ts",
@@ -76,6 +76,17 @@
         "TOTPSetupResponse",
         "TOTPEnableResponse",
         "AckResponse"
+      ]
+    },
+    {
+      "filePath": "services/tenant/branding.dto.ts",
+      "module": "tenant",
+      "name": "branding.dto",
+      "schemas": [
+        "PublicBrandingResponseSchema"
+      ],
+      "types": [
+        "PublicBrandingResponse"
       ]
     },
     {

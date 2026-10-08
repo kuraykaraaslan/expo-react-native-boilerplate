@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T14:33:46.386Z",
+  "generatedAt": "2026-10-08T15:06:46.999Z",
   "screens": [
     {
       "filePath": "app/_layout.tsx",

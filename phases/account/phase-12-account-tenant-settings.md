@@ -71,3 +71,26 @@ Modules: `account`, `tenant_setting`, `tenant_branding`. Priority 1.
 - `app/(drawer)/settings/tenant/settings.tsx` (+ tile on the organization page): admin-only (non-admins see a read-only note and no request is made), reloads on tenant switch, save disabled until something changed. Strings in all six locales; 5 new tests (149 total).
 
 **Still open:** 12.1 account audit (`/auth/me/*` DTO drift, `device-info`), 12.3 branding — see the finding that `GET /settings/public` is a **GUEST** route (works before sign-in) returning `{success, settings: {brandName, brandPrimaryColor, …}, tenant: {name}}`, and that kui-native's `configureTheme` merges onto defaults and does **not** re-render mounted components, so branding must be applied at startup (from an MMKV cache) or on a tenant switch.
+
+---
+
+## ✅ CODED (12.2 + 12.3) — 2026-10-08
+
+On `main`. Typecheck 0 errors, jest 164/164 (21 new across 12.2/12.3), web export OK. **12.1 (account audit) was not redone** — see below.
+
+**12.3 branding — what shipped**
+- `services/tenant/branding.dto.ts` + `getPublicBranding` (`GET /settings/public`, **GUEST** scope: no token, so it works on the login screen and for a fresh install's default tenant). Answer: `{success, settings: {brandName, brandPrimaryColor, …}, tenant: {name}}`; values are strings and unset keys are absent.
+- `libs/theme/brandColor.ts` (pure, tested): `normalizeHex` + `deriveBrandTokens`. From one hex it derives primary / hover / active / subtle / foreground / focus for light **and** dark. **Accessibility guard**: a color under 3:1 against the white surface is rejected (the default palette stays); in dark mode the color is lightened until it is ≥ 3:1 on the dark surface (measured on the *rounded* hex — an unrounded check once let 2.9956 through); button text is whichever of black/white reads better (≥ 4.5:1).
+- `libs/theme/branding.ts`: `applyBrandColor` layers the tenant tokens over `BASE_THEME` (now exported from `brand.ts`) with kui-native's `configureTheme`; `applyCachedBranding` (synchronous) and `syncBranding` (fetch + validate + cache, never throws). `ThemeProvider` applies the cache before the first render, applies a switched-to tenant's cache at once, then refreshes it.
+- `stores/brandingStore.ts`: persisted per-tenant colour cache (MMKV) + a **non-persisted** "applied" store with a version counter. (First version put the applied flag in the persisted store: writing it at module scope during the **web server render** threw "Tried to access storage on the server" and the web build returned 500 — caught by the screenshot run, not by jest. The counter exists because re-applying the *same* tenant would otherwise not re-render the theme root.)
+- Rule: a colour fetched for the tenant already on screen is cached and used on the **next launch**; it is applied immediately only when the tenant changed or was never seen — the palette must not change under the user mid-task. (`configureTheme` merges onto defaults, not onto an earlier call, and does not re-render mounted components.)
+- Screenshots: `.junk/screenshots/phase-12-account-tenant-settings/` (4 images; the mock tenant's purple shows on the avatar, role badge and buttons).
+
+**Deliberate deviations**
+- **Only the primary colour is applied.** Logo (`brandLogoLight/Dark`), `brandName`, favicon, secondary colour, auth wallpaper and font are not used; `customCss`/`customJs` are ignored by design (A2). Logos need an image slot in the auth shell and header — a follow-up (and Phase 15's upload/cache story).
+- **Hex tokens read through `useThemeTokens()`** (icon colours) update on the next render of each component, not instantly; className-based colours update with the theme root.
+- No admin editing of branding (A1).
+- **12.1 not redone**: the `/auth/me/*` DTOs (profile, preferences, sessions, social accounts, tenants, notifications) were aligned against the server in Phases 3–5 with real-shape fixtures; `GET /auth/me/device-info` is still unused. A fresh route-by-route diff was not done in this pass.
+- 12.2 (settings screen) is described above in the progress note.
+
+**Not verified:** nothing ran against a live server or a device; the live palette change was only seen in the web build (CSS variables). On native, NativeWind's behaviour when the root's vars change at runtime is unconfirmed — the startup/tenant-switch paths apply the palette before or at a re-render of the root, but a native run is needed to confirm no component keeps the old hex.
