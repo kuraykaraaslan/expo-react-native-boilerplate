@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T10:55:20.620Z",
+  "generatedAt": "2026-10-08T13:02:58.219Z",
   "components": [
     {
       "id": "account/PreferencesCard",
@@ -205,6 +205,50 @@
       ],
       "props": [
         "icon"
+      ]
+    },
+    {
+      "id": "security/AppLockCard",
+      "filePath": "components/security/AppLockCard.tsx",
+      "name": "AppLockCard",
+      "category": "security",
+      "exports": [
+        "AppLockCard"
+      ],
+      "props": []
+    },
+    {
+      "id": "security/AppLockScreen",
+      "filePath": "components/security/AppLockScreen.tsx",
+      "name": "AppLockScreen",
+      "category": "security",
+      "exports": [
+        "AppLockScreen"
+      ],
+      "props": []
+    },
+    {
+      "id": "security/TotpDisableModal",
+      "filePath": "components/security/TotpDisableModal.tsx",
+      "name": "TotpDisableModal",
+      "category": "security",
+      "exports": [
+        "TotpDisableModal"
+      ],
+      "props": [
+        "open"
+      ]
+    },
+    {
+      "id": "security/TotpSetupModal",
+      "filePath": "components/security/TotpSetupModal.tsx",
+      "name": "TotpSetupModal",
+      "category": "security",
+      "exports": [
+        "TotpSetupModal"
+      ],
+      "props": [
+        "open"
       ]
     },
     {

@@ -31,6 +31,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     "expo-router",
     "expo-secure-store",
+    ["expo-local-authentication", { faceIDPermission: "Allow $(PRODUCT_NAME) to use Face ID to unlock the app." }],
     [
       "expo-splash-screen",
       {

@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
+import { View } from 'react-native';
 import { Redirect } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { useAuthStore } from '@/stores/authStore';
 import { useTenantStore } from '@/stores/tenantStore';
 import { DrawerContent } from '@/components/shell/DrawerContent';
 import { AppHeader } from '@/components/shell/AppHeader';
+import { AppLockScreen } from '@/components/security/AppLockScreen';
+import { useAppLockStore } from '@/libs/appLock';
+import { useAppLockWatcher } from '@/libs/useAppLockWatcher';
 import { pullPreferences } from '@/libs/preferences';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 
@@ -14,6 +18,8 @@ export default function DrawerLayout() {
   const mustChangePassword = useAuthStore((s) => s.mustChangePassword);
   const needsTenantSelection = useTenantStore((s) => s.needsTenantSelection);
   const t = useThemeTokens();
+  const locked = useAppLockStore((s) => s.locked);
+  useAppLockWatcher();
   const open = isAuthenticated && !otpRequired && !mustChangePassword;
 
   // Adopt the account's language and theme once the session is fully open.
@@ -38,6 +44,7 @@ export default function DrawerLayout() {
   }
 
   return (
+    <View style={{ flex: 1 }}>
     <Drawer
       drawerContent={(props) => <DrawerContent {...props} />}
       screenOptions={({ navigation }) => ({
@@ -57,5 +64,7 @@ export default function DrawerLayout() {
         options={{ title: 'Settings', drawerItemStyle: { display: 'none' } }}
       />
     </Drawer>
+    {locked ? <AppLockScreen /> : null}
+    </View>
   );
 }

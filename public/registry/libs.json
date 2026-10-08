@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T10:55:20.620Z",
+  "generatedAt": "2026-10-08T13:02:58.219Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",
@@ -15,6 +15,15 @@
       ]
     },
     {
+      "filePath": "libs/appLock.ts",
+      "name": "appLock",
+      "exports": [
+        "APP_LOCK_GRACE_MS",
+        "shouldLock",
+        "useAppLockStore"
+      ]
+    },
+    {
       "filePath": "libs/axios.ts",
       "name": "axios",
       "exports": [
@@ -23,6 +32,14 @@
         "axiosInstance",
         "resetRefreshStateForTests",
         "default"
+      ]
+    },
+    {
+      "filePath": "libs/biometrics.ts",
+      "name": "biometrics",
+      "exports": [
+        "deviceAuthAvailable",
+        "authenticate"
       ]
     },
     {
@@ -132,6 +149,13 @@
         "SwitchOutcome",
         "switchToTenant",
         "activateSignedInTenant"
+      ]
+    },
+    {
+      "filePath": "libs/useAppLockWatcher.ts",
+      "name": "useAppLockWatcher",
+      "exports": [
+        "useAppLockWatcher"
       ]
     },
     {

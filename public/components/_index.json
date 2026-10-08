@@ -79,6 +79,26 @@
     "category": "common",
     "file": "common-StatTile.md"
   },
+  "security/AppLockCard": {
+    "name": "AppLockCard",
+    "category": "security",
+    "file": "security-AppLockCard.md"
+  },
+  "security/AppLockScreen": {
+    "name": "AppLockScreen",
+    "category": "security",
+    "file": "security-AppLockScreen.md"
+  },
+  "security/TotpDisableModal": {
+    "name": "TotpDisableModal",
+    "category": "security",
+    "file": "security-TotpDisableModal.md"
+  },
+  "security/TotpSetupModal": {
+    "name": "TotpSetupModal",
+    "category": "security",
+    "file": "security-TotpSetupModal.md"
+  },
   "shell/AppHeader": {
     "name": "AppHeader",
     "category": "shell",

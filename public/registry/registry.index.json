@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T10:55:20.620Z",
+  "generatedAt": "2026-10-08T13:02:58.219Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -138,6 +138,14 @@
     {
       "filePath": "app/(drawer)/settings/profile.tsx",
       "route": "/settings/profile",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
+      "filePath": "app/(drawer)/settings/security.tsx",
+      "route": "/settings/security",
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
@@ -433,6 +441,50 @@
       ],
       "props": [
         "icon"
+      ]
+    },
+    {
+      "id": "security/AppLockCard",
+      "filePath": "components/security/AppLockCard.tsx",
+      "name": "AppLockCard",
+      "category": "security",
+      "exports": [
+        "AppLockCard"
+      ],
+      "props": []
+    },
+    {
+      "id": "security/AppLockScreen",
+      "filePath": "components/security/AppLockScreen.tsx",
+      "name": "AppLockScreen",
+      "category": "security",
+      "exports": [
+        "AppLockScreen"
+      ],
+      "props": []
+    },
+    {
+      "id": "security/TotpDisableModal",
+      "filePath": "components/security/TotpDisableModal.tsx",
+      "name": "TotpDisableModal",
+      "category": "security",
+      "exports": [
+        "TotpDisableModal"
+      ],
+      "props": [
+        "open"
+      ]
+    },
+    {
+      "id": "security/TotpSetupModal",
+      "filePath": "components/security/TotpSetupModal.tsx",
+      "name": "TotpSetupModal",
+      "category": "security",
+      "exports": [
+        "TotpSetupModal"
+      ],
+      "props": [
+        "open"
       ]
     },
     {
@@ -1535,6 +1587,15 @@
       ]
     },
     {
+      "filePath": "libs/appLock.ts",
+      "name": "appLock",
+      "exports": [
+        "APP_LOCK_GRACE_MS",
+        "shouldLock",
+        "useAppLockStore"
+      ]
+    },
+    {
       "filePath": "libs/axios.ts",
       "name": "axios",
       "exports": [
@@ -1543,6 +1604,14 @@
         "axiosInstance",
         "resetRefreshStateForTests",
         "default"
+      ]
+    },
+    {
+      "filePath": "libs/biometrics.ts",
+      "name": "biometrics",
+      "exports": [
+        "deviceAuthAvailable",
+        "authenticate"
       ]
     },
     {
@@ -1652,6 +1721,13 @@
         "SwitchOutcome",
         "switchToTenant",
         "activateSignedInTenant"
+      ]
+    },
+    {
+      "filePath": "libs/useAppLockWatcher.ts",
+      "name": "useAppLockWatcher",
+      "exports": [
+        "useAppLockWatcher"
       ]
     },
     {
