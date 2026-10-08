@@ -39,6 +39,14 @@ Modules: `tenant_member`, `tenant_invitation`. Priority 1.
 - [ ] Deep link `…/auth/invitation/accept?token=` opens the same decision screen (`expo-linking`, scheme already configured for SSO).
 - [ ] Role gates: only `OWNER`/`ADMIN` see management actions; the last `OWNER` cannot be removed or demoted (show the server error, do not re-implement the rule).
 
+## 7.1 Findings (2026-10-08, partial — read from `tenant_member` / `tenant_invitation` server source)
+
+- **Accept/decline take the emailed raw `token`, not an `invitationId`.** `AcceptInvitationDTO` / `DeclineInvitationDTO` are `{token: string}`; the token is hashed at rest (`hashToken`), so the server cannot hand it back in a list. Consequence: the Phase 5 `pendingInvitations` list **cannot offer a one-tap accept** unless `GET /auth/me/tenants` returns something acceptable — still to verify (`modules/account/server/me-tenants.route.ts`, ~line 100–130). Until then, accept/decline is driven by the **email deep link** (`…/auth/invitation/accept?token=`) or a paste-the-code field.
+- `GET /invitations/accept?token=` is a public preview returning `{invitation, tenant: {tenantId, name}}` (rate limited, no auth) — use it to show who invited the user before asking them to accept.
+- `POST /invitations/accept` is authorized with `scope: 'ACCOUNT'` ("a logged-in user with no tenant membership"), but the URL still carries the **inviting** tenant's id. Whether a device bearer token bound to a *different* tenant is accepted on that URL is **not yet verified** (guard code in `auth_abac.guard.next.ts` ~line 85–150 and the device tenant-binding check were not read). This is the main risk and must be settled before coding the accept flow.
+- `SendInvitationDTO = {email, memberRole (default 'USER')}`; list is `GET /invitations?page&pageSize&status` returning `{invitations, total, page, pageSize}`; statuses `PENDING | ACCEPTED | DECLINED | EXPIRED | REVOKED`. Sending enforces an invitation quota and seat capacity (plan limits can reject).
+- Members: `GET /members?page&pageSize&search&memberRole&memberStatus` → `{members, total, page, pageSize}` (permission `members.view`, floor USER; note the route defaults `page` to **0** when omitted). `UpdateTenantMemberDTO = {memberRole|null, memberStatus|null, roleKeys?}` — both fields are nullable-required, so partial updates must send `null`, not omit. `POST /members` adds a member directly (`members.invite`, floor ADMIN) with seat-limit checks.
+
 ## Files touched / created
 
 - Changed: `services/tenant/{tenant.dto,tenant.service.client}.ts`, the two settings screens, `app/(tenant)/select-tenant.tsx`, `locales/*.json`
