@@ -53,3 +53,4 @@ yarn-error.*
 
 .vscode/
 .expo/
+.junk
