@@ -4,7 +4,7 @@
 - **category:** auth
 - **filePath:** `components/auth/SSOButtons.tsx`
 - **exports:** `SSOButtons`
-- **props:** `onPress`, `dividerLabel`
+- **props:** `dividerLabel`
 
 Import:
 

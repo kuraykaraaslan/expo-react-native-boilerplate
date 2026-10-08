@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-07T18:42:24.804Z",
+  "generatedAt": "2026-10-08T06:17:03.460Z",
   "dtos": [
     {
       "filePath": "services/auth/auth.dto.ts",
@@ -150,12 +150,15 @@
       "schemas": [
         "SSOProviderEnum",
         "SSOProvidersResponseSchema",
-        "SSOAuthUrlResponseSchema"
+        "SSOAuthUrlResponseSchema",
+        "ConnectedAccountSchema",
+        "SocialAccountsResponseSchema"
       ],
       "types": [
         "SSOProvider",
         "SSOProvidersResponse",
-        "SSOAuthUrlResponse"
+        "SSOAuthUrlResponse",
+        "ConnectedAccount"
       ]
     },
     {

@@ -1,5 +1,9 @@
 # MODERNIZATION — expo-react-native-boilerplate
 
+> **Superseded.** This is the original modernization plan (Expo 52, `/api/system/...` routes, cookie auth). It is kept for history only and is
+> no longer accurate: the app is on Expo SDK 57 and talks to next-boilerplate's tenant-addressed device-bearer routes
+> (`/api/tenant/{tenantId}/...`). The current plan and its per-phase records live in [phases/README.md](phases/README.md).
+
 ## Context
 
 Mevcut boilerplate Expo 52 + React Navigation tabanlı servis-sınıf mimarisi kullanıyor. Hedef:

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-07T18:42:24.804Z",
+  "generatedAt": "2026-10-08T06:17:03.460Z",
   "services": [
     {
       "filePath": "services/auth/auth.service.client.ts",
@@ -83,11 +83,13 @@
       "className": "SSOClientService",
       "methods": [
         "getProviders",
-        "getAuthUrl"
+        "getAuthUrl",
+        "getSocialAccounts"
       ],
       "endpoints": [
         "/auth/sso",
-        "/auth/sso/${encodeURIComponent(provider)}"
+        "/auth/sso/${encodeURIComponent(provider)}",
+        "/auth/me/social-accounts"
       ]
     },
     {

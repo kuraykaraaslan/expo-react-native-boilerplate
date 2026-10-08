@@ -49,7 +49,7 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 | 3 | [auth/phase-3-dto-services.md](auth/phase-3-dto-services.md) | DTO + service alignment | ✅ `feat/dto-services` |
 | 4 | [auth/phase-4-auth-screens.md](auth/phase-4-auth-screens.md) | Auth core screens | ✅ Coded 2026-10-07 |
 | 5 | [tenant/phase-5-tenancy-core.md](tenant/phase-5-tenancy-core.md) | Tenancy core | ✅ Coded 2026-10-07 |
-| 6 | [auth_sso/phase-6-sso.md](auth_sso/phase-6-sso.md) | SSO / OAuth | ⛔ **BLOCKED ON A SERVER CHANGE** (see K4) |
+| 6 | [auth_sso/phase-6-sso.md](auth_sso/phase-6-sso.md) | SSO / OAuth | ⛔ **BLOCKED ON A SERVER CHANGE** (see K4) — client side built 2026-10-08 |
 
 ## Locked decisions
 

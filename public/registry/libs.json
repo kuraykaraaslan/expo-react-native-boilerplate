@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-07T18:42:24.804Z",
+  "generatedAt": "2026-10-08T06:17:03.460Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",
@@ -113,6 +113,16 @@
       "name": "session",
       "exports": [
         "startDeviceSession"
+      ]
+    },
+    {
+      "filePath": "libs/ssoSession.ts",
+      "name": "ssoSession",
+      "exports": [
+        "SSOOutcome",
+        "SSO_REDIRECT_TIMEOUT_MS",
+        "tenantFromState",
+        "signInWithProvider"
       ]
     },
     {

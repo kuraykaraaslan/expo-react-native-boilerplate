@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-07T18:42:24.804Z",
+  "generatedAt": "2026-10-08T06:17:03.460Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -146,6 +146,14 @@
     {
       "filePath": "app/(drawer)/settings/sessions.tsx",
       "route": "/settings/sessions",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": []
+    },
+    {
+      "filePath": "app/(drawer)/settings/social-accounts.tsx",
+      "route": "/settings/social-accounts",
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
@@ -302,9 +310,19 @@
         "SSOButtons"
       ],
       "props": [
-        "onPress",
         "dividerLabel"
       ]
+    },
+    {
+      "id": "auth/ssoProviders",
+      "filePath": "components/auth/ssoProviders.ts",
+      "name": "ssoProviders",
+      "category": "auth",
+      "exports": [
+        "ProviderMeta",
+        "SSO_PROVIDER_META"
+      ],
+      "props": []
     },
     {
       "id": "common/Badges",
@@ -1156,11 +1174,13 @@
       "className": "SSOClientService",
       "methods": [
         "getProviders",
-        "getAuthUrl"
+        "getAuthUrl",
+        "getSocialAccounts"
       ],
       "endpoints": [
         "/auth/sso",
-        "/auth/sso/${encodeURIComponent(provider)}"
+        "/auth/sso/${encodeURIComponent(provider)}",
+        "/auth/me/social-accounts"
       ]
     },
     {
@@ -1243,6 +1263,16 @@
         "setUnreadCount"
       ],
       "persisted": false
+    },
+    {
+      "filePath": "stores/ssoStore.ts",
+      "name": "ssoStore",
+      "hook": "useSSOStore",
+      "stateKeys": [
+        "pendingState",
+        "setPendingState"
+      ],
+      "persisted": true
     },
     {
       "filePath": "stores/tenantStore.ts",
@@ -1416,12 +1446,15 @@
       "schemas": [
         "SSOProviderEnum",
         "SSOProvidersResponseSchema",
-        "SSOAuthUrlResponseSchema"
+        "SSOAuthUrlResponseSchema",
+        "ConnectedAccountSchema",
+        "SocialAccountsResponseSchema"
       ],
       "types": [
         "SSOProvider",
         "SSOProvidersResponse",
-        "SSOAuthUrlResponse"
+        "SSOAuthUrlResponse",
+        "ConnectedAccount"
       ]
     },
     {
@@ -1589,6 +1622,16 @@
       "name": "session",
       "exports": [
         "startDeviceSession"
+      ]
+    },
+    {
+      "filePath": "libs/ssoSession.ts",
+      "name": "ssoSession",
+      "exports": [
+        "SSOOutcome",
+        "SSO_REDIRECT_TIMEOUT_MS",
+        "tenantFromState",
+        "signInWithProvider"
       ]
     },
     {

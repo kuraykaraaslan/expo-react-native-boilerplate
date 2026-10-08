@@ -85,3 +85,23 @@ WHERE WE ARE: phases/README.md §Order
 - **Where `state` is stored:** if written to MMKV it is not lost when the app goes to the background and comes back; if kept in memory it is lost and the flow is rejected every time.
 - **Missing provider icon:** if there is no fallback for providers with no counterpart in FontAwesome brands (autodesk, weibo, alipay), rendering breaks.
 - **Marking the phase status wrongly:** if `CODED` is written because the client side is done, a later reader will assume SSO works. The §Order row must stay `⛔ BLOCKED ON A SERVER CHANGE` until the server change lands.
+
+---
+
+## 🟡 CLIENT SIDE BUILT — 2026-10-08 (phase is NOT `CODED`: blocked on the server change, K4)
+
+Branch `chore/remaining-fixes`. Typecheck 0 errors, jest 127/127 (12 new in `__tests__/sso.test.ts`). The §Order row stays `⛔` on purpose.
+
+**Built (the "without the server change" deliverable)**
+- **6.1 Providers.** `SSOButtons` has no hard-coded list any more: it asks `GET /auth/sso` and renders what the tenant allows (unknown providers are dropped by the DTO). Empty, loading or offline renders nothing, divider included. Icons: `components/auth/ssoProviders.ts` (FontAwesome brands; `autodesk` has no mark and gets a neutral icon). Login and register only render `<SSOButtons dividerLabel=… />`.
+- **6.2 Browser flow.** `libs/ssoSession.ts#signInWithProvider`: `GET /auth/sso/{provider}` → persist `state` (`stores/ssoStore.ts`, MMKV, survives backgrounding) → `WebBrowser.openAuthSessionAsync(url, createURL('/auth/callback'))`. On return the `state` must equal the stored one (single use); the tenant is read from its `{tenantId}.{uuid}` shape. `scheme` is now `expoboilerplate` (was `myapp`, too generic); the reset-password deep link will use it too.
+- **6.3 Blocker.** The returned bearer is **verified with `GET /auth/session` before anything is stored**. A 401 (today's web-audience token), a callback with no tokens, or a browser still sitting on a web page after 3 minutes all end as `unavailable`: `logger.error` explains the K4 cause, the user sees "Social sign-in is not available right now. Please sign in with your email.", **no token is written**. Cancel/dismiss is silent. A mutation test (store before verify) fails the blocker test.
+- **6.4 Linked accounts (read-only).** `GET /auth/me/social-accounts` → `app/(drawer)/settings/social-accounts.tsx` plus a settings-hub tile. Linking/unlinking is not built.
+- Strings in all six languages (the locale parity test covers them).
+
+**Corrections to this plan**
+- The spec's deep-link handler (`expo-linking` listener) is not needed: `openAuthSessionAsync` returns the redirect URL to the caller on iOS and Android, so the flow is a single awaited call.
+- The callback contract (`<scheme>://auth/callback?rawAccessToken=…&rawRefreshToken=…&state=…`) is the spec's *proposal*; the server has no such redirect today, so the parameter names are unverified until the server change is designed.
+- `POST /auth/session/exchange` exists but is cookie-only by the owner's decision (one tenant's credentials per device), so it is not a way around K4.
+
+**Still needed from the server (unchanged):** the OAuth callback must create a `device`-audience session and redirect to the app scheme. Until then Phase 6 stays blocked and SSO shows the e-mail fallback message.
