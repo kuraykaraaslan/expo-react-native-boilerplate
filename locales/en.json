@@ -167,7 +167,6 @@
         "LOGIN_TITLE": "Welcome back",
         "LOGIN_SUBTITLE": "Sign in to your account",
         "CONTINUE_WITH": "Continue with {{provider}}",
-        "SSO_UNAVAILABLE": "{{provider}} sign-in is coming soon",
         "OR_CONTINUE_EMAIL": "or continue with email",
         "OR_REGISTER_EMAIL": "or register with email",
         "EMAIL": "Email",
@@ -264,7 +263,9 @@
         "BACK_TO_APP": "Back to the app",
         "TENANT_LOGIN_TITLE": "Sign in to {{name}}",
         "TENANT_LOGIN_SUBTITLE": "Enter your password to continue as {{email}}",
-        "THIS_ORG": "this organization"
+        "THIS_ORG": "this organization",
+        "SSO_FAILED": "Social sign-in is not available right now. Please sign in with your email.",
+        "SSO_STATE_MISMATCH": "The sign-in could not be verified. Please try again."
     },
     "DASHBOARD": {
         "TITLE": "Dashboard",
@@ -308,7 +309,9 @@
         "MEMBERS_DESC": "People with access to this organization",
         "INVITATIONS": "Invitations",
         "INVITATIONS_DESC": "Invitations waiting to be accepted",
-        "SIGN_OUT_DESC": "Sign out of this device"
+        "SIGN_OUT_DESC": "Sign out of this device",
+        "SOCIAL": "Linked accounts",
+        "SOCIAL_DESC": "Social and enterprise sign-ins"
     },
     "ACCOUNT": {
         "TITLE": "My Profile",
@@ -446,5 +449,18 @@
         "OTP_REQUIRED": "Enter your verification code to continue.",
         "INVALID_OTP": "The verification code is incorrect.",
         "OTP_EXPIRED": "The verification code has expired. Request a new one."
+    },
+    "SOCIAL": {
+        "TITLE": "Linked accounts",
+        "SUBTITLE": "Sign-in providers connected to your account",
+        "CARD": "Connected providers",
+        "CARD_DESC_one": "{{count}} linked account",
+        "CARD_DESC_other": "{{count}} linked accounts",
+        "EMPTY": "No linked accounts",
+        "TOKEN_EXPIRED": "Reconnect needed",
+        "GROUP_SOCIAL": "Social",
+        "GROUP_ENTERPRISE": "Enterprise",
+        "GROUP_GOVERNMENT": "Government",
+        "LINKING_SOON": "Linking and unlinking accounts is not available in the app yet."
     }
 }

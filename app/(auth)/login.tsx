@@ -79,10 +79,8 @@ export default function LoginScreen() {
       subtitle={t('AUTH_UI.LOGIN_SUBTITLE')}
       footer={<AuthFooterLink prompt={t('AUTH_UI.NO_ACCOUNT')} label={t('AUTH_UI.SIGN_UP')} href="/register" testID="auth-login-register" />}
     >
-      {/* SSO wiring arrives with phase 6 (server change K4). */}
       <SSOButtons
         dividerLabel={t('AUTH_UI.OR_CONTINUE_EMAIL')}
-        onPress={(_, label) => toast.info(t('AUTH_UI.SSO_UNAVAILABLE', { provider: label }))}
       />
 
       <View className="gap-3">

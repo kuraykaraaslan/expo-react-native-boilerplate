@@ -167,7 +167,6 @@
         "LOGIN_TITLE": "Bentornato",
         "LOGIN_SUBTITLE": "Accedi al tuo account",
         "CONTINUE_WITH": "Continua con {{provider}}",
-        "SSO_UNAVAILABLE": "L'accesso con {{provider}} sarà presto disponibile",
         "OR_CONTINUE_EMAIL": "oppure continua con l'e-mail",
         "OR_REGISTER_EMAIL": "oppure registrati con l'e-mail",
         "EMAIL": "E-mail",
@@ -264,7 +263,9 @@
         "BACK_TO_APP": "Torna all'app",
         "TENANT_LOGIN_TITLE": "Accedi a {{name}}",
         "TENANT_LOGIN_SUBTITLE": "Inserisci la password per continuare come {{email}}",
-        "THIS_ORG": "questa organizzazione"
+        "THIS_ORG": "questa organizzazione",
+        "SSO_FAILED": "L’accesso social non è disponibile al momento. Accedi con la tua email.",
+        "SSO_STATE_MISMATCH": "Non è stato possibile verificare l’accesso. Riprova."
     },
     "DASHBOARD": {
         "TITLE": "Dashboard",
@@ -308,7 +309,9 @@
         "MEMBERS_DESC": "Persone con accesso a questa organizzazione",
         "INVITATIONS": "Inviti",
         "INVITATIONS_DESC": "Inviti in attesa di essere accettati",
-        "SIGN_OUT_DESC": "Esci da questo dispositivo"
+        "SIGN_OUT_DESC": "Esci da questo dispositivo",
+        "SOCIAL": "Account collegati",
+        "SOCIAL_DESC": "Accessi social e aziendali"
     },
     "ACCOUNT": {
         "TITLE": "Il mio profilo",
@@ -446,5 +449,18 @@
         "OTP_REQUIRED": "Inserisci il codice di verifica per continuare.",
         "INVALID_OTP": "Il codice di verifica non è corretto.",
         "OTP_EXPIRED": "Il codice di verifica è scaduto. Richiedine uno nuovo."
+    },
+    "SOCIAL": {
+        "TITLE": "Account collegati",
+        "SUBTITLE": "Provider di accesso collegati al tuo account",
+        "CARD": "Provider collegati",
+        "CARD_DESC_one": "{{count}} account collegato",
+        "CARD_DESC_other": "{{count}} account collegati",
+        "EMPTY": "Nessun account collegato",
+        "TOKEN_EXPIRED": "Riconnessione necessaria",
+        "GROUP_SOCIAL": "Social",
+        "GROUP_ENTERPRISE": "Aziendale",
+        "GROUP_GOVERNMENT": "Pubblica amministrazione",
+        "LINKING_SOON": "Collegare e scollegare account non è ancora disponibile nell’app."
     }
 }

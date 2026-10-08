@@ -167,7 +167,6 @@
         "LOGIN_TITLE": "Willkommen zurück",
         "LOGIN_SUBTITLE": "Melden Sie sich bei Ihrem Konto an",
         "CONTINUE_WITH": "Weiter mit {{provider}}",
-        "SSO_UNAVAILABLE": "Die Anmeldung mit {{provider}} folgt in Kürze",
         "OR_CONTINUE_EMAIL": "oder weiter mit E-Mail",
         "OR_REGISTER_EMAIL": "oder mit E-Mail registrieren",
         "EMAIL": "E-Mail",
@@ -264,7 +263,9 @@
         "BACK_TO_APP": "Zurück zur App",
         "TENANT_LOGIN_TITLE": "Bei {{name}} anmelden",
         "TENANT_LOGIN_SUBTITLE": "Geben Sie Ihr Passwort ein, um als {{email}} fortzufahren",
-        "THIS_ORG": "diese Organisation"
+        "THIS_ORG": "diese Organisation",
+        "SSO_FAILED": "Die Anmeldung über soziale Konten ist derzeit nicht verfügbar. Bitte melden Sie sich mit Ihrer E-Mail an.",
+        "SSO_STATE_MISMATCH": "Die Anmeldung konnte nicht überprüft werden. Bitte versuchen Sie es erneut."
     },
     "DASHBOARD": {
         "TITLE": "Dashboard",
@@ -308,7 +309,9 @@
         "MEMBERS_DESC": "Personen mit Zugriff auf diese Organisation",
         "INVITATIONS": "Einladungen",
         "INVITATIONS_DESC": "Einladungen, die noch angenommen werden müssen",
-        "SIGN_OUT_DESC": "Von diesem Gerät abmelden"
+        "SIGN_OUT_DESC": "Von diesem Gerät abmelden",
+        "SOCIAL": "Verknüpfte Konten",
+        "SOCIAL_DESC": "Soziale und Unternehmensanmeldungen"
     },
     "ACCOUNT": {
         "TITLE": "Mein Profil",
@@ -446,5 +449,18 @@
         "OTP_REQUIRED": "Geben Sie Ihren Bestätigungscode ein, um fortzufahren.",
         "INVALID_OTP": "Der Bestätigungscode ist falsch.",
         "OTP_EXPIRED": "Der Bestätigungscode ist abgelaufen. Fordern Sie einen neuen an."
+    },
+    "SOCIAL": {
+        "TITLE": "Verknüpfte Konten",
+        "SUBTITLE": "Mit Ihrem Konto verbundene Anmeldeanbieter",
+        "CARD": "Verbundene Anbieter",
+        "CARD_DESC_one": "{{count}} verknüpftes Konto",
+        "CARD_DESC_other": "{{count}} verknüpfte Konten",
+        "EMPTY": "Keine verknüpften Konten",
+        "TOKEN_EXPIRED": "Erneut verbinden",
+        "GROUP_SOCIAL": "Sozial",
+        "GROUP_ENTERPRISE": "Unternehmen",
+        "GROUP_GOVERNMENT": "Behörden",
+        "LINKING_SOON": "Das Verknüpfen und Trennen von Konten ist in der App noch nicht verfügbar."
     }
 }

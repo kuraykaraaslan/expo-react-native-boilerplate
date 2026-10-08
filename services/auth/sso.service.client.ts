@@ -1,5 +1,7 @@
 import axiosInstance from "@/libs/axios";
 import {
+  ConnectedAccount,
+  SocialAccountsResponseSchema,
   SSOAuthUrlResponse,
   SSOAuthUrlResponseSchema,
   SSOProvider,
@@ -24,5 +26,11 @@ export class SSOClientService {
   static async getAuthUrl(provider: SSOProvider): Promise<SSOAuthUrlResponse> {
     const res = await axiosInstance.get(`/auth/sso/${encodeURIComponent(provider)}`, { skipAuth: true });
     return SSOAuthUrlResponseSchema.parse(res.data);
+  }
+
+  /** GET /auth/me/social-accounts - linked identities, read-only (linking waits for the server change, K4). */
+  static async getSocialAccounts(): Promise<ConnectedAccount[]> {
+    const res = await axiosInstance.get("/auth/me/social-accounts");
+    return SocialAccountsResponseSchema.parse(res.data).accounts;
   }
 }

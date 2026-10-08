@@ -167,7 +167,6 @@
         "LOGIN_TITLE": "Bon retour",
         "LOGIN_SUBTITLE": "Connectez-vous à votre compte",
         "CONTINUE_WITH": "Continuer avec {{provider}}",
-        "SSO_UNAVAILABLE": "La connexion avec {{provider}} sera bientôt disponible",
         "OR_CONTINUE_EMAIL": "ou continuer avec l'e-mail",
         "OR_REGISTER_EMAIL": "ou s'inscrire avec l'e-mail",
         "EMAIL": "E-mail",
@@ -264,7 +263,9 @@
         "BACK_TO_APP": "Retour à l'application",
         "TENANT_LOGIN_TITLE": "Connexion à {{name}}",
         "TENANT_LOGIN_SUBTITLE": "Saisissez votre mot de passe pour continuer en tant que {{email}}",
-        "THIS_ORG": "cette organisation"
+        "THIS_ORG": "cette organisation",
+        "SSO_FAILED": "La connexion sociale est indisponible pour le moment. Connectez-vous avec votre e-mail.",
+        "SSO_STATE_MISMATCH": "La connexion n’a pas pu être vérifiée. Veuillez réessayer."
     },
     "DASHBOARD": {
         "TITLE": "Tableau de bord",
@@ -308,7 +309,9 @@
         "MEMBERS_DESC": "Personnes ayant accès à cette organisation",
         "INVITATIONS": "Invitations",
         "INVITATIONS_DESC": "Invitations en attente d'acceptation",
-        "SIGN_OUT_DESC": "Se déconnecter de cet appareil"
+        "SIGN_OUT_DESC": "Se déconnecter de cet appareil",
+        "SOCIAL": "Comptes liés",
+        "SOCIAL_DESC": "Connexions sociales et d’entreprise"
     },
     "ACCOUNT": {
         "TITLE": "Mon profil",
@@ -446,5 +449,18 @@
         "OTP_REQUIRED": "Saisissez votre code de vérification pour continuer.",
         "INVALID_OTP": "Le code de vérification est incorrect.",
         "OTP_EXPIRED": "Le code de vérification a expiré. Demandez-en un nouveau."
+    },
+    "SOCIAL": {
+        "TITLE": "Comptes liés",
+        "SUBTITLE": "Fournisseurs de connexion associés à votre compte",
+        "CARD": "Fournisseurs connectés",
+        "CARD_DESC_one": "{{count}} compte lié",
+        "CARD_DESC_other": "{{count}} comptes liés",
+        "EMPTY": "Aucun compte lié",
+        "TOKEN_EXPIRED": "Reconnexion nécessaire",
+        "GROUP_SOCIAL": "Social",
+        "GROUP_ENTERPRISE": "Entreprise",
+        "GROUP_GOVERNMENT": "Administration",
+        "LINKING_SOON": "Lier et délier des comptes n’est pas encore disponible dans l’application."
     }
 }

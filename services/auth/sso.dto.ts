@@ -44,3 +44,26 @@ export const SSOAuthUrlResponseSchema = z.object({
   state: z.string(),
 });
 export type SSOAuthUrlResponse = z.infer<typeof SSOAuthUrlResponseSchema>;
+
+/**
+ * One linked identity from GET /auth/me/social-accounts: the stored row (tokens
+ * are never sent) plus the server's display descriptor. Lenient - the row has
+ * more fields than the list needs, and providers are open-ended.
+ */
+export const ConnectedAccountSchema = z
+  .object({
+    userSocialAccountId: z.string(),
+    provider: z.string(),
+    displayName: z.string(),
+    kind: z.string().nullish(),
+    group: z.string().nullish(),
+    country: z.string().nullish(),
+    tokenExpired: z.boolean().nullish(),
+    createdAt: z.string().nullish(),
+  })
+  .passthrough();
+export type ConnectedAccount = z.infer<typeof ConnectedAccountSchema>;
+
+export const SocialAccountsResponseSchema = z.object({
+  accounts: z.array(ConnectedAccountSchema).nullish().transform((v) => v ?? []),
+});

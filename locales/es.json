@@ -167,7 +167,6 @@
         "LOGIN_TITLE": "Te damos la bienvenida de nuevo",
         "LOGIN_SUBTITLE": "Inicia sesión en tu cuenta",
         "CONTINUE_WITH": "Continuar con {{provider}}",
-        "SSO_UNAVAILABLE": "El inicio de sesión con {{provider}} estará disponible pronto",
         "OR_CONTINUE_EMAIL": "o continúa con el correo electrónico",
         "OR_REGISTER_EMAIL": "o regístrate con el correo electrónico",
         "EMAIL": "Correo electrónico",
@@ -264,7 +263,9 @@
         "BACK_TO_APP": "Volver a la app",
         "TENANT_LOGIN_TITLE": "Inicia sesión en {{name}}",
         "TENANT_LOGIN_SUBTITLE": "Introduce tu contraseña para continuar como {{email}}",
-        "THIS_ORG": "esta organización"
+        "THIS_ORG": "esta organización",
+        "SSO_FAILED": "El inicio de sesión social no está disponible ahora. Inicia sesión con tu correo electrónico.",
+        "SSO_STATE_MISMATCH": "No se pudo verificar el inicio de sesión. Inténtalo de nuevo."
     },
     "DASHBOARD": {
         "TITLE": "Panel",
@@ -308,7 +309,9 @@
         "MEMBERS_DESC": "Personas con acceso a esta organización",
         "INVITATIONS": "Invitaciones",
         "INVITATIONS_DESC": "Invitaciones pendientes de aceptar",
-        "SIGN_OUT_DESC": "Cerrar sesión en este dispositivo"
+        "SIGN_OUT_DESC": "Cerrar sesión en este dispositivo",
+        "SOCIAL": "Cuentas vinculadas",
+        "SOCIAL_DESC": "Inicios de sesión sociales y empresariales"
     },
     "ACCOUNT": {
         "TITLE": "Mi perfil",
@@ -446,5 +449,18 @@
         "OTP_REQUIRED": "Introduce tu código de verificación para continuar.",
         "INVALID_OTP": "El código de verificación es incorrecto.",
         "OTP_EXPIRED": "El código de verificación ha caducado. Solicita uno nuevo."
+    },
+    "SOCIAL": {
+        "TITLE": "Cuentas vinculadas",
+        "SUBTITLE": "Proveedores de inicio de sesión conectados a tu cuenta",
+        "CARD": "Proveedores conectados",
+        "CARD_DESC_one": "{{count}} cuenta vinculada",
+        "CARD_DESC_other": "{{count}} cuentas vinculadas",
+        "EMPTY": "No hay cuentas vinculadas",
+        "TOKEN_EXPIRED": "Reconexión necesaria",
+        "GROUP_SOCIAL": "Social",
+        "GROUP_ENTERPRISE": "Empresarial",
+        "GROUP_GOVERNMENT": "Gobierno",
+        "LINKING_SOON": "Vincular y desvincular cuentas aún no está disponible en la app."
     }
 }

@@ -167,7 +167,6 @@
         "LOGIN_TITLE": "Tekrar hoş geldiniz",
         "LOGIN_SUBTITLE": "Hesabınıza giriş yapın",
         "CONTINUE_WITH": "{{provider}} ile devam et",
-        "SSO_UNAVAILABLE": "{{provider}} ile giriş yakında",
         "OR_CONTINUE_EMAIL": "veya e-posta ile devam edin",
         "OR_REGISTER_EMAIL": "veya e-posta ile kayıt olun",
         "EMAIL": "E-posta",
@@ -264,7 +263,9 @@
         "BACK_TO_APP": "Uygulamaya dön",
         "TENANT_LOGIN_TITLE": "{{name}} organizasyonuna giriş",
         "TENANT_LOGIN_SUBTITLE": "{{email}} olarak devam etmek için şifrenizi girin",
-        "THIS_ORG": "bu organizasyon"
+        "THIS_ORG": "bu organizasyon",
+        "SSO_FAILED": "Sosyal giriş şu an kullanılamıyor. Lütfen e-posta ile giriş yapın.",
+        "SSO_STATE_MISMATCH": "Giriş doğrulanamadı. Lütfen tekrar deneyin."
     },
     "DASHBOARD": {
         "TITLE": "Panel",
@@ -308,7 +309,9 @@
         "MEMBERS_DESC": "Bu organizasyona erişimi olan kişiler",
         "INVITATIONS": "Davetler",
         "INVITATIONS_DESC": "Kabul edilmeyi bekleyen davetler",
-        "SIGN_OUT_DESC": "Bu cihazda oturumu kapat"
+        "SIGN_OUT_DESC": "Bu cihazda oturumu kapat",
+        "SOCIAL": "Bağlı hesaplar",
+        "SOCIAL_DESC": "Sosyal ve kurumsal girişler"
     },
     "ACCOUNT": {
         "TITLE": "Profilim",
@@ -446,5 +449,18 @@
         "OTP_REQUIRED": "Devam etmek için doğrulama kodunu girin.",
         "INVALID_OTP": "Doğrulama kodu hatalı.",
         "OTP_EXPIRED": "Doğrulama kodunun süresi doldu. Yeni kod isteyin."
+    },
+    "SOCIAL": {
+        "TITLE": "Bağlı hesaplar",
+        "SUBTITLE": "Hesabınıza bağlı giriş sağlayıcıları",
+        "CARD": "Bağlı sağlayıcılar",
+        "CARD_DESC_one": "{{count}} bağlı hesap",
+        "CARD_DESC_other": "{{count}} bağlı hesap",
+        "EMPTY": "Bağlı hesap yok",
+        "TOKEN_EXPIRED": "Yeniden bağlanın",
+        "GROUP_SOCIAL": "Sosyal",
+        "GROUP_ENTERPRISE": "Kurumsal",
+        "GROUP_GOVERNMENT": "Kamu",
+        "LINKING_SOON": "Hesap bağlama ve bağlantıyı kaldırma henüz uygulamada yok."
     }
 }

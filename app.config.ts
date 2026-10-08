@@ -7,7 +7,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   version: process.env.EXPO_PUBLIC_APP_VERSION ?? "1.0.0",
   orientation: "portrait",
   icon: "./assets/images/icon.png",
-  scheme: "myapp",
+  scheme: "expoboilerplate",
   userInterfaceStyle: "automatic",
   ios: {
     supportsTablet: true,

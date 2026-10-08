@@ -6,6 +6,7 @@ import {
   faEnvelope,
   faEnvelopeOpenText,
   faLaptop,
+  faLink,
   faRightFromBracket,
   faSliders,
   faUsers,
@@ -26,7 +27,9 @@ export default function SettingsHubScreen() {
       <View className="gap-3">
         <SectionLabel>{t('SETTINGS_HUB.SECTION_ACCOUNT')}</SectionLabel>
         <LinkTile icon={faCircleUser} title={t('SETTINGS_HUB.PROFILE')} description={t('SETTINGS_HUB.PROFILE_DESC')} href="/settings/profile" testID="settings-hub-profile" />
-        <LinkTile icon={faLaptop} title={t('SETTINGS_HUB.SESSIONS')} description={t('SETTINGS_HUB.SESSIONS_DESC')} href="/settings/sessions" testID="settings-hub-sessions" />
+        <LinkTile icon={faLaptop} title={t('SETTINGS_HUB.SESSIONS')} description={t('SETTINGS_HUB.SESSIONS_DESC')} href="/settings/sessions" testID="settings-hub-sessions" />
+
+        <LinkTile icon={faLink} title={t('SETTINGS_HUB.SOCIAL')} description={t('SETTINGS_HUB.SOCIAL_DESC')} href="/settings/social-accounts" testID="settings-hub-social" />
         <LinkTile icon={faSliders} title={t('SETTINGS_HUB.PREFERENCES')} description={t('SETTINGS_HUB.PREFERENCES_DESC')} href="/settings/change-language" testID="settings-hub-preferences" />
       </View>
 
