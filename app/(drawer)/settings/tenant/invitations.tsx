@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
@@ -16,6 +16,8 @@ import { handleApiError } from '@/libs/errorUtils';
 import { TenantClientService } from '@/services/tenant/tenant.service.client';
 import { useTenantStore } from '@/stores/tenantStore';
 import { formatDate } from '@/utils/format';
+
+const PAGE_SIZE = 20;
 
 type RowActions = { onRevoke: () => void; onResend: () => void; onRemind: () => void };
 
@@ -64,6 +66,9 @@ export default function InvitationsScreen() {
   const canManage = membership?.memberRole === 'ADMIN' || membership?.memberRole === 'OWNER';
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [total, setTotal] = useState(0);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const page = useRef(1); // last page loaded (1-based)
   const [refreshing, setRefreshing] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
   const [revoking, setRevoking] = useState<Invitation | null>(null);
@@ -71,8 +76,10 @@ export default function InvitationsScreen() {
   const load = useCallback(async () => {
     if (!membership) return;
     try {
-      const { invitations: list } = await TenantClientService.getInvitations(membership.tenantId);
-      setInvitations(list);
+      const res = await TenantClientService.getInvitations(membership.tenantId, { page: 1, pageSize: PAGE_SIZE });
+      page.current = 1;
+      setInvitations(res.invitations);
+      setTotal(res.total);
     } catch (err: unknown) {
       handleApiError(err, 'InvitationsScreen.load');
     }
@@ -81,6 +88,24 @@ export default function InvitationsScreen() {
   useEffect(() => {
     load().finally(() => setLoading(false));
   }, [load]);
+
+  async function loadMore() {
+    if (!membership || loadingMore) return;
+    setLoadingMore(true);
+    try {
+      const res = await TenantClientService.getInvitations(membership.tenantId, { page: page.current + 1, pageSize: PAGE_SIZE });
+      page.current += 1;
+      setInvitations((prev) => {
+        const seen = new Set(prev.map((i) => i.invitationId));
+        return [...prev, ...res.invitations.filter((i) => !seen.has(i.invitationId))];
+      });
+      setTotal(res.total);
+    } catch (err: unknown) {
+      handleApiError(err, 'InvitationsScreen.loadMore');
+    } finally {
+      setLoadingMore(false);
+    }
+  }
 
   async function refresh() {
     setRefreshing(true);
@@ -159,6 +184,11 @@ export default function InvitationsScreen() {
             />
           ))
         )}
+        {invitations.length < total ? (
+          <Button variant="outline" size="sm" loading={loadingMore} onPress={loadMore} testID="invitations-load-more" className="mt-3 self-center">
+            <Text className="text-xs font-medium text-text-primary">{t('COMMON.LOAD_MORE')}</Text>
+          </Button>
+        ) : null}
       </Card>
 
       <InviteMemberModal tenantId={membership.tenantId} open={inviteOpen} onClose={() => setInviteOpen(false)} onInvited={load} />

@@ -133,6 +133,7 @@
         "OPTIONAL": "İsteğe bağlı",
         "MORE_ACTIONS": "Diğer işlemler",
         "SHOWING_RANGE": "{{total}} kayıttan {{start}}–{{end}} arası gösteriliyor",
+        "LOAD_MORE": "Daha fazla yükle",
         "NO_RESULTS": "Sonuç bulunamadı."
     },
     "ROLES": {

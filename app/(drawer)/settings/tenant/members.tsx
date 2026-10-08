@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FlatList, Pressable, RefreshControl, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
@@ -22,6 +22,8 @@ import { useTenantStore } from '@/stores/tenantStore';
 import { cn } from '@/utils/cn';
 import { formatDate } from '@/utils/format';
 
+const PAGE_SIZE = 20;
+
 function memberName(m: TenantMember) {
   return m.user?.userProfile?.name ?? m.user?.email ?? m.userId;
 }
@@ -38,6 +40,10 @@ export default function MembersScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [query, setQuery] = useState('');
+  const [total, setTotal] = useState(0);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const page = useRef(0); // last page loaded (0-based)
+  const seq = useRef(0); // drops answers of a superseded search
   const [inviteOpen, setInviteOpen] = useState(false);
   const [editing, setEditing] = useState<TenantMember | null>(null);
   const [removing, setRemoving] = useState<TenantMember | null>(null);
@@ -45,17 +51,47 @@ export default function MembersScreen() {
 
   const load = useCallback(async () => {
     if (!membership) return;
+    const mine = ++seq.current;
     try {
-      const { members: list } = await TenantClientService.getMembers(membership.tenantId);
-      setMembers(list);
+      const search = query.trim() || undefined;
+      const res = await TenantClientService.getMembers(membership.tenantId, { page: 0, pageSize: PAGE_SIZE, search });
+      if (mine !== seq.current) return;
+      page.current = 0;
+      setMembers(res.members);
+      setTotal(res.total);
     } catch (err: unknown) {
-      handleApiError(err, 'MembersScreen.load');
+      if (mine === seq.current) handleApiError(err, 'MembersScreen.load');
     }
-  }, [membership]);
+  }, [membership, query]);
 
+  // Debounced: typing in the search box re-queries the server.
   useEffect(() => {
-    load().finally(() => setLoading(false));
-  }, [load]);
+    const id = setTimeout(() => {
+      load().finally(() => setLoading(false));
+    }, query ? 300 : 0);
+    return () => clearTimeout(id);
+  }, [load, query]);
+
+  async function loadMore() {
+    if (!membership || loadingMore || loading || members.length >= total) return;
+    const mine = seq.current;
+    setLoadingMore(true);
+    try {
+      const search = query.trim() || undefined;
+      const res = await TenantClientService.getMembers(membership.tenantId, { page: page.current + 1, pageSize: PAGE_SIZE, search });
+      if (mine !== seq.current) return;
+      page.current += 1;
+      setMembers((prev) => {
+        const seen = new Set(prev.map((m) => m.tenantMemberId));
+        return [...prev, ...res.members.filter((m) => !seen.has(m.tenantMemberId))];
+      });
+      setTotal(res.total);
+    } catch (err: unknown) {
+      handleApiError(err, 'MembersScreen.loadMore');
+    } finally {
+      setLoadingMore(false);
+    }
+  }
 
   async function refresh() {
     setRefreshing(true);
@@ -67,6 +103,7 @@ export default function MembersScreen() {
     try {
       await TenantClientService.removeMember(m.tenantId, m.tenantMemberId);
       setMembers((prev) => prev.filter((x) => x.tenantMemberId !== m.tenantMemberId));
+      setTotal((n) => Math.max(0, n - 1));
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       toast.success(t('MEMBERS.REMOVED'));
     } catch (err: unknown) {
@@ -85,12 +122,6 @@ export default function MembersScreen() {
     }
   }
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return members;
-    return members.filter((m) => `${m.user?.email ?? ''} ${m.user?.userProfile?.name ?? ''}`.toLowerCase().includes(q));
-  }, [members, query]);
-
   if (!membership) {
     return (
       <Screen>
@@ -103,10 +134,12 @@ export default function MembersScreen() {
   return (
     <Screen scroll={false}>
       <FlatList
-        data={loading ? [] : filtered}
+        data={loading ? [] : members}
         keyExtractor={(m) => m.tenantMemberId}
         contentContainerStyle={listStyle}
         keyboardShouldPersistTaps="handled"
+        onEndReachedThreshold={0.4}
+        onEndReached={loadMore}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} tintColor={tokens.primary} colors={[tokens.primary]} />}
         ListHeaderComponent={
           <View className="mb-4 gap-6">
@@ -131,7 +164,7 @@ export default function MembersScreen() {
               className={cn(
                 'flex-row items-center gap-3 border-x border-border bg-surface-raised px-4 py-3',
                 index === 0 && 'rounded-t-xl border-t',
-                index === filtered.length - 1 ? 'rounded-b-xl border-b' : 'border-b',
+                index === members.length - 1 ? 'rounded-b-xl border-b' : 'border-b',
               )}
               testID={`members-row-${item.tenantMemberId}`}
             >
@@ -178,9 +211,13 @@ export default function MembersScreen() {
           );
         }}
         ListFooterComponent={
-          !loading && filtered.length > 0 ? (
+          loadingMore ? (
+            <View className="items-center py-4" accessibilityState={{ busy: true }}>
+              <Spinner size="sm" />
+            </View>
+          ) : !loading && members.length > 0 ? (
             <Text className="mt-3 text-xs text-text-secondary">
-              {t('COMMON.SHOWING_RANGE', { start: 1, end: filtered.length, total: members.length })}
+              {t('COMMON.SHOWING_RANGE', { start: 1, end: members.length, total })}
             </Text>
           ) : null
         }

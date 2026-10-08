@@ -133,6 +133,7 @@
         "OPTIONAL": "Facultatif",
         "MORE_ACTIONS": "Plus d'actions",
         "SHOWING_RANGE": "Affichage de {{start}} à {{end}} sur {{total}}",
+        "LOAD_MORE": "Charger plus",
         "NO_RESULTS": "Aucun résultat trouvé."
     },
     "ROLES": {

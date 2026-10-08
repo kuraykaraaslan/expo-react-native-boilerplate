@@ -32,7 +32,7 @@ In addition, `MyTenantsResponseSchema` today says `{tenants, invitations}`; the 
 | Phase | File | Topic | Priority |
 |-----|-------|------|---------|
 | 5 | [phase-5-tenancy-core.md](phase-5-tenancy-core.md) | Tenancy core | ✅ Coded 2026-10-07 |
-| 7 | [phase-7-members-invitations.md](phase-7-members-invitations.md) | Members and invitations | ⬜ Planned |
+| 7 | [phase-7-members-invitations.md](phase-7-members-invitations.md) | Members and invitations | 🟡 Coded except accept/decline |
 
 ## Locked decisions
 

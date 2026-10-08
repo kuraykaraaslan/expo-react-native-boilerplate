@@ -50,7 +50,7 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 | 4 | [auth/phase-4-auth-screens.md](auth/phase-4-auth-screens.md) | Auth core screens | ✅ Coded 2026-10-07 |
 | 5 | [tenant/phase-5-tenancy-core.md](tenant/phase-5-tenancy-core.md) | Tenancy core | ✅ Coded 2026-10-07 |
 | 6 | [auth_sso/phase-6-sso.md](auth_sso/phase-6-sso.md) | SSO / OAuth | 🟡 **Client + server change written 2026-10-08; live verification pending** (see K4) |
-| 7 | [tenant/phase-7-members-invitations.md](tenant/phase-7-members-invitations.md) | Members and invitations (`tenant_member`, `tenant_invitation`) | ⬜ Planned · P1 |
+| 7 | [tenant/phase-7-members-invitations.md](tenant/phase-7-members-invitations.md) | Members and invitations (`tenant_member`, `tenant_invitation`) | 🟡 **Coded except accept/decline (see file)** · P1 |
 | 8 | [notifications/phase-8-push.md](notifications/phase-8-push.md) | Push registration (`notification_push`) | 🔴 Planned · P1 · **needs a server change** (K7) |
 | 9 | [notifications/phase-9-inapp-feed.md](notifications/phase-9-inapp-feed.md) | In-app feed and unread badge (`notification_inapp`) | ⬜ Planned · P1 |
 | 10 | [auth_security/phase-10-security-2fa.md](auth_security/phase-10-security-2fa.md) | Security screen, TOTP, biometric lock (`user_security`, `auth`) | ⬜ Planned · P1 |

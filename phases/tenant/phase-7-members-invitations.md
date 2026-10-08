@@ -52,7 +52,8 @@ Modules: `tenant_member`, `tenant_invitation`. Priority 1.
 - ✅ Phase 3 had already aligned the member/invitation DTOs and `getMembers/getMember/updateMember/removeMember/getInvitations/sendInvitation/revokeInvitation/acceptInvitation/declineInvitation`; the list shape inside `GET /auth/me/tenants` is already the slim one **without `email` and without a token**, which confirms accept cannot be one-tap from that list.
 - ✅ `resendInvitation` and `remindInvitation` added (`POST /invitations/{id}/resend|remind`, no body, answer `{message, invitation}`), with the screen's Remind / Resend / Revoke actions for `PENDING` invitations, haptics and toasts, strings in all six locales, and a service test.
 - ✅ `transitionMember` added (`POST /members/{id}/transition`, body `{action: 'suspend'|'reactivate', reason?, until?}`, answer `{message, member}`; OWNER cannot be suspended and only an OWNER may act on an OWNER). The members row menu offers Suspend (with confirmation) / Reactivate; no reason field yet.
-- ⬜ Still open: a member detail sheet, accept/decline flow (blocked on the two unread items above), the invitation-decision screen and deep link, last-owner error surfacing, pagination controls on both lists.
+- ✅ Paging: members use server paging (`page` 0-based, 20 per page, infinite scroll) and **server-side search** (debounced `search` param, stale answers dropped); invitations load 20 per page (`page` 1-based) with a "Load more" button. Before this the lists silently stopped at the server's default of 10.
+- ⬜ Still open: accept/decline flow (blocked on the two unread items above), the invitation-decision screen and deep link.
 
 ## Files touched / created
 
@@ -77,3 +78,24 @@ Modules: `tenant_member`, `tenant_invitation`. Priority 1.
 - **Accept before login.** A user invited to a tenant has no token pair for it; if the accept route requires a session in that tenant, the flow needs login first. Resolve in 7.1.
 - **Role mix-up.** Role pickers must use the server's role keys, not hard-coded `OWNER/ADMIN/USER`, once `access-control/roles` is involved.
 - **Scope creep into access control.** Editing roles and the permission matrix stays on web.
+
+---
+
+## ✅ CODED (partial) — 2026-10-08
+
+Branches `feat/members-invitations` + `feat/members-pagination`. Typecheck 0 errors, jest 130/130 (3 new), web export OK. The pre-existing members and invitations screens now talk to the real routes end to end except the accept/decline flow.
+
+**What shipped**
+- Invitations: Send reminder / Resend / Revoke on `PENDING` rows (`POST /invitations/{id}/remind|resend`, no body, answer `{message, invitation}`), haptics and toasts.
+- Members: Suspend (with confirmation) / Reactivate via `POST /members/{id}/transition` `{action}`; last-owner and owner-only rules are the server's, shown as its error messages.
+- Paging and server-side member search on both lists (see Progress).
+- Strings in all six locales.
+- Screenshots of every state: `.junk/screenshots/phase-7-members-invitations/` (local, not committed; made from the web build against a mock API built from the test fixtures).
+
+**Deliberate deviations**
+- Suspend has no `reason` / `until` field; the route accepts both. Add a small form if wanted.
+- No member detail sheet: the existing edit modal and the row menu cover role/status changes; the server's `GET /members/{id}/activity` is not used.
+
+**Not done / blocked**
+- **Accept / decline an invitation in the app.** The server takes the emailed raw `token` (hashed at rest), and `GET /auth/me/tenants` returns invitations without it, so there is no one-tap accept from the Phase 5 list. Two things were not verified because the server source reads were denied in this session: what `me-tenants.route.ts` returns for invitations beyond the slim shape, and whether `POST /invitations/accept` (scope `ACCOUNT`) accepts a device token bound to a *different* tenant. Build the deep-link / paste-the-code screen only after those are confirmed.
+- Nothing was run against a live server.
