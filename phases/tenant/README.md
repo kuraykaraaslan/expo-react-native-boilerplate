@@ -31,14 +31,15 @@ In addition, `MyTenantsResponseSchema` today says `{tenants, invitations}`; the 
 
 | Phase | File | Topic | Priority |
 |-----|-------|------|---------|
-| 5 | [phase-5-tenancy-core.md](phase-5-tenancy-core.md) | Tenancy core | ⬜ Pending |
+| 5 | [phase-5-tenancy-core.md](phase-5-tenancy-core.md) | Tenancy core | ✅ Coded 2026-10-07 |
+| 7 | [phase-7-members-invitations.md](phase-7-members-invitations.md) | Members and invitations | ⬜ Planned |
 
 ## Locked decisions
 
 - **K1 — Bootstrap via config.** `EXPO_PUBLIC_DEFAULT_TENANT_ID` is a required env var. A fresh install logs in to this tenant, then fetches the real membership list.
 - **K2 — A token pair per tenant.** SecureStore keys are `accessToken:{tenantId}` / `refreshToken:{tenantId}`. Switching to a previously entered tenant **does not ask for a password**; switching to a never-entered tenant asks for a login for that tenant. Trade-off: N refresh tokens sit on the device, so `logout` and `flush()` must delete **all** of them.
 - **`activeTenantId` is the single source.** Transport (the Phase 2 interceptor) reads only `tenantStore.activeTenantId`; the tenant path is built nowhere else.
-- **Members / invitations / roles are out of scope.** `app/(drawer)/settings/tenant/{members,invitations}.tsx` and the related service methods are left **untouched** in this set.
+- **Members / invitations / roles were out of scope for Phase 5.** `app/(drawer)/settings/tenant/{members,invitations}.tsx` and the related service methods were left untouched there; **Phase 7 now covers members and invitations**. Role editing and the permission matrix still stay on the web.
 
 ## Dependency graph (summary)
 

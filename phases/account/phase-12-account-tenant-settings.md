@@ -1,0 +1,62 @@
+<!--
+ORDER OF AUTHORITY (the higher item wins on conflict):
+  1. AGENTS.md (§6 Hard rules · §5 file naming · §0 catalog sync)
+  2. next-boilerplate contract — READ-ONLY reference:
+     modules/account/module.json · modules/tenant_setting/{module.json,server/*} · modules/tenant_branding/{module.json,server/*}
+  3. phases/README.md (§Locked decisions K2, K5)
+  4. phases/account/README.md (A1–A3)
+  5. THIS FILE
+ONLY EXCEPTION: "Owner decisions (fixed)" — a recorded owner decision overrides this file's proposal.
+WHERE WE ARE: phases/README.md §Order
+-->
+
+# Phase 12 — Account audit, tenant settings and branding
+
+**Goal:** Every `account` route the client touches matches the server contract, a tenant admin can edit the tenant's settings from the app, and the shell takes its logo and colors from the active tenant's branding.
+
+Modules: `account`, `tenant_setting`, `tenant_branding`. Priority 1.
+
+## 12.1 Account audit
+
+- [ ] Check each `/auth/me/*` route against its client DTO (`profile`, `preferences`, `sessions`, `social-accounts`, `tenants`, `notifications`) and fix drift as Phase 3 did.
+- [ ] Add `GET /auth/me/device-info` to the sessions screen if it carries "this device" details (verify what it returns before using it).
+- [ ] Add the account profile fields the server exposes but the screen omits (locale, timezone, avatar URL — upload itself is Phase 15).
+
+## 12.2 Tenant settings
+
+- [ ] Read `tenant_setting` DTOs and the `*.setting.keys.ts` files that modules declare; choose the allowlist for the app (A3): general, locale/timezone, registration/verification policy, and anything an OWNER/ADMIN reasonably changes on a phone.
+- [ ] `services/tenant/settings.{dto,service.client}.ts` (K6): `GET/PUT /settings` (tenant admin) — keep `/admin-settings` and `/modules` out unless the contract shows a need.
+- [ ] `app/(drawer)/settings/tenant/settings.tsx`: grouped form with per-key validation, dirty tracking, save with haptic, error mapping; read-only for non-admins.
+- [ ] Tests with the server's real shapes (typed values come back as strings — convert once at the service boundary).
+
+## 12.3 Branding
+
+- [ ] Confirm whether `GET /settings/public` works unauthenticated for a tenant path; if so it also lets the login screen show the tenant's logo/colors before sign-in.
+- [ ] `services/tenant/branding.{dto,service.client}.ts`: `GET /settings/public` (and `GET /settings/branding` for admins if useful).
+- [ ] `libs/theme`: map `primaryColor`/accent/font to the existing tokens through kui-native's theme override API (K5: no patching). Fall back to the default palette on any missing or low-contrast value (contrast guard).
+- [ ] Cache the last branding per tenant in MMKV so cold start does not flash the default theme; refresh on tenant switch and on app resume.
+- [ ] Ignore `customCss` (A2).
+
+## Files touched / created
+
+- New: `services/tenant/{settings,branding}.{dto,service.client}.ts`, `app/(drawer)/settings/tenant/settings.tsx`, `libs/theme/branding.ts`
+- Changed: `libs/theme/*`, `stores/tenantStore.ts` (branding cache) or a new `stores/brandingStore.ts`, account DTOs/screens as the audit finds, `locales/*.json`
+- Test: settings read/write shapes, branding mapping with fallback and contrast guard, tenant switch swaps theme
+
+## Reuse
+
+- Phase 5 `activeTenantId` / switcher; Phase 1D tokens and fonts; `@/components/ui` `Input`, `Switch`, `Select`, `Card`.
+
+## Acceptance criteria
+
+- Changing a setting in the app is reflected on the web admin and vice versa.
+- A `USER` cannot edit settings (read-only or hidden).
+- Switching tenants changes logo and accent color without a restart; cold start shows the cached branding, not a flash of default.
+- An unreadable or low-contrast brand color falls back to the default and never makes text illegible.
+- `npm run registry:snapshot` is up to date.
+
+## Risks
+
+- **Brand colors vs. accessibility.** Arbitrary tenant colors can break contrast on buttons and badges; the guard is mandatory.
+- **Font loading.** A tenant font name the app has not bundled must fall back to Inter (Phase 1D), never block rendering.
+- **Settings key drift.** Modules add keys over time; the allowlist is explicit so new keys do not appear half-supported.

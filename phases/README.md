@@ -34,7 +34,7 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
    - **Expo SDK is upgraded to 57.** react / RN / expo must remain a single copy together with kui-native. The earlier "no SDK upgrade" decision was removed.
    - **Packaging changes may be made in the KUInative repo:** relative imports, peerDependencies, a theme override API.
 2. **next-boilerplate is not touched.** The owner has already added mobile (`device`) support.
-3. Scope: **auth core + tenancy core + SSO**. Members / invitations / roles are **out of scope** — the existing screens and services are left intact, to be handled by a separate phase set.
+3. Scope of Phases 0–6: **auth core + tenancy core + SSO**. Members / invitations / roles were out of scope there. *(2026-10-08: Phases 7–18 below plan the next layer — members and invitations first, then push, security, account/branding, compliance and platform capabilities. Role **editing** and the permission matrix stay on the web.)*
 
 ## Order
 
@@ -50,6 +50,18 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 | 4 | [auth/phase-4-auth-screens.md](auth/phase-4-auth-screens.md) | Auth core screens | ✅ Coded 2026-10-07 |
 | 5 | [tenant/phase-5-tenancy-core.md](tenant/phase-5-tenancy-core.md) | Tenancy core | ✅ Coded 2026-10-07 |
 | 6 | [auth_sso/phase-6-sso.md](auth_sso/phase-6-sso.md) | SSO / OAuth | 🟡 **Client + server change written 2026-10-08; live verification pending** (see K4) |
+| 7 | [tenant/phase-7-members-invitations.md](tenant/phase-7-members-invitations.md) | Members and invitations (`tenant_member`, `tenant_invitation`) | ⬜ Planned · P1 |
+| 8 | [notifications/phase-8-push.md](notifications/phase-8-push.md) | Push registration (`notification_push`) | 🔴 Planned · P1 · **needs a server change** (K7) |
+| 9 | [notifications/phase-9-inapp-feed.md](notifications/phase-9-inapp-feed.md) | In-app feed and unread badge (`notification_inapp`) | ⬜ Planned · P1 |
+| 10 | [auth_security/phase-10-security-2fa.md](auth_security/phase-10-security-2fa.md) | Security screen, TOTP, biometric lock (`user_security`, `auth`) | ⬜ Planned · P1 |
+| 11 | [auth_security/phase-11-passkey.md](auth_security/phase-11-passkey.md) | Passkeys (`auth_passkey`) | 🔴 Planned · P1 · **login half needs a server change** (K7) |
+| 12 | [account/phase-12-account-tenant-settings.md](account/phase-12-account-tenant-settings.md) | Account audit, tenant settings, branding (`account`, `tenant_setting`, `tenant_branding`) | ⬜ Planned · P1 |
+| 13 | [compliance/phase-13-consent-privacy.md](compliance/phase-13-consent-privacy.md) | Agreements, privacy requests, account deletion, audit viewer (`terms_consent`, `privacy`, `audit_log`) | ⬜ Planned · P2 |
+| 14 | [platform/phase-14-locale-and-flags.md](platform/phase-14-locale-and-flags.md) | Server-aligned locale, feature flags and gates | ⬜ Planned · P2 |
+| 15 | [platform/phase-15-files.md](platform/phase-15-files.md) | Uploads, avatar, media gallery, drive | ⬜ Planned · P2 |
+| 16 | [platform/phase-16-realtime-messaging.md](platform/phase-16-realtime-messaging.md) | Socket.IO transport and messaging | ⬜ Planned · P2 |
+| 17 | [platform/phase-17-search.md](platform/phase-17-search.md) | Global search (+ navigation decision) | ⬜ Planned · P2 |
+| 18 | [platform/phase-18-tenant-admin.md](platform/phase-18-tenant-admin.md) | API keys and domains | ⬜ Planned · P2 |
 
 ## Locked decisions
 
@@ -59,6 +71,8 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 - **K4 — SSO on device does NOT WORK without a server change.** The OAuth callback calls `createSession` without an audience → it produces a **`web` audience token**, which the bearer path rejects. It also redirects to an https web URL, not to the app scheme. The client side is built completely; Phase 6 is not marked `CODED` until the server change lands. *(2026-10-08: the server change is written in next-boilerplate, see phase-6; it is not marked `CODED` until it is deployed and verified on a device.)*
 - **K5 — kui-native is a git dependency pinned to a tag.** Application code takes components only from the `@/components/ui` barrel. The barrel re-exports from kui-native with **deep imports** (`kui-native/modules/ui/Button`). The full barrel (`kui-native/modules/ui`) is not used because it pulls in the optional peers (maps, video). Patching `node_modules` and `patch-package` are forbidden. Pinning to a branch (`#main`) is forbidden too.
 - **K6 — DTO + service side by side in the domain folder.** There is no top-level `dto/`. `services/<domain>/<domain>.service.client.ts` and `services/<domain>/<domain>.dto.ts` live in the same folder (the client counterpart of next-boilerplate's `modules/<name>/server/<name>.dto.ts` layout). Domains: `auth/` (auth + sso), `tenant/`, `user/` (profile + notification); shared schemas go in `services/common.dto.ts`. Since the client is small, no subfolders (`dto/`, `tests/`) are created.
+- **K7 — Server-gated phases are marked 🔴 and not coded until the server change is deployed.** Found while planning Phases 7–18 (2026-10-08, by reading `module.json` and the route files): `notification_push` accepts **Web Push subscriptions only** (`{endpoint, keys:{p256dh, auth}}`) with no Expo/FCM token path (Phase 8), and `auth_passkey` `login/verify` **sets web cookies** instead of returning a device pair (Phase 11, same class as K4). The client does not emulate either.
+- **K8 — Every new phase starts with a contract check.** Routes in the Phase 7–18 files come from `module.json`; request/response shapes must be read from the server source before DTOs are written, and corrections recorded in the phase file (the Phase 3 lesson). Domain folders under `services/` follow K6; new ones planned: `compliance/`, `platform/`.
 - **AGENTS.md rules are binding:** `@/*` is the only alias, NativeWind + `cn()`, Zustand + MMKV, tokens only in SecureStore, all fetches go through `libs/axios`, parse with Zod, env via `libs/env`, logging via `libs/logger`, icons only FontAwesome, `expo-haptics` on critical actions, toast via `sonner-native`.
 - **Catalog sync is mandatory:** at the end of every phase that changes a screen / component / service / store / DTO / lib, run `npm run registry:snapshot` and commit the generated files.
 
@@ -72,6 +86,12 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 - Phase 4 and Phase 5 depend on Phase 3's DTOs and on Phase 1C's `@/components/ui` barrel.
 - Phase 5's tenant switch depends on Phase 2's per-tenant SecureStore keys (K2).
 - Phase 6 depends on Phase 5's active-tenant concept; it also depends on a server-side change (K4).
+- Phase 7 depends on Phase 5 (pending invitations, `tenant-login`, switching).
+- Phase 8 depends on a server change (K7) and Phase 5's `knownTenantIds` cleanup; Phase 9 depends only on Phase 2 and is independent of Phase 8.
+- Phase 10 depends on Phase 4; Phase 11 depends on Phase 10, a server change (K7) and a development build.
+- Phase 12 depends on Phase 5 and kui-native's theme override API (Phase 1B).
+- Phase 13 depends on Phases 4 and 5; account deletion uses Phase 5's `flush()` and Phase 8's unregister when shipped.
+- Phases 14–18 are independent of each other except: 15 feeds the avatar in 12, 16 reuses 7 and 9, 17 routes into 7/9/16 screens.
 
 ## Server contract (read-only summary)
 
