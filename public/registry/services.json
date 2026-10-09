@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:21:15.121Z",
+  "generatedAt": "2026-10-09T16:26:41.162Z",
   "services": [
     {
       "filePath": "services/platform/apiKey.service.client.ts",
@@ -110,6 +110,32 @@
       ],
       "endpoints": [
         "/feature-flags/evaluate"
+      ]
+    },
+    {
+      "filePath": "services/platform/messaging.service.client.ts",
+      "module": "platform",
+      "name": "messaging.service.client",
+      "className": "MessagingClientService",
+      "methods": [
+        "createWsTicket",
+        "listConversations",
+        "getConversation",
+        "createConversation",
+        "getUnreadCount",
+        "listMessages",
+        "sendMessage",
+        "markRead",
+        "reportMessage"
+      ],
+      "endpoints": [
+        "/messaging/ws-ticket",
+        "/conversations",
+        "/conversations/${encodeURIComponent(conversationId)}",
+        "/conversations/unread-count",
+        "/conversations/${encodeURIComponent(conversationId)}/messages",
+        "/conversations/${encodeURIComponent(conversationId)}/read",
+        "/conversations/${encodeURIComponent(conversationId)}/messages/${encodeURIComponent(messageId)}/report"
       ]
     },
     {

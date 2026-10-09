@@ -11,9 +11,11 @@ type DrawerNavLinkProps = {
   label: string;
   icon: IconDefinition;
   exact?: boolean;
+  /** Unread count shown at the end of the row (hidden at 0). */
+  badge?: number;
 };
 
-export function DrawerNavLink({ href, label, icon, exact = false }: DrawerNavLinkProps) {
+export function DrawerNavLink({ href, label, icon, exact = false, badge = 0 }: DrawerNavLinkProps) {
   const pathname = usePathname();
   const isActive = exact ? pathname === href : pathname.startsWith(href);
   const t = useThemeTokens();
@@ -33,9 +35,14 @@ export function DrawerNavLink({ href, label, icon, exact = false }: DrawerNavLin
         <View className="w-5 items-center">
           <FontAwesomeIcon icon={icon} size={15} color={isActive ? t.primary : t['text-secondary']} />
         </View>
-        <Text className={cn('text-sm', isActive ? 'font-medium text-primary' : 'text-text-secondary')} numberOfLines={1}>
+        <Text className={cn('shrink text-sm', isActive ? 'font-medium text-primary' : 'text-text-secondary')} numberOfLines={1}>
           {label}
         </Text>
+        {badge > 0 ? (
+          <View className="ml-auto h-4 min-w-[16px] items-center justify-center rounded-full bg-error px-1">
+            <Text className="text-[10px] font-bold text-text-inverse">{badge > 99 ? '99+' : badge}</Text>
+          </View>
+        ) : null}
       </Pressable>
     </Link>
   );

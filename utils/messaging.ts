@@ -1,0 +1,43 @@
+import type { Conversation, Message } from "@/services/platform/messaging.dto";
+
+// ============================================================================
+// Pure helpers for the messaging store — ordering and merging, kept free of
+// React and the socket so they can be tested on their own.
+// ============================================================================
+
+/** Newest first (the thread is an inverted list); ties broken by id so the order is stable. */
+export function compareNewestFirst(a: Pick<Message, "createdAt" | "messageId">, b: Pick<Message, "createdAt" | "messageId">): number {
+  const diff = Date.parse(b.createdAt) - Date.parse(a.createdAt);
+  return diff !== 0 && !Number.isNaN(diff) ? diff : b.messageId.localeCompare(a.messageId);
+}
+
+/** Inserts or replaces by `messageId` and keeps the list newest-first. Never produces duplicates. */
+export function upsertMessage(list: Message[], message: Message): Message[] {
+  const without = list.filter((m) => m.messageId !== message.messageId);
+  return [...without, message].sort(compareNewestFirst);
+}
+
+/** Merges a fetched page into the list (REST backfill after a reconnect, or an older page). */
+export function mergeMessages(list: Message[], incoming: Message[]): Message[] {
+  const byId = new Map(list.map((m) => [m.messageId, m]));
+  for (const m of incoming) byId.set(m.messageId, m);
+  return [...byId.values()].sort(compareNewestFirst);
+}
+
+/** Most recently active first; conversations nobody wrote in yet sort by nothing and go last. */
+export function sortConversations(list: Conversation[]): Conversation[] {
+  const time = (c: Conversation) => (c.lastMessageAt ? Date.parse(c.lastMessageAt) : 0);
+  return [...list].sort((a, b) => time(b) - time(a));
+}
+
+/** Title of a conversation as the viewer sees it: a group's title, else the other participant(s). */
+export function conversationTitle(conversation: Conversation, viewerUserId: string | undefined, nameOf: (userId: string) => string | undefined, fallback: string): string {
+  if (conversation.title) return conversation.title;
+  const others = conversation.participants.filter((p) => p.userId !== viewerUserId).map((p) => nameOf(p.userId) ?? "").filter(Boolean);
+  return others.length > 0 ? others.join(", ") : fallback;
+}
+
+/** "unread" is what the server counted plus nothing client-side: it is only ever replaced, never incremented blindly. */
+export function totalUnread(list: Conversation[]): number {
+  return list.reduce((sum, c) => sum + c.unreadCount, 0);
+}

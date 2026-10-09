@@ -99,6 +99,16 @@
     "category": "common",
     "file": "common-StatTile.md"
   },
+  "messaging/NewConversationModal": {
+    "name": "NewConversationModal",
+    "category": "messaging",
+    "file": "messaging-NewConversationModal.md"
+  },
+  "messaging/ReportMessageModal": {
+    "name": "ReportMessageModal",
+    "category": "messaging",
+    "file": "messaging-ReportMessageModal.md"
+  },
   "security/AppLockCard": {
     "name": "AppLockCard",
     "category": "security",

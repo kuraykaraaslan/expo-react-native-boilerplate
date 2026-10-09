@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
   faBell,
   faCircleUser,
+  faComments,
   faEnvelopeOpenText,
   faGear,
   faChevronDown,
@@ -17,7 +18,9 @@ import {
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
+import { useMessagingStore } from '@/stores/messagingStore';
 import { useTenantStore } from '@/stores/tenantStore';
+import { totalUnread } from '@/utils/messaging';
 import { Text } from '@/components/ui';
 import { DrawerNavLink } from './DrawerNavLink';
 import { LangSwitcher } from './LangSwitcher';
@@ -36,6 +39,7 @@ export function DrawerContent(props: DrawerContentComponentProps) {
   const tokens = useThemeTokens();
   const insets = useSafeAreaInsets();
   const tenantName = useTenantStore((s) => s.selectedTenantMembership?.tenant?.name);
+  const unreadMessages = useMessagingStore((s) => totalUnread(s.conversations));
 
   return (
     <View className="flex-1 bg-surface-raised">
@@ -70,6 +74,7 @@ export function DrawerContent(props: DrawerContentComponentProps) {
         <GroupLabel>{t('SHELL.GROUP_OVERVIEW')}</GroupLabel>
         <DrawerNavLink href="/" label={t('SHELL.NAV_DASHBOARD')} icon={faHouse} exact />
         <DrawerNavLink href="/notifications" label={t('SHELL.NAV_NOTIFICATIONS')} icon={faBell} />
+        <DrawerNavLink href="/messages" label={t('SHELL.NAV_MESSAGES')} icon={faComments} badge={unreadMessages} />
 
         <GroupLabel>{t('SHELL.GROUP_ACCOUNT')}</GroupLabel>
         <DrawerNavLink href="/settings/profile" label={t('SHELL.NAV_PROFILE')} icon={faCircleUser} />

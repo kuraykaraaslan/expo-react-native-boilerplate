@@ -10,6 +10,7 @@ import { AppLockScreen } from '@/components/security/AppLockScreen';
 import { useAppLockStore } from '@/libs/appLock';
 import { useAppLockWatcher } from '@/libs/useAppLockWatcher';
 import { pullPreferences } from '@/libs/preferences';
+import { useRealtimeSync } from '@/libs/realtime';
 import { useFlagsSync } from '@/libs/useFeatureFlag';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 
@@ -24,6 +25,7 @@ export default function DrawerLayout() {
   const open = isAuthenticated && !otpRequired && !mustChangePassword;
 
   useFlagsSync(open);
+  useRealtimeSync(open);
 
   // Adopt the account's language and theme once the session is fully open.
   useEffect(() => {
@@ -61,6 +63,8 @@ export default function DrawerLayout() {
     >
       <Drawer.Screen name="index"         options={{ title: 'Home' }} />
       <Drawer.Screen name="notifications" options={{ title: 'Notifications' }} />
+      {/* nested Stack (list + thread), reached from the drawer footer shortcuts and notifications */}
+      <Drawer.Screen name="messages" options={{ title: 'Messages', drawerItemStyle: { display: 'none' } }} />
       {/* opened from the top bar, not listed in the drawer */}
       <Drawer.Screen name="search" options={{ title: 'Search', drawerItemStyle: { display: 'none' } }} />
       {/* settings is a nested Stack — hide from drawer item list */}

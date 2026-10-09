@@ -59,3 +59,23 @@ Modules: `websocket`, `messaging`. Priority 2. Largest phase of the set; split i
 - **Event/REST ordering** produces duplicates or gaps; reconcile by message id and cursor.
 - **Cross-tenant leakage** if the socket is not torn down on switch.
 - **Moderation and reports** are server policy; the app only submits reports and renders the server's removed-message state.
+
+---
+
+## 🟡 CODED — 2026-10-09
+
+**Contract check (server source):**
+- `POST /messaging/ws-ticket` (permission `messaging.ws_ticket.create`) → 201 `{ticket, expiresIn: 30, wsUrl, path: "/messaging"}`; connect to `${wsUrl}${path}` with `auth: {ticket}`. The ticket is consumed atomically (`GETDEL`), so it is single use. **`wsUrl` comes from the server** (`WS_PUBLIC_URL`; null when unconfigured), so no `EXPO_PUBLIC_WS_URL` was added to `libs/env` (deviation from 16.1). A refused handshake errors with `unauthorized` or `limit_exceeded`.
+- Events (server → client): `message:new` (the message), `message:deleted`, `message:moderated {conversationId, messageId, status}`, `read {conversationId, userId, upToMessageId}`, `typing:start|stop {conversationId, userId}`, `presence`, `participant:added|removed`, `error`. Client → server: `join` / `leave {conversationId}`, `typing:start|stop`. **A socket only receives a conversation's events after it joined that room** (the server checks participation); it is placed in its own user room automatically.
+- REST: `GET /conversations?cursor&limit` → `{conversations (with unreadCount + participants), nextCursor}`; `GET /conversations/{id}` → `{conversation}`; `POST /conversations` `{type: direct|group, title?, participantUserIds}` → 201 `{conversation}`; `GET|POST /conversations/{id}/messages` (cursor, **newest first**; POST `{body, clientNonce?, replyToMessageId?}` → 201 `{message}`); `POST …/read {upToMessageId}`; `GET /conversations/unread-count` → `{unreadCount}`; `POST …/messages/{id}/report {reason, note?}` → 201.
+- `clientNonce` is **not** an idempotency key: the server only echoes it on its internal event and the socket's `message:new` payload is the bare message. Reconciliation is therefore by `messageId`.
+
+**Built:** `services/platform/messaging.*`, `libs/realtime.ts` (ticket per attempt via a function `auth`, socket.io backoff with jitter, rooms re-joined and REST backfill on every connect, close 30 s after backgrounding, torn down on tenant switch and sign-out, `useRealtimeSync` mounted in the drawer layout), `stores/messagingStore.ts` (not persisted; reset on tenant switch and sign-out), `utils/messaging.ts`, `libs/memberNames.ts`, `app/(drawer)/messages/{_layout,index,[conversationId]}.tsx` (list with unread badges, start a direct message from the member list, thread with inverted list, optimistic send with failed/retry, typing indicator, read marking, older pages, long-press to report), `components/messaging/*`, drawer entry with unread badge, strings in six languages. Tests: `__tests__/messaging.test.ts`, `__tests__/realtime.test.ts` (socket.io-client mocked).
+
+**Deliberate deviations / not done:**
+- **No offline outbox.** Unsent messages live in memory only (shown as "Not sent" with a retry tap); they are lost if the app is killed. The server has no idempotency for sends, so an automatic MMKV queue could double-send a message whose response was lost; revisit once the server dedupes by `clientNonce`.
+- Group conversations can be read and replied to but not created in the app (needs a multi-select picker); participants management, attachments (Phase 15), message deletion and `presence` are not wired.
+- Names come from the member list; if a plain member may not read it, rows show "Someone".
+- No push (Phase 8 is server-gated); the badge is live only while the app is open.
+- The new native-free dependency `socket.io-client` and the Phase 15 modules need no dev build to run in Expo Go, but none of this was run on a device or against a live gateway.
+

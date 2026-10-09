@@ -4,7 +4,7 @@
 - **category:** shell
 - **filePath:** `components/shell/DrawerNavLink.tsx`
 - **exports:** `DrawerNavLink`
-- **props:** `href`, `label`, `icon`, `exact`
+- **props:** `href`, `label`, `icon`, `exact`, `badge`
 
 Import:
 

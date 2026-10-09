@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:21:15.121Z",
+  "generatedAt": "2026-10-09T16:26:41.162Z",
   "screens": [
     {
       "filePath": "app/_layout.tsx",
@@ -105,6 +105,41 @@
       "layoutChain": [
         "app/_layout.tsx",
         "app/(drawer)/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/messages/_layout.tsx",
+      "route": "/messages/_layout",
+      "kind": "layout",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/messages/[conversationId].tsx",
+      "route": "/messages/[conversationId]",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": true,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/messages/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/messages/index.tsx",
+      "route": "/messages",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/messages/_layout.tsx"
       ]
     },
     {

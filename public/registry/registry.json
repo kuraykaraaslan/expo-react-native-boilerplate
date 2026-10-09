@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:21:15.121Z",
+  "generatedAt": "2026-10-09T16:26:41.162Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -126,6 +126,41 @@
       "layoutChain": [
         "app/_layout.tsx",
         "app/(drawer)/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/messages/_layout.tsx",
+      "route": "/messages/_layout",
+      "kind": "layout",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/messages/[conversationId].tsx",
+      "route": "/messages/[conversationId]",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": true,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/messages/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/messages/index.tsx",
+      "route": "/messages",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/messages/_layout.tsx"
       ]
     },
     {
@@ -654,6 +689,30 @@
       ]
     },
     {
+      "id": "messaging/NewConversationModal",
+      "filePath": "components/messaging/NewConversationModal.tsx",
+      "name": "NewConversationModal",
+      "category": "messaging",
+      "exports": [
+        "NewConversationModal"
+      ],
+      "props": [
+        "open"
+      ]
+    },
+    {
+      "id": "messaging/ReportMessageModal",
+      "filePath": "components/messaging/ReportMessageModal.tsx",
+      "name": "ReportMessageModal",
+      "category": "messaging",
+      "exports": [
+        "ReportMessageModal"
+      ],
+      "props": [
+        "message"
+      ]
+    },
+    {
       "id": "security/AppLockCard",
       "filePath": "components/security/AppLockCard.tsx",
       "name": "AppLockCard",
@@ -732,7 +791,8 @@
         "href",
         "label",
         "icon",
-        "exact"
+        "exact",
+        "badge"
       ]
     },
     {
@@ -1466,6 +1526,32 @@
       ]
     },
     {
+      "filePath": "services/platform/messaging.service.client.ts",
+      "module": "platform",
+      "name": "messaging.service.client",
+      "className": "MessagingClientService",
+      "methods": [
+        "createWsTicket",
+        "listConversations",
+        "getConversation",
+        "createConversation",
+        "getUnreadCount",
+        "listMessages",
+        "sendMessage",
+        "markRead",
+        "reportMessage"
+      ],
+      "endpoints": [
+        "/messaging/ws-ticket",
+        "/conversations",
+        "/conversations/${encodeURIComponent(conversationId)}",
+        "/conversations/unread-count",
+        "/conversations/${encodeURIComponent(conversationId)}/messages",
+        "/conversations/${encodeURIComponent(conversationId)}/read",
+        "/conversations/${encodeURIComponent(conversationId)}/messages/${encodeURIComponent(messageId)}/report"
+      ]
+    },
+    {
       "filePath": "services/user/notification.service.client.ts",
       "module": "user",
       "name": "notification.service.client",
@@ -1649,6 +1735,38 @@
         "clear"
       ],
       "persisted": true
+    },
+    {
+      "filePath": "stores/messagingStore.ts",
+      "name": "messagingStore",
+      "hook": "useMessagingStore",
+      "stateKeys": [
+        "nonce",
+        "connection",
+        "conversations",
+        "conversationsLoaded",
+        "messages",
+        "olderCursor",
+        "pending",
+        "typing",
+        "names",
+        "setConnection",
+        "setConversations",
+        "upsertConversation",
+        "setUnread",
+        "mergeThread",
+        "receiveMessage",
+        "removeMessage",
+        "setModeration",
+        "addPending",
+        "settlePending",
+        "failPending",
+        "retryPending",
+        "setTyping",
+        "setNames",
+        "reset"
+      ],
+      "persisted": false
     },
     {
       "filePath": "stores/notificationStore.ts",
@@ -1868,6 +1986,39 @@
       "types": [
         "EvaluateAllFlagsResponse",
         "FlagMap"
+      ]
+    },
+    {
+      "filePath": "services/platform/messaging.dto.ts",
+      "module": "platform",
+      "name": "messaging.dto",
+      "schemas": [
+        "ParticipantSchema",
+        "ConversationSchema",
+        "ConversationListResponseSchema",
+        "ConversationResponseSchema",
+        "AttachmentSchema",
+        "MessageSchema",
+        "MessageListResponseSchema",
+        "MessageResponseSchema",
+        "UnreadCountResponseSchema",
+        "CreateConversationRequestSchema",
+        "SendMessageRequestSchema",
+        "WsTicketResponseSchema",
+        "TypingEventSchema",
+        "ReadEventSchema",
+        "MessageRefEventSchema",
+        "ModeratedEventSchema"
+      ],
+      "types": [
+        "Participant",
+        "Conversation",
+        "Message",
+        "CreateConversationRequest",
+        "SendMessageRequest",
+        "REPORT_REASONS",
+        "ReportReason",
+        "WsTicket"
       ]
     },
     {
@@ -2130,6 +2281,14 @@
       ]
     },
     {
+      "filePath": "libs/memberNames.ts",
+      "name": "memberNames",
+      "exports": [
+        "memberLabel",
+        "loadMemberNames"
+      ]
+    },
+    {
       "filePath": "libs/mmkv.ts",
       "name": "mmkv",
       "exports": [
@@ -2151,6 +2310,23 @@
       "exports": [
         "pullPreferences",
         "pushPreferences"
+      ]
+    },
+    {
+      "filePath": "libs/realtime.ts",
+      "name": "realtime",
+      "exports": [
+        "BACKGROUND_GRACE_MS",
+        "setOpenConversation",
+        "getOpenConversation",
+        "backfill",
+        "joinRoom",
+        "leaveRoom",
+        "sendTyping",
+        "connectRealtime",
+        "disconnectRealtime",
+        "resetRealtime",
+        "useRealtimeSync"
       ]
     },
     {

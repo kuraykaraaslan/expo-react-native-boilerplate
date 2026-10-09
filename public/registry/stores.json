@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:21:15.121Z",
+  "generatedAt": "2026-10-09T16:26:41.162Z",
   "stores": [
     {
       "filePath": "stores/appStore.ts",
@@ -57,6 +57,38 @@
         "clear"
       ],
       "persisted": true
+    },
+    {
+      "filePath": "stores/messagingStore.ts",
+      "name": "messagingStore",
+      "hook": "useMessagingStore",
+      "stateKeys": [
+        "nonce",
+        "connection",
+        "conversations",
+        "conversationsLoaded",
+        "messages",
+        "olderCursor",
+        "pending",
+        "typing",
+        "names",
+        "setConnection",
+        "setConversations",
+        "upsertConversation",
+        "setUnread",
+        "mergeThread",
+        "receiveMessage",
+        "removeMessage",
+        "setModeration",
+        "addPending",
+        "settlePending",
+        "failPending",
+        "retryPending",
+        "setTyping",
+        "setNames",
+        "reset"
+      ],
+      "persisted": false
     },
     {
       "filePath": "stores/notificationStore.ts",

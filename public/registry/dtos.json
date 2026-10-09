@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:21:15.121Z",
+  "generatedAt": "2026-10-09T16:26:41.162Z",
   "dtos": [
     {
       "filePath": "services/platform/apiKey.dto.ts",
@@ -176,6 +176,39 @@
       "types": [
         "EvaluateAllFlagsResponse",
         "FlagMap"
+      ]
+    },
+    {
+      "filePath": "services/platform/messaging.dto.ts",
+      "module": "platform",
+      "name": "messaging.dto",
+      "schemas": [
+        "ParticipantSchema",
+        "ConversationSchema",
+        "ConversationListResponseSchema",
+        "ConversationResponseSchema",
+        "AttachmentSchema",
+        "MessageSchema",
+        "MessageListResponseSchema",
+        "MessageResponseSchema",
+        "UnreadCountResponseSchema",
+        "CreateConversationRequestSchema",
+        "SendMessageRequestSchema",
+        "WsTicketResponseSchema",
+        "TypingEventSchema",
+        "ReadEventSchema",
+        "MessageRefEventSchema",
+        "ModeratedEventSchema"
+      ],
+      "types": [
+        "Participant",
+        "Conversation",
+        "Message",
+        "CreateConversationRequest",
+        "SendMessageRequest",
+        "REPORT_REASONS",
+        "ReportReason",
+        "WsTicket"
       ]
     },
     {
