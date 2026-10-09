@@ -1,4 +1,9 @@
 {
+  "account/AvatarPicker": {
+    "name": "AvatarPicker",
+    "category": "account",
+    "file": "account-AvatarPicker.md"
+  },
   "account/PreferencesCard": {
     "name": "PreferencesCard",
     "category": "account",

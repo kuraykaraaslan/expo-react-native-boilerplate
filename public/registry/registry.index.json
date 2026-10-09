@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:11:51.178Z",
+  "generatedAt": "2026-10-09T16:14:26.482Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -357,6 +357,20 @@
     }
   ],
   "components": [
+    {
+      "id": "account/AvatarPicker",
+      "filePath": "components/account/AvatarPicker.tsx",
+      "name": "AvatarPicker",
+      "category": "account",
+      "exports": [
+        "AvatarPicker"
+      ],
+      "props": [
+        "name",
+        "src",
+        "onUploaded"
+      ]
+    },
     {
       "id": "account/PreferencesCard",
       "filePath": "components/account/PreferencesCard.tsx",
@@ -1383,6 +1397,20 @@
       ]
     },
     {
+      "filePath": "services/platform/storage.service.client.ts",
+      "module": "platform",
+      "name": "storage.service.client",
+      "className": "StorageClientService",
+      "methods": [
+        "upload",
+        "getUsage"
+      ],
+      "endpoints": [
+        "/storage",
+        "/storage/usage"
+      ]
+    },
+    {
       "filePath": "services/tenant/tenant.service.client.ts",
       "module": "tenant",
       "name": "tenant.service.client",
@@ -1734,6 +1762,19 @@
       ]
     },
     {
+      "filePath": "services/platform/storage.dto.ts",
+      "module": "platform",
+      "name": "storage.dto",
+      "schemas": [
+        "UploadResponseSchema",
+        "StorageUsageSchema"
+      ],
+      "types": [
+        "UploadResponse",
+        "StorageUsage"
+      ]
+    },
+    {
       "filePath": "services/tenant/tenant.dto.ts",
       "module": "tenant",
       "name": "tenant.dto",
@@ -1896,6 +1937,15 @@
       ]
     },
     {
+      "filePath": "libs/pickImage.ts",
+      "name": "pickImage",
+      "exports": [
+        "ImageSource",
+        "PickResult",
+        "pickAvatarImage"
+      ]
+    },
+    {
       "filePath": "libs/preferences.ts",
       "name": "preferences",
       "exports": [
@@ -1948,6 +1998,20 @@
         "SwitchOutcome",
         "switchToTenant",
         "activateSignedInTenant"
+      ]
+    },
+    {
+      "filePath": "libs/upload.ts",
+      "name": "upload",
+      "exports": [
+        "UploadFile",
+        "MAX_UPLOAD_BYTES",
+        "IMAGE_MIME_TYPES",
+        "UploadRejection",
+        "UploadPolicy",
+        "checkUpload",
+        "buildUploadForm",
+        "isUploadBlockedByPlan"
       ]
     },
     {

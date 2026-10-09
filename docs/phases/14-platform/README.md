@@ -18,7 +18,7 @@ WHERE WE ARE: docs/phases/README.md §Order
 | Phase | File | Topic | Modules | Priority |
 |-----|-------|------|---------|---------|
 | 14 | [14-locale-and-flags.md](14-locale-and-flags.md) | Server-aligned locale, feature flags and gates | `i18n`, `localization`, `feature_flags`, `feature_gate` | ✅ Coded 2026-10-09 |
-| 15 | [15-files.md](15-files.md) | Uploads, avatar, media gallery, drive | `storage`, `media_gallery`, `drive` | ⬜ Pending |
+| 15 | [15-files.md](15-files.md) | Uploads, avatar, media gallery, drive | `storage`, `media_gallery`, `drive` | 🟡 15.1 coded 2026-10-09 |
 | 16 | [16-realtime-messaging.md](16-realtime-messaging.md) | Socket.IO transport and conversations | `websocket`, `messaging` | ⬜ Pending |
 | 17 | [17-search.md](17-search.md) | Global search, saved searches | `search`, `navigation` | ⬜ Pending |
 | 18 | [18-tenant-admin.md](18-tenant-admin.md) | API keys and domains (admin read/manage) | `api_key`, `tenant_domain`, `tenant_session` | ⬜ Pending |

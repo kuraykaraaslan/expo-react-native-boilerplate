@@ -58,7 +58,7 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 | 12 | [account/phase-12-account-tenant-settings.md](12-account/12-account-tenant-settings.md) | Account audit, tenant settings, branding (`account`, `tenant_setting`, `tenant_branding`) | ✅ Coded 2026-10-08 (settings + primary-colour branding; audit & logos open) · P1 |
 | 13 | [compliance/phase-13-consent-privacy.md](13-compliance/13-consent-privacy.md) | Agreements, privacy requests, account deletion, audit viewer (`terms_consent`, `privacy`, `audit_log`) | 🟡 Coded: legal links, consent choices, audit viewer · ⛔ account deletion needs a server route (C1) · P2 |
 | 14 | [platform/phase-14-locale-and-flags.md](14-platform/14-locale-and-flags.md) | Server-aligned locale, feature flags and gates | ✅ Coded 2026-10-09 (live verification pending) · P2 |
-| 15 | [platform/phase-15-files.md](14-platform/15-files.md) | Uploads, avatar, media gallery, drive | ⬜ Planned · P2 |
+| 15 | [platform/phase-15-files.md](14-platform/15-files.md) | Uploads, avatar, media gallery, drive | 🟡 Coded 2026-10-09: upload + avatar (15.1) · gallery and drive (15.2/15.3) not started · needs a dev build · P2 |
 | 16 | [platform/phase-16-realtime-messaging.md](14-platform/16-realtime-messaging.md) | Socket.IO transport and messaging | ⬜ Planned · P2 |
 | 17 | [platform/phase-17-search.md](14-platform/17-search.md) | Global search (+ navigation decision) | ⬜ Planned · P2 |
 | 18 | [platform/phase-18-tenant-admin.md](14-platform/18-tenant-admin.md) | API keys and domains | ⬜ Planned · P2 |

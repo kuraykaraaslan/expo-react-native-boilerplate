@@ -92,6 +92,15 @@
         "LANGUAGES": "Vous pouvez sélectionner les langues suivantes :",
         "DEVELOPER": "Développé par Kuray Karaaslan avec ❤️. "
     },
+    "UPLOAD": {
+        "UPLOADING": "Envoi en cours…",
+        "TAKE_PHOTO": "Prendre une photo",
+        "CHOOSE_PHOTO": "Choisir une photo",
+        "PERMISSION_DENIED": "Autorisez l'accès dans les réglages de l'appareil pour ajouter une photo.",
+        "REJECTED_EMPTY": "Ce fichier est vide.",
+        "REJECTED_TOO_LARGE": "Ce fichier est trop volumineux.",
+        "REJECTED_TYPE_NOT_ALLOWED": "Choisissez une image JPEG, PNG ou WebP."
+    },
     "ERRORS": {
         "AUTH": {
             "NEED_LOGIN": "Vous devez vous connecter pour accéder à cette page"

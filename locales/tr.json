@@ -92,6 +92,15 @@
         "LANGUAGES": "Aşağıdaki dilleri seçebilirsiniz:",
         "DEVELOPER": "Kuray Karaaslan tarafından ❤️ ile geliştirildi."
     },
+    "UPLOAD": {
+        "UPLOADING": "Yükleniyor…",
+        "TAKE_PHOTO": "Fotoğraf çek",
+        "CHOOSE_PHOTO": "Fotoğraf seç",
+        "PERMISSION_DENIED": "Fotoğraf eklemek için cihaz ayarlarından erişime izin verin.",
+        "REJECTED_EMPTY": "Bu dosya boş.",
+        "REJECTED_TOO_LARGE": "Bu dosya çok büyük.",
+        "REJECTED_TYPE_NOT_ALLOWED": "JPEG, PNG veya WebP bir görsel seçin."
+    },
     "ERRORS": {
         "AUTH": {
             "NEED_LOGIN": "Bu sayfaya erişmek için giriş yapmalısınız"

@@ -3,7 +3,8 @@ import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
-import { Avatar, Button, Card, Input, Textarea } from '@/components/ui';
+import { AvatarPicker } from '@/components/account/AvatarPicker';
+import { Button, Card, Input, Textarea } from '@/components/ui';
 import type { UpdateProfileRequest } from '@/services/user/profile.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { ProfileClientService } from '@/services/user/profile.service.client';
@@ -41,10 +42,10 @@ export function ProfileCard() {
     };
   }, []);
 
-  async function save() {
+  async function save(next: UpdateProfileRequest = form) {
     setSaving(true);
     try {
-      await ProfileClientService.updateProfile(form);
+      await ProfileClientService.updateProfile(next);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       toast.success(t('ACCOUNT.PROFILE_SAVED'));
     } catch (err: unknown) {
@@ -64,7 +65,7 @@ export function ProfileCard() {
       loading={loading}
       footer={
         <View className="flex-row justify-end">
-          <Button loading={saving} onPress={save} testID="account-profile-save">
+          <Button loading={saving} onPress={() => void save()} testID="account-profile-save">
             {saving ? t('COMMON.SAVING') : t('ACCOUNT.SAVE_PROFILE')}
           </Button>
         </View>
@@ -72,7 +73,15 @@ export function ProfileCard() {
     >
       <View className="gap-4">
         <View className="items-center py-2">
-          <Avatar name={displayName} src={form.profilePicture ?? undefined} size="xl" />
+          <AvatarPicker
+            name={displayName}
+            src={form.profilePicture}
+            onUploaded={(url) => {
+              const next = { ...form, profilePicture: url };
+              setForm(next);
+              void save(next); // the new photo is stored on the account right away
+            }}
+          />
         </View>
         <Input
           label={t('ACCOUNT.DISPLAY_NAME')}

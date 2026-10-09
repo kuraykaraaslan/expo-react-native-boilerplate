@@ -1,8 +1,22 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:11:51.178Z",
+  "generatedAt": "2026-10-09T16:14:26.482Z",
   "components": [
+    {
+      "id": "account/AvatarPicker",
+      "filePath": "components/account/AvatarPicker.tsx",
+      "name": "AvatarPicker",
+      "category": "account",
+      "exports": [
+        "AvatarPicker"
+      ],
+      "props": [
+        "name",
+        "src",
+        "onUploaded"
+      ]
+    },
     {
       "id": "account/PreferencesCard",
       "filePath": "components/account/PreferencesCard.tsx",

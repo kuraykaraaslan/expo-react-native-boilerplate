@@ -92,6 +92,15 @@
         "LANGUAGES": "You can select the following languages:",
         "DEVELOPER": "Developed by Kuray Karaaslan with ❤️. Click here to view the source code."
     },
+    "UPLOAD": {
+        "UPLOADING": "Uploading…",
+        "TAKE_PHOTO": "Take photo",
+        "CHOOSE_PHOTO": "Choose photo",
+        "PERMISSION_DENIED": "Allow access in your device settings to add a photo.",
+        "REJECTED_EMPTY": "That file is empty.",
+        "REJECTED_TOO_LARGE": "That file is too large.",
+        "REJECTED_TYPE_NOT_ALLOWED": "Choose a JPEG, PNG or WebP image."
+    },
     "ERRORS": {
         "AUTH": {
             "NEED_LOGIN": "You need to login to access this page"

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:11:51.178Z",
+  "generatedAt": "2026-10-09T16:14:26.482Z",
   "dtos": [
     {
       "filePath": "services/auth/auth.dto.ts",
@@ -206,6 +206,19 @@
         "SSOProvidersResponse",
         "SSOAuthUrlResponse",
         "ConnectedAccount"
+      ]
+    },
+    {
+      "filePath": "services/platform/storage.dto.ts",
+      "module": "platform",
+      "name": "storage.dto",
+      "schemas": [
+        "UploadResponseSchema",
+        "StorageUsageSchema"
+      ],
+      "types": [
+        "UploadResponse",
+        "StorageUsage"
       ]
     },
     {

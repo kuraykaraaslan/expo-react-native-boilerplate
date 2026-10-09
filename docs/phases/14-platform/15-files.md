@@ -56,3 +56,19 @@ Modules: `storage`, `media_gallery`, `drive`. Priority 2. Build 15.1 first; 15.2
 - **Manual `Content-Type`** breaks multipart boundaries on RN.
 - **Local file lifetime.** Picker URIs can be cache paths that disappear; copy into the app cache before queuing a retry.
 - **Quota and plan gates** (`feature_gate`, Phase 14) can reject uploads; map the error.
+
+---
+
+## 🟡 CODED (15.1 only) — 2026-10-09
+
+**Contract check (server source):** `POST /storage` (`storage.route.ts`) takes multipart `file`, `folder` (default `general`), optional `provider`, and answers `{message, uploadedFileId, url, key, bucket, size, provider}`; `GET /storage/usage` answers `{usedBytes, quotaBytes, remainingBytes}` (`-1` = unlimited). `storage.validation` checks size, extension and magic bytes server-side. The profile takes the file's `url` in `profilePicture` (`user_profile.dto`, nullable string).
+
+**Built:** `expo-image-picker` + `expo-image-manipulator` (SDK-57 versions, plugin permission strings in `app.config.ts`), `libs/pickImage.ts` (camera/library, square crop, 512 px JPEG q0.8), `libs/upload.ts` (`checkUpload`, `buildUploadForm`), `services/platform/storage.*`, `components/account/AvatarPicker.tsx` (progress, cancel via `AbortController`) wired into `ProfileCard` (the new photo is saved to the profile immediately). Tests: `__tests__/upload.test.ts`.
+
+**Deliberate deviations:**
+- `Content-Type: multipart/form-data` **is** set on the upload request (without a boundary). The shared axios instance defaults to `application/json`, which axios would keep for a React Native `FormData`; the bare multipart type makes RN add the boundary itself. This replaces "do not set Content-Type manually" from the task list.
+- Upload timeout is 120 s (the instance default of 10 s is for JSON calls).
+- The size limit is a client default (10 MB); the real limit is a tenant setting the client cannot read, so a server `FILE_TOO_LARGE` is surfaced as returned.
+- 15.2 (media gallery) and 15.3 (drive) were not started; both are optional.
+- Needs a development build (new native modules, P3); not verified on a device. The "shows on the web profile" criterion needs a live check.
+

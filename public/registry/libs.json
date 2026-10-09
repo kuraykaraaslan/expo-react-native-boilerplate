@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:11:51.178Z",
+  "generatedAt": "2026-10-09T16:14:26.482Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",
@@ -106,6 +106,15 @@
       ]
     },
     {
+      "filePath": "libs/pickImage.ts",
+      "name": "pickImage",
+      "exports": [
+        "ImageSource",
+        "PickResult",
+        "pickAvatarImage"
+      ]
+    },
+    {
       "filePath": "libs/preferences.ts",
       "name": "preferences",
       "exports": [
@@ -158,6 +167,20 @@
         "SwitchOutcome",
         "switchToTenant",
         "activateSignedInTenant"
+      ]
+    },
+    {
+      "filePath": "libs/upload.ts",
+      "name": "upload",
+      "exports": [
+        "UploadFile",
+        "MAX_UPLOAD_BYTES",
+        "IMAGE_MIME_TYPES",
+        "UploadRejection",
+        "UploadPolicy",
+        "checkUpload",
+        "buildUploadForm",
+        "isUploadBlockedByPlan"
       ]
     },
     {
