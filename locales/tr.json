@@ -102,7 +102,8 @@
         "RATE_LIMITED": "Çok fazla istek. {{seconds}} saniye sonra tekrar deneyin.",
         "SESSION_ENDED": "Oturumunuz sona erdi. Lütfen tekrar giriş yapın.",
         "ORGANIZATION_UNAVAILABLE": "Bu organizasyona artık erişiminiz yok. Lütfen tekrar giriş yapın.",
-        "ORGANIZATION_SWITCH": "Bu organizasyona artık erişemiyorsunuz. Başka birini seçin."
+        "ORGANIZATION_SWITCH": "Bu organizasyona artık erişemiyorsunuz. Başka birini seçin.",
+        "PLAN_UPGRADE_REQUIRED": "Mevcut planınız bunu içermiyor. Devam etmek için planınızı yükseltin."
     },
     "SETTINGS": {
         "LANGUAGE": "Dil",

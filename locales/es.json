@@ -102,7 +102,8 @@
         "RATE_LIMITED": "Demasiadas solicitudes. Inténtalo de nuevo en {{seconds}} segundos.",
         "SESSION_ENDED": "Tu sesión ha finalizado. Inicia sesión de nuevo.",
         "ORGANIZATION_UNAVAILABLE": "Esta organización ya no está disponible para ti. Inicia sesión de nuevo.",
-        "ORGANIZATION_SWITCH": "Esa organización ya no está disponible para ti. Elige otra."
+        "ORGANIZATION_SWITCH": "Esa organización ya no está disponible para ti. Elige otra.",
+        "PLAN_UPGRADE_REQUIRED": "Tu plan actual no incluye esto. Mejora tu plan para continuar."
     },
     "SETTINGS": {
         "LANGUAGE": "Idioma",

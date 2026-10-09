@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T23:34:43.775Z",
+  "generatedAt": "2026-10-09T16:11:51.178Z",
   "dtos": [
     {
       "filePath": "services/auth/auth.dto.ts",
@@ -125,6 +125,18 @@
         "AuditSeverity",
         "AuditLog",
         "AuditLogsResponse"
+      ]
+    },
+    {
+      "filePath": "services/platform/flags.dto.ts",
+      "module": "platform",
+      "name": "flags.dto",
+      "schemas": [
+        "EvaluateAllFlagsResponseSchema"
+      ],
+      "types": [
+        "EvaluateAllFlagsResponse",
+        "FlagMap"
       ]
     },
     {

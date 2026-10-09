@@ -56,3 +56,21 @@ Modules: `i18n`, `localization`, `feature_flags`, `feature_gate`. Priority 2.
 - **Flag flicker.** Showing gated UI before the first evaluation completes; default-off plus a cached last value avoids it.
 - **Header spoofing assumptions.** If the server derives locale from the user preference, the header is only a hint; do not rely on it for correctness.
 - **Locale-code mismatches** (`tr` vs `tr-TR`) silently falling back to English.
+
+---
+
+## ✅ CODED — 2026-10-09
+
+**Contract check (server source):**
+- Locale: the server reads `Accept-Language` only (`auth.i18n.resolveLocale` keeps the primary subtag; its auth dictionaries cover `en tr es`, everything else falls back to English). There is no locale header other than that one, and device sessions carry no fingerprint, so the header can change freely.
+- Flags: `POST /feature-flags/evaluate` with `{}` (no `key`) answers `{ flags: { [key]: boolean } }`; the subject defaults to the caller's `userId`. Needs `feature_flags.flags.evaluate`, which any tenant user has.
+- Gates: `feature_gate` throws `AppError(…, 403, FEATURE_NOT_AVAILABLE)`; its messages are fixed English strings ("This feature is not available on your current plan" / "You have reached the limit…"). Billing adds `QUOTA_EXCEEDED` and `SEAT_LIMIT_REACHED`.
+
+**Built:** `libs/serverLocale.ts` (explicit table, `Accept-Language` set in `libs/axios.ts` on every request), `services/platform/flags.*`, `stores/flagStore.ts` (MMKV, per tenant), `libs/useFeatureFlag.ts` (`useFeatureFlag`, `refreshFlags`, `useFlagsSync` mounted in the drawer layout: mount, tenant switch, app resume), `planGate` on `normalizeApiError` + `ERRORS.PLAN_UPGRADE_REQUIRED` in all six languages. Tests: `__tests__/flags.test.ts`.
+
+**Deliberate deviations:**
+- The `localization` reference-data pickers (country / currency / timezone) were not built: the app has no screen that needs them yet.
+- The upgrade state is the translated error message (toast / inline error), not a dedicated screen; no screen is gated by a flag yet.
+- Experiments (`/experiments/evaluate`, `/convert`) were not wired.
+- Language-change push to `user_preferences` already existed from Phase 4; no change.
+- The "server-produced message comes back in the chosen language" criterion needs a live check against a deployed server.

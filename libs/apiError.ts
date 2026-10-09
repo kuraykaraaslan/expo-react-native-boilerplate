@@ -22,7 +22,16 @@ export type NormalizedApiError = {
   issues?: ZodIssueLike[];
   /** Seconds from a 429's Retry-After header. */
   retryAfter?: number;
+  /** The plan blocks this feature or a limit was reached (feature_gate / billing) — show an upgrade state. */
+  planGate?: boolean;
 };
+
+// feature_gate refusals are 403 FEATURE_NOT_AVAILABLE; billing adds quota / seat limits.
+const PLAN_GATE_CODES = new Set(["FEATURE_NOT_AVAILABLE", "QUOTA_EXCEEDED", "SEAT_LIMIT_REACHED"]);
+
+export function isPlanGateError(err: unknown): boolean {
+  return normalizeApiError(err).planGate === true;
+}
 
 type AxiosLike = {
   isAxiosError?: boolean;
@@ -93,6 +102,11 @@ export function normalizeApiError(err: unknown): NormalizedApiError {
     const issues = isIssueArray(data.issues) ? data.issues : isIssueArray(data.error) ? data.error : undefined;
     if (issues) {
       return { message: describeIssues(issues), rawMessage: typeof data.message === "string" ? data.message : undefined, code, statusCode: status, issues };
+    }
+
+    // feature_gate / billing refusals carry English product copy: show the upgrade state instead.
+    if (code && PLAN_GATE_CODES.has(code)) {
+      return { message: i18n.t("ERRORS.PLAN_UPGRADE_REQUIRED"), rawMessage: typeof data.message === "string" ? data.message : undefined, code, statusCode: status, planGate: true };
     }
 
     // Shapes 1 and 3: a message string.

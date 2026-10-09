@@ -5,7 +5,9 @@ import { markHandled, normalizeApiError, type NormalizedApiError } from "@/libs/
 import { env } from "@/libs/env";
 import i18n from "@/libs/i18n";
 import logger from "@/libs/logger";
+import { serverLocaleFor } from "@/libs/serverLocale";
 import { clearTenantTokens, getToken, setTokens } from "@/libs/secureStorage";
+import { useAppStore } from "@/stores/appStore";
 import { useAuthStore } from "@/stores/authStore";
 import { getActiveTenantId, useTenantStore } from "@/stores/tenantStore";
 
@@ -73,7 +75,7 @@ export const axiosInstance = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-// ── Request: tenant prefix + bearer ─────────────────────────────────────────
+// ── Request: tenant prefix + bearer + language ─────────────────────────────────────────
 
 axiosInstance.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   const url = config.url ?? "";
@@ -84,6 +86,10 @@ axiosInstance.interceptors.request.use(async (config: InternalAxiosRequestConfig
     config.tenantId ??= getActiveTenantId();
     config.url = tenantPath(config.tenantId, url);
   }
+
+  // The server localizes emails and messages from Accept-Language. Device sessions carry no
+  // fingerprint, so changing it never invalidates a session.
+  config.headers["Accept-Language"] = serverLocaleFor(useAppStore.getState().locale);
 
   if (!config.skipAuth && config.tenantId) {
     const accessToken = await getToken("accessToken", config.tenantId);

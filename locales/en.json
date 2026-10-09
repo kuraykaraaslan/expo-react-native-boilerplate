@@ -102,7 +102,8 @@
         "RATE_LIMITED": "Too many requests. Try again in {{seconds}} seconds.",
         "SESSION_ENDED": "Your session has ended. Please sign in again.",
         "ORGANIZATION_UNAVAILABLE": "This organization is no longer available to you. Please sign in again.",
-        "ORGANIZATION_SWITCH": "That organization is no longer available to you. Pick another one."
+        "ORGANIZATION_SWITCH": "That organization is no longer available to you. Pick another one.",
+        "PLAN_UPGRADE_REQUIRED": "Your current plan doesn't include this. Upgrade your plan to continue."
     },
     "SETTINGS": {
         "LANGUAGE": "Language",

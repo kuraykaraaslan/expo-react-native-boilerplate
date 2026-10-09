@@ -102,7 +102,8 @@
         "RATE_LIMITED": "Zu viele Anfragen. Versuchen Sie es in {{seconds}} Sekunden erneut.",
         "SESSION_ENDED": "Ihre Sitzung wurde beendet. Bitte melden Sie sich erneut an.",
         "ORGANIZATION_UNAVAILABLE": "Diese Organisation ist für Sie nicht mehr verfügbar. Bitte melden Sie sich erneut an.",
-        "ORGANIZATION_SWITCH": "Diese Organisation ist für Sie nicht mehr verfügbar. Wählen Sie eine andere aus."
+        "ORGANIZATION_SWITCH": "Diese Organisation ist für Sie nicht mehr verfügbar. Wählen Sie eine andere aus.",
+        "PLAN_UPGRADE_REQUIRED": "Dein aktueller Tarif enthält das nicht. Wechsle auf einen höheren Tarif, um fortzufahren."
     },
     "SETTINGS": {
         "LANGUAGE": "Sprache",

@@ -10,6 +10,7 @@ import { AppLockScreen } from '@/components/security/AppLockScreen';
 import { useAppLockStore } from '@/libs/appLock';
 import { useAppLockWatcher } from '@/libs/useAppLockWatcher';
 import { pullPreferences } from '@/libs/preferences';
+import { useFlagsSync } from '@/libs/useFeatureFlag';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 
 export default function DrawerLayout() {
@@ -21,6 +22,8 @@ export default function DrawerLayout() {
   const locked = useAppLockStore((s) => s.locked);
   useAppLockWatcher();
   const open = isAuthenticated && !otpRequired && !mustChangePassword;
+
+  useFlagsSync(open);
 
   // Adopt the account's language and theme once the session is fully open.
   useEffect(() => {

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T23:34:43.775Z",
+  "generatedAt": "2026-10-09T16:11:51.178Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",
@@ -9,6 +9,7 @@
       "exports": [
         "ZodIssueLike",
         "NormalizedApiError",
+        "isPlanGateError",
         "markHandled",
         "isHandled",
         "normalizeApiError"
@@ -126,6 +127,14 @@
       ]
     },
     {
+      "filePath": "libs/serverLocale.ts",
+      "name": "serverLocale",
+      "exports": [
+        "SERVER_LOCALE",
+        "serverLocaleFor"
+      ]
+    },
+    {
       "filePath": "libs/session.ts",
       "name": "session",
       "exports": [
@@ -163,6 +172,15 @@
       "name": "useCountdown",
       "exports": [
         "useCountdown"
+      ]
+    },
+    {
+      "filePath": "libs/useFeatureFlag.ts",
+      "name": "useFeatureFlag",
+      "exports": [
+        "refreshFlags",
+        "useFeatureFlag",
+        "useFlagsSync"
       ]
     },
     {
