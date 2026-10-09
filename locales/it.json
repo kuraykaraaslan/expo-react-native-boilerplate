@@ -190,6 +190,25 @@
         "DELETED": "Dominio rimosso",
         "NO_ACCESS": "Solo i proprietari e gli amministratori possono gestire i domini."
     },
+    "SEARCH": {
+        "TITLE": "Cerca",
+        "SUBTITLE": "Trova contenuti nella tua organizzazione",
+        "PLACEHOLDER": "Cerca…",
+        "SAVED_TITLE": "Ricerche salvate",
+        "RECENT": "Ricerche recenti",
+        "CLEAR_HISTORY": "Cancella cronologia",
+        "SAVE": "Salva ricerca",
+        "SAVED": "Ricerca salvata",
+        "REMOVE": "Rimuovi",
+        "IDLE": "Cerca nella tua organizzazione",
+        "IDLE_DESC": "Scrivi per trovare pagine, articoli, contatti e altro.",
+        "EMPTY": "Nessun risultato",
+        "EMPTY_DESC": "Nulla corrisponde a \"{{query}}\". Prova con altre parole.",
+        "FAILED": "Ricerca non riuscita",
+        "FAILED_DESC": "Controlla la connessione e riprova.",
+        "RESULT_COUNT": "{{count}} risultato/i",
+        "NO_TARGET": "Questo risultato non ha una pagina da aprire."
+    },
     "ERRORS": {
         "AUTH": {
             "NEED_LOGIN": "È necessario effettuare il login per accedere a questa pagina"

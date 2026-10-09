@@ -50,3 +50,21 @@ Modules: `search`, `navigation`. Priority 2.
 - **Web URLs in results** leaving the app unexpectedly; the fallback is explicit and uses the in-app browser sheet.
 - **Result privacy.** The server filters by permission; the client must not cache results across tenants or sign-outs (clear on `flush()`).
 - **Request volume.** Debounce and cancel in-flight requests; the route is rate limited.
+
+---
+
+## ✅ CODED — 2026-10-09
+
+**Contract check (server source):** `GET /search?q&entityType&limit&offset` (q 1–200 chars, limit ≤ 100) → `{hits, total}`; a hit is `{entityType, entityId, title, url | null, snippet, rank, metadata | null}` and the server already drops hits the caller may not see (`filterVisibleHits`). `snippet` is a `ts_headline` fragment with `<b>…</b>` markers. `url` is a web location (the indexers pass page / article URLs). `GET /search/history?limit` → `{data}` (newest first; every search is logged server-side), `DELETE /search/history`; `GET /search/saved` → `{data}`, `POST /search/saved` `{name, query, entityType?}` → 201 `{item}`, `DELETE /search/saved/{id}`. Entity types the server indexes today: pages, blog, CRM leads, support, commerce orders and catalog, contacts, HR, messaging.
+
+**`navigation` module — not applicable.** It models website header/footer menus (public-site concern); the app's drawer is code. Closed.
+
+**Built:** `services/platform/search.*`, `app/(drawer)/search.tsx` (350 ms debounce with the in-flight request aborted, results grouped by entity type, paging on scroll, recent and saved searches, save / remove / clear, empty and failed states; everything resets on a tenant switch), `libs/searchRoutes.ts`, `utils/search.ts` (snippet rendered as text, never HTML), `libs/useDebouncedValue.ts`, search button in the top bar, strings in all six languages. Tests: `__tests__/search.test.ts`.
+
+**Deliberate deviations:**
+- No indexed entity type has an app screen yet, so the route table in `libs/searchRoutes.ts` is empty and every hit opens its web URL in the in-app browser (a hit without a safe http(s) URL shows an info toast). Add a type to the table when its screen ships (messaging, Phase 16).
+- No entity-type filter UI (the endpoint supports `entityType`; the service passes it through).
+- Results are screen state, not stored: nothing to clear on sign-out beyond unmounting.
+- The debounce hook and the screen have no render test (no render-test setup in the repo); the service, snippet parsing and routing are covered.
+- "Saved searches round-trip with the web admin" needs a live check.
+

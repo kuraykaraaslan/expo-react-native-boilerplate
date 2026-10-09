@@ -190,6 +190,25 @@
         "DELETED": "Domaine retiré",
         "NO_ACCESS": "Seuls les propriétaires et les administrateurs peuvent gérer les domaines."
     },
+    "SEARCH": {
+        "TITLE": "Recherche",
+        "SUBTITLE": "Trouvez du contenu dans votre organisation",
+        "PLACEHOLDER": "Rechercher…",
+        "SAVED_TITLE": "Recherches enregistrées",
+        "RECENT": "Recherches récentes",
+        "CLEAR_HISTORY": "Effacer l'historique",
+        "SAVE": "Enregistrer la recherche",
+        "SAVED": "Recherche enregistrée",
+        "REMOVE": "Retirer",
+        "IDLE": "Recherchez dans votre organisation",
+        "IDLE_DESC": "Saisissez pour trouver des pages, articles, contacts et plus encore.",
+        "EMPTY": "Aucun résultat",
+        "EMPTY_DESC": "Rien ne correspond à « {{query}} ». Essayez d'autres mots.",
+        "FAILED": "La recherche a échoué",
+        "FAILED_DESC": "Vérifiez votre connexion et réessayez.",
+        "RESULT_COUNT": "{{count}} résultat(s)",
+        "NO_TARGET": "Ce résultat n'a pas de page à ouvrir."
+    },
     "ERRORS": {
         "AUTH": {
             "NEED_LOGIN": "Vous devez vous connecter pour accéder à cette page"

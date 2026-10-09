@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:19:20.676Z",
+  "generatedAt": "2026-10-09T16:21:15.121Z",
   "dtos": [
     {
       "filePath": "services/platform/apiKey.dto.ts",
@@ -227,6 +227,28 @@
         "UserProfile",
         "UpdateProfileRequest",
         "ProfileResponse"
+      ]
+    },
+    {
+      "filePath": "services/platform/search.dto.ts",
+      "module": "platform",
+      "name": "search.dto",
+      "schemas": [
+        "SearchHitSchema",
+        "SearchResponseSchema",
+        "SearchHistoryEntrySchema",
+        "SearchHistoryResponseSchema",
+        "SavedSearchSchema",
+        "SavedSearchListResponseSchema",
+        "SavedSearchCreateResponseSchema",
+        "SaveSearchRequestSchema"
+      ],
+      "types": [
+        "SearchHit",
+        "SearchResponse",
+        "SearchHistoryEntry",
+        "SavedSearch",
+        "SaveSearchRequest"
       ]
     },
     {

@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBars, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faBell, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import type { DrawerNavigationProp } from 'expo-router/drawer';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import { useUnreadPolling } from '@/libs/useUnreadPolling';
@@ -17,6 +17,22 @@ type AppHeaderProps = {
   navigation: DrawerNavigationProp<any>;
   title?: string;
 };
+
+function SearchButton() {
+  const { t } = useTranslation();
+  const tokens = useThemeTokens();
+  return (
+    <Pressable
+      onPress={() => router.push('/search')}
+      accessibilityRole="button"
+      accessibilityLabel={t('SEARCH.TITLE')}
+      testID="shell-search"
+      className="h-9 w-9 items-center justify-center rounded-md active:bg-surface-overlay"
+    >
+      <FontAwesomeIcon icon={faMagnifyingGlass} color={tokens['text-secondary']} size={16} />
+    </Pressable>
+  );
+}
 
 function NotificationBell() {
   const { t } = useTranslation();
@@ -77,6 +93,7 @@ export function AppHeader({ navigation, title }: AppHeaderProps) {
       <View className="flex-row items-center gap-1">
         <LangSwitcher />
         <ThemeToggle />
+        <SearchButton />
         <NotificationBell />
         <UserMenu />
       </View>

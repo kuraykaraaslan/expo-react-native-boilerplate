@@ -61,6 +61,8 @@ export default function DrawerLayout() {
     >
       <Drawer.Screen name="index"         options={{ title: 'Home' }} />
       <Drawer.Screen name="notifications" options={{ title: 'Notifications' }} />
+      {/* opened from the top bar, not listed in the drawer */}
+      <Drawer.Screen name="search" options={{ title: 'Search', drawerItemStyle: { display: 'none' } }} />
       {/* settings is a nested Stack — hide from drawer item list */}
       <Drawer.Screen
         name="settings"

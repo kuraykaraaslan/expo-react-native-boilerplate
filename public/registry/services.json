@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:19:20.676Z",
+  "generatedAt": "2026-10-09T16:21:15.121Z",
   "services": [
     {
       "filePath": "services/platform/apiKey.service.client.ts",
@@ -144,6 +144,26 @@
       "endpoints": [
         "/auth/me/profile",
         "/auth/me/preferences"
+      ]
+    },
+    {
+      "filePath": "services/platform/search.service.client.ts",
+      "module": "platform",
+      "name": "search.service.client",
+      "className": "SearchClientService",
+      "methods": [
+        "search",
+        "getHistory",
+        "clearHistory",
+        "getSaved",
+        "save",
+        "deleteSaved"
+      ],
+      "endpoints": [
+        "/search",
+        "/search/history",
+        "/search/saved",
+        "/search/saved/${encodeURIComponent(savedSearchId)}"
       ]
     },
     {

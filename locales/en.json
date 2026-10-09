@@ -190,6 +190,25 @@
         "DELETED": "Domain removed",
         "NO_ACCESS": "Only owners and admins can manage domains."
     },
+    "SEARCH": {
+        "TITLE": "Search",
+        "SUBTITLE": "Find content across your organization",
+        "PLACEHOLDER": "Search…",
+        "SAVED_TITLE": "Saved searches",
+        "RECENT": "Recent searches",
+        "CLEAR_HISTORY": "Clear history",
+        "SAVE": "Save search",
+        "SAVED": "Search saved",
+        "REMOVE": "Remove",
+        "IDLE": "Search your organization",
+        "IDLE_DESC": "Type to find pages, articles, contacts and more.",
+        "EMPTY": "No results",
+        "EMPTY_DESC": "Nothing matched \"{{query}}\". Try different words.",
+        "FAILED": "Search failed",
+        "FAILED_DESC": "Check your connection and try again.",
+        "RESULT_COUNT": "{{count}} result(s)",
+        "NO_TARGET": "This result has no page to open."
+    },
     "ERRORS": {
         "AUTH": {
             "NEED_LOGIN": "You need to login to access this page"

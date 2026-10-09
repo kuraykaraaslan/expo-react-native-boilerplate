@@ -190,6 +190,25 @@
         "DELETED": "Domain entfernt",
         "NO_ACCESS": "Nur Inhaber und Admins können Domains verwalten."
     },
+    "SEARCH": {
+        "TITLE": "Suche",
+        "SUBTITLE": "Inhalte in deiner Organisation finden",
+        "PLACEHOLDER": "Suchen…",
+        "SAVED_TITLE": "Gespeicherte Suchen",
+        "RECENT": "Letzte Suchen",
+        "CLEAR_HISTORY": "Verlauf löschen",
+        "SAVE": "Suche speichern",
+        "SAVED": "Suche gespeichert",
+        "REMOVE": "Entfernen",
+        "IDLE": "Durchsuche deine Organisation",
+        "IDLE_DESC": "Tippe, um Seiten, Artikel, Kontakte und mehr zu finden.",
+        "EMPTY": "Keine Ergebnisse",
+        "EMPTY_DESC": "Nichts passt zu \"{{query}}\". Versuche andere Begriffe.",
+        "FAILED": "Suche fehlgeschlagen",
+        "FAILED_DESC": "Prüfe deine Verbindung und versuche es erneut.",
+        "RESULT_COUNT": "{{count}} Ergebnis(se)",
+        "NO_TARGET": "Dieses Ergebnis hat keine Seite zum Öffnen."
+    },
     "ERRORS": {
         "AUTH": {
             "NEED_LOGIN": "Sie müssen sich anmelden, um auf diese Seite zugreifen zu können"

@@ -190,6 +190,25 @@
         "DELETED": "Alan adı kaldırıldı",
         "NO_ACCESS": "Alan adlarını yalnızca sahipler ve yöneticiler yönetebilir."
     },
+    "SEARCH": {
+        "TITLE": "Ara",
+        "SUBTITLE": "Kuruluşunuzdaki içeriği bulun",
+        "PLACEHOLDER": "Ara…",
+        "SAVED_TITLE": "Kayıtlı aramalar",
+        "RECENT": "Son aramalar",
+        "CLEAR_HISTORY": "Geçmişi temizle",
+        "SAVE": "Aramayı kaydet",
+        "SAVED": "Arama kaydedildi",
+        "REMOVE": "Kaldır",
+        "IDLE": "Kuruluşunuzda arayın",
+        "IDLE_DESC": "Sayfa, makale, kişi ve daha fazlasını bulmak için yazın.",
+        "EMPTY": "Sonuç yok",
+        "EMPTY_DESC": "\"{{query}}\" ile eşleşen bir şey bulunamadı. Farklı kelimeler deneyin.",
+        "FAILED": "Arama başarısız",
+        "FAILED_DESC": "Bağlantınızı kontrol edip tekrar deneyin.",
+        "RESULT_COUNT": "{{count}} sonuç",
+        "NO_TARGET": "Bu sonucun açılacak bir sayfası yok."
+    },
     "ERRORS": {
         "AUTH": {
             "NEED_LOGIN": "Bu sayfaya erişmek için giriş yapmalısınız"
