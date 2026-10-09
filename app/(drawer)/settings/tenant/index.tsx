@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { faClipboardList, faEnvelopeOpenText, faSliders, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardList, faEnvelopeOpenText, faGlobe, faKey, faSliders, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { RoleBadge } from '@/components/common/Badges';
 import { LinkTile } from '@/components/common/LinkTile';
 import { Screen } from '@/components/common/Screen';
@@ -135,6 +135,12 @@ export default function OrganizationScreen() {
             <LinkTile icon={faClipboardList} title={t('AUDIT.TITLE')} description={t('AUDIT.TILE_DESC')} href="/settings/tenant/audit-log" testID="organization-audit-log" />
             <LinkTile icon={faUsers} title={t('SETTINGS_HUB.MEMBERS')} description={t('SETTINGS_HUB.MEMBERS_DESC')} href="/settings/tenant/members" testID="organization-members" />
             <LinkTile icon={faEnvelopeOpenText} title={t('SETTINGS_HUB.INVITATIONS')} description={t('SETTINGS_HUB.INVITATIONS_DESC')} href="/settings/tenant/invitations" testID="organization-invitations" />
+            {canEdit ? (
+              <>
+                <LinkTile icon={faKey} title={t('API_KEYS.TITLE')} description={t('API_KEYS.TILE_DESC')} href="/settings/tenant/api-keys" testID="organization-api-keys" />
+                <LinkTile icon={faGlobe} title={t('DOMAINS.TITLE')} description={t('DOMAINS.TILE_DESC')} href="/settings/tenant/domains" testID="organization-domains" />
+              </>
+            ) : null}
           </View>
         </>
       ) : (

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:14:26.482Z",
+  "generatedAt": "2026-10-09T16:19:20.676Z",
   "screens": [
     {
       "filePath": "app/_layout.tsx",
@@ -214,8 +214,32 @@
       ]
     },
     {
+      "filePath": "app/(drawer)/settings/tenant/api-keys.tsx",
+      "route": "/settings/tenant/api-keys",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/settings/_layout.tsx"
+      ]
+    },
+    {
       "filePath": "app/(drawer)/settings/tenant/audit-log.tsx",
       "route": "/settings/tenant/audit-log",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/settings/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/settings/tenant/domains.tsx",
+      "route": "/settings/tenant/domains",
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,

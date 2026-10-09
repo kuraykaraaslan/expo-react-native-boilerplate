@@ -1,8 +1,29 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:14:26.482Z",
+  "generatedAt": "2026-10-09T16:19:20.676Z",
   "services": [
+    {
+      "filePath": "services/platform/apiKey.service.client.ts",
+      "module": "platform",
+      "name": "apiKey.service.client",
+      "className": "ApiKeyClientService",
+      "methods": [
+        "list",
+        "getScopeDefinitions",
+        "create",
+        "rotate",
+        "revoke",
+        "revokeAll"
+      ],
+      "endpoints": [
+        "/api-keys",
+        "/api-keys/scope-definitions",
+        "/api-keys/${encodeURIComponent(apiKeyId)}/rotate",
+        "/api-keys/${encodeURIComponent(apiKeyId)}",
+        "/api-keys/revoke-all"
+      ]
+    },
     {
       "filePath": "services/auth/auth.service.client.ts",
       "module": "auth",
@@ -57,6 +78,26 @@
         "/consent/config",
         "/consent",
         "/audit-logs"
+      ]
+    },
+    {
+      "filePath": "services/platform/domain.service.client.ts",
+      "module": "platform",
+      "name": "domain.service.client",
+      "className": "DomainClientService",
+      "methods": [
+        "list",
+        "get",
+        "create",
+        "verify",
+        "checkSsl",
+        "remove"
+      ],
+      "endpoints": [
+        "/domains",
+        "/domains/${encodeURIComponent(domainId)}",
+        "/domains/${encodeURIComponent(domainId)}/verify",
+        "/domains/${encodeURIComponent(domainId)}/ssl-check"
       ]
     },
     {

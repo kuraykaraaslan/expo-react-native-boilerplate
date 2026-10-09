@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:14:26.482Z",
+  "generatedAt": "2026-10-09T16:19:20.676Z",
   "components": [
     {
       "id": "account/AvatarPicker",
@@ -56,6 +56,49 @@
         "SessionsCard"
       ],
       "props": []
+    },
+    {
+      "id": "admin/CreateApiKeyModal",
+      "filePath": "components/admin/CreateApiKeyModal.tsx",
+      "name": "CreateApiKeyModal",
+      "category": "admin",
+      "exports": [
+        "CreateApiKeyModal"
+      ],
+      "props": [
+        "open",
+        "onClose",
+        "onCreated"
+      ]
+    },
+    {
+      "id": "admin/DomainDetailModal",
+      "filePath": "components/admin/DomainDetailModal.tsx",
+      "name": "DomainDetailModal",
+      "category": "admin",
+      "exports": [
+        "DOMAIN_STATUS_VARIANT",
+        "SSL_STATUS_VARIANT",
+        "DomainDetailModal"
+      ],
+      "props": [
+        "domain",
+        "onClose",
+        "onChanged"
+      ]
+    },
+    {
+      "id": "admin/IssuedKeyModal",
+      "filePath": "components/admin/IssuedKeyModal.tsx",
+      "name": "IssuedKeyModal",
+      "category": "admin",
+      "exports": [
+        "IssuedKeyModal"
+      ],
+      "props": [
+        "rawKey",
+        "onDone"
+      ]
     },
     {
       "id": "auth/AuthFooterLink",

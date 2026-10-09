@@ -1,8 +1,28 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:14:26.482Z",
+  "generatedAt": "2026-10-09T16:19:20.676Z",
   "dtos": [
+    {
+      "filePath": "services/platform/apiKey.dto.ts",
+      "module": "platform",
+      "name": "apiKey.dto",
+      "schemas": [
+        "ApiKeySchema",
+        "ApiKeyListResponseSchema",
+        "ApiKeyIssuedResponseSchema",
+        "ScopeDefinitionSchema",
+        "ScopeDefinitionListResponseSchema",
+        "CreateApiKeyRequestSchema",
+        "RevokeAllResponseSchema"
+      ],
+      "types": [
+        "ApiKey",
+        "ApiKeyIssued",
+        "ScopeDefinition",
+        "CreateApiKeyRequest"
+      ]
+    },
     {
       "filePath": "services/auth/auth.dto.ts",
       "module": "auth",
@@ -125,6 +145,25 @@
         "AuditSeverity",
         "AuditLog",
         "AuditLogsResponse"
+      ]
+    },
+    {
+      "filePath": "services/platform/domain.dto.ts",
+      "module": "platform",
+      "name": "domain.dto",
+      "schemas": [
+        "DomainSchema",
+        "DomainVerificationSchema",
+        "DomainListResponseSchema",
+        "DomainDetailResponseSchema",
+        "DomainCreateResponseSchema",
+        "DomainVerifyResponseSchema"
+      ],
+      "types": [
+        "Domain",
+        "DomainVerification",
+        "DomainDetail",
+        "DomainVerifyResult"
       ]
     },
     {

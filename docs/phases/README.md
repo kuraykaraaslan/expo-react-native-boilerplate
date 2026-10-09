@@ -61,7 +61,7 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 | 15 | [platform/phase-15-files.md](14-platform/15-files.md) | Uploads, avatar, media gallery, drive | 🟡 Coded 2026-10-09: upload + avatar (15.1) · gallery and drive (15.2/15.3) not started · needs a dev build · P2 |
 | 16 | [platform/phase-16-realtime-messaging.md](14-platform/16-realtime-messaging.md) | Socket.IO transport and messaging | ⬜ Planned · P2 |
 | 17 | [platform/phase-17-search.md](14-platform/17-search.md) | Global search (+ navigation decision) | ⬜ Planned · P2 |
-| 18 | [platform/phase-18-tenant-admin.md](14-platform/18-tenant-admin.md) | API keys and domains | ⬜ Planned · P2 |
+| 18 | [platform/phase-18-tenant-admin.md](14-platform/18-tenant-admin.md) | API keys and domains | 🟡 Coded 2026-10-09: API keys and domains screens (timeline / reports open) · P2 |
 
 ## Locked decisions
 

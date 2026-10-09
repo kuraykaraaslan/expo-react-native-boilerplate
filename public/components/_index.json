@@ -24,6 +24,21 @@
     "category": "account",
     "file": "account-SessionsCard.md"
   },
+  "admin/CreateApiKeyModal": {
+    "name": "CreateApiKeyModal",
+    "category": "admin",
+    "file": "admin-CreateApiKeyModal.md"
+  },
+  "admin/DomainDetailModal": {
+    "name": "DomainDetailModal",
+    "category": "admin",
+    "file": "admin-DomainDetailModal.md"
+  },
+  "admin/IssuedKeyModal": {
+    "name": "IssuedKeyModal",
+    "category": "admin",
+    "file": "admin-IssuedKeyModal.md"
+  },
   "auth/AuthFooterLink": {
     "name": "AuthFooterLink",
     "category": "auth",

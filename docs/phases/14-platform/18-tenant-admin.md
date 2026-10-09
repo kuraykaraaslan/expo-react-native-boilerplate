@@ -54,3 +54,22 @@ Modules: `api_key`, `tenant_domain`, `tenant_session`. Priority 2.
 - **Secret handling.** Keys must not leak through logs, screenshots (consider blocking screenshots on that screen), or persisted state.
 - **Destructive bulk action.** `revoke-all` can lock out integrations; require explicit confirmation and show the count.
 - **Scope creep** into full domain management; keep to inspect/verify/add.
+
+---
+
+## 🟡 CODED — 2026-10-09
+
+**Contract check (server source):**
+- API keys: `GET /api-keys?page&pageSize` → `{keys, total}`; `POST /api-keys` (`name`, `scopes[]`, optional `description`, `environment`, `ipAllowlist`, `expiresAt`) → 201 `{key, rawKey}`; `POST /api-keys/{id}/rotate` (`graceSeconds`, default 24 h) → 201 `{key, rawKey}`; `DELETE /api-keys/{id}`; `POST /api-keys/revoke-all` → `{message, revokedCount}`; `GET /api-keys/scope-definitions` → `{data, total}`. Permissions `api_key.keys.*` (ADMIN+, `TENANT` scope). `keyHash` is never sent; dates are ISO strings.
+- Domains: answers are wrapped `{success, …}`: list `{domains, total}`, detail `{domain, verification | null}` (the DNS record `{method, recordName, recordValue}` comes from `verification`, the token is not on the domain), verify `{isVerified, message}` (a failed lookup is a 200), `ssl-check` `{ssl}`. Permissions `tenant_domain.domains.*`.
+- `tenant_session` has no routes: covered by Phases 2 and 5 (18.1 closed).
+
+**Built:** `services/platform/{apiKey,domain}.{dto,service.client}.ts`, `app/(drawer)/settings/tenant/{api-keys,domains}.tsx`, `components/admin/{CreateApiKeyModal,IssuedKeyModal,DomainDetailModal}.tsx`, tiles on the organization screen (OWNER/ADMIN only; the screens also show a no-access note to a `USER` who opens the route directly), strings in all six languages. The plaintext key lives only in the screen's state: the issued-key modal has no backdrop dismiss, copying is an explicit tap, and leaving the screen clears it. Tests: `__tests__/tenantAdmin.service.test.ts`.
+
+**Deliberate deviations:**
+- Domain detail is a modal over the list, not a separate route.
+- Not built: domain timeline (`GET …/timeline`), `GET /domains/report`, `GET /api-keys/activity-report` and `rotation-audit`, IP allowlist and environment (`test`) on key creation, key detail/lineage view, editing a key.
+- "Revoke all" is gated by a separate emergency card plus a confirmation dialog that states the number of active keys (two deliberate steps), not a typed phrase.
+- Screenshot blocking on the key screen was not added (needs a native module); the key is also never logged.
+- Not run against a live server; no component render tests (the repo has no render-test setup).
+

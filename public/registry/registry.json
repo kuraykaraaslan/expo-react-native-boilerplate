@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-09T16:14:26.482Z",
+  "generatedAt": "2026-10-09T16:19:20.676Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -235,8 +235,32 @@
       ]
     },
     {
+      "filePath": "app/(drawer)/settings/tenant/api-keys.tsx",
+      "route": "/settings/tenant/api-keys",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/settings/_layout.tsx"
+      ]
+    },
+    {
       "filePath": "app/(drawer)/settings/tenant/audit-log.tsx",
       "route": "/settings/tenant/audit-log",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/settings/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/settings/tenant/domains.tsx",
+      "route": "/settings/tenant/domains",
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
@@ -410,6 +434,49 @@
         "SessionsCard"
       ],
       "props": []
+    },
+    {
+      "id": "admin/CreateApiKeyModal",
+      "filePath": "components/admin/CreateApiKeyModal.tsx",
+      "name": "CreateApiKeyModal",
+      "category": "admin",
+      "exports": [
+        "CreateApiKeyModal"
+      ],
+      "props": [
+        "open",
+        "onClose",
+        "onCreated"
+      ]
+    },
+    {
+      "id": "admin/DomainDetailModal",
+      "filePath": "components/admin/DomainDetailModal.tsx",
+      "name": "DomainDetailModal",
+      "category": "admin",
+      "exports": [
+        "DOMAIN_STATUS_VARIANT",
+        "SSL_STATUS_VARIANT",
+        "DomainDetailModal"
+      ],
+      "props": [
+        "domain",
+        "onClose",
+        "onChanged"
+      ]
+    },
+    {
+      "id": "admin/IssuedKeyModal",
+      "filePath": "components/admin/IssuedKeyModal.tsx",
+      "name": "IssuedKeyModal",
+      "category": "admin",
+      "exports": [
+        "IssuedKeyModal"
+      ],
+      "props": [
+        "rawKey",
+        "onDone"
+      ]
     },
     {
       "id": "auth/AuthFooterLink",
@@ -1279,6 +1346,27 @@
   ],
   "services": [
     {
+      "filePath": "services/platform/apiKey.service.client.ts",
+      "module": "platform",
+      "name": "apiKey.service.client",
+      "className": "ApiKeyClientService",
+      "methods": [
+        "list",
+        "getScopeDefinitions",
+        "create",
+        "rotate",
+        "revoke",
+        "revokeAll"
+      ],
+      "endpoints": [
+        "/api-keys",
+        "/api-keys/scope-definitions",
+        "/api-keys/${encodeURIComponent(apiKeyId)}/rotate",
+        "/api-keys/${encodeURIComponent(apiKeyId)}",
+        "/api-keys/revoke-all"
+      ]
+    },
+    {
       "filePath": "services/auth/auth.service.client.ts",
       "module": "auth",
       "name": "auth.service.client",
@@ -1332,6 +1420,26 @@
         "/consent/config",
         "/consent",
         "/audit-logs"
+      ]
+    },
+    {
+      "filePath": "services/platform/domain.service.client.ts",
+      "module": "platform",
+      "name": "domain.service.client",
+      "className": "DomainClientService",
+      "methods": [
+        "list",
+        "get",
+        "create",
+        "verify",
+        "checkSsl",
+        "remove"
+      ],
+      "endpoints": [
+        "/domains",
+        "/domains/${encodeURIComponent(domainId)}",
+        "/domains/${encodeURIComponent(domainId)}/verify",
+        "/domains/${encodeURIComponent(domainId)}/ssl-check"
       ]
     },
     {
@@ -1557,6 +1665,26 @@
   ],
   "dtos": [
     {
+      "filePath": "services/platform/apiKey.dto.ts",
+      "module": "platform",
+      "name": "apiKey.dto",
+      "schemas": [
+        "ApiKeySchema",
+        "ApiKeyListResponseSchema",
+        "ApiKeyIssuedResponseSchema",
+        "ScopeDefinitionSchema",
+        "ScopeDefinitionListResponseSchema",
+        "CreateApiKeyRequestSchema",
+        "RevokeAllResponseSchema"
+      ],
+      "types": [
+        "ApiKey",
+        "ApiKeyIssued",
+        "ScopeDefinition",
+        "CreateApiKeyRequest"
+      ]
+    },
+    {
       "filePath": "services/auth/auth.dto.ts",
       "module": "auth",
       "name": "auth.dto",
@@ -1678,6 +1806,25 @@
         "AuditSeverity",
         "AuditLog",
         "AuditLogsResponse"
+      ]
+    },
+    {
+      "filePath": "services/platform/domain.dto.ts",
+      "module": "platform",
+      "name": "domain.dto",
+      "schemas": [
+        "DomainSchema",
+        "DomainVerificationSchema",
+        "DomainListResponseSchema",
+        "DomainDetailResponseSchema",
+        "DomainCreateResponseSchema",
+        "DomainVerifyResponseSchema"
+      ],
+      "types": [
+        "Domain",
+        "DomainVerification",
+        "DomainDetail",
+        "DomainVerifyResult"
       ]
     },
     {
