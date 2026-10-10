@@ -1,4 +1,4 @@
-import { dayEndIso, dayStartIso, isValidDay, validateDayRange } from "@/utils/auditFilters";
+import { dayEndIso, escapeLike, dayStartIso, isValidDay, validateDayRange } from "@/utils/auditFilters";
 
 describe("audit filter dates", () => {
   it("accepts real calendar days only", () => {
@@ -23,5 +23,13 @@ describe("audit filter dates", () => {
     expect(validateDayRange("2026-10-01", "2026-10-01")).toEqual({ from: null, to: null });
     expect(validateDayRange("nope", "2026-10-10")).toEqual({ from: "invalid", to: null });
     expect(validateDayRange("2026-10-10", "2026-10-01")).toEqual({ from: null, to: "range" });
+  });
+});
+
+describe("escapeLike", () => {
+  it("makes LIKE wildcards literal", () => {
+    expect(escapeLike("tenant_domain.100%")).toBe("tenant\\_domain.100\\%");
+    expect(escapeLike("a\\b")).toBe("a\\\\b");
+    expect(escapeLike("plain")).toBe("plain");
   });
 });

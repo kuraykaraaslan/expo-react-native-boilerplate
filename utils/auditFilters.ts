@@ -37,3 +37,8 @@ export function validateDayRange(from: string, to: string): { from: DateFilterEr
   if (!fromErr && !toErr && f && t && f > t) return { from: null, to: "range" };
   return { from: fromErr, to: toErr };
 }
+
+/** Escapes `\`, `%` and `_` so the server's ILIKE substring match treats the text literally. */
+export function escapeLike(value: string): string {
+  return value.replace(/[\\%_]/g, (c) => `\\${c}`);
+}

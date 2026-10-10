@@ -11,7 +11,7 @@ import { handleApiError } from '@/libs/errorUtils';
 import type { AuditLog, AuditSeverity } from '@/services/compliance/compliance.dto';
 import { ComplianceClientService } from '@/services/compliance/compliance.service.client';
 import { getActiveTenantId, useTenantStore } from '@/stores/tenantStore';
-import { dayEndIso, dayStartIso, validateDayRange } from '@/utils/auditFilters';
+import { dayEndIso, dayStartIso, escapeLike, validateDayRange } from '@/utils/auditFilters';
 import { formatRelative } from '@/utils/format';
 
 const PAGE_SIZE = 20;
@@ -95,7 +95,7 @@ export default function AuditLogScreen() {
       page: pageNo,
       pageSize: PAGE_SIZE,
       severity: severity === ALL ? undefined : (severity as AuditSeverity),
-      action: action || undefined,
+      action: action ? escapeLike(action) : undefined,
       resourceType: resourceType || undefined,
       fromDate,
       toDate,
@@ -128,9 +128,16 @@ export default function AuditLogScreen() {
   }, [tenantId, canRead, queryParams]);
 
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
     setLogs([]);
-    load().finally(() => setLoading(false));
+    load().finally(() => {
+      // A superseded load must not hide the spinner of the one still running.
+      if (!cancelled) setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [load]);
 
   async function loadMore() {

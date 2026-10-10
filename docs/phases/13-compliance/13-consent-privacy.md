@@ -114,3 +114,17 @@ Closes the 13.4 leftover (the earlier "severity filter only" deviation).
 - No `actorId` filter field in the UI (the service supports it); the actor is visible in the detail sheet.
 
 **Not verified:** not run against a live server or on a device; no component render tests (the repo has no render-test setup), so the screen and sheet were checked by typecheck and the service and util tests only.
+
+---
+
+## Audit filters review fixes — 2026-10-10
+
+Server contract re-checked against `modules/audit_log/server/{audit-logs.route,audit_log.query,audit_log.dto}.ts`: params and inclusive date bounds are correct.
+
+**Fixed**
+- The `action` filter is an `ILIKE %…%` match on the server, so `_` and `%` typed by the user acted as wildcards (`tenant_domain` matched `tenantXdomain`). The text is now escaped with `escapeLike` before sending.
+- A superseded load's `finally` hid the spinner of the load still running (rapid filter changes flashed the empty state). The spinner is now cleared only by the latest load.
+- The six locale files lost their trailing newline in the previous commit; restored.
+- Test: `escapeLike` in `__tests__/auditFilters.test.ts`.
+
+**Not fixed / not verified:** audit metadata is shown as returned by the server (admin-only route, no client-side redaction); still no component render tests.
