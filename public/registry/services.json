@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T07:38:45.542Z",
+  "generatedAt": "2026-10-10T07:41:17.374Z",
   "services": [
     {
       "filePath": "services/platform/apiKey.service.client.ts",
@@ -118,6 +118,24 @@
       ],
       "endpoints": [
         "/feature-flags/evaluate"
+      ]
+    },
+    {
+      "filePath": "services/platform/mediaGallery.service.client.ts",
+      "module": "platform",
+      "name": "mediaGallery.service.client",
+      "className": "MediaGalleryClientService",
+      "methods": [
+        "list",
+        "addItem",
+        "updateItem",
+        "setPrimary",
+        "removeItem",
+        "reorder"
+      ],
+      "endpoints": [
+        "/media-gallery/items/${encodeURIComponent(itemId)}",
+        "${itemsPath(entityType, entityId)}/reorder"
       ]
     },
     {

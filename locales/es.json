@@ -101,6 +101,22 @@
         "REJECTED_TOO_LARGE": "Ese archivo es demasiado grande.",
         "REJECTED_TYPE_NOT_ALLOWED": "Elige una imagen JPEG, PNG o WebP."
     },
+    "MEDIA_GALLERY": {
+        "ADDED": "Foto añadida",
+        "PRIMARY": "Principal",
+        "PRIMARY_SET": "Foto principal actualizada",
+        "REMOVED": "Foto eliminada",
+        "EMPTY": "Aún no hay fotos",
+        "EMPTY_DESC": "Añade una foto con la cámara o desde tu biblioteca.",
+        "LOAD_FAILED": "No se pudieron cargar las fotos.",
+        "VIDEO": "Vídeo",
+        "MOVE_EARLIER": "Mover antes",
+        "MOVE_LATER": "Mover después",
+        "SET_PRIMARY": "Hacer principal",
+        "DELETE": "Eliminar",
+        "DELETE_TITLE": "Eliminar foto",
+        "DELETE_DESC": "Esta foto se quitará de la galería."
+    },
     "API_KEYS": {
         "TITLE": "Claves de API",
         "SUBTITLE": "Credenciales para las integraciones que llaman a la API de tu organización",

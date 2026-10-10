@@ -74,3 +74,24 @@ Modules: `storage`, `media_gallery`, `drive`. Priority 2. Build 15.1 first; 15.2
 
 **Correction 2026-10-10 (review of the above):** the upload folder is `users`, not `avatars`. The server only accepts a folder from `StorageFolderSchema` (`general`, `users`, `images`, …) or one a module registers; `avatars` would have been rejected with `INVALID_FOLDER_NAME` on every upload. The profile callback also reads the form at the moment the upload ends (it used a stale copy), and a running upload is aborted when the screen unmounts.
 
+
+---
+
+## 🟡 CODED (15.2) — 2026-10-10
+
+**Contract check (server source, `modules/media_gallery/server`):** `GET /media-gallery/{entityType}/{entityId}/items` answers `{ gallery: { galleryId, entityType, entityId, items[] } }` (the gallery is created on first read; items are primary first, then by sort order; each item carries the resolved `url`, `mimeType`, `isVideo`). `POST …/items` takes `AddGalleryItemDTO` (`uploadedFileId` uuid required, optional alt text, title, tags, sort order, primary) and answers 201 `{ item }`. `PUT /media-gallery/items/{itemId}` takes `UpdateGalleryItemDTO` and answers `{ item }`; setting `isPrimary` clears the flag on the other items under a gallery lock. `DELETE /media-gallery/items/{itemId}` answers `{ success }`. `PUT …/items/reorder` takes `{ galleryId, orderedIds }` (the entity path segments are not used by the handler) and answers `{ success }`. Permissions are `media_gallery.items.read/create/update/delete/reorder`; the entity type is an open slug (`^[a-z][a-z0-9_]*$`).
+
+**Built:** `components/media/MediaGalleryEditor.tsx` (props `entityType`, `entityId`, `readOnly`; grid, add from camera or library with progress and cancel, move earlier/later, make primary, delete behind `ConfirmDialog`), `services/platform/mediaGallery.{dto,service.client}.ts`, `utils/mediaGallery.ts` (ordering helpers), `MEDIA_GALLERY` keys in all six locales. `libs/pickImage.ts` now exports `pickImage(source, { crop, aspect, widthPx, namePrefix })`; `pickAvatarImage` is a wrapper with the unchanged avatar settings (square crop, 512 px, `avatar-*.jpg`). Uploads go through `StorageClientService.upload` into the `images` folder, then the returned `uploadedFileId` is attached. Tests: `__tests__/mediaGallery.test.ts` (service paths and bodies with MSW, ordering helpers, `pickImage`/`pickAvatarImage` options).
+
+**Behaviour:**
+- One mutation at a time (add, reorder, primary, delete). Reorder is shown at once and put back if the server refuses; any failed mutation reloads the list from the server.
+- Answers that arrive after the organization, entity type or entity id changed are dropped (same rule as `libs/realtime.ts`); the list is cleared and reloaded on such a change, and a running upload is aborted.
+- The primary item always stays first (the server lists it first whatever its sort order), so reordering never moves an item across it.
+
+**Deviations and gaps:**
+- The deliverable is the component, not a screen: nothing in the app mounts it yet.
+- Reorder uses earlier/later buttons, not drag and drop (no gesture/drag dependency is installed).
+- Alt text, title and tags are not editable in the app; the server may fill alt text itself when configured.
+- Images only. Video items already in a gallery are shown as a text tile; video capture and upload are not built.
+- The per-gallery item cap and allowed MIME list are tenant settings the client cannot read; a server rejection (`ITEM_LIMIT_REACHED`, `MIME_NOT_ALLOWED`, safety scan) is surfaced as returned. If the attach step fails after the upload succeeded, the stored file stays unattached (no client-side delete route is used).
+- Not verified: there is no component render test (the repo has no component test setup), so the editor's UI behaviour, the Zod shapes against a live server and the camera/library flow on a device are unverified. Needs a development build.

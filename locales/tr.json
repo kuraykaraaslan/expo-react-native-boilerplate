@@ -101,6 +101,22 @@
         "REJECTED_TOO_LARGE": "Bu dosya çok büyük.",
         "REJECTED_TYPE_NOT_ALLOWED": "JPEG, PNG veya WebP bir görsel seçin."
     },
+    "MEDIA_GALLERY": {
+        "ADDED": "Fotoğraf eklendi",
+        "PRIMARY": "Ana",
+        "PRIMARY_SET": "Ana fotoğraf güncellendi",
+        "REMOVED": "Fotoğraf kaldırıldı",
+        "EMPTY": "Henüz fotoğraf yok",
+        "EMPTY_DESC": "Kamerayla veya kitaplığınızdan bir fotoğraf ekleyin.",
+        "LOAD_FAILED": "Fotoğraflar yüklenemedi.",
+        "VIDEO": "Video",
+        "MOVE_EARLIER": "Öne al",
+        "MOVE_LATER": "Geriye al",
+        "SET_PRIMARY": "Ana yap",
+        "DELETE": "Sil",
+        "DELETE_TITLE": "Fotoğrafı sil",
+        "DELETE_DESC": "Bu fotoğraf galeriden kaldırılacak."
+    },
     "API_KEYS": {
         "TITLE": "API anahtarları",
         "SUBTITLE": "Kuruluşunuzun API'sini çağıran entegrasyonlar için kimlik bilgileri",

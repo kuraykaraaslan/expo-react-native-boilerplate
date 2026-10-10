@@ -101,6 +101,22 @@
         "REJECTED_TOO_LARGE": "That file is too large.",
         "REJECTED_TYPE_NOT_ALLOWED": "Choose a JPEG, PNG or WebP image."
     },
+    "MEDIA_GALLERY": {
+        "ADDED": "Photo added",
+        "PRIMARY": "Primary",
+        "PRIMARY_SET": "Primary photo updated",
+        "REMOVED": "Photo removed",
+        "EMPTY": "No photos yet",
+        "EMPTY_DESC": "Add a photo with the camera or from your library.",
+        "LOAD_FAILED": "The photos could not be loaded.",
+        "VIDEO": "Video",
+        "MOVE_EARLIER": "Move earlier",
+        "MOVE_LATER": "Move later",
+        "SET_PRIMARY": "Make primary",
+        "DELETE": "Delete",
+        "DELETE_TITLE": "Delete photo",
+        "DELETE_DESC": "This photo will be removed from the gallery."
+    },
     "API_KEYS": {
         "TITLE": "API keys",
         "SUBTITLE": "Credentials for integrations that call your organization's API",

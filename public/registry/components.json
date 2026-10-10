@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T07:38:45.542Z",
+  "generatedAt": "2026-10-10T07:41:17.374Z",
   "components": [
     {
       "id": "account/AvatarPicker",
@@ -286,6 +286,21 @@
       ],
       "props": [
         "icon"
+      ]
+    },
+    {
+      "id": "media/MediaGalleryEditor",
+      "filePath": "components/media/MediaGalleryEditor.tsx",
+      "name": "MediaGalleryEditor",
+      "category": "media",
+      "exports": [
+        "MediaGalleryEditor"
+      ],
+      "props": [
+        "entityType",
+        "entityId",
+        "readOnly",
+        "className"
       ]
     },
     {

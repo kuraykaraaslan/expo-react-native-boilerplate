@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T07:38:45.542Z",
+  "generatedAt": "2026-10-10T07:41:17.374Z",
   "dtos": [
     {
       "filePath": "services/platform/apiKey.dto.ts",
@@ -187,6 +187,27 @@
       "types": [
         "EvaluateAllFlagsResponse",
         "FlagMap"
+      ]
+    },
+    {
+      "filePath": "services/platform/mediaGallery.dto.ts",
+      "module": "platform",
+      "name": "mediaGallery.dto",
+      "schemas": [
+        "GalleryItemSchema",
+        "GallerySchema",
+        "GalleryResponseSchema",
+        "GalleryItemResponseSchema",
+        "AddGalleryItemRequestSchema",
+        "UpdateGalleryItemRequestSchema",
+        "ReorderGalleryRequestSchema"
+      ],
+      "types": [
+        "GalleryItem",
+        "Gallery",
+        "AddGalleryItemRequest",
+        "UpdateGalleryItemRequest",
+        "ReorderGalleryRequest"
       ]
     },
     {

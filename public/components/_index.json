@@ -109,6 +109,11 @@
     "category": "common",
     "file": "common-StatTile.md"
   },
+  "media/MediaGalleryEditor": {
+    "name": "MediaGalleryEditor",
+    "category": "media",
+    "file": "media-MediaGalleryEditor.md"
+  },
   "messaging/NewConversationModal": {
     "name": "NewConversationModal",
     "category": "messaging",
