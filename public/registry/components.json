@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T12:01:15.805Z",
+  "generatedAt": "2026-10-10T18:39:17.695Z",
   "components": [
     {
       "id": "account/AvatarPicker",
@@ -152,6 +152,20 @@
         "icon",
         "children",
         "footer"
+      ]
+    },
+    {
+      "id": "auth/PasskeyButton",
+      "filePath": "components/auth/PasskeyButton.tsx",
+      "name": "PasskeyButton",
+      "category": "auth",
+      "exports": [
+        "PasskeyButton"
+      ],
+      "props": [
+        "email",
+        "disabled",
+        "onSignedIn"
       ]
     },
     {
@@ -406,6 +420,28 @@
       "category": "security",
       "exports": [
         "AppLockScreen"
+      ],
+      "props": []
+    },
+    {
+      "id": "security/PasskeyRenameModal",
+      "filePath": "components/security/PasskeyRenameModal.tsx",
+      "name": "PasskeyRenameModal",
+      "category": "security",
+      "exports": [
+        "PasskeyRenameModal"
+      ],
+      "props": [
+        "passkey"
+      ]
+    },
+    {
+      "id": "security/PasskeysCard",
+      "filePath": "components/security/PasskeysCard.tsx",
+      "name": "PasskeysCard",
+      "category": "security",
+      "exports": [
+        "PasskeysCard"
       ],
       "props": []
     },

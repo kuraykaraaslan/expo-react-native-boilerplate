@@ -500,7 +500,11 @@
         "TENANT_LOGIN_SUBTITLE": "Inserisci la password per continuare come {{email}}",
         "THIS_ORG": "questa organizzazione",
         "SSO_FAILED": "L’accesso social non è disponibile al momento. Accedi con la tua email.",
-        "SSO_STATE_MISMATCH": "Non è stato possibile verificare l’accesso. Riprova."
+        "SSO_STATE_MISMATCH": "Non è stato possibile verificare l’accesso. Riprova.",
+        "PASSKEY_SIGN_IN": "Accedi con una passkey",
+        "PASSKEY_FAILED": "L'accesso con la passkey non è riuscito. Riprova o usa la password.",
+        "PASSKEY_NO_CREDENTIAL": "Su questo dispositivo non è stata trovata alcuna passkey per questo account.",
+        "PASSKEY_MISCONFIGURED": "Le passkey non sono configurate correttamente per questa app. Accedi con la password."
     },
     "DASHBOARD": {
         "TITLE": "Dashboard",
@@ -849,7 +853,15 @@
         "REFRESH_TOKEN_REUSED": "Per la tua sicurezza, tutte le sessioni sono state disconnesse. Accedi di nuovo.",
         "OTP_REQUIRED": "Inserisci il codice di verifica per continuare.",
         "INVALID_OTP": "Il codice di verifica non è corretto.",
-        "OTP_EXPIRED": "Il codice di verifica è scaduto. Richiedine uno nuovo."
+        "OTP_EXPIRED": "Il codice di verifica è scaduto. Richiedine uno nuovo.",
+        "PASSKEY_LIMIT_REACHED": "Hai raggiunto il numero massimo di passkey. Rimuovine prima una.",
+        "PASSKEY_CHALLENGE_EXPIRED": "La richiesta della passkey è scaduta. Riprova.",
+        "PASSKEY_REGISTRATION_FAILED": "Impossibile verificare la passkey.",
+        "PASSKEY_NOT_REGISTERED": "Questo account non ha ancora una passkey.",
+        "PASSKEY_AUTHENTICATION_FAILED": "Impossibile verificare la passkey.",
+        "PASSKEY_NOT_FOUND": "Questa passkey non esiste più.",
+        "PASSKEY_LABEL_INVALID": "Inserisci un nome da 1 a 64 caratteri.",
+        "ACCOUNT_DISABLED": "Questo account è disattivato."
     },
     "SOCIAL": {
         "TITLE": "Account collegati",
@@ -939,5 +951,30 @@
         "NOTHING_DELETED": "Non è stato eliminato nulla.",
         "DELETED": "Il tuo account è stato eliminato.",
         "DELETED_PARTIAL": "Il tuo account è stato eliminato. Alcuni record vengono conservati quando la legge lo richiede."
+    },
+    "PASSKEYS": {
+        "CARD": "Passkey",
+        "CARD_DESC": "Accedi con impronta, volto o blocco schermo al posto della password.",
+        "EMPTY": "Ancora nessuna passkey",
+        "EMPTY_DESC": "Aggiungine una su questo dispositivo per accedere senza password.",
+        "ADD": "Aggiungi una passkey",
+        "ADDED_TOAST": "Passkey aggiunta",
+        "ADD_FAILED": "Impossibile aggiungere la passkey. Riprova.",
+        "NO_CREATE_OPTION": "Questo dispositivo non ha un posto dove salvare una passkey. Attiva un blocco schermo o un gestore di password e riprova.",
+        "ALREADY_ON_DEVICE": "Questo dispositivo ha già una passkey per il tuo account.",
+        "MISCONFIGURED": "Le passkey non sono configurate correttamente per questa app.",
+        "ADDED": "Aggiunta il {{date}}",
+        "LAST_USED": "ultimo utilizzo il {{date}}",
+        "NEVER_USED": "mai usata",
+        "RENAME": "Rinomina",
+        "RENAME_TITLE": "Rinomina passkey",
+        "NAME_LABEL": "Nome",
+        "NAME_INVALID": "Inserisci un nome da 1 a 64 caratteri",
+        "RENAMED": "Passkey rinominata",
+        "REMOVE_TITLE": "Rimuovi passkey",
+        "REMOVE_DESC": "«{{name}}» non ti farà più accedere. La copia salvata sul dispositivo non viene eliminata automaticamente.",
+        "REMOVED": "Passkey rimossa",
+        "BACKUP_HINT": "Hai una sola passkey. Aggiungine un'altra su un dispositivo diverso, così perderne uno non ti blocca fuori.",
+        "UNAVAILABLE": "Per aggiungere passkey serve l'app installata su un dispositivo con blocco schermo. Non è disponibile in Expo Go, sul web né in questa build."
     }
 }

@@ -35,6 +35,20 @@ const envSchema = z.object({
     (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
     z.string().uuid("EXPO_PUBLIC_EAS_PROJECT_ID must be the EAS project UUID (see .env.example)").optional(),
   ),
+  /**
+   * Passkey relying-party domain (hostname only, no scheme or path): the host that serves
+   * `/.well-known/assetlinks.json` and `/.well-known/apple-app-site-association` and equals the server's
+   * `WEBAUTHN_RP_ID` (or, unset there, its application hostname). Optional: passkeys stay off while it is
+   * empty. app.config.ts reads the same variable for the iOS `webcredentials:` associated domain.
+   */
+  EXPO_PUBLIC_PASSKEY_RP_ID: z.preprocess(
+    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+    z
+      .string()
+      .trim()
+      .regex(/^[A-Za-z0-9.-]+$/, "EXPO_PUBLIC_PASSKEY_RP_ID must be a hostname only (no scheme, port or path)")
+      .optional(),
+  ),
 });
 
 // ============================================================================
@@ -48,6 +62,7 @@ export const env = envSchema.parse({
   EXPO_PUBLIC_APP_VERSION: process.env.EXPO_PUBLIC_APP_VERSION,
   EXPO_PUBLIC_FRONTEND_URL: process.env.EXPO_PUBLIC_FRONTEND_URL,
   EXPO_PUBLIC_EAS_PROJECT_ID: process.env.EXPO_PUBLIC_EAS_PROJECT_ID,
+  EXPO_PUBLIC_PASSKEY_RP_ID: process.env.EXPO_PUBLIC_PASSKEY_RP_ID,
 });
 
 export type Env = z.infer<typeof envSchema>;

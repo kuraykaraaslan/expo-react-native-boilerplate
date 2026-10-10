@@ -500,7 +500,11 @@
         "TENANT_LOGIN_SUBTITLE": "Enter your password to continue as {{email}}",
         "THIS_ORG": "this organization",
         "SSO_FAILED": "Social sign-in is not available right now. Please sign in with your email.",
-        "SSO_STATE_MISMATCH": "The sign-in could not be verified. Please try again."
+        "SSO_STATE_MISMATCH": "The sign-in could not be verified. Please try again.",
+        "PASSKEY_SIGN_IN": "Sign in with a passkey",
+        "PASSKEY_FAILED": "Passkey sign-in did not work. Try again or use your password.",
+        "PASSKEY_NO_CREDENTIAL": "No passkey for this account was found on this device.",
+        "PASSKEY_MISCONFIGURED": "Passkeys are not set up correctly for this app. Please sign in with your password."
     },
     "DASHBOARD": {
         "TITLE": "Dashboard",
@@ -849,7 +853,15 @@
         "REFRESH_TOKEN_REUSED": "For your security, all sessions were signed out. Please sign in again.",
         "OTP_REQUIRED": "Enter your verification code to continue.",
         "INVALID_OTP": "The verification code is incorrect.",
-        "OTP_EXPIRED": "The verification code has expired. Request a new one."
+        "OTP_EXPIRED": "The verification code has expired. Request a new one.",
+        "PASSKEY_LIMIT_REACHED": "You have reached the maximum number of passkeys. Remove one first.",
+        "PASSKEY_CHALLENGE_EXPIRED": "The passkey request expired. Please try again.",
+        "PASSKEY_REGISTRATION_FAILED": "The passkey could not be verified.",
+        "PASSKEY_NOT_REGISTERED": "This account has no passkey yet.",
+        "PASSKEY_AUTHENTICATION_FAILED": "The passkey could not be verified.",
+        "PASSKEY_NOT_FOUND": "That passkey no longer exists.",
+        "PASSKEY_LABEL_INVALID": "Enter a name of 1 to 64 characters.",
+        "ACCOUNT_DISABLED": "This account is disabled."
     },
     "SOCIAL": {
         "TITLE": "Linked accounts",
@@ -939,5 +951,30 @@
         "NOTHING_DELETED": "Nothing was deleted.",
         "DELETED": "Your account was deleted.",
         "DELETED_PARTIAL": "Your account was deleted. Some records are kept where the law requires it."
+    },
+    "PASSKEYS": {
+        "CARD": "Passkeys",
+        "CARD_DESC": "Sign in with your fingerprint, face or screen lock instead of a password.",
+        "EMPTY": "No passkeys yet",
+        "EMPTY_DESC": "Add one on this device to sign in without a password.",
+        "ADD": "Add a passkey",
+        "ADDED_TOAST": "Passkey added",
+        "ADD_FAILED": "The passkey could not be added. Please try again.",
+        "NO_CREATE_OPTION": "This device has no place to save a passkey. Turn on a screen lock or a password manager and try again.",
+        "ALREADY_ON_DEVICE": "This device already has a passkey for your account.",
+        "MISCONFIGURED": "Passkeys are not set up correctly for this app.",
+        "ADDED": "Added {{date}}",
+        "LAST_USED": "last used {{date}}",
+        "NEVER_USED": "never used",
+        "RENAME": "Rename",
+        "RENAME_TITLE": "Rename passkey",
+        "NAME_LABEL": "Name",
+        "NAME_INVALID": "Enter a name of 1 to 64 characters",
+        "RENAMED": "Passkey renamed",
+        "REMOVE_TITLE": "Remove passkey",
+        "REMOVE_DESC": "\"{{name}}\" will no longer sign you in. The copy stored on your device is not deleted automatically.",
+        "REMOVED": "Passkey removed",
+        "BACKUP_HINT": "You have a single passkey. Add another on a different device so losing one does not lock you out.",
+        "UNAVAILABLE": "Adding passkeys needs the installed app on a device with a screen lock. It is not available in Expo Go, on the web or in this build."
     }
 }

@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T12:01:15.805Z",
+  "generatedAt": "2026-10-10T18:39:17.695Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -615,6 +615,20 @@
       ]
     },
     {
+      "id": "auth/PasskeyButton",
+      "filePath": "components/auth/PasskeyButton.tsx",
+      "name": "PasskeyButton",
+      "category": "auth",
+      "exports": [
+        "PasskeyButton"
+      ],
+      "props": [
+        "email",
+        "disabled",
+        "onSignedIn"
+      ]
+    },
+    {
       "id": "auth/SSOButtons",
       "filePath": "components/auth/SSOButtons.tsx",
       "name": "SSOButtons",
@@ -866,6 +880,28 @@
       "category": "security",
       "exports": [
         "AppLockScreen"
+      ],
+      "props": []
+    },
+    {
+      "id": "security/PasskeyRenameModal",
+      "filePath": "components/security/PasskeyRenameModal.tsx",
+      "name": "PasskeyRenameModal",
+      "category": "security",
+      "exports": [
+        "PasskeyRenameModal"
+      ],
+      "props": [
+        "passkey"
+      ]
+    },
+    {
+      "id": "security/PasskeysCard",
+      "filePath": "components/security/PasskeysCard.tsx",
+      "name": "PasskeysCard",
+      "category": "security",
+      "exports": [
+        "PasskeysCard"
       ],
       "props": []
     },
@@ -1796,6 +1832,29 @@
       ]
     },
     {
+      "filePath": "services/auth/passkey.service.client.ts",
+      "module": "auth",
+      "name": "passkey.service.client",
+      "className": "PasskeyClientService",
+      "methods": [
+        "loginOptions",
+        "loginVerify",
+        "list",
+        "registrationOptions",
+        "registerVerify",
+        "rename",
+        "remove"
+      ],
+      "endpoints": [
+        "/auth/device/passkey/login/options",
+        "/auth/device/passkey/login/verify",
+        "/auth/me/security/passkeys",
+        "/auth/me/security/passkeys/register",
+        "/auth/me/security/passkeys/register/verify",
+        "/auth/me/security/passkeys/${encodeURIComponent(credentialId)}"
+      ]
+    },
+    {
       "filePath": "services/user/profile.service.client.ts",
       "module": "user",
       "name": "profile.service.client",
@@ -2384,6 +2443,37 @@
       ]
     },
     {
+      "filePath": "services/auth/passkey.dto.ts",
+      "module": "auth",
+      "name": "passkey.dto",
+      "schemas": [
+        "PasskeySchema",
+        "PasskeyListResponseSchema",
+        "PasskeyRenameRequestSchema",
+        "PasskeyRenameResponseSchema",
+        "PasskeyRegisterVerifyResponseSchema",
+        "PasskeyRegistrationOptionsSchema",
+        "PasskeyLoginOptionsSchema",
+        "PasskeyLoginOptionsRequestSchema",
+        "PasskeyRegistrationResponseSchema",
+        "PasskeyAssertionResponseSchema",
+        "PasskeyRegisterVerifyRequestSchema",
+        "PasskeyLoginVerifyRequestSchema"
+      ],
+      "types": [
+        "Passkey",
+        "PasskeyListResponse",
+        "PasskeyRenameRequest",
+        "PasskeyRegistrationOptions",
+        "PasskeyLoginOptions",
+        "PasskeyLoginOptionsRequest",
+        "PasskeyRegistrationResponse",
+        "PasskeyAssertionResponse",
+        "PasskeyRegisterVerifyRequest",
+        "PasskeyLoginVerifyRequest"
+      ]
+    },
+    {
       "filePath": "services/user/preferences.dto.ts",
       "module": "user",
       "name": "preferences.dto",
@@ -2695,6 +2785,24 @@
         "reconcileOutbox",
         "clearOutbox",
         "pruneOutboxFor"
+      ]
+    },
+    {
+      "filePath": "libs/passkey.ts",
+      "name": "passkey",
+      "exports": [
+        "PasskeyFailure",
+        "passkeysAvailable",
+        "classifyPasskeyError",
+        "describePasskeyError",
+        "toNativeCreateRequest",
+        "toNativeGetRequest",
+        "toRegistrationResponse",
+        "toAssertionResponse",
+        "PasskeySignInResult",
+        "signInWithPasskey",
+        "PasskeyRegisterResult",
+        "registerPasskey"
       ]
     },
     {

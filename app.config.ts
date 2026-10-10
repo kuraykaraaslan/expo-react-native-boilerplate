@@ -1,5 +1,9 @@
 import { ConfigContext, ExpoConfig } from "expo/config";
 
+// Passkeys (Phase 11): the relying-party host the OS must tie this app to. Empty = no associated domain is written
+// (passkeys stay off). Must equal the server's WEBAUTHN_RP_ID and EXPO_PUBLIC_PASSKEY_RP_ID (libs/env).
+const passkeyRpId = process.env.EXPO_PUBLIC_PASSKEY_RP_ID?.trim() || undefined;
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: process.env.EXPO_PUBLIC_APP_NAME ?? "App",
@@ -11,7 +15,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   userInterfaceStyle: "automatic",
   ios: {
     supportsTablet: true,
-    bundleIdentifier: "com.kuraykaraaslan.boilerplate",
+    // Override per build with EXPO_PUBLIC_IOS_BUNDLE_ID; the server's MOBILE_IOS_APP_IDS must be `<TeamID>.<this id>`.
+    bundleIdentifier: process.env.EXPO_PUBLIC_IOS_BUNDLE_ID?.trim() || "com.kuraykaraaslan.boilerplate",
+    ...(passkeyRpId ? { associatedDomains: [`webcredentials:${passkeyRpId}`] } : {}),
     infoPlist: {
       NSFaceIDUsageDescription: "Use Face ID to access your secure data",
     },
@@ -21,7 +27,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       foregroundImage: "./assets/images/adaptive-icon.png",
       backgroundColor: "#ffffff",
     },
-    package: "com.kuraykaraaslan.boilerplate",
+    // Override per build with EXPO_PUBLIC_ANDROID_PACKAGE; the server's MOBILE_ANDROID_PACKAGE_NAME must be the same.
+    package: process.env.EXPO_PUBLIC_ANDROID_PACKAGE?.trim() || "com.kuraykaraaslan.boilerplate",
   },
   web: {
     bundler: "metro",

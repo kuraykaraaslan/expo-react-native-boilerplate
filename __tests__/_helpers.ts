@@ -23,7 +23,7 @@ export type Seen = {
  * `respond` may be a body or a function returning one (per-call answers).
  */
 export function mockRoute(
-  method: "get" | "post" | "put" | "delete",
+  method: "get" | "post" | "put" | "patch" | "delete",
   path: string,
   respond: unknown | ((call: number) => { body?: unknown; init?: HttpResponseInit }),
 ) {

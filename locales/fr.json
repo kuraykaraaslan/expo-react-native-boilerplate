@@ -500,7 +500,11 @@
         "TENANT_LOGIN_SUBTITLE": "Saisissez votre mot de passe pour continuer en tant que {{email}}",
         "THIS_ORG": "cette organisation",
         "SSO_FAILED": "La connexion sociale est indisponible pour le moment. Connectez-vous avec votre e-mail.",
-        "SSO_STATE_MISMATCH": "La connexion n’a pas pu être vérifiée. Veuillez réessayer."
+        "SSO_STATE_MISMATCH": "La connexion n’a pas pu être vérifiée. Veuillez réessayer.",
+        "PASSKEY_SIGN_IN": "Se connecter avec une clé d'accès",
+        "PASSKEY_FAILED": "La connexion par clé d'accès a échoué. Réessayez ou utilisez votre mot de passe.",
+        "PASSKEY_NO_CREDENTIAL": "Aucune clé d'accès de ce compte n'a été trouvée sur cet appareil.",
+        "PASSKEY_MISCONFIGURED": "Les clés d'accès ne sont pas correctement configurées pour cette application. Connectez-vous avec votre mot de passe."
     },
     "DASHBOARD": {
         "TITLE": "Tableau de bord",
@@ -849,7 +853,15 @@
         "REFRESH_TOKEN_REUSED": "Par mesure de sécurité, toutes les sessions ont été déconnectées. Veuillez vous reconnecter.",
         "OTP_REQUIRED": "Saisissez votre code de vérification pour continuer.",
         "INVALID_OTP": "Le code de vérification est incorrect.",
-        "OTP_EXPIRED": "Le code de vérification a expiré. Demandez-en un nouveau."
+        "OTP_EXPIRED": "Le code de vérification a expiré. Demandez-en un nouveau.",
+        "PASSKEY_LIMIT_REACHED": "Vous avez atteint le nombre maximal de clés d'accès. Supprimez-en une d'abord.",
+        "PASSKEY_CHALLENGE_EXPIRED": "La demande de clé d'accès a expiré. Veuillez réessayer.",
+        "PASSKEY_REGISTRATION_FAILED": "La clé d'accès n'a pas pu être vérifiée.",
+        "PASSKEY_NOT_REGISTERED": "Ce compte n'a pas encore de clé d'accès.",
+        "PASSKEY_AUTHENTICATION_FAILED": "La clé d'accès n'a pas pu être vérifiée.",
+        "PASSKEY_NOT_FOUND": "Cette clé d'accès n'existe plus.",
+        "PASSKEY_LABEL_INVALID": "Saisissez un nom de 1 à 64 caractères.",
+        "ACCOUNT_DISABLED": "Ce compte est désactivé."
     },
     "SOCIAL": {
         "TITLE": "Comptes liés",
@@ -939,5 +951,30 @@
         "NOTHING_DELETED": "Rien n'a été supprimé.",
         "DELETED": "Votre compte a été supprimé.",
         "DELETED_PARTIAL": "Votre compte a été supprimé. Certains enregistrements sont conservés lorsque la loi l'exige."
+    },
+    "PASSKEYS": {
+        "CARD": "Clés d'accès",
+        "CARD_DESC": "Connectez-vous avec votre empreinte, votre visage ou le verrouillage de l'écran au lieu d'un mot de passe.",
+        "EMPTY": "Aucune clé d'accès pour le moment",
+        "EMPTY_DESC": "Ajoutez-en une sur cet appareil pour vous connecter sans mot de passe.",
+        "ADD": "Ajouter une clé d'accès",
+        "ADDED_TOAST": "Clé d'accès ajoutée",
+        "ADD_FAILED": "La clé d'accès n'a pas pu être ajoutée. Veuillez réessayer.",
+        "NO_CREATE_OPTION": "Cet appareil n'a aucun endroit où enregistrer une clé d'accès. Activez un verrouillage d'écran ou un gestionnaire de mots de passe, puis réessayez.",
+        "ALREADY_ON_DEVICE": "Cet appareil possède déjà une clé d'accès pour votre compte.",
+        "MISCONFIGURED": "Les clés d'accès ne sont pas correctement configurées pour cette application.",
+        "ADDED": "Ajoutée le {{date}}",
+        "LAST_USED": "dernière utilisation le {{date}}",
+        "NEVER_USED": "jamais utilisée",
+        "RENAME": "Renommer",
+        "RENAME_TITLE": "Renommer la clé d'accès",
+        "NAME_LABEL": "Nom",
+        "NAME_INVALID": "Saisissez un nom de 1 à 64 caractères",
+        "RENAMED": "Clé d'accès renommée",
+        "REMOVE_TITLE": "Supprimer la clé d'accès",
+        "REMOVE_DESC": "« {{name}} » ne vous connectera plus. La copie enregistrée sur votre appareil n'est pas supprimée automatiquement.",
+        "REMOVED": "Clé d'accès supprimée",
+        "BACKUP_HINT": "Vous n'avez qu'une seule clé d'accès. Ajoutez-en une autre sur un appareil différent pour que la perte de l'un ne vous bloque pas.",
+        "UNAVAILABLE": "L'ajout de clés d'accès nécessite l'application installée sur un appareil avec verrouillage d'écran. Ce n'est pas disponible dans Expo Go, sur le web ni dans cette version."
     }
 }

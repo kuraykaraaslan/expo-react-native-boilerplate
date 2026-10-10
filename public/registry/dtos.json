@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T12:01:15.805Z",
+  "generatedAt": "2026-10-10T18:39:17.695Z",
   "dtos": [
     {
       "filePath": "services/platform/apiKey.dto.ts",
@@ -288,6 +288,37 @@
       "types": [
         "Notification",
         "NotificationsResponse"
+      ]
+    },
+    {
+      "filePath": "services/auth/passkey.dto.ts",
+      "module": "auth",
+      "name": "passkey.dto",
+      "schemas": [
+        "PasskeySchema",
+        "PasskeyListResponseSchema",
+        "PasskeyRenameRequestSchema",
+        "PasskeyRenameResponseSchema",
+        "PasskeyRegisterVerifyResponseSchema",
+        "PasskeyRegistrationOptionsSchema",
+        "PasskeyLoginOptionsSchema",
+        "PasskeyLoginOptionsRequestSchema",
+        "PasskeyRegistrationResponseSchema",
+        "PasskeyAssertionResponseSchema",
+        "PasskeyRegisterVerifyRequestSchema",
+        "PasskeyLoginVerifyRequestSchema"
+      ],
+      "types": [
+        "Passkey",
+        "PasskeyListResponse",
+        "PasskeyRenameRequest",
+        "PasskeyRegistrationOptions",
+        "PasskeyLoginOptions",
+        "PasskeyLoginOptionsRequest",
+        "PasskeyRegistrationResponse",
+        "PasskeyAssertionResponse",
+        "PasskeyRegisterVerifyRequest",
+        "PasskeyLoginVerifyRequest"
       ]
     },
     {

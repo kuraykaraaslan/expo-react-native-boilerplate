@@ -59,6 +59,11 @@
     "category": "auth",
     "file": "auth-AuthShell.md"
   },
+  "auth/PasskeyButton": {
+    "name": "PasskeyButton",
+    "category": "auth",
+    "file": "auth-PasskeyButton.md"
+  },
   "auth/SSOButtons": {
     "name": "SSOButtons",
     "category": "auth",
@@ -158,6 +163,16 @@
     "name": "AppLockScreen",
     "category": "security",
     "file": "security-AppLockScreen.md"
+  },
+  "security/PasskeyRenameModal": {
+    "name": "PasskeyRenameModal",
+    "category": "security",
+    "file": "security-PasskeyRenameModal.md"
+  },
+  "security/PasskeysCard": {
+    "name": "PasskeysCard",
+    "category": "security",
+    "file": "security-PasskeysCard.md"
   },
   "security/TotpDisableModal": {
     "name": "TotpDisableModal",

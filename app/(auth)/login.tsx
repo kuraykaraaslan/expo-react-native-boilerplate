@@ -4,10 +4,12 @@ import { Link, router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
+import { z } from 'zod';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
+import { PasskeyButton } from '@/components/auth/PasskeyButton';
 import { SSOButtons } from '@/components/auth/SSOButtons';
 import { Button, Checkbox, Input, Text } from '@/components/ui';
 import { LoginRequestSchema } from '@/services/auth/auth.dto';
@@ -16,6 +18,7 @@ import { normalizeApiError } from '@/libs/apiError';
 import { handleApiError } from '@/libs/errorUtils';
 import { startDeviceSession } from '@/libs/session';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
+import type { DeviceLoginResponse } from '@/services/auth/auth.dto';
 import { AuthClientService } from '@/services/auth/auth.service.client';
 
 type FieldErrors = { email?: string; password?: string };
@@ -28,6 +31,31 @@ export default function LoginScreen() {
   const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
+
+  // A well-formed e-mail narrows the passkey sheet to that account; otherwise any passkey on the device is offered.
+  const passkeyEmail = z.string().email().safeParse(email.trim()).success ? email.trim() : undefined;
+
+  /** What happens after ANY sign-in has stored its session (password or passkey): the same routing and notices. */
+  async function finishLogin(
+    login: DeviceLoginResponse,
+    { otpRequired, mustChangePassword }: { otpRequired: boolean; mustChangePassword: boolean },
+  ) {
+    if (otpRequired) {
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      router.push('/2fa');
+      return;
+    }
+    if (mustChangePassword) {
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      router.replace('/change-password');
+      return;
+    }
+    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    if (login.passwordExpiresInDays != null) {
+      toast.warning(t('AUTH_UI.PASSWORD_EXPIRES_SOON', { count: login.passwordExpiresInDays }));
+    }
+    // The (auth) layout guard now sees a signed-in user and routes to the app.
+  }
 
   async function handleLogin() {
     const result = LoginRequestSchema.safeParse({ email: email.trim(), password });
@@ -43,22 +71,7 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       const login = await AuthClientService.deviceLogin({ ...result.data, rememberMe: remember, device: getDeviceInfo() });
-      const { otpRequired, mustChangePassword } = await startDeviceSession(login);
-      if (otpRequired) {
-        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-        router.push('/2fa');
-        return;
-      }
-      if (mustChangePassword) {
-        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-        router.replace('/change-password');
-        return;
-      }
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      if (login.passwordExpiresInDays != null) {
-        toast.warning(t('AUTH_UI.PASSWORD_EXPIRES_SOON', { count: login.passwordExpiresInDays }));
-      }
-      // The (auth) layout guard now sees a signed-in user and routes to the app.
+      await finishLogin(login, await startDeviceSession(login));
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       const { statusCode } = normalizeApiError(err);
@@ -121,6 +134,7 @@ export default function LoginScreen() {
         <Button fullWidth loading={loading} onPress={handleLogin} testID="auth-login-submit">
           {loading ? t('AUTH_UI.SIGNING_IN') : t('AUTH_UI.SIGN_IN')}
         </Button>
+        <PasskeyButton email={passkeyEmail} disabled={loading} onSignedIn={({ login, otpRequired, mustChangePassword }) => finishLogin(login, { otpRequired, mustChangePassword })} />
         <Link href="/forgot-password" asChild>
           <Pressable accessibilityRole="link" hitSlop={8} className="self-center" testID="auth-login-forgot">
             <Text className="text-xs font-medium text-primary">{t('AUTH_UI.FORGOT_PASSWORD')}</Text>

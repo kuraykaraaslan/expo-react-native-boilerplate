@@ -500,7 +500,11 @@
         "TENANT_LOGIN_SUBTITLE": "Introduce tu contraseña para continuar como {{email}}",
         "THIS_ORG": "esta organización",
         "SSO_FAILED": "El inicio de sesión social no está disponible ahora. Inicia sesión con tu correo electrónico.",
-        "SSO_STATE_MISMATCH": "No se pudo verificar el inicio de sesión. Inténtalo de nuevo."
+        "SSO_STATE_MISMATCH": "No se pudo verificar el inicio de sesión. Inténtalo de nuevo.",
+        "PASSKEY_SIGN_IN": "Iniciar sesión con una llave de acceso",
+        "PASSKEY_FAILED": "No se pudo iniciar sesión con la llave de acceso. Inténtalo de nuevo o usa tu contraseña.",
+        "PASSKEY_NO_CREDENTIAL": "No se encontró en este dispositivo ninguna llave de acceso de esta cuenta.",
+        "PASSKEY_MISCONFIGURED": "Las llaves de acceso no están bien configuradas para esta app. Inicia sesión con tu contraseña."
     },
     "DASHBOARD": {
         "TITLE": "Panel",
@@ -849,7 +853,15 @@
         "REFRESH_TOKEN_REUSED": "Por tu seguridad, se cerraron todas las sesiones. Inicia sesión de nuevo.",
         "OTP_REQUIRED": "Introduce tu código de verificación para continuar.",
         "INVALID_OTP": "El código de verificación es incorrecto.",
-        "OTP_EXPIRED": "El código de verificación ha caducado. Solicita uno nuevo."
+        "OTP_EXPIRED": "El código de verificación ha caducado. Solicita uno nuevo.",
+        "PASSKEY_LIMIT_REACHED": "Has alcanzado el número máximo de llaves de acceso. Elimina una primero.",
+        "PASSKEY_CHALLENGE_EXPIRED": "La solicitud de la llave de acceso caducó. Inténtalo de nuevo.",
+        "PASSKEY_REGISTRATION_FAILED": "No se pudo verificar la llave de acceso.",
+        "PASSKEY_NOT_REGISTERED": "Esta cuenta aún no tiene ninguna llave de acceso.",
+        "PASSKEY_AUTHENTICATION_FAILED": "No se pudo verificar la llave de acceso.",
+        "PASSKEY_NOT_FOUND": "Esa llave de acceso ya no existe.",
+        "PASSKEY_LABEL_INVALID": "Introduce un nombre de 1 a 64 caracteres.",
+        "ACCOUNT_DISABLED": "Esta cuenta está desactivada."
     },
     "SOCIAL": {
         "TITLE": "Cuentas vinculadas",
@@ -939,5 +951,30 @@
         "NOTHING_DELETED": "No se eliminó nada.",
         "DELETED": "Tu cuenta se ha eliminado.",
         "DELETED_PARTIAL": "Tu cuenta se ha eliminado. Algunos registros se conservan cuando la ley lo exige."
+    },
+    "PASSKEYS": {
+        "CARD": "Llaves de acceso",
+        "CARD_DESC": "Inicia sesión con tu huella, tu rostro o el bloqueo de pantalla en lugar de una contraseña.",
+        "EMPTY": "Aún no hay llaves de acceso",
+        "EMPTY_DESC": "Añade una en este dispositivo para iniciar sesión sin contraseña.",
+        "ADD": "Añadir una llave de acceso",
+        "ADDED_TOAST": "Llave de acceso añadida",
+        "ADD_FAILED": "No se pudo añadir la llave de acceso. Inténtalo de nuevo.",
+        "NO_CREATE_OPTION": "Este dispositivo no tiene dónde guardar una llave de acceso. Activa un bloqueo de pantalla o un gestor de contraseñas e inténtalo de nuevo.",
+        "ALREADY_ON_DEVICE": "Este dispositivo ya tiene una llave de acceso para tu cuenta.",
+        "MISCONFIGURED": "Las llaves de acceso no están bien configuradas para esta app.",
+        "ADDED": "Añadida el {{date}}",
+        "LAST_USED": "último uso el {{date}}",
+        "NEVER_USED": "nunca usada",
+        "RENAME": "Renombrar",
+        "RENAME_TITLE": "Renombrar llave de acceso",
+        "NAME_LABEL": "Nombre",
+        "NAME_INVALID": "Introduce un nombre de 1 a 64 caracteres",
+        "RENAMED": "Llave de acceso renombrada",
+        "REMOVE_TITLE": "Eliminar llave de acceso",
+        "REMOVE_DESC": "«{{name}}» ya no te permitirá iniciar sesión. La copia guardada en tu dispositivo no se borra automáticamente.",
+        "REMOVED": "Llave de acceso eliminada",
+        "BACKUP_HINT": "Solo tienes una llave de acceso. Añade otra en un dispositivo distinto para que perder uno no te deje fuera.",
+        "UNAVAILABLE": "Para añadir llaves de acceso hace falta la app instalada en un dispositivo con bloqueo de pantalla. No está disponible en Expo Go, en la web ni en esta compilación."
     }
 }

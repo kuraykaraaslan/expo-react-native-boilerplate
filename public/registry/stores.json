@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T12:01:15.805Z",
+  "generatedAt": "2026-10-10T18:39:17.695Z",
   "stores": [
     {
       "filePath": "stores/appStore.ts",

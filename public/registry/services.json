@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T12:01:15.805Z",
+  "generatedAt": "2026-10-10T18:39:17.695Z",
   "services": [
     {
       "filePath": "services/platform/apiKey.service.client.ts",
@@ -192,6 +192,29 @@
         "/auth/me/notifications",
         "/auth/me/notifications/${encodeURIComponent(notificationId)}",
         "/auth/me/notifications/read-all"
+      ]
+    },
+    {
+      "filePath": "services/auth/passkey.service.client.ts",
+      "module": "auth",
+      "name": "passkey.service.client",
+      "className": "PasskeyClientService",
+      "methods": [
+        "loginOptions",
+        "loginVerify",
+        "list",
+        "registrationOptions",
+        "registerVerify",
+        "rename",
+        "remove"
+      ],
+      "endpoints": [
+        "/auth/device/passkey/login/options",
+        "/auth/device/passkey/login/verify",
+        "/auth/me/security/passkeys",
+        "/auth/me/security/passkeys/register",
+        "/auth/me/security/passkeys/register/verify",
+        "/auth/me/security/passkeys/${encodeURIComponent(credentialId)}"
       ]
     },
     {

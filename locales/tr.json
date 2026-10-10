@@ -500,7 +500,11 @@
         "TENANT_LOGIN_SUBTITLE": "{{email}} olarak devam etmek için şifrenizi girin",
         "THIS_ORG": "bu organizasyon",
         "SSO_FAILED": "Sosyal giriş şu an kullanılamıyor. Lütfen e-posta ile giriş yapın.",
-        "SSO_STATE_MISMATCH": "Giriş doğrulanamadı. Lütfen tekrar deneyin."
+        "SSO_STATE_MISMATCH": "Giriş doğrulanamadı. Lütfen tekrar deneyin.",
+        "PASSKEY_SIGN_IN": "Geçiş anahtarıyla giriş yap",
+        "PASSKEY_FAILED": "Geçiş anahtarıyla giriş yapılamadı. Tekrar deneyin veya parolanızı kullanın.",
+        "PASSKEY_NO_CREDENTIAL": "Bu cihazda bu hesap için geçiş anahtarı bulunamadı.",
+        "PASSKEY_MISCONFIGURED": "Geçiş anahtarları bu uygulama için doğru yapılandırılmamış. Lütfen parolanızla giriş yapın."
     },
     "DASHBOARD": {
         "TITLE": "Panel",
@@ -849,7 +853,15 @@
         "REFRESH_TOKEN_REUSED": "Güvenliğiniz için tüm oturumlar kapatıldı. Lütfen tekrar giriş yapın.",
         "OTP_REQUIRED": "Devam etmek için doğrulama kodunu girin.",
         "INVALID_OTP": "Doğrulama kodu hatalı.",
-        "OTP_EXPIRED": "Doğrulama kodunun süresi doldu. Yeni kod isteyin."
+        "OTP_EXPIRED": "Doğrulama kodunun süresi doldu. Yeni kod isteyin.",
+        "PASSKEY_LIMIT_REACHED": "En fazla geçiş anahtarı sayısına ulaştınız. Önce birini kaldırın.",
+        "PASSKEY_CHALLENGE_EXPIRED": "Geçiş anahtarı isteğinin süresi doldu. Lütfen tekrar deneyin.",
+        "PASSKEY_REGISTRATION_FAILED": "Geçiş anahtarı doğrulanamadı.",
+        "PASSKEY_NOT_REGISTERED": "Bu hesapta henüz geçiş anahtarı yok.",
+        "PASSKEY_AUTHENTICATION_FAILED": "Geçiş anahtarı doğrulanamadı.",
+        "PASSKEY_NOT_FOUND": "Bu geçiş anahtarı artık yok.",
+        "PASSKEY_LABEL_INVALID": "1 ile 64 karakter arasında bir ad girin.",
+        "ACCOUNT_DISABLED": "Bu hesap devre dışı."
     },
     "SOCIAL": {
         "TITLE": "Bağlı hesaplar",
@@ -939,5 +951,30 @@
         "NOTHING_DELETED": "Hiçbir şey silinmedi.",
         "DELETED": "Hesabınız silindi.",
         "DELETED_PARTIAL": "Hesabınız silindi. Yasaların gerektirdiği yerlerde bazı kayıtlar saklanır."
+    },
+    "PASSKEYS": {
+        "CARD": "Geçiş anahtarları",
+        "CARD_DESC": "Parola yerine parmak iziniz, yüzünüz veya ekran kilidinizle giriş yapın.",
+        "EMPTY": "Henüz geçiş anahtarı yok",
+        "EMPTY_DESC": "Parolasız giriş için bu cihaza bir tane ekleyin.",
+        "ADD": "Geçiş anahtarı ekle",
+        "ADDED_TOAST": "Geçiş anahtarı eklendi",
+        "ADD_FAILED": "Geçiş anahtarı eklenemedi. Lütfen tekrar deneyin.",
+        "NO_CREATE_OPTION": "Bu cihazda geçiş anahtarını kaydedecek bir yer yok. Ekran kilidini veya bir parola yöneticisini açıp tekrar deneyin.",
+        "ALREADY_ON_DEVICE": "Bu cihazda hesabınız için zaten bir geçiş anahtarı var.",
+        "MISCONFIGURED": "Geçiş anahtarları bu uygulama için doğru yapılandırılmamış.",
+        "ADDED": "{{date}} tarihinde eklendi",
+        "LAST_USED": "son kullanım {{date}}",
+        "NEVER_USED": "hiç kullanılmadı",
+        "RENAME": "Yeniden adlandır",
+        "RENAME_TITLE": "Geçiş anahtarını yeniden adlandır",
+        "NAME_LABEL": "Ad",
+        "NAME_INVALID": "1 ile 64 karakter arasında bir ad girin",
+        "RENAMED": "Geçiş anahtarı yeniden adlandırıldı",
+        "REMOVE_TITLE": "Geçiş anahtarını kaldır",
+        "REMOVE_DESC": "\"{{name}}\" artık sizi giriş yaptırmayacak. Cihazınızda saklanan kopya otomatik silinmez.",
+        "REMOVED": "Geçiş anahtarı kaldırıldı",
+        "BACKUP_HINT": "Tek bir geçiş anahtarınız var. Birini kaybetmeniz sizi dışarıda bırakmasın diye başka bir cihaza daha ekleyin.",
+        "UNAVAILABLE": "Geçiş anahtarı eklemek için ekran kilidi olan bir cihazda yüklü uygulama gerekir. Expo Go'da, web'de veya bu sürümde kullanılamaz."
     }
 }

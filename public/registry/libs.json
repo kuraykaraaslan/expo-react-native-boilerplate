@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T12:01:15.805Z",
+  "generatedAt": "2026-10-10T18:39:17.695Z",
   "libs": [
     {
       "filePath": "libs/accountDeletion.ts",
@@ -144,6 +144,24 @@
         "reconcileOutbox",
         "clearOutbox",
         "pruneOutboxFor"
+      ]
+    },
+    {
+      "filePath": "libs/passkey.ts",
+      "name": "passkey",
+      "exports": [
+        "PasskeyFailure",
+        "passkeysAvailable",
+        "classifyPasskeyError",
+        "describePasskeyError",
+        "toNativeCreateRequest",
+        "toNativeGetRequest",
+        "toRegistrationResponse",
+        "toAssertionResponse",
+        "PasskeySignInResult",
+        "signInWithPasskey",
+        "PasskeyRegisterResult",
+        "registerPasskey"
       ]
     },
     {

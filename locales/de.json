@@ -500,7 +500,11 @@
         "TENANT_LOGIN_SUBTITLE": "Geben Sie Ihr Passwort ein, um als {{email}} fortzufahren",
         "THIS_ORG": "diese Organisation",
         "SSO_FAILED": "Die Anmeldung über soziale Konten ist derzeit nicht verfügbar. Bitte melden Sie sich mit Ihrer E-Mail an.",
-        "SSO_STATE_MISMATCH": "Die Anmeldung konnte nicht überprüft werden. Bitte versuchen Sie es erneut."
+        "SSO_STATE_MISMATCH": "Die Anmeldung konnte nicht überprüft werden. Bitte versuchen Sie es erneut.",
+        "PASSKEY_SIGN_IN": "Mit einem Passkey anmelden",
+        "PASSKEY_FAILED": "Die Anmeldung mit dem Passkey hat nicht geklappt. Versuche es erneut oder nutze dein Passwort.",
+        "PASSKEY_NO_CREDENTIAL": "Auf diesem Gerät wurde kein Passkey für dieses Konto gefunden.",
+        "PASSKEY_MISCONFIGURED": "Passkeys sind für diese App nicht richtig eingerichtet. Bitte melde dich mit deinem Passwort an."
     },
     "DASHBOARD": {
         "TITLE": "Dashboard",
@@ -849,7 +853,15 @@
         "REFRESH_TOKEN_REUSED": "Zu Ihrer Sicherheit wurden alle Sitzungen abgemeldet. Bitte melden Sie sich erneut an.",
         "OTP_REQUIRED": "Geben Sie Ihren Bestätigungscode ein, um fortzufahren.",
         "INVALID_OTP": "Der Bestätigungscode ist falsch.",
-        "OTP_EXPIRED": "Der Bestätigungscode ist abgelaufen. Fordern Sie einen neuen an."
+        "OTP_EXPIRED": "Der Bestätigungscode ist abgelaufen. Fordern Sie einen neuen an.",
+        "PASSKEY_LIMIT_REACHED": "Du hast die maximale Anzahl an Passkeys erreicht. Entferne zuerst einen.",
+        "PASSKEY_CHALLENGE_EXPIRED": "Die Passkey-Anfrage ist abgelaufen. Bitte versuche es erneut.",
+        "PASSKEY_REGISTRATION_FAILED": "Der Passkey konnte nicht überprüft werden.",
+        "PASSKEY_NOT_REGISTERED": "Dieses Konto hat noch keinen Passkey.",
+        "PASSKEY_AUTHENTICATION_FAILED": "Der Passkey konnte nicht überprüft werden.",
+        "PASSKEY_NOT_FOUND": "Dieser Passkey existiert nicht mehr.",
+        "PASSKEY_LABEL_INVALID": "Gib einen Namen mit 1 bis 64 Zeichen ein.",
+        "ACCOUNT_DISABLED": "Dieses Konto ist deaktiviert."
     },
     "SOCIAL": {
         "TITLE": "Verknüpfte Konten",
@@ -939,5 +951,30 @@
         "NOTHING_DELETED": "Es wurde nichts gelöscht.",
         "DELETED": "Dein Konto wurde gelöscht.",
         "DELETED_PARTIAL": "Dein Konto wurde gelöscht. Einige Datensätze bleiben erhalten, wo das Gesetz es verlangt."
+    },
+    "PASSKEYS": {
+        "CARD": "Passkeys",
+        "CARD_DESC": "Melde dich mit Fingerabdruck, Gesicht oder Displaysperre statt mit einem Passwort an.",
+        "EMPTY": "Noch keine Passkeys",
+        "EMPTY_DESC": "Füge auf diesem Gerät einen hinzu, um dich ohne Passwort anzumelden.",
+        "ADD": "Passkey hinzufügen",
+        "ADDED_TOAST": "Passkey hinzugefügt",
+        "ADD_FAILED": "Der Passkey konnte nicht hinzugefügt werden. Bitte versuche es erneut.",
+        "NO_CREATE_OPTION": "Dieses Gerät hat keinen Speicherort für einen Passkey. Aktiviere eine Displaysperre oder einen Passwortmanager und versuche es erneut.",
+        "ALREADY_ON_DEVICE": "Dieses Gerät hat bereits einen Passkey für dein Konto.",
+        "MISCONFIGURED": "Passkeys sind für diese App nicht richtig eingerichtet.",
+        "ADDED": "Hinzugefügt am {{date}}",
+        "LAST_USED": "zuletzt verwendet am {{date}}",
+        "NEVER_USED": "nie verwendet",
+        "RENAME": "Umbenennen",
+        "RENAME_TITLE": "Passkey umbenennen",
+        "NAME_LABEL": "Name",
+        "NAME_INVALID": "Gib einen Namen mit 1 bis 64 Zeichen ein",
+        "RENAMED": "Passkey umbenannt",
+        "REMOVE_TITLE": "Passkey entfernen",
+        "REMOVE_DESC": "Mit „{{name}}“ kannst du dich nicht mehr anmelden. Die auf deinem Gerät gespeicherte Kopie wird nicht automatisch gelöscht.",
+        "REMOVED": "Passkey entfernt",
+        "BACKUP_HINT": "Du hast nur einen Passkey. Füge auf einem anderen Gerät einen weiteren hinzu, damit der Verlust eines Geräts dich nicht aussperrt.",
+        "UNAVAILABLE": "Zum Hinzufügen von Passkeys wird die installierte App auf einem Gerät mit Displaysperre benötigt. In Expo Go, im Web und in diesem Build ist das nicht möglich."
     }
 }

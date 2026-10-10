@@ -6,6 +6,7 @@ import { faClockRotateLeft, faMobileScreen } from '@fortawesome/free-solid-svg-i
 import { Screen } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { AppLockCard } from '@/components/security/AppLockCard';
+import { PasskeysCard } from '@/components/security/PasskeysCard';
 import { TotpDisableModal } from '@/components/security/TotpDisableModal';
 import { TotpSetupModal } from '@/components/security/TotpSetupModal';
 import { Badge, Button, Card, Text } from '@/components/ui';
@@ -70,6 +71,8 @@ export default function SecurityScreen() {
           </Button>
         )}
       </Card>
+
+      <PasskeysCard />
 
       <Card title={t('SECURITY.ACTIVITY_CARD')} loading={loading}>
         <View className="flex-row items-center gap-3 py-3">
