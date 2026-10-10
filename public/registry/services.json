@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:40:30.268Z",
+  "generatedAt": "2026-10-10T11:45:55.339Z",
   "services": [
     {
       "filePath": "services/platform/apiKey.service.client.ts",
@@ -79,14 +79,19 @@
         "getCurrentAgreements",
         "getCurrentAgreement",
         "acceptAgreement",
-        "getAuditLogs"
+        "getAuditLogs",
+        "requestAccountDeletion",
+        "requestDataExport",
+        "deletionConflictTenants"
       ],
       "endpoints": [
         "/consent/config",
         "/consent",
         "/agreements/current",
         "/agreements/accept",
-        "/audit-logs"
+        "/audit-logs",
+        "/auth/me/deletion-request",
+        "/auth/me/data-export-request"
       ]
     },
     {

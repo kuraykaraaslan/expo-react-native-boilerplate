@@ -1,8 +1,15 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:40:30.268Z",
+  "generatedAt": "2026-10-10T11:45:55.339Z",
   "libs": [
+    {
+      "filePath": "libs/accountDeletion.ts",
+      "name": "accountDeletion",
+      "exports": [
+        "finishAccountDeletion"
+      ]
+    },
     {
       "filePath": "libs/apiError.ts",
       "name": "apiError",
@@ -107,6 +114,7 @@
       "filePath": "libs/logout.ts",
       "name": "logout",
       "exports": [
+        "clearLocalSession",
         "logout"
       ]
     },
@@ -182,6 +190,15 @@
         "disconnectRealtime",
         "resetRealtime",
         "useRealtimeSync"
+      ]
+    },
+    {
+      "filePath": "libs/reauth.ts",
+      "name": "reauth",
+      "exports": [
+        "accountHasOwnPassword",
+        "ReauthFailure",
+        "reauthFailure"
       ]
     },
     {

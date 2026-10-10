@@ -1,5 +1,9 @@
 import axiosInstance from "@/libs/axios";
 import {
+  AccountDeletionResponseSchema,
+  DataExportResponseSchema,
+  DeletionConflictDetailsSchema,
+  SelfServiceReauthRequestSchema,
   AcceptAgreementRequestSchema,
   AcceptAgreementResponseSchema,
   AuditLogsResponseSchema,
@@ -8,6 +12,9 @@ import {
   CurrentAgreementSchema,
   CurrentAgreementsResponseSchema,
   RecordConsentRequestSchema,
+  type AccountDeletionResponse,
+  type DataExportResponse,
+  type DeletionConflictTenant,
   type AcceptAgreementRequest,
   type AcceptAgreementResponse,
   type AuditLogsResponse,
@@ -75,5 +82,32 @@ export class ComplianceClientService {
   }): Promise<AuditLogsResponse> {
     const res = await axiosInstance.get("/audit-logs", { params });
     return AuditLogsResponseSchema.parse(res.data);
+  }
+
+  /**
+   * POST /auth/me/deletion-request: deletes the whole account NOW (ACCOUNT scope; the URL tenant only routes).
+   * `password` is sent only when the account has one (400 PASSWORD_REQUIRED / 401 INVALID_PASSWORD otherwise);
+   * 409 means a platform admin or the last owner of a shared workspace (see `deletionConflictTenants`).
+   * Not retried and never replayed: success revokes every session, so a replay would only 401.
+   */
+  static async requestAccountDeletion(password?: string): Promise<AccountDeletionResponse> {
+    const body = SelfServiceReauthRequestSchema.parse(password ? { password } : {});
+    const res = await axiosInstance.post("/auth/me/deletion-request", body);
+    return AccountDeletionResponseSchema.parse(res.data);
+  }
+
+  /** POST /auth/me/data-export-request for one workspace (TENANT scope; the caller must be a member). Same re-auth as deletion. */
+  static async requestDataExport(tenantId: string, password?: string): Promise<DataExportResponse> {
+    const body = SelfServiceReauthRequestSchema.parse(password ? { password } : {});
+    const res = await axiosInstance.post("/auth/me/data-export-request", body, { tenantId });
+    return DataExportResponseSchema.parse(res.data);
+  }
+
+  /** The workspaces a 409 deletion refusal names in `details.tenants`; null when the error is not that refusal. */
+  static deletionConflictTenants(err: unknown): DeletionConflictTenant[] | null {
+    const response = (err as { response?: { status?: number; data?: { details?: unknown } } } | null)?.response;
+    if (response?.status !== 409) return null;
+    const parsed = DeletionConflictDetailsSchema.safeParse(response.data?.details);
+    return parsed.success && parsed.data.tenants.length > 0 ? parsed.data.tenants : null;
   }
 }

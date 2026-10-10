@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:40:30.268Z",
+  "generatedAt": "2026-10-10T11:45:55.339Z",
   "components": [
     {
       "id": "account/AvatarPicker",
@@ -286,6 +286,35 @@
       ],
       "props": [
         "icon"
+      ]
+    },
+    {
+      "id": "compliance/DeleteAccountModal",
+      "filePath": "components/compliance/DeleteAccountModal.tsx",
+      "name": "DeleteAccountModal",
+      "category": "compliance",
+      "exports": [
+        "DELETE_CONFIRM_WORD",
+        "DeleteAccountModal"
+      ],
+      "props": [
+        "open",
+        "onClose",
+        "hasPassword"
+      ]
+    },
+    {
+      "id": "compliance/ExportDataModal",
+      "filePath": "components/compliance/ExportDataModal.tsx",
+      "name": "ExportDataModal",
+      "category": "compliance",
+      "exports": [
+        "ExportDataModal"
+      ],
+      "props": [
+        "open",
+        "onClose",
+        "hasPassword"
       ]
     },
     {

@@ -163,3 +163,52 @@ export const AcceptAgreementResponseSchema = z.object({
     .passthrough(),
 });
 export type AcceptAgreementResponse = z.infer<typeof AcceptAgreementResponseSchema>;
+
+// ============================================================================
+// Self-service privacy (privacy module): delete the signed-in account, export own data.
+// Shapes read from next-boilerplate `privacy/server/{me-deletion-request.route,
+// me-data-export-request.route,privacy.self-service.service,privacy.dto}.ts`.
+// ============================================================================
+
+/** SelfServiceReauthDTO: `password` is optional only for accounts with no password of their own. */
+export const SelfServiceReauthRequestSchema = z.object({ password: z.string().min(1).max(256).optional() });
+export type SelfServiceReauthRequest = z.infer<typeof SelfServiceReauthRequestSchema>;
+
+/** Per-workspace result of an account deletion (TenantErasureOutcome). `error` is a server-internal text: never shown. */
+export const TenantErasureOutcomeSchema = z.object({
+  tenantId: z.string(),
+  privacyRequestId: z.string().nullish(),
+  status: z.enum(["COMPLETED", "PARTIAL", "FAILED"]),
+  erased: z.number().default(0),
+  retained: z.number().default(0),
+});
+export type TenantErasureOutcome = z.infer<typeof TenantErasureOutcomeSchema>;
+
+/**
+ * POST /auth/me/deletion-request (200). The account is gone either way: PARTIAL means a workspace
+ * legally retained rows or a data contributor failed. Every token of the user has been revoked.
+ */
+export const AccountDeletionResponseSchema = z.object({
+  status: z.enum(["COMPLETED", "PARTIAL"]),
+  tenants: z.array(TenantErasureOutcomeSchema).default([]),
+  tenantsScheduledForDeletion: z.array(z.string()).default([]),
+});
+export type AccountDeletionResponse = z.infer<typeof AccountDeletionResponseSchema>;
+
+/** 409 body `details` when the user is the only owner of a workspace that still has other members. */
+export const DeletionConflictDetailsSchema = z.object({
+  tenants: z.array(z.object({ tenantId: z.string(), name: z.string().nullish() })),
+});
+export type DeletionConflictTenant = z.infer<typeof DeletionConflictDetailsSchema>["tenants"][number];
+
+/** POST /auth/me/data-export-request (200): a short-lived `url` to the stored dossier, or the dossier inline when storage is unavailable. */
+export const DataExportResponseSchema = z.object({
+  privacyRequestId: z.string(),
+  /** The account record itself (user, profile, preferences, social accounts, memberships). */
+  account: z.record(z.string(), z.unknown()).default({}),
+  url: z.string().nullish(),
+  expiresIn: z.number().nullish(),
+  /** `{ subject, generatedAt, sections, errors, totalRows }`: kept as the server sent it. */
+  dossier: z.record(z.string(), z.unknown()).nullish(),
+});
+export type DataExportResponse = z.infer<typeof DataExportResponseSchema>;

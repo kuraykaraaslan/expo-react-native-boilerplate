@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import * as WebBrowser from 'expo-web-browser';
 import { toast } from 'sonner-native';
-import { faFileContract, faFileSignature, faUserShield } from '@fortawesome/free-solid-svg-icons';
+import { faDatabase, faFileContract, faFileSignature, faUserShield } from '@fortawesome/free-solid-svg-icons';
 import { PendingAgreementsBanner } from '@/components/compliance/PendingAgreementsBanner';
 import { LinkTile } from '@/components/common/LinkTile';
 import { Screen } from '@/components/common/Screen';
@@ -166,6 +166,8 @@ export default function LegalScreen() {
           <Text className="py-3 text-sm text-text-secondary">{t('PRIVACY.NO_POLICIES')}</Text>
         )}
       </Card>
+
+      <LinkTile icon={faDatabase} title={t('ACCOUNT_DATA.TITLE')} description={t('ACCOUNT_DATA.TILE_DESC')} href="/settings/account-data" testID="legal-account-data" />
 
       <Card title={t('PRIVACY.CHOICES_CARD')} subtitle={t('PRIVACY.CHOICES_DESC')} loading={loading}>
         {config?.enabled && config.purposes.length > 0 ? (

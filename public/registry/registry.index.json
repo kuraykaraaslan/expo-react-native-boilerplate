@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:40:30.268Z",
+  "generatedAt": "2026-10-10T11:45:55.339Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -194,6 +194,18 @@
       "layoutChain": [
         "app/_layout.tsx",
         "app/(drawer)/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/settings/account-data.tsx",
+      "route": "/settings/account-data",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/settings/_layout.tsx"
       ]
     },
     {
@@ -722,6 +734,35 @@
       ],
       "props": [
         "icon"
+      ]
+    },
+    {
+      "id": "compliance/DeleteAccountModal",
+      "filePath": "components/compliance/DeleteAccountModal.tsx",
+      "name": "DeleteAccountModal",
+      "category": "compliance",
+      "exports": [
+        "DELETE_CONFIRM_WORD",
+        "DeleteAccountModal"
+      ],
+      "props": [
+        "open",
+        "onClose",
+        "hasPassword"
+      ]
+    },
+    {
+      "id": "compliance/ExportDataModal",
+      "filePath": "components/compliance/ExportDataModal.tsx",
+      "name": "ExportDataModal",
+      "category": "compliance",
+      "exports": [
+        "ExportDataModal"
+      ],
+      "props": [
+        "open",
+        "onClose",
+        "hasPassword"
       ]
     },
     {
@@ -1616,14 +1657,19 @@
         "getCurrentAgreements",
         "getCurrentAgreement",
         "acceptAgreement",
-        "getAuditLogs"
+        "getAuditLogs",
+        "requestAccountDeletion",
+        "requestDataExport",
+        "deletionConflictTenants"
       ],
       "endpoints": [
         "/consent/config",
         "/consent",
         "/agreements/current",
         "/agreements/accept",
-        "/audit-logs"
+        "/audit-logs",
+        "/auth/me/deletion-request",
+        "/auth/me/data-export-request"
       ]
     },
     {
@@ -2142,7 +2188,12 @@
         "CurrentAgreementSchema",
         "CurrentAgreementsResponseSchema",
         "AcceptAgreementRequestSchema",
-        "AcceptAgreementResponseSchema"
+        "AcceptAgreementResponseSchema",
+        "SelfServiceReauthRequestSchema",
+        "TenantErasureOutcomeSchema",
+        "AccountDeletionResponseSchema",
+        "DeletionConflictDetailsSchema",
+        "DataExportResponseSchema"
       ],
       "types": [
         "ConsentPurpose",
@@ -2158,7 +2209,12 @@
         "AgreementVersion",
         "CurrentAgreement",
         "AcceptAgreementRequest",
-        "AcceptAgreementResponse"
+        "AcceptAgreementResponse",
+        "SelfServiceReauthRequest",
+        "TenantErasureOutcome",
+        "AccountDeletionResponse",
+        "DeletionConflictTenant",
+        "DataExportResponse"
       ]
     },
     {
@@ -2427,6 +2483,13 @@
   ],
   "libs": [
     {
+      "filePath": "libs/accountDeletion.ts",
+      "name": "accountDeletion",
+      "exports": [
+        "finishAccountDeletion"
+      ]
+    },
+    {
       "filePath": "libs/apiError.ts",
       "name": "apiError",
       "exports": [
@@ -2530,6 +2593,7 @@
       "filePath": "libs/logout.ts",
       "name": "logout",
       "exports": [
+        "clearLocalSession",
         "logout"
       ]
     },
@@ -2605,6 +2669,15 @@
         "disconnectRealtime",
         "resetRealtime",
         "useRealtimeSync"
+      ]
+    },
+    {
+      "filePath": "libs/reauth.ts",
+      "name": "reauth",
+      "exports": [
+        "accountHasOwnPassword",
+        "ReauthFailure",
+        "reauthFailure"
       ]
     },
     {

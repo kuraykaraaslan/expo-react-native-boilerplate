@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:40:30.268Z",
+  "generatedAt": "2026-10-10T11:45:55.339Z",
   "dtos": [
     {
       "filePath": "services/platform/apiKey.dto.ts",
@@ -148,7 +148,12 @@
         "CurrentAgreementSchema",
         "CurrentAgreementsResponseSchema",
         "AcceptAgreementRequestSchema",
-        "AcceptAgreementResponseSchema"
+        "AcceptAgreementResponseSchema",
+        "SelfServiceReauthRequestSchema",
+        "TenantErasureOutcomeSchema",
+        "AccountDeletionResponseSchema",
+        "DeletionConflictDetailsSchema",
+        "DataExportResponseSchema"
       ],
       "types": [
         "ConsentPurpose",
@@ -164,7 +169,12 @@
         "AgreementVersion",
         "CurrentAgreement",
         "AcceptAgreementRequest",
-        "AcceptAgreementResponse"
+        "AcceptAgreementResponse",
+        "SelfServiceReauthRequest",
+        "TenantErasureOutcome",
+        "AccountDeletionResponse",
+        "DeletionConflictTenant",
+        "DataExportResponse"
       ]
     },
     {

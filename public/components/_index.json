@@ -109,6 +109,16 @@
     "category": "common",
     "file": "common-StatTile.md"
   },
+  "compliance/DeleteAccountModal": {
+    "name": "DeleteAccountModal",
+    "category": "compliance",
+    "file": "compliance-DeleteAccountModal.md"
+  },
+  "compliance/ExportDataModal": {
+    "name": "ExportDataModal",
+    "category": "compliance",
+    "file": "compliance-ExportDataModal.md"
+  },
   "compliance/PendingAgreementsBanner": {
     "name": "PendingAgreementsBanner",
     "category": "compliance",
