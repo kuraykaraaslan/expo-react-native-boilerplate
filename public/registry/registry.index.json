@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T18:39:17.695Z",
+  "generatedAt": "2026-10-10T18:45:02.347Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -453,9 +453,27 @@
       ]
     },
     {
+      "filePath": "app/+native-intent.tsx",
+      "route": "/+native-intent",
+      "kind": "screen",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx"
+      ]
+    },
+    {
       "filePath": "app/+not-found.tsx",
       "route": "/+not-found",
       "kind": "not-found",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/invitation.tsx",
+      "route": "/invitation",
+      "kind": "screen",
       "dynamic": false,
       "layoutChain": [
         "app/_layout.tsx"
@@ -2104,6 +2122,16 @@
       "persisted": true
     },
     {
+      "filePath": "stores/pendingLinkStore.ts",
+      "name": "pendingLinkStore",
+      "hook": "usePendingLinkStore",
+      "stateKeys": [
+        "invitation",
+        "setInvitation"
+      ],
+      "persisted": false
+    },
+    {
       "filePath": "stores/pushStore.ts",
       "name": "pushStore",
       "hook": "usePushStore",
@@ -2692,6 +2720,20 @@
       ]
     },
     {
+      "filePath": "libs/deepLinks.ts",
+      "name": "deepLinks",
+      "exports": [
+        "InvitationAction",
+        "InvitationLink",
+        "pathOf",
+        "parseInvitationLink",
+        "isSsoCallback",
+        "invitationParams",
+        "invitationRoute",
+        "mapIncomingPath"
+      ]
+    },
+    {
       "filePath": "libs/deviceInfo.ts",
       "name": "deviceInfo",
       "exports": [
@@ -2984,6 +3026,13 @@
         "refreshFlags",
         "useFeatureFlag",
         "useFlagsSync"
+      ]
+    },
+    {
+      "filePath": "libs/usePendingLinks.ts",
+      "name": "usePendingLinks",
+      "exports": [
+        "usePendingLinks"
       ]
     },
     {

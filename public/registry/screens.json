@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T18:39:17.695Z",
+  "generatedAt": "2026-10-10T18:45:02.347Z",
   "screens": [
     {
       "filePath": "app/_layout.tsx",
@@ -432,9 +432,27 @@
       ]
     },
     {
+      "filePath": "app/+native-intent.tsx",
+      "route": "/+native-intent",
+      "kind": "screen",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx"
+      ]
+    },
+    {
       "filePath": "app/+not-found.tsx",
       "route": "/+not-found",
       "kind": "not-found",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/invitation.tsx",
+      "route": "/invitation",
+      "kind": "screen",
       "dynamic": false,
       "layoutChain": [
         "app/_layout.tsx"

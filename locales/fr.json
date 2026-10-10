@@ -893,6 +893,13 @@
         "ALREADY_ANSWERED": "Cette invitation a déjà reçu une réponse.",
         "EXPIRED": "Cette invitation a expiré ou a été révoquée."
     },
+    "INVITATION_LINK": {
+        "TITLE": "Invitation à une organisation",
+        "SUBTITLE_ACCEPT": "Examinez votre invitation et choisissez Accepter pour rejoindre.",
+        "SUBTITLE_DECLINE": "Examinez votre invitation et choisissez Refuser si vous ne souhaitez pas rejoindre.",
+        "NONE_TITLE": "Aucune invitation en attente",
+        "NONE_DESC": "Ce compte n'a aucune invitation en attente. Connectez-vous avec l'adresse e-mail à laquelle l'invitation a été envoyée et vérifiez qu'elle est confirmée."
+    },
     "AGREEMENTS": {
         "BANNER_TITLE": "Des accords attendent votre examen",
         "BANNER_ONE": "« {{title}} » a une version en attente de votre acceptation.",

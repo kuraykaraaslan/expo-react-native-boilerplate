@@ -1,6 +1,8 @@
 import * as WebBrowser from "expo-web-browser";
 import { SSO_PROVIDER_META } from "@/components/auth/ssoProviders";
+import { useComplianceStore } from "@/stores/complianceStore";
 import { getToken } from "@/libs/secureStorage";
+import logger from "@/libs/logger";
 import { SSO_REDIRECT_TIMEOUT_MS, signInWithProvider, tenantFromState } from "@/libs/ssoSession";
 import { SSOProviderEnum } from "@/services/auth/sso.dto";
 import { SSOClientService } from "@/services/auth/sso.service.client";
@@ -95,6 +97,25 @@ describe("browser flow", () => {
     expect(useTenantStore.getState().activeTenantId).toBe(TENANT_ID);
   });
 
+  it("an error redirect (?error=...&state) with the right state ends as unavailable and writes nothing", async () => {
+    open.mockResolvedValue(callback({ state: STATE, error: "ACCOUNT_DISABLED" }));
+    await expect(signInWithProvider("google")).resolves.toBe("unavailable");
+    expect(await getToken("accessToken", OTHER_TENANT_ID)).toBeNull();
+    expect(useAuthStore.getState().isAuthenticated).toBe(false);
+  });
+
+  it("an error redirect with a foreign state is a state mismatch, not an error", async () => {
+    open.mockResolvedValue(callback({ state: "other.state", error: "x" }));
+    await expect(signInWithProvider("google")).resolves.toBe("state-mismatch");
+  });
+
+  it("a 400 from the start route (redirect_uri not allow-listed) is unavailable and names the value to list", async () => {
+    mockRoute("get", "/auth/sso/google", () => fail(400, { message: "INVALID_REDIRECT_URI" }));
+    await expect(signInWithProvider("google")).resolves.toBe("unavailable");
+    expect(open).not.toHaveBeenCalled();
+    expect((logger.error as jest.Mock).mock.calls.flat().join(" ")).toContain("SSO_DEVICE_REDIRECT_URIS - redirect_uri=expoboilerplate://auth/callback");
+  });
+
   it("a callback without device tokens is unavailable, not an error", async () => {
     open.mockResolvedValue(callback({ state: STATE }));
     await expect(signInWithProvider("google")).resolves.toBe("unavailable");
@@ -112,6 +133,19 @@ describe("browser flow", () => {
     expect(await getToken("refreshToken", OTHER_TENANT_ID)).toBe("device-refresh");
     expect(useTenantStore.getState().activeTenantId).toBe(OTHER_TENANT_ID);
     expect(useAuthStore.getState().isAuthenticated).toBe(true);
+  });
+
+  it("applies the session's pending-agreement flag and clears a stale forced password change", async () => {
+    useAuthStore.setState({ mustChangePassword: true });
+    mockRoute("get", "/auth/session", {
+      ...sessionJson,
+      tenant: { ...sessionJson.tenant, tenantId: OTHER_TENANT_ID },
+      compliance: { pendingAgreements: [{ agreementId: "ag1", type: "TERMS", key: "terms", title: "Terms", versionId: "v2", version: 2, contentHash: "h" }] },
+    });
+    open.mockResolvedValue(callback({ state: STATE, rawAccessToken: deviceAccess, rawRefreshToken: "device-refresh" }));
+    await expect(signInWithProvider("google")).resolves.toBe("signed-in");
+    expect(useAuthStore.getState().mustChangePassword).toBe(false);
+    expect(useComplianceStore.getState().tenantId).toBe(OTHER_TENANT_ID);
   });
 
   it("gives up when the browser never redirects back to the app", async () => {

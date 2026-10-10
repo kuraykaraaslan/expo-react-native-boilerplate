@@ -163,3 +163,22 @@ Typecheck 0 errors, jest 249/249 (6 new).
 - `PendingInvitations` no longer toasts or vibrates for a refusal that arrives after an organization switch or unmount.
 - Added tests: out-of-order overview responses, `refreshOnMount`, late refusal after a switch, 410 mapping.
 - Server contract re-read from source: routes, bodies and responses match; 409 (`assertUsable`, lost claim) and 410 were already mapped. No differences found beyond the unreachable-in-summary 409/410/already-member cases. Unverified: live behaviour.
+
+---
+
+## ✅ Invitation e-mail deep link coded — 2026-10-10
+
+**What shipped**
+- `libs/deepLinks.ts` + `app/+native-intent.tsx`: the e-mailed `/auth/invitation/(accept|decline)?token=…` links (also `/t/<tenantId>/…` and `/tenant/<tenantId>/…`) are rewritten to `/invitation?action=…&tenantId=…`. **The token is dropped on purpose**: the app answers by invitation id from `GET /auth/me/tenants` (the flow built earlier), which needs the same verified email the token route needs, so the secret never enters router state or logs.
+- `app/invitation.tsx`: re-reads the account's invitations and renders `PendingInvitations` (Accept / Decline, joined card, "Sign in to X"); empty state when the account has none (wrong account or unverified email). Opened signed out (or with OTP / forced password change pending), the link is remembered in memory (`stores/pendingLinkStore.ts`, no token) and resumed by `libs/usePendingLinks.ts` in the drawer once the session is open.
+- `app.config.ts`: `EXPO_PUBLIC_ASSOCIATED_DOMAIN` → iOS `applinks:` + Android verified intent filters (see phase 6, same date). `INVITATION_LINK.*` strings in all six locales.
+- Tests: `__tests__/deepLinks.test.ts`, `__tests__/appConfig.test.ts`, `__tests__/invitationLink.test.tsx`.
+
+**Server contract as READ from source**: link builders in `tenant_invitation.notify.ts` (`absoluteTenantUrl(tenantId, '/auth/invitation/accept?token=…')`, tenant domain or `{APP_HOST}/tenant/{id}` fallback or `/t/{id}` in path mode); association paths in `modules/common/server/mobile-app-links.ts`.
+
+**Deviations / limits**
+- Domain-mode links (`https://<tenant host>/auth/invitation/…`) carry no tenant id; the screen then just lists every pending invitation of the signed-in account (the account must already be signed in to some organization on the device).
+- A link for an invitation addressed to a different email than the signed-in account shows the empty state; there is no account switch from the link.
+- The older token-based service methods stay unused by the UI.
+
+**Not verified**: opening the links from a real e-mail on a device (needs a build, the owner's association files and the identifiers listed in phase 6). Owner inputs are the same as phase 6.

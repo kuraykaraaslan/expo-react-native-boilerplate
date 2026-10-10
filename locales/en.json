@@ -893,6 +893,13 @@
         "ALREADY_ANSWERED": "This invitation has already been answered.",
         "EXPIRED": "This invitation has expired or was revoked."
     },
+    "INVITATION_LINK": {
+        "TITLE": "Organization invitation",
+        "SUBTITLE_ACCEPT": "Review your invitation and choose Accept to join.",
+        "SUBTITLE_DECLINE": "Review your invitation and choose Decline if you do not want to join.",
+        "NONE_TITLE": "No pending invitation",
+        "NONE_DESC": "This account has no pending invitation. Sign in with the email address the invitation was sent to and make sure it is verified."
+    },
     "AGREEMENTS": {
         "BANNER_TITLE": "Agreements need your review",
         "BANNER_ONE": "\"{{title}}\" has a version waiting for your acceptance.",

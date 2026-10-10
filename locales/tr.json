@@ -893,6 +893,13 @@
         "ALREADY_ANSWERED": "Bu davet zaten yanıtlanmış.",
         "EXPIRED": "Bu davetin süresi dolmuş veya iptal edilmiş."
     },
+    "INVITATION_LINK": {
+        "TITLE": "Kuruluş daveti",
+        "SUBTITLE_ACCEPT": "Davetinizi inceleyin ve katılmak için Kabul et'i seçin.",
+        "SUBTITLE_DECLINE": "Davetinizi inceleyin; katılmak istemiyorsanız Reddet'i seçin.",
+        "NONE_TITLE": "Bekleyen davet yok",
+        "NONE_DESC": "Bu hesabın bekleyen bir daveti yok. Davetin gönderildiği e-posta adresiyle giriş yapın ve adresin doğrulanmış olduğundan emin olun."
+    },
     "AGREEMENTS": {
         "BANNER_TITLE": "Sözleşmeler incelemenizi bekliyor",
         "BANNER_ONE": "\"{{title}}\" için onayınızı bekleyen bir sürüm var.",

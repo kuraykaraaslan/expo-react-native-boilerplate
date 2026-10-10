@@ -893,6 +893,13 @@
         "ALREADY_ANSWERED": "A questo invito è già stata data risposta.",
         "EXPIRED": "Questo invito è scaduto o è stato revocato."
     },
+    "INVITATION_LINK": {
+        "TITLE": "Invito a un'organizzazione",
+        "SUBTITLE_ACCEPT": "Controlla il tuo invito e scegli Accetta per unirti.",
+        "SUBTITLE_DECLINE": "Controlla il tuo invito e scegli Rifiuta se non vuoi unirti.",
+        "NONE_TITLE": "Nessun invito in sospeso",
+        "NONE_DESC": "Questo account non ha inviti in sospeso. Accedi con l'indirizzo e-mail a cui è stato inviato l'invito e assicurati che sia verificato."
+    },
     "AGREEMENTS": {
         "BANNER_TITLE": "Ci sono accordi da rivedere",
         "BANNER_ONE": "«{{title}}» ha una versione in attesa della tua accettazione.",

@@ -893,6 +893,13 @@
         "ALREADY_ANSWERED": "Diese Einladung wurde bereits beantwortet.",
         "EXPIRED": "Diese Einladung ist abgelaufen oder wurde widerrufen."
     },
+    "INVITATION_LINK": {
+        "TITLE": "Einladung zu einer Organisation",
+        "SUBTITLE_ACCEPT": "Prüfen Sie Ihre Einladung und wählen Sie Annehmen, um beizutreten.",
+        "SUBTITLE_DECLINE": "Prüfen Sie Ihre Einladung und wählen Sie Ablehnen, wenn Sie nicht beitreten möchten.",
+        "NONE_TITLE": "Keine ausstehende Einladung",
+        "NONE_DESC": "Für dieses Konto liegt keine ausstehende Einladung vor. Melden Sie sich mit der E-Mail-Adresse an, an die die Einladung gesendet wurde, und stellen Sie sicher, dass sie bestätigt ist."
+    },
     "AGREEMENTS": {
         "BANNER_TITLE": "Vereinbarungen warten auf Ihre Prüfung",
         "BANNER_ONE": "Für „{{title}}“ wartet eine Version auf Ihre Zustimmung.",

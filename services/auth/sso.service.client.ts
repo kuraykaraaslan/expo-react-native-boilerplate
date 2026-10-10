@@ -11,9 +11,7 @@ import {
 // Paths are relative: libs/axios adds the active tenant's address prefix.
 // Both routes are public (no bearer needed).
 //
-// NOTE (K4): the OAuth callback on the server mints a `web` audience token and
-// redirects to a web URL, so a device cannot finish an SSO login yet — see
-// docs/phases/06-auth-sso. These calls only discover providers and build the URL.
+// K4 is resolved server-side (device redirect via `redirect_uri`, see libs/ssoSession.ts and docs/phases/06-auth-sso).
 
 export class SSOClientService {
   /** Providers this tenant allows (providers unknown to this app version are dropped). */
@@ -35,7 +33,7 @@ export class SSOClientService {
     return SSOAuthUrlResponseSchema.parse(res.data);
   }
 
-  /** GET /auth/me/social-accounts - linked identities, read-only (linking waits for the server change, K4). */
+  /** GET /auth/me/social-accounts - linked identities, read-only (linking/unlinking is not built). */
   static async getSocialAccounts(): Promise<ConnectedAccount[]> {
     const res = await axiosInstance.get("/auth/me/social-accounts");
     return SocialAccountsResponseSchema.parse(res.data).accounts;

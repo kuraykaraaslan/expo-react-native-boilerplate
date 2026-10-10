@@ -119,3 +119,39 @@ The server side of K4 now exists in next-boilerplate (commit `feat(auth_sso): de
 The app now sends `redirect_uri` (`Linking.createURL('/auth/callback')`, i.e. `expoboilerplate://auth/callback` in a build) and keeps verifying the returned bearer before storing it.
 
 **To finish the phase:** (1) deploy that server build; (2) set `SSO_DEVICE_REDIRECT_URIS=expoboilerplate://auth/callback` (add the `exp://…/--/auth/callback` URL for Expo Go if wanted); (3) sign in with Google on a device or emulator and confirm the drawer opens and later requests work. Only then change the §Order row to `CODED`; it stays `⛔`/pending until then. Against an older server the flow still fails safe with the e-mail fallback message.
+
+---
+
+## 🟡 CODED AND CONTRACT-CHECKED — 2026-10-10 (live verification pending)
+
+The server flow is now committed in next-boilerplate (`modules/auth_sso`, `app/api/auth/callback/[provider]/route.ts`, `SSO_DEVICE_REDIRECT_URIS` in `.env.example`). The client was re-checked against that SOURCE. Phase 6 is **not** marked live-verified: nothing ran against a deployed server or a device.
+
+**Server contract as READ from source**
+- `GET /tenant/{id}/api/auth/sso` → `{providers}` (public). `GET …/auth/sso/{provider}?redirect_uri=<deep link>` → `{url, state}`; 400 `INVALID_PROVIDER` when the provider is off for the tenant, 400 `INVALID_REDIRECT_URI` when `redirect_uri` is not an EXACT (trimmed) entry of `SSO_DEVICE_REDIRECT_URIS`; `state` is `{tenantId}.{uuid}`; the redirect is remembered in Redis against `state` for 10 minutes, single use, and re-checked against the allow-list on the way out.
+- The OAuth callback (`/api/auth/callback/{provider}`, app-level, not tenant-scoped) finds the redirect by `state`, runs `authenticateOrRegister`, creates the session with `audience: 'device'` and `otpIgnore: true` (no OTP step for SSO), and answers a 302 to `<redirect_uri>?rawAccessToken=…&rawRefreshToken=…&state=…`, or `<redirect_uri>?error=<message>&state=…` on any failure. No cookies on that path.
+- Without `redirect_uri` the old web flow is unchanged (cookies, https redirect) and the app never uses it.
+
+**Client check result**: start route, query name, callback parameter names, `state` format, the tenant read from `state`, and the bearer verification via `GET /auth/session` all match. Mismatches found and fixed:
+- The `?error=…&state=…` redirect was not read; it fell into the "no tokens" branch. It is now recognised after the state check, logged (`logger.warn`, the server's message only) and ends as `unavailable`.
+- A 400 from the start route (redirect not allow-listed, or provider off) surfaced as a raw API error. It now ends as `unavailable` and logs the exact `redirect_uri` the owner must list.
+- A successful SSO sign-in did not do what a password login does: the `compliance.pendingAgreements` flag of the verified session was dropped and a stale `mustChangePassword` was not cleared. Both are now applied (`applyCompliance`, `clearPasswordChange`).
+- The router also receives `<scheme>://auth/callback?…` on Android; it would have opened +not-found with both tokens in the URL. `app/+native-intent.tsx` (`libs/deepLinks.ts#mapIncomingPath`) now keeps the router at `/` for that URL.
+
+**Deep link inputs (`app.config.ts`, documented in `.env.example`, nothing invented)**
+- `EXPO_PUBLIC_APP_SCHEME` (default `expoboilerplate`, validated as a URL scheme).
+- `EXPO_PUBLIC_ASSOCIATED_DOMAIN` (comma-separated bare hosts). Unset: no associated domain and no intent filter are written. Set: iOS `applinks:<host>` (next to the existing `webcredentials:`), Android `intentFilters` with `autoVerify` for `https://<host>` paths `/auth/invitation`, `/t/*/auth/invitation/*`, `/tenant/*/auth/invitation/*`. Verified with `npx expo config --json` and `__tests__/appConfig.test.ts`.
+- Invitation links open `app/invitation.tsx` (see phase 7 section dated 2026-10-10 for the screen).
+
+**Deviations / notes**
+- `/tenant/{id}/auth/invitation/*` (the e-mail form used when a tenant has no ACTIVE primary domain in domain mode, `absoluteTenantUrl`) is in the Android filter but NOT in the server's apple-app-site-association (`APP_LINK_PATHS` only lists `/auth/invitation/*` and `/t/*/auth/invitation/*`), so iOS opens that form in the browser.
+- The server's path-tenancy prefix is configurable (`TENANT_PATH_PREFIX`) but the association paths hard-code `/t/`; the app does the same.
+- The SSO sign-in stores the slim session user (no profile); the profile loads on demand like after a restored session.
+- The redirect URI is whatever `Linking.createURL('/auth/callback')` returns in that build (`expoboilerplate://auth/callback` in a standalone build, `exp://…/--/auth/callback` in Expo Go). The exact string was not observed on a device; the app logs it when the server refuses it.
+
+**Not verified**: a real Google (or other provider) sign-in on a device, the Android/iOS link verification, and the exact `createURL` output.
+
+**Owner still must supply**
+- Server: `SSO_DEVICE_REDIRECT_URIS` = the app's exact redirect (e.g. `expoboilerplate://auth/callback`, plus the Expo Go URL if wanted); provider credentials; deploy.
+- Android: package name (`EXPO_PUBLIC_ANDROID_PACKAGE`, server `MOBILE_ANDROID_PACKAGE_NAME`) and the signing-certificate SHA-256 (`MOBILE_ANDROID_CERT_SHA256`).
+- iOS: app ID `<TeamID>.<bundle id>` (`MOBILE_IOS_APP_IDS`, bundle id `EXPO_PUBLIC_IOS_BUNDLE_ID`).
+- App: `EXPO_PUBLIC_ASSOCIATED_DOMAIN` = the host that serves `/.well-known/assetlinks.json` and `/.well-known/apple-app-site-association` and appears in the invitation e-mail links; optionally `EXPO_PUBLIC_APP_SCHEME`. A development/production build is required (Expo Go cannot claim https links).

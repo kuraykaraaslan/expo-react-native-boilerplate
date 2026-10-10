@@ -1,7 +1,9 @@
 import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
+import { normalizeApiError } from "@/libs/apiError";
 import axiosInstance from "@/libs/axios";
 import logger from "@/libs/logger";
+import { applyCompliance } from "@/libs/pendingAgreements";
 import { setTokens } from "@/libs/secureStorage";
 import { SafeUserSchema, SessionResponseSchema } from "@/services/auth/auth.dto";
 import type { SSOProvider } from "@/services/auth/sso.dto";
@@ -13,9 +15,11 @@ import { useTenantStore } from "@/stores/tenantStore";
 // ============================================================================
 // SSO browser flow (phase 6).
 //
-// K4 (resolved server-side): the app sends its deep link as `redirect_uri`; the
-// server (listed in SSO_DEVICE_REDIRECT_URIS) then mints a `device`-audience pair
-// and redirects to <scheme>://auth/callback?rawAccessToken&rawRefreshToken&state.
+// K4 (resolved server-side, contract-checked 2026-10-10 against next-boilerplate
+// sso-provider.route.ts + app/api/auth/callback/[provider]/route.ts): the app sends its
+// deep link as `redirect_uri` (exact match against SSO_DEVICE_REDIRECT_URIS, else 400);
+// the callback then mints a `device`-audience pair and redirects to
+// <redirect_uri>?rawAccessToken&rawRefreshToken&state, or <redirect_uri>?error=<message>&state.
 // Against a server without that change the callback still yields a web-audience
 // token, so the flow keeps failing SAFE: a token is verified before it is stored.
 // ============================================================================
@@ -34,12 +38,12 @@ export const SSO_REDIRECT_TIMEOUT_MS = 3 * 60 * 1000;
 
 const REDIRECT_PATH = "/auth/callback";
 
-type CallbackParams = { state?: string; accessToken?: string; refreshToken?: string };
+type CallbackParams = { state?: string; accessToken?: string; refreshToken?: string; error?: string };
 
 function parseCallback(url: string): CallbackParams {
   const { queryParams } = Linking.parse(url);
   const pick = (key: string) => (typeof queryParams?.[key] === "string" ? (queryParams[key] as string) : undefined);
-  return { state: pick("state"), accessToken: pick("rawAccessToken"), refreshToken: pick("rawRefreshToken") };
+  return { state: pick("state"), accessToken: pick("rawAccessToken"), refreshToken: pick("rawRefreshToken"), error: pick("error") };
 }
 
 /** The OAuth `state` is `{tenantId}.{uuid}` — the tenant half says whose session this is. */
@@ -70,7 +74,19 @@ async function openBrowser(url: string, redirectUrl: string): Promise<WebBrowser
 
 export async function signInWithProvider(provider: SSOProvider): Promise<SSOOutcome> {
   const redirectUrl = Linking.createURL(REDIRECT_PATH);
-  const { url, state } = await SSOClientService.getAuthUrl(provider, redirectUrl);
+  let started: Awaited<ReturnType<typeof SSOClientService.getAuthUrl>>;
+  try {
+    started = await SSOClientService.getAuthUrl(provider, redirectUrl);
+  } catch (err) {
+    // 400 = the provider is off for this tenant OR `redirect_uri` is not in the server's SSO_DEVICE_REDIRECT_URIS.
+    // The redirect value is not a secret and is exactly what the owner has to list there.
+    if (normalizeApiError(err).statusCode === 400) {
+      logger.error(`SSO start refused (400): list this exact value in the server's SSO_DEVICE_REDIRECT_URIS - redirect_uri=${redirectUrl}`);
+      return "unavailable";
+    }
+    throw err;
+  }
+  const { url, state } = started;
   useSSOStore.getState().setPendingState(state);
 
   const result = await openBrowser(url, redirectUrl);
@@ -89,6 +105,12 @@ export async function signInWithProvider(provider: SSOProvider): Promise<SSOOutc
   const returned = parseCallback(result.url);
   if (!expected || returned.state !== expected) return "state-mismatch";
 
+  if (returned.error) {
+    // The server redirected with `?error=<message>&state` (provider refused, account blocked, ...). No tokens came with it.
+    logger.warn("SSO callback reported an error", returned.error);
+    return "unavailable";
+  }
+
   const tenantId = tenantFromState(expected);
   if (!tenantId || !returned.accessToken || !returned.refreshToken) {
     logger.error("SSO callback carried no device tokens - device bearer flow requires server-side `audience: 'device'`; see docs/phases/06-auth-sso/README.md");
@@ -99,7 +121,9 @@ export async function signInWithProvider(provider: SSOProvider): Promise<SSOOutc
     const session = await verifyBearer(tenantId, returned.accessToken);
     await setTokens(tenantId, { accessToken: returned.accessToken, refreshToken: returned.refreshToken });
     useTenantStore.getState().setActiveTenantId(tenantId);
-    useAuthStore.getState().setUser(SafeUserSchema.parse(session.user));
+    useAuthStore.getState().setUser(SafeUserSchema.parse(session.user)); // slim user: the profile loads on demand
+    useAuthStore.getState().clearPasswordChange(); // same reset a password login does (the OTP gate is skipped server side)
+    applyCompliance(tenantId, session.compliance);
     return "signed-in";
   } catch (err) {
     // Today: the callback produced a web-audience token, which the bearer path refuses (401). Nothing was stored.

@@ -893,6 +893,13 @@
         "ALREADY_ANSWERED": "Esta invitación ya se ha respondido.",
         "EXPIRED": "Esta invitación ha caducado o fue revocada."
     },
+    "INVITATION_LINK": {
+        "TITLE": "Invitación a una organización",
+        "SUBTITLE_ACCEPT": "Revisa tu invitación y elige Aceptar para unirte.",
+        "SUBTITLE_DECLINE": "Revisa tu invitación y elige Rechazar si no quieres unirte.",
+        "NONE_TITLE": "No hay invitaciones pendientes",
+        "NONE_DESC": "Esta cuenta no tiene ninguna invitación pendiente. Inicia sesión con la dirección de correo a la que se envió la invitación y comprueba que esté verificada."
+    },
     "AGREEMENTS": {
         "BANNER_TITLE": "Hay acuerdos pendientes de revisión",
         "BANNER_ONE": "«{{title}}» tiene una versión pendiente de su aceptación.",

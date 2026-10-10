@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T18:39:17.695Z",
+  "generatedAt": "2026-10-10T18:45:02.347Z",
   "stores": [
     {
       "filePath": "stores/appStore.ts",
@@ -122,6 +122,16 @@
         "clearAll"
       ],
       "persisted": true
+    },
+    {
+      "filePath": "stores/pendingLinkStore.ts",
+      "name": "pendingLinkStore",
+      "hook": "usePendingLinkStore",
+      "stateKeys": [
+        "invitation",
+        "setInvitation"
+      ],
+      "persisted": false
     },
     {
       "filePath": "stores/pushStore.ts",
