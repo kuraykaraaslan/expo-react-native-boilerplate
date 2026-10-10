@@ -495,8 +495,6 @@
         "MEMBERSHIP_INACTIVE": "Inactive",
         "MEMBERSHIP_SUSPENDED": "Suspended",
         "MEMBERSHIP_PENDING": "Pending approval",
-        "PENDING_INVITES_one": "You have {{count}} pending invitation.",
-        "PENDING_INVITES_other": "You have {{count}} pending invitations.",
         "BACK_TO_APP": "Back to the app",
         "TENANT_LOGIN_TITLE": "Sign in to {{name}}",
         "TENANT_LOGIN_SUBTITLE": "Enter your password to continue as {{email}}",
@@ -836,5 +834,22 @@
         "GROUP_ENTERPRISE": "Enterprise",
         "GROUP_GOVERNMENT": "Government",
         "LINKING_SOON": "Linking and unlinking accounts is not available in the app yet."
+    },
+    "MY_INVITATIONS": {
+        "TITLE_one": "Pending invitation",
+        "TITLE_other": "Pending invitations",
+        "EXPIRES": "Expires {{date}}",
+        "ACCEPT": "Accept",
+        "DECLINE": "Decline",
+        "DECLINE_TITLE": "Decline invitation",
+        "DECLINE_DESC": "You will not join {{name}}. They can send you a new invitation later.",
+        "ACCEPTED": "You joined {{name}}.",
+        "DECLINED": "Invitation from {{name}} declined.",
+        "JOINED": "You joined {{name}}",
+        "SIGN_IN_TO": "Sign in to {{name}}",
+        "EMAIL_NOT_VERIFIED": "Verify your email address before answering an invitation. You can also use the link in the invitation email.",
+        "NOT_FOUND": "This invitation is no longer available for your account.",
+        "ALREADY_ANSWERED": "This invitation has already been answered.",
+        "EXPIRED": "This invitation has expired or was revoked."
     }
 }

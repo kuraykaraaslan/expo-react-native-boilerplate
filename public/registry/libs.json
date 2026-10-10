@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:29:11.707Z",
+  "generatedAt": "2026-10-10T11:32:21.117Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",
@@ -73,6 +73,18 @@
         "Locale",
         "LOCALE_META",
         "default"
+      ]
+    },
+    {
+      "filePath": "libs/invitations.ts",
+      "name": "invitations",
+      "exports": [
+        "InvitationAction",
+        "InvitationResult",
+        "refreshTenantOverview",
+        "answerInvitation",
+        "invitationErrorKey",
+        "invitationIsGone"
       ]
     },
     {

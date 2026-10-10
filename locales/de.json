@@ -495,8 +495,6 @@
         "MEMBERSHIP_INACTIVE": "Inaktiv",
         "MEMBERSHIP_SUSPENDED": "Gesperrt",
         "MEMBERSHIP_PENDING": "Genehmigung ausstehend",
-        "PENDING_INVITES_one": "Sie haben {{count}} ausstehende Einladung.",
-        "PENDING_INVITES_other": "Sie haben {{count}} ausstehende Einladungen.",
         "BACK_TO_APP": "Zurück zur App",
         "TENANT_LOGIN_TITLE": "Bei {{name}} anmelden",
         "TENANT_LOGIN_SUBTITLE": "Geben Sie Ihr Passwort ein, um als {{email}} fortzufahren",
@@ -836,5 +834,22 @@
         "GROUP_ENTERPRISE": "Unternehmen",
         "GROUP_GOVERNMENT": "Behörden",
         "LINKING_SOON": "Das Verknüpfen und Trennen von Konten ist in der App noch nicht verfügbar."
+    },
+    "MY_INVITATIONS": {
+        "TITLE_one": "Ausstehende Einladung",
+        "TITLE_other": "Ausstehende Einladungen",
+        "EXPIRES": "Läuft ab am {{date}}",
+        "ACCEPT": "Annehmen",
+        "DECLINE": "Ablehnen",
+        "DECLINE_TITLE": "Einladung ablehnen",
+        "DECLINE_DESC": "Sie treten {{name}} nicht bei. Man kann Ihnen später eine neue Einladung senden.",
+        "ACCEPTED": "Sie sind {{name}} beigetreten.",
+        "DECLINED": "Einladung von {{name}} abgelehnt.",
+        "JOINED": "Sie sind {{name}} beigetreten",
+        "SIGN_IN_TO": "Bei {{name}} anmelden",
+        "EMAIL_NOT_VERIFIED": "Bestätigen Sie Ihre E-Mail-Adresse, bevor Sie eine Einladung beantworten. Sie können auch den Link in der Einladungs-E-Mail verwenden.",
+        "NOT_FOUND": "Diese Einladung ist für Ihr Konto nicht mehr verfügbar.",
+        "ALREADY_ANSWERED": "Diese Einladung wurde bereits beantwortet.",
+        "EXPIRED": "Diese Einladung ist abgelaufen oder wurde widerrufen."
     }
 }

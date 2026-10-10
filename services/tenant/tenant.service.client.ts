@@ -1,8 +1,11 @@
-import axiosInstance from "@/libs/axios";
+import axiosInstance, { tenantPath } from "@/libs/axios";
+import { getActiveTenantId } from "@/stores/tenantStore";
 import { AuditLogsResponseSchema, type AuditLogsResponse } from "@/services/compliance/compliance.dto";
 import { AckResponseSchema } from "@/services/auth/auth.dto";
 import { PublicBrandingResponseSchema, type PublicBrandingResponse } from "@/services/tenant/branding.dto";
 import {
+  AcceptInvitationByIdResponse,
+  AcceptInvitationByIdResponseSchema,
   CreateTenantRequest,
   CreateTenantRequestSchema,
   CreateTenantResponse,
@@ -152,6 +155,29 @@ export class TenantClientService {
 
   static async declineInvitation(tenantId: string, token: string): Promise<void> {
     const res = await axiosInstance.post("/invitations/decline", { token }, { tenantId });
+    AckResponseSchema.parse(res.data);
+  }
+
+  /**
+   * Accept a pending invitation by id. The URL addresses the INVITING tenant (the route's ACCOUNT
+   * scope does not compare it with the token), but the bearer is the token pair this device holds
+   * for `authTenantId` — the invited tenant has none yet. Hence the explicit URL plus `tenantId`.
+   * 403: the account's email is not verified. 404: no such invitation for this account.
+   */
+  static async acceptInvitationById(invitationTenantId: string, invitationId: string, authTenantId: string = getActiveTenantId()): Promise<AcceptInvitationByIdResponse> {
+    const res = await axiosInstance.post(tenantPath(invitationTenantId, `/invitations/${encodeURIComponent(invitationId)}/accept`), undefined, {
+      tenantId: authTenantId,
+      foreignTenant: invitationTenantId !== authTenantId,
+    });
+    return AcceptInvitationByIdResponseSchema.parse(res.data);
+  }
+
+  /** Decline a pending invitation by id; same addressing and error rules as `acceptInvitationById`. */
+  static async declineInvitationById(invitationTenantId: string, invitationId: string, authTenantId: string = getActiveTenantId()): Promise<void> {
+    const res = await axiosInstance.post(tenantPath(invitationTenantId, `/invitations/${encodeURIComponent(invitationId)}/decline`), undefined, {
+      tenantId: authTenantId,
+      foreignTenant: invitationTenantId !== authTenantId,
+    });
     AckResponseSchema.parse(res.data);
   }
 

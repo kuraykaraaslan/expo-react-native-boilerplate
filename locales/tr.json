@@ -495,8 +495,6 @@
         "MEMBERSHIP_INACTIVE": "Pasif",
         "MEMBERSHIP_SUSPENDED": "Askıya alındı",
         "MEMBERSHIP_PENDING": "Onay bekliyor",
-        "PENDING_INVITES_one": "{{count}} bekleyen davetiniz var.",
-        "PENDING_INVITES_other": "{{count}} bekleyen davetiniz var.",
         "BACK_TO_APP": "Uygulamaya dön",
         "TENANT_LOGIN_TITLE": "{{name}} organizasyonuna giriş",
         "TENANT_LOGIN_SUBTITLE": "{{email}} olarak devam etmek için şifrenizi girin",
@@ -836,5 +834,22 @@
         "GROUP_ENTERPRISE": "Kurumsal",
         "GROUP_GOVERNMENT": "Kamu",
         "LINKING_SOON": "Hesap bağlama ve bağlantıyı kaldırma henüz uygulamada yok."
+    },
+    "MY_INVITATIONS": {
+        "TITLE_one": "Bekleyen davet",
+        "TITLE_other": "Bekleyen davetler",
+        "EXPIRES": "Son geçerlilik: {{date}}",
+        "ACCEPT": "Kabul et",
+        "DECLINE": "Reddet",
+        "DECLINE_TITLE": "Daveti reddet",
+        "DECLINE_DESC": "{{name}} organizasyonuna katılmayacaksınız. Daha sonra size yeni bir davet gönderebilirler.",
+        "ACCEPTED": "{{name}} organizasyonuna katıldınız.",
+        "DECLINED": "{{name}} davetini reddettiniz.",
+        "JOINED": "{{name}} organizasyonuna katıldınız",
+        "SIGN_IN_TO": "{{name}} için giriş yap",
+        "EMAIL_NOT_VERIFIED": "Daveti yanıtlamadan önce e-posta adresinizi doğrulayın. Davet e-postasındaki bağlantıyı da kullanabilirsiniz.",
+        "NOT_FOUND": "Bu davet artık hesabınız için kullanılamıyor.",
+        "ALREADY_ANSWERED": "Bu davet zaten yanıtlanmış.",
+        "EXPIRED": "Bu davetin süresi dolmuş veya iptal edilmiş."
     }
 }

@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBuilding, faChevronRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
-import { AlertBanner, Badge, Button, EmptyState, Spinner, Text } from '@/components/ui';
+import { PendingInvitations } from '@/components/tenant/PendingInvitations';
+import { Badge, Button, EmptyState, Spinner, Text } from '@/components/ui';
 import type { TenantMembership } from '@/services/tenant/tenant.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { logout } from '@/libs/logout';
@@ -69,7 +70,6 @@ export default function SelectTenantScreen() {
   const [loading, setLoading] = useState(true);
   const [switching, setSwitching] = useState<string | null>(null);
   const memberships = useTenantStore((s) => s.memberships);
-  const invitations = useTenantStore((s) => s.pendingInvitations);
   const activeTenantId = useTenantStore((s) => s.activeTenantId);
   const needsTenantSelection = useTenantStore((s) => s.needsTenantSelection);
   const setTenantOverview = useTenantStore((s) => s.setTenantOverview);
@@ -118,7 +118,7 @@ export default function SelectTenantScreen() {
         )
       }
     >
-      {invitations.length > 0 ? <AlertBanner variant="info" message={t('AUTH_UI.PENDING_INVITES', { count: invitations.length })} /> : null}
+      <PendingInvitations />
       {loading && memberships.length === 0 ? (
         <View className="items-center py-8" accessibilityState={{ busy: true }}>
           <Spinner size="lg" />

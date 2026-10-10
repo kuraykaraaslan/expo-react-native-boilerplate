@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:29:11.707Z",
+  "generatedAt": "2026-10-10T11:32:21.117Z",
   "dtos": [
     {
       "filePath": "services/platform/apiKey.dto.ts",
@@ -375,6 +375,7 @@
         "InvitationsListResponseSchema",
         "TransitionMemberRequestSchema",
         "TransitionMemberResponseSchema",
+        "AcceptInvitationByIdResponseSchema",
         "InvitationActionResponseSchema",
         "CreateTenantResponseSchema",
         "UpdateMemberResponseSchema",
@@ -401,6 +402,7 @@
         "MembersListResponse",
         "InvitationsListResponse",
         "TransitionMemberRequest",
+        "AcceptInvitationByIdResponse",
         "InvitationActionResponse",
         "CreateTenantResponse",
         "UpdateMemberResponse",

@@ -204,6 +204,11 @@
     "category": "tenant",
     "file": "tenant-NoOrganization.md"
   },
+  "tenant/PendingInvitations": {
+    "name": "PendingInvitations",
+    "category": "tenant",
+    "file": "tenant-PendingInvitations.md"
+  },
   "tenant/SuspendMemberModal": {
     "name": "SuspendMemberModal",
     "category": "tenant",

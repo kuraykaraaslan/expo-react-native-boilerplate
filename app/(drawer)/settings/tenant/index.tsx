@@ -7,6 +7,7 @@ import { LinkTile } from '@/components/common/LinkTile';
 import { Screen } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { SectionLabel } from '@/components/common/SectionLabel';
+import { PendingInvitations } from '@/components/tenant/PendingInvitations';
 import { NoOrganization } from '@/components/tenant/NoOrganization';
 import { Badge, Button, Card, Input, Text, Textarea } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
@@ -78,6 +79,7 @@ export default function OrganizationScreen() {
   return (
     <Screen>
       <ScreenHeader back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }} title={t('ORGANIZATION.TITLE')} subtitle={t('ORGANIZATION.SUBTITLE')} />
+      <PendingInvitations refreshOnMount />
       {membership ? (
         <>
           <Card title={t('ORGANIZATION.CARD')} subtitle={t('ORGANIZATION.CARD_DESC')}>

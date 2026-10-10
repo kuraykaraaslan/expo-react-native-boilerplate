@@ -495,8 +495,6 @@
         "MEMBERSHIP_INACTIVE": "Inactif",
         "MEMBERSHIP_SUSPENDED": "Suspendu",
         "MEMBERSHIP_PENDING": "En attente d'approbation",
-        "PENDING_INVITES_one": "Vous avez {{count}} invitation en attente.",
-        "PENDING_INVITES_other": "Vous avez {{count}} invitations en attente.",
         "BACK_TO_APP": "Retour à l'application",
         "TENANT_LOGIN_TITLE": "Connexion à {{name}}",
         "TENANT_LOGIN_SUBTITLE": "Saisissez votre mot de passe pour continuer en tant que {{email}}",
@@ -836,5 +834,22 @@
         "GROUP_ENTERPRISE": "Entreprise",
         "GROUP_GOVERNMENT": "Administration",
         "LINKING_SOON": "Lier et délier des comptes n’est pas encore disponible dans l’application."
+    },
+    "MY_INVITATIONS": {
+        "TITLE_one": "Invitation en attente",
+        "TITLE_other": "Invitations en attente",
+        "EXPIRES": "Expire le {{date}}",
+        "ACCEPT": "Accepter",
+        "DECLINE": "Refuser",
+        "DECLINE_TITLE": "Refuser l'invitation",
+        "DECLINE_DESC": "Vous ne rejoindrez pas {{name}}. Une nouvelle invitation pourra vous être envoyée plus tard.",
+        "ACCEPTED": "Vous avez rejoint {{name}}.",
+        "DECLINED": "Invitation de {{name}} refusée.",
+        "JOINED": "Vous avez rejoint {{name}}",
+        "SIGN_IN_TO": "Se connecter à {{name}}",
+        "EMAIL_NOT_VERIFIED": "Vérifiez votre adresse e-mail avant de répondre à une invitation. Vous pouvez aussi utiliser le lien de l'e-mail d'invitation.",
+        "NOT_FOUND": "Cette invitation n'est plus disponible pour votre compte.",
+        "ALREADY_ANSWERED": "Cette invitation a déjà reçu une réponse.",
+        "EXPIRED": "Cette invitation a expiré ou a été révoquée."
     }
 }

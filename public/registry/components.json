@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:29:11.707Z",
+  "generatedAt": "2026-10-10T11:32:21.117Z",
   "components": [
     {
       "id": "account/AvatarPicker",
@@ -515,6 +515,16 @@
       "category": "tenant",
       "exports": [
         "NoOrganization"
+      ],
+      "props": []
+    },
+    {
+      "id": "tenant/PendingInvitations",
+      "filePath": "components/tenant/PendingInvitations.tsx",
+      "name": "PendingInvitations",
+      "category": "tenant",
+      "exports": [
+        "PendingInvitations"
       ],
       "props": []
     },

@@ -130,3 +130,30 @@ Typecheck 0 errors, jest 249/249 (6 new).
 - Tests: transition request rejects a >500 char reason and a non-ISO `until` before sending.
 - Verified against next-boilerplate `members-member-id-activity.route.ts` and `members-member-id-transition.route.ts` (`reason`, `until`, 1-based `page`, `{logs,total}`).
 - Not verified: on-device rendering of the sheet; there are no component render tests in this repo. Activity rows are the member's own actions (actorId), not actions done to the member.
+
+---
+
+## ✅ Accept / decline by invitation id coded — 2026-10-10
+
+**What shipped**
+- `TenantClientService.acceptInvitationById(invitationTenantId, invitationId, authTenantId?)` and `declineInvitationById(...)` (`POST /invitations/{id}/accept|decline`, no body). The URL is built with `tenantPath(invitingTenant, …)` and the request is given `tenantId: <current tenant>` so the bearer is the token pair this device already holds. New axios request option `foreignTenant` (set when the two differ): a "tenant unavailable" refusal that is about the INVITED tenant no longer ends the session of the CURRENT tenant.
+- `libs/invitations.ts`: `answerInvitation` (answer, then re-read `GET /auth/me/tenants` into `tenantStore`, dropping the result when the organization or sign-in changed meanwhile), `refreshTenantOverview`, `invitationErrorKey` (403 / 404 / 409 / 410 → locale keys), `invitationIsGone`.
+- `components/tenant/PendingInvitations.tsx`: list with Accept / Decline per invitation (role badge, expiry), decline behind `ConfirmDialog`, haptics (success / warning / error), `sonner-native` toasts. After accept the row becomes a "You joined X" card with a **Sign in to X** button that opens `tenant-login` (K2: one token pair per tenant). It replaces the info banner on `select-tenant` and is mounted on the organization screen (`settings/tenant/index`, refreshing the overview on mount).
+- `MY_INVITATIONS.*` strings in all six locales; the now unused `AUTH_UI.PENDING_INVITES_*` keys were removed.
+- Tests: `__tests__/invitations.test.ts` (addressing + bearer, foreign-tenant refusal keeps the session, refresh, stale guards, error mapping), `__tests__/pendingInvitations.test.tsx` (accept → sign-in path, confirm / cancel decline, 403, 404 refresh, organization switch).
+
+**Server contract as READ from source** (next-boilerplate working tree, uncommitted: `invitations-invitation-id-accept.route.ts`, `…-decline.route.ts`, `tenant_invitation.lifecycle.service.ts`)
+- `POST /tenant/{invitingTenantId}/api/invitations/{invitationId}/accept` → 200 `{message, tenantId, memberRole}`; `/decline` → 200 `{message}`. Permissions `tenant_invitation.invitations.accept|decline`, `scope: "ACCOUNT"`. `authorizeAccount` authenticates the user session only and never compares the URL tenant with the token's, so a device token for another tenant is accepted (read in `auth_abac.guard.scopes.next.ts`; not proven on a live server).
+- 403 `INVITATION_EMAIL_NOT_VERIFIED` when `emailVerifiedAt` is empty (checked BEFORE the lookup). 404 "Invitation not found" for an unknown id OR an invitation addressed to another email. Not mentioned in the summary: 409 already accepted / declined, 410 revoked / expired (`assertUsable`), and accept can also fail on already-member / seat limits inside `acceptInvitation`.
+- `GET /auth/me/tenants` `invitations[]` is `{invitationId, tenantId, memberRole, status, expiresAt, createdAt, tenant}` with only PENDING, unexpired rows for the caller's email (`tenant` may be `null` if the tenant row is gone).
+
+**Deviations**
+- Any 403 on these routes is shown as "verify your email": the route's own guard raises no other 403 for a signed-in user, but a policy denial would be mislabelled. The email-verified flag is not read client side beforehand because the server is the authority.
+- The older token-based `acceptInvitation` / `declineInvitation` service methods stay (for the future email deep link); the deep-link / paste-the-code screen is still not built.
+- After accepting, the app does not switch organization by itself; the user taps "Sign in to X" (a password is needed for a tenant with no stored pair).
+
+**Not verified**
+- Nothing ran against a live server or on a device; the server changes are uncommitted in next-boilerplate, so behaviour depends on them being deployed.
+- The proxy's own answer for an invited tenant that is inactive or missing (hence the `foreignTenant` guard) was not read.
+
+**Owner still must supply**: nothing for this item (no identifiers involved); server deploy of the two routes.

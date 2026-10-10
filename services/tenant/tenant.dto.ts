@@ -157,6 +157,14 @@ export const TransitionMemberResponseSchema = z.object({
   member: TenantMemberSchema,
 });
 
+/** POST /invitations/{id}/accept (by id): `{ message, tenantId, memberRole }` — `tenantId` is the INVITING tenant. */
+export const AcceptInvitationByIdResponseSchema = z.object({
+  message: z.string().optional(),
+  tenantId: z.string(),
+  memberRole: MemberRoleEnum.default("USER"),
+});
+export type AcceptInvitationByIdResponse = z.infer<typeof AcceptInvitationByIdResponseSchema>;
+
 /** POST /invitations/{id}/resend and /remind: `{ message, invitation }` (the rotated token is only e-mailed). */
 export const InvitationActionResponseSchema = z.object({
   message: z.string(),

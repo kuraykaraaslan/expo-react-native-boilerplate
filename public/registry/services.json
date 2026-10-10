@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:29:11.707Z",
+  "generatedAt": "2026-10-10T11:32:21.117Z",
   "services": [
     {
       "filePath": "services/platform/apiKey.service.client.ts",
@@ -273,6 +273,8 @@
         "remindInvitation",
         "acceptInvitation",
         "declineInvitation",
+        "acceptInvitationById",
+        "declineInvitationById",
         "getPublicBranding",
         "getTenantSettings",
         "updateTenantSettings",

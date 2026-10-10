@@ -495,8 +495,6 @@
         "MEMBERSHIP_INACTIVE": "Inattivo",
         "MEMBERSHIP_SUSPENDED": "Sospeso",
         "MEMBERSHIP_PENDING": "In attesa di approvazione",
-        "PENDING_INVITES_one": "Hai {{count}} invito in sospeso.",
-        "PENDING_INVITES_other": "Hai {{count}} inviti in sospeso.",
         "BACK_TO_APP": "Torna all'app",
         "TENANT_LOGIN_TITLE": "Accedi a {{name}}",
         "TENANT_LOGIN_SUBTITLE": "Inserisci la password per continuare come {{email}}",
@@ -836,5 +834,22 @@
         "GROUP_ENTERPRISE": "Aziendale",
         "GROUP_GOVERNMENT": "Pubblica amministrazione",
         "LINKING_SOON": "Collegare e scollegare account non è ancora disponibile nell’app."
+    },
+    "MY_INVITATIONS": {
+        "TITLE_one": "Invito in sospeso",
+        "TITLE_other": "Inviti in sospeso",
+        "EXPIRES": "Scade il {{date}}",
+        "ACCEPT": "Accetta",
+        "DECLINE": "Rifiuta",
+        "DECLINE_TITLE": "Rifiuta invito",
+        "DECLINE_DESC": "Non entrerai in {{name}}. Potranno inviarti un nuovo invito in seguito.",
+        "ACCEPTED": "Sei entrato in {{name}}.",
+        "DECLINED": "Invito di {{name}} rifiutato.",
+        "JOINED": "Sei entrato in {{name}}",
+        "SIGN_IN_TO": "Accedi a {{name}}",
+        "EMAIL_NOT_VERIFIED": "Verifica il tuo indirizzo e-mail prima di rispondere a un invito. Puoi anche usare il link nell'e-mail di invito.",
+        "NOT_FOUND": "Questo invito non è più disponibile per il tuo account.",
+        "ALREADY_ANSWERED": "A questo invito è già stata data risposta.",
+        "EXPIRED": "Questo invito è scaduto o è stato revocato."
     }
 }

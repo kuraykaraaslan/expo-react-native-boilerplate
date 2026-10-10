@@ -495,8 +495,6 @@
         "MEMBERSHIP_INACTIVE": "Inactivo",
         "MEMBERSHIP_SUSPENDED": "Suspendido",
         "MEMBERSHIP_PENDING": "Pendiente de aprobación",
-        "PENDING_INVITES_one": "Tienes {{count}} invitación pendiente.",
-        "PENDING_INVITES_other": "Tienes {{count}} invitaciones pendientes.",
         "BACK_TO_APP": "Volver a la app",
         "TENANT_LOGIN_TITLE": "Inicia sesión en {{name}}",
         "TENANT_LOGIN_SUBTITLE": "Introduce tu contraseña para continuar como {{email}}",
@@ -836,5 +834,22 @@
         "GROUP_ENTERPRISE": "Empresarial",
         "GROUP_GOVERNMENT": "Gobierno",
         "LINKING_SOON": "Vincular y desvincular cuentas aún no está disponible en la app."
+    },
+    "MY_INVITATIONS": {
+        "TITLE_one": "Invitación pendiente",
+        "TITLE_other": "Invitaciones pendientes",
+        "EXPIRES": "Caduca el {{date}}",
+        "ACCEPT": "Aceptar",
+        "DECLINE": "Rechazar",
+        "DECLINE_TITLE": "Rechazar invitación",
+        "DECLINE_DESC": "No te unirás a {{name}}. Podrán enviarte una nueva invitación más adelante.",
+        "ACCEPTED": "Te has unido a {{name}}.",
+        "DECLINED": "Invitación de {{name}} rechazada.",
+        "JOINED": "Te has unido a {{name}}",
+        "SIGN_IN_TO": "Iniciar sesión en {{name}}",
+        "EMAIL_NOT_VERIFIED": "Verifica tu correo electrónico antes de responder a una invitación. También puedes usar el enlace del correo de invitación.",
+        "NOT_FOUND": "Esta invitación ya no está disponible para tu cuenta.",
+        "ALREADY_ANSWERED": "Esta invitación ya se ha respondido.",
+        "EXPIRED": "Esta invitación ha caducado o fue revocada."
     }
 }

@@ -38,6 +38,12 @@ declare module "axios" {
     tenantId?: string;
     /** No bearer token and no refresh/session handling (login, refresh, public). */
     skipAuth?: boolean;
+    /**
+     * The URL addresses another tenant than the one whose token is sent (ACCOUNT-scope routes such
+     * as accepting an invitation). A "tenant unavailable" refusal then describes THAT tenant, so it
+     * must not end the session of `tenantId`.
+     */
+    foreignTenant?: boolean;
     /** Replay of a request after a refresh — never refreshed again. */
     _retry?: boolean;
   }
@@ -197,7 +203,7 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(markHandled(error));
     }
 
-    if ((status === 401 || status === 403 || status === 404) && isTenantUnavailable(e)) {
+    if (!config.foreignTenant && (status === 401 || status === 403 || status === 404) && isTenantUnavailable(e)) {
       await endTenantSession(tenantId, "ERRORS.ORGANIZATION_UNAVAILABLE");
       return Promise.reject(markHandled(error));
     }

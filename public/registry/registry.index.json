@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:29:11.707Z",
+  "generatedAt": "2026-10-10T11:32:21.117Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -943,6 +943,16 @@
       "props": []
     },
     {
+      "id": "tenant/PendingInvitations",
+      "filePath": "components/tenant/PendingInvitations.tsx",
+      "name": "PendingInvitations",
+      "category": "tenant",
+      "exports": [
+        "PendingInvitations"
+      ],
+      "props": []
+    },
+    {
       "id": "tenant/SuspendMemberModal",
       "filePath": "components/tenant/SuspendMemberModal.tsx",
       "name": "SuspendMemberModal",
@@ -1778,6 +1788,8 @@
         "remindInvitation",
         "acceptInvitation",
         "declineInvitation",
+        "acceptInvitationById",
+        "declineInvitationById",
         "getPublicBranding",
         "getTenantSettings",
         "updateTenantSettings",
@@ -2317,6 +2329,7 @@
         "InvitationsListResponseSchema",
         "TransitionMemberRequestSchema",
         "TransitionMemberResponseSchema",
+        "AcceptInvitationByIdResponseSchema",
         "InvitationActionResponseSchema",
         "CreateTenantResponseSchema",
         "UpdateMemberResponseSchema",
@@ -2343,6 +2356,7 @@
         "MembersListResponse",
         "InvitationsListResponse",
         "TransitionMemberRequest",
+        "AcceptInvitationByIdResponse",
         "InvitationActionResponse",
         "CreateTenantResponse",
         "UpdateMemberResponse",
@@ -2426,6 +2440,18 @@
         "Locale",
         "LOCALE_META",
         "default"
+      ]
+    },
+    {
+      "filePath": "libs/invitations.ts",
+      "name": "invitations",
+      "exports": [
+        "InvitationAction",
+        "InvitationResult",
+        "refreshTenantOverview",
+        "answerInvitation",
+        "invitationErrorKey",
+        "invitationIsGone"
       ]
     },
     {
