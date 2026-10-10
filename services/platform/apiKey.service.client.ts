@@ -1,12 +1,16 @@
 import axiosInstance from "@/libs/axios";
 import {
+  ApiKeyActivityReportSchema,
   ApiKeyIssuedResponseSchema,
   ApiKeyListResponseSchema,
+  ApiKeyRotationAuditSchema,
   CreateApiKeyRequestSchema,
   RevokeAllResponseSchema,
   ScopeDefinitionListResponseSchema,
   type ApiKey,
+  type ApiKeyActivityReport,
   type ApiKeyIssued,
+  type ApiKeyRotationAudit,
   type CreateApiKeyRequest,
   type ScopeDefinition,
 } from "@/services/platform/apiKey.dto";
@@ -46,5 +50,17 @@ export class ApiKeyClientService {
   static async revokeAll(): Promise<number> {
     const res = await axiosInstance.post("/api-keys/revoke-all", {});
     return RevokeAllResponseSchema.parse(res.data).revokedCount;
+  }
+
+  /** Usage per key over the server's default window (trailing 90 days). */
+  static async getActivityReport(): Promise<ApiKeyActivityReport> {
+    const res = await axiosInstance.get("/api-keys/activity-report");
+    return ApiKeyActivityReportSchema.parse(res.data);
+  }
+
+  /** Keys that minted a successor over the server's default window (trailing 90 days). */
+  static async getRotationAudit(): Promise<ApiKeyRotationAudit> {
+    const res = await axiosInstance.get("/api-keys/rotation-audit");
+    return ApiKeyRotationAuditSchema.parse(res.data);
   }
 }

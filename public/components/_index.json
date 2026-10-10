@@ -24,6 +24,11 @@
     "category": "account",
     "file": "account-SessionsCard.md"
   },
+  "admin/ApiKeyReports": {
+    "name": "ApiKeyReports",
+    "category": "admin",
+    "file": "admin-ApiKeyReports.md"
+  },
   "admin/CreateApiKeyModal": {
     "name": "CreateApiKeyModal",
     "category": "admin",
@@ -33,6 +38,11 @@
     "name": "DomainDetailModal",
     "category": "admin",
     "file": "admin-DomainDetailModal.md"
+  },
+  "admin/DomainReportCard": {
+    "name": "DomainReportCard",
+    "category": "admin",
+    "file": "admin-DomainReportCard.md"
   },
   "admin/IssuedKeyModal": {
     "name": "IssuedKeyModal",

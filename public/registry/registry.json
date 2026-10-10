@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T04:30:51.977Z",
+  "generatedAt": "2026-10-10T07:29:13.395Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -482,6 +482,18 @@
       "props": []
     },
     {
+      "id": "admin/ApiKeyReports",
+      "filePath": "components/admin/ApiKeyReports.tsx",
+      "name": "ApiKeyReports",
+      "category": "admin",
+      "exports": [
+        "ApiKeyReports"
+      ],
+      "props": [
+        "reloadKey"
+      ]
+    },
+    {
       "id": "admin/CreateApiKeyModal",
       "filePath": "components/admin/CreateApiKeyModal.tsx",
       "name": "CreateApiKeyModal",
@@ -509,6 +521,18 @@
         "domain",
         "onClose",
         "onChanged"
+      ]
+    },
+    {
+      "id": "admin/DomainReportCard",
+      "filePath": "components/admin/DomainReportCard.tsx",
+      "name": "DomainReportCard",
+      "category": "admin",
+      "exports": [
+        "DomainReportCard"
+      ],
+      "props": [
+        "reloadKey"
       ]
     },
     {
@@ -1427,14 +1451,18 @@
         "create",
         "rotate",
         "revoke",
-        "revokeAll"
+        "revokeAll",
+        "getActivityReport",
+        "getRotationAudit"
       ],
       "endpoints": [
         "/api-keys",
         "/api-keys/scope-definitions",
         "/api-keys/${encodeURIComponent(apiKeyId)}/rotate",
         "/api-keys/${encodeURIComponent(apiKeyId)}",
-        "/api-keys/revoke-all"
+        "/api-keys/revoke-all",
+        "/api-keys/activity-report",
+        "/api-keys/rotation-audit"
       ]
     },
     {
@@ -1504,13 +1532,17 @@
         "create",
         "verify",
         "checkSsl",
-        "remove"
+        "remove",
+        "getTimeline",
+        "getReport"
       ],
       "endpoints": [
         "/domains",
         "/domains/${encodeURIComponent(domainId)}",
         "/domains/${encodeURIComponent(domainId)}/verify",
-        "/domains/${encodeURIComponent(domainId)}/ssl-check"
+        "/domains/${encodeURIComponent(domainId)}/ssl-check",
+        "/domains/${encodeURIComponent(domainId)}/timeline",
+        "/domains/report"
       ]
     },
     {
@@ -1824,13 +1856,17 @@
         "ScopeDefinitionSchema",
         "ScopeDefinitionListResponseSchema",
         "CreateApiKeyRequestSchema",
-        "RevokeAllResponseSchema"
+        "RevokeAllResponseSchema",
+        "ApiKeyActivityReportSchema",
+        "ApiKeyRotationAuditSchema"
       ],
       "types": [
         "ApiKey",
         "ApiKeyIssued",
         "ScopeDefinition",
-        "CreateApiKeyRequest"
+        "CreateApiKeyRequest",
+        "ApiKeyActivityReport",
+        "ApiKeyRotationAudit"
       ]
     },
     {
@@ -1967,13 +2003,20 @@
         "DomainListResponseSchema",
         "DomainDetailResponseSchema",
         "DomainCreateResponseSchema",
-        "DomainVerifyResponseSchema"
+        "DomainVerifyResponseSchema",
+        "DomainTimelineEntrySchema",
+        "DomainTimelineResponseSchema",
+        "DomainReportSchema",
+        "DomainReportResponseSchema"
       ],
       "types": [
         "Domain",
         "DomainVerification",
         "DomainDetail",
-        "DomainVerifyResult"
+        "DomainVerifyResult",
+        "DomainTimelineEntry",
+        "DomainTimeline",
+        "DomainReport"
       ]
     },
     {

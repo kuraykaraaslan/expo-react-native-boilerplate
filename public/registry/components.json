@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T04:30:51.977Z",
+  "generatedAt": "2026-10-10T07:29:13.395Z",
   "components": [
     {
       "id": "account/AvatarPicker",
@@ -58,6 +58,18 @@
       "props": []
     },
     {
+      "id": "admin/ApiKeyReports",
+      "filePath": "components/admin/ApiKeyReports.tsx",
+      "name": "ApiKeyReports",
+      "category": "admin",
+      "exports": [
+        "ApiKeyReports"
+      ],
+      "props": [
+        "reloadKey"
+      ]
+    },
+    {
       "id": "admin/CreateApiKeyModal",
       "filePath": "components/admin/CreateApiKeyModal.tsx",
       "name": "CreateApiKeyModal",
@@ -85,6 +97,18 @@
         "domain",
         "onClose",
         "onChanged"
+      ]
+    },
+    {
+      "id": "admin/DomainReportCard",
+      "filePath": "components/admin/DomainReportCard.tsx",
+      "name": "DomainReportCard",
+      "category": "admin",
+      "exports": [
+        "DomainReportCard"
+      ],
+      "props": [
+        "reloadKey"
       ]
     },
     {

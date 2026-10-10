@@ -3,9 +3,13 @@ import {
   DomainCreateResponseSchema,
   DomainDetailResponseSchema,
   DomainListResponseSchema,
+  DomainReportResponseSchema,
+  DomainTimelineResponseSchema,
   DomainVerifyResponseSchema,
   type Domain,
   type DomainDetail,
+  type DomainReport,
+  type DomainTimeline,
   type DomainVerifyResult,
 } from "@/services/platform/domain.dto";
 
@@ -41,5 +45,17 @@ export class DomainClientService {
 
   static async remove(domainId: string): Promise<void> {
     await axiosInstance.delete(`/domains/${encodeURIComponent(domainId)}`);
+  }
+
+  /** Audit-log rows of one domain, newest first. `page` is 1-based. */
+  static async getTimeline(domainId: string, params: { page?: number; pageSize?: number } = {}): Promise<DomainTimeline> {
+    const res = await axiosInstance.get(`/domains/${encodeURIComponent(domainId)}/timeline`, { params: { page: params.page ?? 1, pageSize: params.pageSize ?? 20 } });
+    return DomainTimelineResponseSchema.parse(res.data);
+  }
+
+  /** Health snapshot, SSL expiry and DNS verification age for every domain. */
+  static async getReport(): Promise<DomainReport> {
+    const res = await axiosInstance.get("/domains/report");
+    return DomainReportResponseSchema.parse(res.data).report;
   }
 }

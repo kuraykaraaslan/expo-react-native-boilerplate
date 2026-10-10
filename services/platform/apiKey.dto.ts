@@ -55,3 +55,66 @@ export type CreateApiKeyRequest = z.infer<typeof CreateApiKeyRequestSchema>;
 
 /** POST /api-keys/revoke-all → how many keys were switched off. */
 export const RevokeAllResponseSchema = z.object({ message: z.string().optional(), revokedCount: z.number().default(0) });
+
+// ── Reports (read-only, ADMIN+; default window is the trailing 90 days) ──────
+
+/** GET /api-keys/activity-report → the report itself, not wrapped. */
+export const ApiKeyActivityReportSchema = z.object({
+  from: z.string().nullish(),
+  to: z.string().nullish(),
+  summary: z
+    .object({
+      totalKeys: z.coerce.number().default(0),
+      activeKeys: z.coerce.number().default(0),
+      inactiveKeys: z.coerce.number().default(0),
+      expiredKeys: z.coerce.number().default(0),
+      neverUsed: z.coerce.number().default(0),
+      totalUsage: z.coerce.number().default(0),
+    })
+    .default({}),
+  rows: z
+    .array(
+      z.object({
+        apiKeyId: z.string(),
+        name: z.string(),
+        keyEnv: z.string().nullish(),
+        scopes: z.array(z.string()).default([]),
+        usageCount: z.coerce.number().default(0),
+        lastUsedAt: z.string().nullish(),
+        lastUsedIp: z.string().nullish(),
+        isActive: z.boolean().default(true),
+        expiresAt: z.string().nullish(),
+        createdAt: z.string().nullish(),
+      }),
+    )
+    .default([]),
+});
+export type ApiKeyActivityReport = z.infer<typeof ApiKeyActivityReportSchema>;
+
+/** GET /api-keys/rotation-audit → the report itself, not wrapped. */
+export const ApiKeyRotationAuditSchema = z.object({
+  from: z.string().nullish(),
+  to: z.string().nullish(),
+  summary: z
+    .object({
+      rotations: z.coerce.number().default(0),
+      graceActive: z.coerce.number().default(0),
+      revokedImmediately: z.coerce.number().default(0),
+    })
+    .default({}),
+  rows: z
+    .array(
+      z.object({
+        apiKeyId: z.string(),
+        name: z.string(),
+        keyEnv: z.string().nullish(),
+        successorKeyId: z.string().nullish(),
+        successorName: z.string().nullish(),
+        rotatedAt: z.string().nullish(),
+        graceExpiresAt: z.string().nullish(),
+        isActive: z.boolean().default(false),
+      }),
+    )
+    .default([]),
+});
+export type ApiKeyRotationAudit = z.infer<typeof ApiKeyRotationAuditSchema>;

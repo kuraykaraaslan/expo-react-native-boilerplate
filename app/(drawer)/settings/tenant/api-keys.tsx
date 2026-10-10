@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
+import { ApiKeyReports } from '@/components/admin/ApiKeyReports';
 import { CreateApiKeyModal } from '@/components/admin/CreateApiKeyModal';
 import { IssuedKeyModal } from '@/components/admin/IssuedKeyModal';
 import { ConfirmDialog } from '@/components/common/ConfirmDialog';
@@ -69,6 +70,8 @@ export default function ApiKeysScreen() {
   const [rotating, setRotating] = useState<ApiKey | null>(null);
   const [revoking, setRevoking] = useState<ApiKey | null>(null);
   const [revokingAll, setRevokingAll] = useState(false);
+  /** Bumped whenever the keys change, so the read-only reports below reload too. */
+  const [reportsKey, setReportsKey] = useState(0);
   /** The plaintext key of the last create / rotate — held here only until the user confirms they saved it. */
   const [rawKey, setRawKey] = useState<string | null>(null);
 
@@ -101,6 +104,7 @@ export default function ApiKeysScreen() {
 
   async function refresh() {
     setRefreshing(true);
+    setReportsKey((n) => n + 1);
     await load();
     setRefreshing(false);
   }
@@ -111,6 +115,7 @@ export default function ApiKeysScreen() {
       setRawKey(issued.rawKey);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       toast.success(t('API_KEYS.ROTATED'));
+      setReportsKey((n) => n + 1);
       await load();
     } catch (err: unknown) {
       handleApiError(err, 'ApiKeysScreen.rotate');
@@ -123,6 +128,7 @@ export default function ApiKeysScreen() {
       setKeys((prev) => prev.map((k) => (k.apiKeyId === key.apiKeyId ? { ...k, isActive: false } : k)));
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       toast.success(t('API_KEYS.REVOKED'));
+      setReportsKey((n) => n + 1);
     } catch (err: unknown) {
       handleApiError(err, 'ApiKeysScreen.revoke');
     }
@@ -133,6 +139,7 @@ export default function ApiKeysScreen() {
       const count = await ApiKeyClientService.revokeAll();
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       toast.success(t('API_KEYS.REVOKED_ALL', { count }));
+      setReportsKey((n) => n + 1);
       await load();
     } catch (err: unknown) {
       handleApiError(err, 'ApiKeysScreen.revokeAll');
@@ -177,6 +184,8 @@ export default function ApiKeysScreen() {
         )}
       </Card>
 
+      <ApiKeyReports reloadKey={reportsKey} />
+
       {activeCount > 0 ? (
         <Card title={t('API_KEYS.DANGER_ZONE')} subtitle={t('API_KEYS.DANGER_DESC')}>
           <Button variant="danger" onPress={() => setRevokingAll(true)} testID="api-keys-revoke-all">
@@ -185,7 +194,7 @@ export default function ApiKeysScreen() {
         </Card>
       ) : null}
 
-      <CreateApiKeyModal open={createOpen} onClose={() => setCreateOpen(false)} onCreated={(issued) => { setRawKey(issued.rawKey); void load(); }} />
+      <CreateApiKeyModal open={createOpen} onClose={() => setCreateOpen(false)} onCreated={(issued) => { setRawKey(issued.rawKey); setReportsKey((n) => n + 1); void load(); }} />
       <IssuedKeyModal rawKey={rawKey} onDone={() => setRawKey(null)} />
       <ConfirmDialog
         open={rotating !== null}

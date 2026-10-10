@@ -73,3 +73,23 @@ Modules: `api_key`, `tenant_domain`, `tenant_session`. Priority 2.
 - Screenshot blocking on the key screen was not added (needs a native module); the key is also never logged.
 - Not run against a live server; no component render tests (the repo has no render-test setup).
 
+
+---
+
+## 🟡 CODED — 2026-10-10: reports and domain timeline
+
+**Contract check (server source, `modules/{api_key,tenant_domain}/server`):**
+- `GET /domains/{id}/timeline?page&pageSize` (page 1-based, default 50 server-side; the client asks for 20) → `{success, logs, total}`, audit-log rows with `resourceType = tenant_domain`, newest first. Permission `tenant_domain.domains.view_timeline`.
+- `GET /domains/report` → `{success, report}` with `generatedAt`, `sslExpiryWarningDays`, `snapshot` (counts and status breakdowns), `sslExpiry[]` (`daysUntilExpiry`, `atRisk`) and `dnsAge[]` (`daysSinceVerified`). Permission `tenant_domain.domains.reports`.
+- `GET /api-keys/activity-report` and `GET /api-keys/rotation-audit` return the report **unwrapped** (`{from, to, summary, rows}`), optional `from`/`to` ISO datetimes (default: trailing 90 days). Permission `api_key.reports.read`.
+
+**Built:** DTOs and service methods in `services/platform/{apiKey,domain}.*` (lenient: counts coerced, every field defaulted or nullish, statuses and severities kept as strings), `components/admin/ApiKeyReports.tsx` (two read-only cards on the API keys screen), `components/admin/DomainReportCard.tsx` (health card on the domains screen), a paged "Activity" timeline inside `DomainDetailModal` (reloaded after verify / SSL check), strings in all six languages, tests in `__tests__/tenantAdmin.service.test.ts`.
+
+**Guards:** every report answer is dropped when the active organization changed meanwhile (and each card resets on a switch); the timeline drops answers for another domain or organization via a request sequence.
+
+**Deviations:**
+- The report and timeline permissions are separate from the list permissions, so a refusal shows a short "not available" note instead of an error toast (logged via the logger).
+- No date-range picker: the reports use the server's 90-day default; `from`/`to` are not sent.
+- The timeline shows action, severity, actor kind and time only; metadata is not rendered.
+
+**Not verified:** not run against a live server; no component render tests (the repo has no render-test setup), so the cards and the modal timeline were checked only by typecheck and the service tests.

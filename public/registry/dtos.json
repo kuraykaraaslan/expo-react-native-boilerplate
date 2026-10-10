@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T04:30:51.977Z",
+  "generatedAt": "2026-10-10T07:29:13.395Z",
   "dtos": [
     {
       "filePath": "services/platform/apiKey.dto.ts",
@@ -14,13 +14,17 @@
         "ScopeDefinitionSchema",
         "ScopeDefinitionListResponseSchema",
         "CreateApiKeyRequestSchema",
-        "RevokeAllResponseSchema"
+        "RevokeAllResponseSchema",
+        "ApiKeyActivityReportSchema",
+        "ApiKeyRotationAuditSchema"
       ],
       "types": [
         "ApiKey",
         "ApiKeyIssued",
         "ScopeDefinition",
-        "CreateApiKeyRequest"
+        "CreateApiKeyRequest",
+        "ApiKeyActivityReport",
+        "ApiKeyRotationAudit"
       ]
     },
     {
@@ -157,13 +161,20 @@
         "DomainListResponseSchema",
         "DomainDetailResponseSchema",
         "DomainCreateResponseSchema",
-        "DomainVerifyResponseSchema"
+        "DomainVerifyResponseSchema",
+        "DomainTimelineEntrySchema",
+        "DomainTimelineResponseSchema",
+        "DomainReportSchema",
+        "DomainReportResponseSchema"
       ],
       "types": [
         "Domain",
         "DomainVerification",
         "DomainDetail",
-        "DomainVerifyResult"
+        "DomainVerifyResult",
+        "DomainTimelineEntry",
+        "DomainTimeline",
+        "DomainReport"
       ]
     },
     {

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T04:30:51.977Z",
+  "generatedAt": "2026-10-10T07:29:13.395Z",
   "services": [
     {
       "filePath": "services/platform/apiKey.service.client.ts",
@@ -14,14 +14,18 @@
         "create",
         "rotate",
         "revoke",
-        "revokeAll"
+        "revokeAll",
+        "getActivityReport",
+        "getRotationAudit"
       ],
       "endpoints": [
         "/api-keys",
         "/api-keys/scope-definitions",
         "/api-keys/${encodeURIComponent(apiKeyId)}/rotate",
         "/api-keys/${encodeURIComponent(apiKeyId)}",
-        "/api-keys/revoke-all"
+        "/api-keys/revoke-all",
+        "/api-keys/activity-report",
+        "/api-keys/rotation-audit"
       ]
     },
     {
@@ -91,13 +95,17 @@
         "create",
         "verify",
         "checkSsl",
-        "remove"
+        "remove",
+        "getTimeline",
+        "getReport"
       ],
       "endpoints": [
         "/domains",
         "/domains/${encodeURIComponent(domainId)}",
         "/domains/${encodeURIComponent(domainId)}/verify",
-        "/domains/${encodeURIComponent(domainId)}/ssl-check"
+        "/domains/${encodeURIComponent(domainId)}/ssl-check",
+        "/domains/${encodeURIComponent(domainId)}/timeline",
+        "/domains/report"
       ]
     },
     {

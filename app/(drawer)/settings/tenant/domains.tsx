@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { DomainReportCard } from '@/components/admin/DomainReportCard';
 import { DOMAIN_STATUS_VARIANT, DomainDetailModal, SSL_STATUS_VARIANT } from '@/components/admin/DomainDetailModal';
 import { Screen } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
@@ -29,6 +30,8 @@ export default function DomainsScreen() {
   const [hostError, setHostError] = useState<string | undefined>();
   const [adding, setAdding] = useState(false);
   const [selected, setSelected] = useState<Domain | null>(null);
+  /** Bumped whenever the list reloads, so the health report reloads with it. */
+  const [reportKey, setReportKey] = useState(0);
 
   const load = useCallback(async () => {
     if (!membership || !canManage) return;
@@ -55,6 +58,7 @@ export default function DomainsScreen() {
 
   async function refresh() {
     setRefreshing(true);
+    setReportKey((n) => n + 1);
     await load();
     setRefreshing(false);
   }
@@ -70,6 +74,7 @@ export default function DomainsScreen() {
       toast.success(t('DOMAINS.ADDED'));
       setAddOpen(false);
       setHost('');
+      setReportKey((n) => n + 1);
       await load();
       setSelected(created); // the next step is the DNS record shown in the detail
     } catch (err: unknown) {
@@ -143,6 +148,8 @@ export default function DomainsScreen() {
         )}
       </Card>
 
+      <DomainReportCard reloadKey={reportKey} />
+
       <Modal
         open={addOpen}
         onClose={adding ? () => {} : () => setAddOpen(false)}
@@ -174,7 +181,14 @@ export default function DomainsScreen() {
           testID="domains-host"
         />
       </Modal>
-      <DomainDetailModal domain={selected} onClose={() => setSelected(null)} onChanged={load} />
+      <DomainDetailModal
+        domain={selected}
+        onClose={() => setSelected(null)}
+        onChanged={() => {
+          setReportKey((n) => n + 1);
+          void load();
+        }}
+      />
     </Screen>
   );
 }

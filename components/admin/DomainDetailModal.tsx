@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Clipboard from 'expo-clipboard';
@@ -7,9 +7,11 @@ import { toast } from 'sonner-native';
 import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { Badge, Button, Modal, Spinner, Text } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
-import type { Domain, DomainDetail } from '@/services/platform/domain.dto';
+import logger from '@/libs/logger';
+import type { Domain, DomainDetail, DomainTimelineEntry } from '@/services/platform/domain.dto';
 import { DomainClientService } from '@/services/platform/domain.service.client';
-import { formatDate } from '@/utils/format';
+import { useTenantStore } from '@/stores/tenantStore';
+import { formatDate, formatRelative } from '@/utils/format';
 
 type Props = {
   domain: Domain | null;
@@ -17,6 +19,9 @@ type Props = {
   /** The list should reload: the domain was verified, re-checked or removed. */
   onChanged: () => void;
 };
+
+const TIMELINE_PAGE_SIZE = 20;
+const SEVERITY_VARIANT: Record<string, 'neutral' | 'warning' | 'error'> = { low: 'neutral', medium: 'warning', high: 'error', critical: 'error' };
 
 type BadgeVariant = 'success' | 'warning' | 'error' | 'neutral';
 export const DOMAIN_STATUS_VARIANT: Record<string, BadgeVariant> = { ACTIVE: 'success', VERIFIED: 'success', PENDING: 'warning', DNS_FAILED: 'error', INACTIVE: 'neutral' };
@@ -47,6 +52,12 @@ export function DomainDetailModal({ domain, onClose, onChanged }: Props) {
   const [busy, setBusy] = useState<'verify' | 'ssl' | null>(null);
   const [removing, setRemoving] = useState(false);
   const id = domain?.tenantDomainId;
+  const [timeline, setTimeline] = useState<DomainTimelineEntry[]>([]);
+  const [timelineTotal, setTimelineTotal] = useState(0);
+  const [timelineState, setTimelineState] = useState<'loading' | 'ready' | 'failed'>('loading');
+  const [timelineMore, setTimelineMore] = useState(false);
+  /** Identifies the latest timeline request, so an answer for another domain or organization is dropped. */
+  const timelineSeq = useRef(0);
 
   const load = useCallback(async () => {
     if (!id) return;
@@ -64,6 +75,38 @@ export function DomainDetailModal({ domain, onClose, onChanged }: Props) {
     load().finally(() => setLoading(false));
   }, [id, load]);
 
+  const loadTimeline = useCallback(
+    async (append: boolean, page: number) => {
+      if (!id) return;
+      const mine = ++timelineSeq.current;
+      const tenant = useTenantStore.getState().selectedTenantMembership?.tenantId;
+      if (append) setTimelineMore(true);
+      try {
+        const res = await DomainClientService.getTimeline(id, { page, pageSize: TIMELINE_PAGE_SIZE });
+        if (mine !== timelineSeq.current || useTenantStore.getState().selectedTenantMembership?.tenantId !== tenant) return;
+        setTimeline((prev) => (append ? [...prev, ...res.logs] : res.logs));
+        setTimelineTotal(res.total);
+        setTimelineState('ready');
+      } catch (err: unknown) {
+        // The timeline has its own permission: a refusal is a note in the modal, not a toast.
+        logger.warn('[DomainDetailModal.timeline]', err);
+        if (mine === timelineSeq.current) setTimelineState('failed');
+      } finally {
+        if (mine === timelineSeq.current) setTimelineMore(false);
+      }
+    },
+    [id],
+  );
+
+  useEffect(() => {
+    timelineSeq.current += 1; // drops any answer still in flight for the previous domain
+    setTimeline([]);
+    setTimelineTotal(0);
+    setTimelineMore(false);
+    setTimelineState('loading');
+    void loadTimeline(false, 1);
+  }, [loadTimeline]);
+
   async function copy(text: string) {
     await Clipboard.setStringAsync(text);
     await Haptics.selectionAsync();
@@ -78,6 +121,7 @@ export function DomainDetailModal({ domain, onClose, onChanged }: Props) {
       await Haptics.notificationAsync(res.isVerified ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Warning);
       (res.isVerified ? toast.success : toast.info)(t(res.isVerified ? 'DOMAINS.VERIFIED_OK' : 'DOMAINS.VERIFIED_NO'));
       await load();
+      void loadTimeline(false, 1);
       onChanged();
     } catch (err: unknown) {
       handleApiError(err, 'DomainDetailModal.verify');
@@ -93,6 +137,7 @@ export function DomainDetailModal({ domain, onClose, onChanged }: Props) {
       await DomainClientService.checkSsl(id);
       toast.success(t('DOMAINS.SSL_CHECKED'));
       await load();
+      void loadTimeline(false, 1);
       onChanged();
     } catch (err: unknown) {
       handleApiError(err, 'DomainDetailModal.checkSsl');
@@ -160,6 +205,33 @@ export function DomainDetailModal({ domain, onClose, onChanged }: Props) {
               <Button size="sm" variant="outline" onPress={() => setRemoving(true)} testID="domains-delete">
                 <Text className="text-xs font-medium text-error">{t('DOMAINS.DELETE')}</Text>
               </Button>
+            </View>
+
+            <View className="gap-1" testID="domains-timeline">
+              <Text className="text-sm font-medium text-text-primary">{t('DOMAINS.TIMELINE_TITLE')}</Text>
+              {timelineState === 'loading' ? <Spinner /> : null}
+              {timelineState === 'failed' ? <Text className="text-xs text-text-secondary">{t('DOMAINS.TIMELINE_UNAVAILABLE')}</Text> : null}
+              {timelineState === 'ready' && timeline.length === 0 ? <Text className="text-xs text-text-secondary">{t('DOMAINS.TIMELINE_EMPTY')}</Text> : null}
+              {timeline.map((entry, i) => (
+                <View key={entry.auditLogId} className={`gap-0.5 py-2 ${i === timeline.length - 1 ? '' : 'border-b border-border'}`} testID={`domains-timeline-${entry.auditLogId}`}>
+                  <View className="flex-row items-center gap-2">
+                    <Text className="min-w-0 flex-1 text-xs font-medium text-text-primary" numberOfLines={1}>
+                      {entry.action}
+                    </Text>
+                    <Badge variant={SEVERITY_VARIANT[entry.severity] ?? 'neutral'} size="sm">
+                      {t(`AUDIT.SEV_${entry.severity}`, { defaultValue: entry.severity })}
+                    </Badge>
+                  </View>
+                  <Text className="text-xs text-text-secondary">
+                    {[entry.actorType === 'SYSTEM' ? t('AUDIT.ACTOR_SYSTEM') : entry.actorType === 'API_KEY' ? t('AUDIT.ACTOR_API_KEY') : null, formatRelative(entry.createdAt)].filter(Boolean).join('  ·  ')}
+                  </Text>
+                </View>
+              ))}
+              {timelineState === 'ready' && timeline.length < timelineTotal ? (
+                <Button size="sm" variant="outline" loading={timelineMore} onPress={() => loadTimeline(true, Math.floor(timeline.length / TIMELINE_PAGE_SIZE) + 1)} testID="domains-timeline-more">
+                  <Text className="text-xs font-medium text-text-primary">{t('DOMAINS.TIMELINE_MORE')}</Text>
+                </Button>
+              ) : null}
             </View>
           </View>
         ) : null}
