@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:32:21.117Z",
+  "generatedAt": "2026-10-10T11:34:42.576Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",

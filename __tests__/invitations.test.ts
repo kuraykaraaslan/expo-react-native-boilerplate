@@ -1,5 +1,6 @@
+import { MyTenantsResponseSchema } from "@/services/tenant/tenant.dto";
 import { clearAllTokens, getToken } from "@/libs/secureStorage";
-import { answerInvitation, invitationErrorKey, invitationIsGone } from "@/libs/invitations";
+import { answerInvitation, invitationErrorKey, invitationIsGone, refreshTenantOverview } from "@/libs/invitations";
 import { TenantClientService } from "@/services/tenant/tenant.service.client";
 import { useAuthStore } from "@/stores/authStore";
 import { useTenantStore } from "@/stores/tenantStore";
@@ -107,6 +108,26 @@ describe("answerInvitation", () => {
 
     expect(result.stale).toBe(true);
     expect(me).toHaveLength(0);
+  });
+
+  it("an older overview response never overwrites a newer one", async () => {
+    let release: () => void = () => {};
+    const gate = new Promise<void>((r) => (release = r));
+    const spy = jest.spyOn(TenantClientService, "getMyTenants");
+    spy.mockImplementationOnce(async () => {
+      await gate; // the slow, older read still carries the invitation
+      return MyTenantsResponseSchema.parse(meTenantsJson);
+    });
+    spy.mockImplementationOnce(async () => MyTenantsResponseSchema.parse({ ...meTenantsJson, invitations: [] }));
+
+    const older = refreshTenantOverview();
+    const newer = refreshTenantOverview();
+    await newer;
+    release();
+    await older;
+    spy.mockRestore();
+
+    expect(useTenantStore.getState().pendingInvitations).toEqual([]);
   });
 
   afterAll(() => clearAllTokens());

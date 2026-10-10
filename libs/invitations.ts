@@ -33,6 +33,8 @@ function sessionKey(): string | null {
   return useAuthStore.getState().isAuthenticated ? getActiveTenantId() : null;
 }
 
+let overviewSeq = 0;
+
 /**
  * Re-reads GET /auth/me/tenants into the store. A result for another organization
  * or a signed-out session is dropped. Returns whether the store was updated.
@@ -40,9 +42,12 @@ function sessionKey(): string | null {
 export async function refreshTenantOverview(): Promise<TenantMembership[] | null> {
   const key = sessionKey();
   if (!key) return null;
+  // Only the newest read may write: an older response that lands late (mount refresh vs the refresh
+  // after an answer) would otherwise bring an already answered invitation back.
+  const seq = ++overviewSeq;
   try {
     const overview = await TenantClientService.getMyTenants();
-    if (sessionKey() !== key) return null;
+    if (sessionKey() !== key || seq !== overviewSeq) return null;
     useTenantStore.getState().setTenantOverview(overview);
     return overview.tenants;
   } catch (err) {

@@ -103,4 +103,28 @@ describe("PendingInvitations", () => {
     await act(async () => useTenantStore.setState({ activeTenantId: "t2" }));
     expect(screen.queryByTestId(`pending-invitation-joined-${inv.invitationId}`)).toBeNull();
   });
+
+  it("refreshes the overview on mount only when asked", async () => {
+    await render(<PendingInvitations refreshOnMount />);
+    await waitFor(() => expect(service.getMyTenants).toHaveBeenCalledTimes(1));
+  });
+
+  it("shows no toast for a refusal that arrives after an organization switch", async () => {
+    let reject: (e: unknown) => void = () => {};
+    service.acceptInvitationById.mockReturnValue(new Promise((_, r) => (reject = r)));
+    await render(<PendingInvitations />);
+    await fireEvent.press(screen.getByTestId(`pending-invitation-accept-${inv.invitationId}`));
+
+    await act(async () => useTenantStore.setState({ activeTenantId: "t2" }));
+    await act(async () => reject({ response: { status: 409, data: { message: "x" } } }));
+
+    expect(toast.error).not.toHaveBeenCalled();
+  });
+
+  it("maps a 410 to the expired message", async () => {
+    service.acceptInvitationById.mockRejectedValue({ response: { status: 410, data: { message: "expired" } } });
+    await render(<PendingInvitations />);
+    await fireEvent.press(screen.getByTestId(`pending-invitation-accept-${inv.invitationId}`));
+    await waitFor(() => expect(toast.error).toHaveBeenCalledTimes(1));
+  });
 });

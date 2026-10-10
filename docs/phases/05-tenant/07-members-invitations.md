@@ -157,3 +157,9 @@ Typecheck 0 errors, jest 249/249 (6 new).
 - The proxy's own answer for an invited tenant that is inactive or missing (hence the `foreignTenant` guard) was not read.
 
 **Owner still must supply**: nothing for this item (no identifiers involved); server deploy of the two routes.
+
+### Review fixes — 2026-10-10
+- `refreshTenantOverview` now lets only the newest read write the store; a slow older `GET /auth/me/tenants` (mount refresh) could otherwise bring an already answered invitation back.
+- `PendingInvitations` no longer toasts or vibrates for a refusal that arrives after an organization switch or unmount.
+- Added tests: out-of-order overview responses, `refreshOnMount`, late refusal after a switch, 410 mapping.
+- Server contract re-read from source: routes, bodies and responses match; 409 (`assertUsable`, lost claim) and 410 were already mapped. No differences found beyond the unreachable-in-summary 409/410/already-member cases. Unverified: live behaviour.

@@ -72,6 +72,8 @@ export function PendingInvitations({ refreshOnMount = false }: Readonly<{ refres
         toast.success(t('MY_INVITATIONS.DECLINED', { name: orgName(invitation) }));
       }
     } catch (err: unknown) {
+      // The organization changed or the screen is gone: the refusal belongs to a session nobody is looking at.
+      if (!mounted.current || getActiveTenantId() !== tenantAtStart) return;
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       const key = invitationErrorKey(err);
       if (key) {
