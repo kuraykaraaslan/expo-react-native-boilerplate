@@ -527,6 +527,33 @@
         "EMPTY_DESC": "Non hai nulla da leggere.",
         "UNREAD_A11Y": "Non letta: {{title}}"
     },
+    "PUSH": {
+        "CHANNEL_NAME": "Notifiche",
+        "TITLE": "Notifiche",
+        "SUBTITLE": "Scegli come ti avvisano questo dispositivo e il tuo account",
+        "PREPROMPT_TITLE": "Resta aggiornato",
+        "PREPROMPT_BODY": "Attiva le notifiche per sapere dei nuovi messaggi e delle novità, anche quando l'app è chiusa. Puoi cambiarlo in qualsiasi momento nelle Impostazioni.",
+        "PREPROMPT_ENABLE": "Attiva",
+        "PREPROMPT_LATER": "Non ora",
+        "ENABLED_TOAST": "Le notifiche sono attive",
+        "DENIED_TOAST": "Le notifiche restano disattivate. Puoi consentirle nelle impostazioni di sistema.",
+        "FAILED_TOAST": "Impossibile attivare le notifiche. Riprova più tardi.",
+        "DEVICE_CARD": "Questo dispositivo",
+        "DEVICE_CARD_DESC": "Vale solo per questo telefono",
+        "DEVICE_TOGGLE": "Notifiche push su questo dispositivo",
+        "DEVICE_TOGGLE_DESC": "Ricevi avvisi per ogni organizzazione a cui hai effettuato l'accesso",
+        "ACCOUNT_CARD": "Il tuo account",
+        "ACCOUNT_CARD_DESC": "Vale per tutti i tuoi dispositivi",
+        "ACCOUNT_TOGGLE": "Notifiche push",
+        "ACCOUNT_TOGGLE_DESC": "Consenti a questo account di inviare notifiche push",
+        "UNSUPPORTED": "Le notifiche push richiedono un telefono o un tablet reale e una build di sviluppo.",
+        "NO_PROJECT": "Le notifiche push non sono configurate in questa build (manca l'ID progetto EAS).",
+        "DENIED_TITLE": "Le notifiche sono bloccate",
+        "DENIED_DESC": "Consenti le notifiche di questa app nelle impostazioni di sistema per riceverle.",
+        "OPEN_SETTINGS": "Apri le impostazioni di sistema",
+        "LOAD_FAILED": "Impossibile caricare le impostazioni delle notifiche.",
+        "SAVE_FAILED": "Impossibile salvare l'impostazione delle notifiche."
+    },
     "SETTINGS_HUB": {
         "TITLE": "Impostazioni",
         "SUBTITLE": "Scegli un'area da configurare",
@@ -548,7 +575,9 @@
         "INVITATIONS_DESC": "Inviti in attesa di essere accettati",
         "SIGN_OUT_DESC": "Esci da questo dispositivo",
         "SOCIAL": "Account collegati",
-        "SOCIAL_DESC": "Accessi social e aziendali"
+        "SOCIAL_DESC": "Accessi social e aziendali",
+        "NOTIFICATIONS": "Notifiche",
+        "NOTIFICATIONS_DESC": "Push su questo dispositivo e per il tuo account"
     },
     "ACCOUNT": {
         "TITLE": "Il mio profilo",

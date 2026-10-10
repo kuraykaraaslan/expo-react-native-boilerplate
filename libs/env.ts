@@ -27,6 +27,14 @@ const envSchema = z.object({
   EXPO_PUBLIC_APP_NAME: z.string().default("App"),
   EXPO_PUBLIC_APP_VERSION: z.string().default("1.0.0"),
   EXPO_PUBLIC_FRONTEND_URL: z.string().default("http://localhost:3000"),
+  /**
+   * EAS project id (UUID) that Expo push tokens are issued for. Optional: push stays off without it
+   * (or without `extra.eas.projectId` from app.config.ts). An empty value counts as unset.
+   */
+  EXPO_PUBLIC_EAS_PROJECT_ID: z.preprocess(
+    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+    z.string().uuid("EXPO_PUBLIC_EAS_PROJECT_ID must be the EAS project UUID (see .env.example)").optional(),
+  ),
 });
 
 // ============================================================================
@@ -39,6 +47,7 @@ export const env = envSchema.parse({
   EXPO_PUBLIC_APP_NAME: process.env.EXPO_PUBLIC_APP_NAME,
   EXPO_PUBLIC_APP_VERSION: process.env.EXPO_PUBLIC_APP_VERSION,
   EXPO_PUBLIC_FRONTEND_URL: process.env.EXPO_PUBLIC_FRONTEND_URL,
+  EXPO_PUBLIC_EAS_PROJECT_ID: process.env.EXPO_PUBLIC_EAS_PROJECT_ID,
 });
 
 export type Env = z.infer<typeof envSchema>;

@@ -10,6 +10,8 @@ import { useFlagStore } from '@/stores/flagStore';
 import logger from '@/libs/logger';
 import { clearPendingAgreements } from '@/libs/pendingAgreements';
 import { clearOutbox } from '@/libs/outbox';
+import { unregisterAllPush } from '@/libs/push';
+import { usePushStore } from '@/stores/pushStore';
 
 /**
  * Wipes everything this device holds for the signed-in account: every organization's tokens,
@@ -24,14 +26,19 @@ export async function clearLocalSession(): Promise<void> {
   useFlagStore.getState().clear(); // flags are evaluated per user
   useAppLockStore.getState().reset(); // the next account must not inherit this one's lock
   useTenantStore.getState().flush();
+  usePushStore.getState().clearRegistrations(); // per-account bookkeeping; the install id and the device switch stay
 }
 
 /**
  * Signs out of every organization this device holds a session for (one token
  * pair per tenant), then wipes local state. Server revocation is best effort:
  * offline or an already-dead session must never block signing out.
+ *
+ * The push tokens come off the server FIRST: the server's logout revokes the session but not the token, and the
+ * request needs the bearer token that is cleared below. `unregisterAllPush` never throws and is time-capped.
  */
 export async function logout(): Promise<void> {
+  await unregisterAllPush();
   const tenantIds = [...new Set([getActiveTenantId(), ...useTenantStore.getState().knownTenantIds])];
   const results = await Promise.allSettled(tenantIds.map((id) => AuthClientService.logout(id)));
   if (results.some((r) => r.status === 'rejected')) {

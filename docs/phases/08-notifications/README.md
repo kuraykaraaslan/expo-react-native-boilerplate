@@ -22,7 +22,7 @@ The client has a notifications screen that lists `GET /auth/me/notifications` an
 
 | Phase | File | Topic | Priority |
 |-----|-------|------|---------|
-| 8 | [08-push.md](08-push.md) | Push registration (**needs a server change**) | ⬜ Pending |
+| 8 | [08-push.md](08-push.md) | Push registration (Expo provider) | 🟡 Coded 2026-10-10 (server option A read from next-boilerplate's uncommitted tree; live verification on a device pending) |
 | 9 | [09-inapp-feed.md](09-inapp-feed.md) | In-app feed, unread badge, preferences | ✅ Coded 2026-10-08 |
 
 ## Locked decisions

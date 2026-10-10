@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:49:50.999Z",
+  "generatedAt": "2026-10-10T11:58:45.102Z",
   "libs": [
     {
       "filePath": "libs/accountDeletion.ts",
@@ -176,6 +176,25 @@
       ]
     },
     {
+      "filePath": "libs/push.ts",
+      "name": "push",
+      "exports": [
+        "PushPermission",
+        "PushRegistrationResult",
+        "ANDROID_CHANNEL_ID",
+        "UNREGISTER_CAP_MS",
+        "pushSupported",
+        "resolveProjectId",
+        "getPushPermission",
+        "requestPushPermission",
+        "registerPushForTenant",
+        "registerPushForActiveTenant",
+        "unregisterAllPush",
+        "PushTarget",
+        "pushTargetFor"
+      ]
+    },
+    {
       "filePath": "libs/realtime.ts",
       "name": "realtime",
       "exports": [
@@ -305,6 +324,22 @@
         "refreshFlags",
         "useFeatureFlag",
         "useFlagsSync"
+      ]
+    },
+    {
+      "filePath": "libs/usePushNotifications.ts",
+      "name": "usePushNotifications",
+      "exports": [
+        "foregroundBehavior",
+        "openFromResponse",
+        "usePushNotifications"
+      ]
+    },
+    {
+      "filePath": "libs/usePushPermission.ts",
+      "name": "usePushPermission",
+      "exports": [
+        "usePushPermission"
       ]
     },
     {

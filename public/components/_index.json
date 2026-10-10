@@ -144,6 +144,11 @@
     "category": "messaging",
     "file": "messaging-ReportMessageModal.md"
   },
+  "notifications/PushPrePrompt": {
+    "name": "PushPrePrompt",
+    "category": "notifications",
+    "file": "notifications-PushPrePrompt.md"
+  },
   "security/AppLockCard": {
     "name": "AppLockCard",
     "category": "security",

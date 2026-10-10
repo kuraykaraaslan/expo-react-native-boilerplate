@@ -51,7 +51,7 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 | 5 | [tenant/phase-5-tenancy-core.md](05-tenant/05-tenancy-core.md) | Tenancy core | ✅ Coded 2026-10-07 |
 | 6 | [auth_sso/phase-6-sso.md](06-auth-sso/06-sso.md) | SSO / OAuth | 🟡 **Client + server change written 2026-10-08; live verification pending** (see K4) |
 | 7 | [tenant/phase-7-members-invitations.md](05-tenant/07-members-invitations.md) | Members and invitations (`tenant_member`, `tenant_invitation`) | 🟡 **Coded 2026-10-10 incl. accept/decline by invitation id** (email deep link / paste-the-code screen still open; live verification pending) · P1 |
-| 8 | [notifications/phase-8-push.md](08-notifications/08-push.md) | Push registration (`notification_push`) | 🔴 Planned · P1 · **needs a server change** (K7) |
+| 8 | [notifications/phase-8-push.md](08-notifications/08-push.md) | Push registration (`notification_push`) | 🟡 **Coded 2026-10-10** (Expo provider; routes read from next-boilerplate's uncommitted tree; logout/deletion unregister first; live verification on a device and the owner's EAS/FCM/APNs setup pending) · P1 |
 | 9 | [notifications/phase-9-inapp-feed.md](08-notifications/09-inapp-feed.md) | In-app feed and unread badge (`notification_inapp`) | ✅ Coded 2026-10-08 · P1 |
 | 10 | [auth_security/phase-10-security-2fa.md](10-auth-security/10-security-2fa.md) | Security screen, TOTP, biometric lock (`user_security`, `auth`) | ✅ Coded 2026-10-08 · P1 |
 | 11 | [auth_security/phase-11-passkey.md](10-auth-security/11-passkey.md) | Passkeys (`auth_passkey`) | 🔴 Planned · P1 · **login half needs a server change** (K7) |
@@ -87,7 +87,7 @@ The server side, however, is **ready**: the bearer flow has been added with `aud
 - Phase 5's tenant switch depends on Phase 2's per-tenant SecureStore keys (K2).
 - Phase 6 depends on Phase 5's active-tenant concept; it also depends on a server-side change (K4).
 - Phase 7 depends on Phase 5 (pending invitations, `tenant-login`, switching).
-- Phase 8 depends on a server change (K7) and Phase 5's `knownTenantIds` cleanup; Phase 9 depends only on Phase 2 and is independent of Phase 8.
+- Phase 8 depends on a server change (K7, written 2026-10-10) and Phase 5's `knownTenantIds` cleanup; Phase 9 depends only on Phase 2 and is independent of Phase 8.
 - Phase 10 depends on Phase 4; Phase 11 depends on Phase 10, a server change (K7) and a development build.
 - Phase 12 depends on Phase 5 and kui-native's theme override API (Phase 1B).
 - Phase 13 depends on Phases 4 and 5; account deletion uses Phase 5's `flush()` and Phase 8's unregister when shipped.

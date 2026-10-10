@@ -527,6 +527,33 @@
         "EMPTY_DESC": "Her şey güncel.",
         "UNREAD_A11Y": "Okunmamış: {{title}}"
     },
+    "PUSH": {
+        "CHANNEL_NAME": "Bildirimler",
+        "TITLE": "Bildirimler",
+        "SUBTITLE": "Bu cihazın ve hesabının seni nasıl bilgilendireceğini seç",
+        "PREPROMPT_TITLE": "Gelişmelerden haberdar ol",
+        "PREPROMPT_BODY": "Uygulama kapalıyken bile yeni mesajlardan ve güncellemelerden haberdar olmak için bildirimleri aç. Bunu istediğin zaman Ayarlar'dan değiştirebilirsin.",
+        "PREPROMPT_ENABLE": "Aç",
+        "PREPROMPT_LATER": "Şimdi değil",
+        "ENABLED_TOAST": "Bildirimler açık",
+        "DENIED_TOAST": "Bildirimler kapalı kalıyor. Sistem ayarlarından izin verebilirsin.",
+        "FAILED_TOAST": "Bildirimler açılamadı. Daha sonra tekrar dene.",
+        "DEVICE_CARD": "Bu cihaz",
+        "DEVICE_CARD_DESC": "Yalnızca bu telefon için geçerlidir",
+        "DEVICE_TOGGLE": "Bu cihazda anlık bildirimler",
+        "DEVICE_TOGGLE_DESC": "Oturum açtığın tüm kuruluşlar için uyarı al",
+        "ACCOUNT_CARD": "Hesabın",
+        "ACCOUNT_CARD_DESC": "Tüm cihazların için geçerlidir",
+        "ACCOUNT_TOGGLE": "Anlık bildirimler",
+        "ACCOUNT_TOGGLE_DESC": "Bu hesabın anlık bildirim göndermesine izin ver",
+        "UNSUPPORTED": "Anlık bildirimler için gerçek bir telefon veya tablet ile bir geliştirme derlemesi gerekir.",
+        "NO_PROJECT": "Bu derlemede anlık bildirim kurulu değil (EAS proje kimliği eksik).",
+        "DENIED_TITLE": "Bildirimler engellendi",
+        "DENIED_DESC": "Bildirim almak için sistem ayarlarından bu uygulamaya izin ver.",
+        "OPEN_SETTINGS": "Sistem ayarlarını aç",
+        "LOAD_FAILED": "Bildirim ayarların yüklenemedi.",
+        "SAVE_FAILED": "Bildirim ayarın kaydedilemedi."
+    },
     "SETTINGS_HUB": {
         "TITLE": "Ayarlar",
         "SUBTITLE": "Yapılandırmak için bir alan seçin",
@@ -548,7 +575,9 @@
         "INVITATIONS_DESC": "Kabul edilmeyi bekleyen davetler",
         "SIGN_OUT_DESC": "Bu cihazda oturumu kapat",
         "SOCIAL": "Bağlı hesaplar",
-        "SOCIAL_DESC": "Sosyal ve kurumsal girişler"
+        "SOCIAL_DESC": "Sosyal ve kurumsal girişler",
+        "NOTIFICATIONS": "Bildirimler",
+        "NOTIFICATIONS_DESC": "Bu cihaz ve hesabın için anlık bildirimler"
     },
     "ACCOUNT": {
         "TITLE": "Profilim",

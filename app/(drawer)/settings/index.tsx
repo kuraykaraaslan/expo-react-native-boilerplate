@@ -4,6 +4,7 @@ import {
   faBuilding,
   faCircleUser,
   faEnvelope,
+  faBell,
   faEnvelopeOpenText,
   faLaptop,
   faFileContract,
@@ -34,6 +35,7 @@ export default function SettingsHubScreen() {
         <LinkTile icon={faShieldHalved} title={t('SETTINGS_HUB.SECURITY')} description={t('SETTINGS_HUB.SECURITY_DESC')} href="/settings/security" testID="settings-hub-security" />
         <LinkTile icon={faFileContract} title={t('PRIVACY.TITLE')} description={t('PRIVACY.TILE_DESC')} href="/settings/legal" testID="settings-hub-legal" />
         <LinkTile icon={faLink} title={t('SETTINGS_HUB.SOCIAL')} description={t('SETTINGS_HUB.SOCIAL_DESC')} href="/settings/social-accounts" testID="settings-hub-social" />
+        <LinkTile icon={faBell} title={t('SETTINGS_HUB.NOTIFICATIONS')} description={t('SETTINGS_HUB.NOTIFICATIONS_DESC')} href="/settings/notifications" testID="settings-hub-notifications" />
         <LinkTile icon={faSliders} title={t('SETTINGS_HUB.PREFERENCES')} description={t('SETTINGS_HUB.PREFERENCES_DESC')} href="/settings/change-language" testID="settings-hub-preferences" />
       </View>
 

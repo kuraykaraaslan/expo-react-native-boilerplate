@@ -7,9 +7,11 @@ import { useTenantStore } from '@/stores/tenantStore';
 import { DrawerContent } from '@/components/shell/DrawerContent';
 import { AppHeader } from '@/components/shell/AppHeader';
 import { AppLockScreen } from '@/components/security/AppLockScreen';
+import { PushPrePrompt } from '@/components/notifications/PushPrePrompt';
 import { useAppLockStore } from '@/libs/appLock';
 import { useAppLockWatcher } from '@/libs/useAppLockWatcher';
 import { pullPreferences } from '@/libs/preferences';
+import { usePushNotifications } from '@/libs/usePushNotifications';
 import { useRealtimeSync } from '@/libs/realtime';
 import { useFlagsSync } from '@/libs/useFeatureFlag';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
@@ -26,6 +28,7 @@ export default function DrawerLayout() {
 
   useFlagsSync(open);
   useRealtimeSync(open);
+  usePushNotifications(open);
 
   // Adopt the account's language and theme once the session is fully open.
   useEffect(() => {
@@ -73,6 +76,7 @@ export default function DrawerLayout() {
         options={{ title: 'Settings', drawerItemStyle: { display: 'none' } }}
       />
     </Drawer>
+    {open && !locked ? <PushPrePrompt /> : null}
     {locked ? <AppLockScreen /> : null}
     </View>
   );

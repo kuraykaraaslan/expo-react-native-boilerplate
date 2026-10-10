@@ -527,6 +527,33 @@
         "EMPTY_DESC": "You're all caught up.",
         "UNREAD_A11Y": "Unread: {{title}}"
     },
+    "PUSH": {
+        "CHANNEL_NAME": "Notifications",
+        "TITLE": "Notifications",
+        "SUBTITLE": "Choose how this device and your account notify you",
+        "PREPROMPT_TITLE": "Stay in the loop",
+        "PREPROMPT_BODY": "Turn on notifications to hear about new messages and updates, even when the app is closed. You can change this any time in Settings.",
+        "PREPROMPT_ENABLE": "Turn on",
+        "PREPROMPT_LATER": "Not now",
+        "ENABLED_TOAST": "Notifications are on",
+        "DENIED_TOAST": "Notifications stay off. You can allow them in your system settings.",
+        "FAILED_TOAST": "Could not turn on notifications. Try again later.",
+        "DEVICE_CARD": "This device",
+        "DEVICE_CARD_DESC": "Applies to this phone only",
+        "DEVICE_TOGGLE": "Push notifications on this device",
+        "DEVICE_TOGGLE_DESC": "Receive alerts for every organization you are signed in to",
+        "ACCOUNT_CARD": "Your account",
+        "ACCOUNT_CARD_DESC": "Applies to all your devices",
+        "ACCOUNT_TOGGLE": "Push notifications",
+        "ACCOUNT_TOGGLE_DESC": "Allow this account to send push notifications at all",
+        "UNSUPPORTED": "Push notifications need a physical phone or tablet and a development build.",
+        "NO_PROJECT": "Push is not set up in this build (the EAS project id is missing).",
+        "DENIED_TITLE": "Notifications are blocked",
+        "DENIED_DESC": "Allow notifications for this app in your system settings to receive them.",
+        "OPEN_SETTINGS": "Open system settings",
+        "LOAD_FAILED": "Could not load your notification settings.",
+        "SAVE_FAILED": "Could not save your notification setting."
+    },
     "SETTINGS_HUB": {
         "TITLE": "Settings",
         "SUBTITLE": "Choose an area to configure",
@@ -548,7 +575,9 @@
         "INVITATIONS_DESC": "Invitations waiting to be accepted",
         "SIGN_OUT_DESC": "Sign out of this device",
         "SOCIAL": "Linked accounts",
-        "SOCIAL_DESC": "Social and enterprise sign-ins"
+        "SOCIAL_DESC": "Social and enterprise sign-ins",
+        "NOTIFICATIONS": "Notifications",
+        "NOTIFICATIONS_DESC": "Push on this device and for your account"
     },
     "ACCOUNT": {
         "TITLE": "My Profile",

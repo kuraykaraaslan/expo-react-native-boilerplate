@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:49:50.999Z",
+  "generatedAt": "2026-10-10T11:58:45.102Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -247,6 +247,18 @@
     {
       "filePath": "app/(drawer)/settings/legal.tsx",
       "route": "/settings/legal",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/settings/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/settings/notifications.tsx",
+      "route": "/settings/notifications",
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
@@ -825,6 +837,17 @@
       "props": [
         "message"
       ]
+    },
+    {
+      "id": "notifications/PushPrePrompt",
+      "filePath": "components/notifications/PushPrePrompt.tsx",
+      "name": "PushPrePrompt",
+      "category": "notifications",
+      "exports": [
+        "PREPROMPT_DELAY_MS",
+        "PushPrePrompt"
+      ],
+      "props": []
     },
     {
       "id": "security/AppLockCard",
@@ -1789,6 +1812,19 @@
       ]
     },
     {
+      "filePath": "services/user/push.service.client.ts",
+      "module": "user",
+      "name": "push.service.client",
+      "className": "PushClientService",
+      "methods": [
+        "register",
+        "unregister"
+      ],
+      "endpoints": [
+        "/notifications/push/tokens"
+      ]
+    },
+    {
       "filePath": "services/platform/search.service.client.ts",
       "module": "platform",
       "name": "search.service.client",
@@ -2005,6 +2041,23 @@
         "pruneOthers",
         "clearTenant",
         "clearAll"
+      ],
+      "persisted": true
+    },
+    {
+      "filePath": "stores/pushStore.ts",
+      "name": "pushStore",
+      "hook": "usePushStore",
+      "stateKeys": [
+        "deviceId",
+        "enabled",
+        "promptDismissed",
+        "registered",
+        "ensureDeviceId",
+        "setEnabled",
+        "dismissPrompt",
+        "markRegistered",
+        "clearRegistrations"
       ],
       "persisted": true
     },
@@ -2368,6 +2421,25 @@
       ]
     },
     {
+      "filePath": "services/user/push.dto.ts",
+      "module": "user",
+      "name": "push.dto",
+      "schemas": [
+        "ExpoPushTokenSchema",
+        "PushPlatformSchema",
+        "RegisterPushTokenRequestSchema",
+        "UnregisterPushTokenQuerySchema",
+        "PushDataSchema"
+      ],
+      "types": [
+        "EXPO_TOKEN_RE",
+        "PushPlatform",
+        "RegisterPushTokenRequest",
+        "UnregisterPushTokenQuery",
+        "PushData"
+      ]
+    },
+    {
       "filePath": "services/platform/search.dto.ts",
       "module": "platform",
       "name": "search.dto",
@@ -2655,6 +2727,25 @@
       ]
     },
     {
+      "filePath": "libs/push.ts",
+      "name": "push",
+      "exports": [
+        "PushPermission",
+        "PushRegistrationResult",
+        "ANDROID_CHANNEL_ID",
+        "UNREGISTER_CAP_MS",
+        "pushSupported",
+        "resolveProjectId",
+        "getPushPermission",
+        "requestPushPermission",
+        "registerPushForTenant",
+        "registerPushForActiveTenant",
+        "unregisterAllPush",
+        "PushTarget",
+        "pushTargetFor"
+      ]
+    },
+    {
       "filePath": "libs/realtime.ts",
       "name": "realtime",
       "exports": [
@@ -2784,6 +2875,22 @@
         "refreshFlags",
         "useFeatureFlag",
         "useFlagsSync"
+      ]
+    },
+    {
+      "filePath": "libs/usePushNotifications.ts",
+      "name": "usePushNotifications",
+      "exports": [
+        "foregroundBehavior",
+        "openFromResponse",
+        "usePushNotifications"
+      ]
+    },
+    {
+      "filePath": "libs/usePushPermission.ts",
+      "name": "usePushPermission",
+      "exports": [
+        "usePushPermission"
       ]
     },
     {

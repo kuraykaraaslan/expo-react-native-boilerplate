@@ -527,6 +527,33 @@
         "EMPTY_DESC": "Vous êtes à jour.",
         "UNREAD_A11Y": "Non lue : {{title}}"
     },
+    "PUSH": {
+        "CHANNEL_NAME": "Notifications",
+        "TITLE": "Notifications",
+        "SUBTITLE": "Choisissez comment cet appareil et votre compte vous alertent",
+        "PREPROMPT_TITLE": "Restez informé",
+        "PREPROMPT_BODY": "Activez les notifications pour être averti des nouveaux messages et des nouveautés, même lorsque l'application est fermée. Vous pouvez le modifier à tout moment dans les Réglages.",
+        "PREPROMPT_ENABLE": "Activer",
+        "PREPROMPT_LATER": "Pas maintenant",
+        "ENABLED_TOAST": "Les notifications sont activées",
+        "DENIED_TOAST": "Les notifications restent désactivées. Vous pouvez les autoriser dans les réglages du système.",
+        "FAILED_TOAST": "Impossible d'activer les notifications. Réessayez plus tard.",
+        "DEVICE_CARD": "Cet appareil",
+        "DEVICE_CARD_DESC": "Concerne uniquement ce téléphone",
+        "DEVICE_TOGGLE": "Notifications push sur cet appareil",
+        "DEVICE_TOGGLE_DESC": "Recevoir des alertes pour chaque organisation à laquelle vous êtes connecté",
+        "ACCOUNT_CARD": "Votre compte",
+        "ACCOUNT_CARD_DESC": "Concerne tous vos appareils",
+        "ACCOUNT_TOGGLE": "Notifications push",
+        "ACCOUNT_TOGGLE_DESC": "Autoriser ce compte à envoyer des notifications push",
+        "UNSUPPORTED": "Les notifications push nécessitent un vrai téléphone ou une tablette et une version de développement.",
+        "NO_PROJECT": "Les notifications push ne sont pas configurées dans cette version (l'identifiant de projet EAS est manquant).",
+        "DENIED_TITLE": "Les notifications sont bloquées",
+        "DENIED_DESC": "Autorisez les notifications de cette application dans les réglages du système pour les recevoir.",
+        "OPEN_SETTINGS": "Ouvrir les réglages du système",
+        "LOAD_FAILED": "Impossible de charger vos réglages de notification.",
+        "SAVE_FAILED": "Impossible d'enregistrer votre réglage de notification."
+    },
     "SETTINGS_HUB": {
         "TITLE": "Paramètres",
         "SUBTITLE": "Choisissez un domaine à configurer",
@@ -548,7 +575,9 @@
         "INVITATIONS_DESC": "Invitations en attente d'acceptation",
         "SIGN_OUT_DESC": "Se déconnecter de cet appareil",
         "SOCIAL": "Comptes liés",
-        "SOCIAL_DESC": "Connexions sociales et d’entreprise"
+        "SOCIAL_DESC": "Connexions sociales et d’entreprise",
+        "NOTIFICATIONS": "Notifications",
+        "NOTIFICATIONS_DESC": "Push sur cet appareil et pour votre compte"
     },
     "ACCOUNT": {
         "TITLE": "Mon profil",

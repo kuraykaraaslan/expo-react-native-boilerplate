@@ -39,6 +39,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         microphonePermission: false,
       },
     ],
+    [
+      // Remote push (Phase 8). Needs a development build; Expo Go cannot receive remote push on SDK 53+.
+      // Credentials are the owner's: FCM (google-services.json / EAS) and an APNs key via `eas credentials`.
+      "expo-notifications",
+      { defaultChannel: "default" },
+    ],
     ["expo-local-authentication", { faceIDPermission: "Allow $(PRODUCT_NAME) to use Face ID to unlock the app." }],
     [
       "expo-splash-screen",
@@ -54,7 +60,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   extra: {
     eas: {
-      projectId: process.env.EAS_PROJECT_ID,
+      projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID || process.env.EAS_PROJECT_ID || undefined,
     },
   },
 });

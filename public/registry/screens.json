@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:49:50.999Z",
+  "generatedAt": "2026-10-10T11:58:45.102Z",
   "screens": [
     {
       "filePath": "app/_layout.tsx",
@@ -226,6 +226,18 @@
     {
       "filePath": "app/(drawer)/settings/legal.tsx",
       "route": "/settings/legal",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/settings/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/settings/notifications.tsx",
+      "route": "/settings/notifications",
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,

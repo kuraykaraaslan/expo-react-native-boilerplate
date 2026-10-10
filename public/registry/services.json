@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:49:50.999Z",
+  "generatedAt": "2026-10-10T11:58:45.102Z",
   "services": [
     {
       "filePath": "services/platform/apiKey.service.client.ts",
@@ -208,6 +208,19 @@
       "endpoints": [
         "/auth/me/profile",
         "/auth/me/preferences"
+      ]
+    },
+    {
+      "filePath": "services/user/push.service.client.ts",
+      "module": "user",
+      "name": "push.service.client",
+      "className": "PushClientService",
+      "methods": [
+        "register",
+        "unregister"
+      ],
+      "endpoints": [
+        "/notifications/push/tokens"
       ]
     },
     {

@@ -527,6 +527,33 @@
         "EMPTY_DESC": "Sie sind auf dem neuesten Stand.",
         "UNREAD_A11Y": "Ungelesen: {{title}}"
     },
+    "PUSH": {
+        "CHANNEL_NAME": "Benachrichtigungen",
+        "TITLE": "Benachrichtigungen",
+        "SUBTITLE": "Lege fest, wie dieses Gerät und dein Konto dich benachrichtigen",
+        "PREPROMPT_TITLE": "Bleib auf dem Laufenden",
+        "PREPROMPT_BODY": "Aktiviere Benachrichtigungen, um auch bei geschlossener App über neue Nachrichten und Neuigkeiten informiert zu werden. Du kannst das jederzeit in den Einstellungen ändern.",
+        "PREPROMPT_ENABLE": "Aktivieren",
+        "PREPROMPT_LATER": "Jetzt nicht",
+        "ENABLED_TOAST": "Benachrichtigungen sind aktiviert",
+        "DENIED_TOAST": "Benachrichtigungen bleiben ausgeschaltet. Du kannst sie in den Systemeinstellungen erlauben.",
+        "FAILED_TOAST": "Benachrichtigungen konnten nicht aktiviert werden. Versuche es später erneut.",
+        "DEVICE_CARD": "Dieses Gerät",
+        "DEVICE_CARD_DESC": "Gilt nur für dieses Telefon",
+        "DEVICE_TOGGLE": "Push-Benachrichtigungen auf diesem Gerät",
+        "DEVICE_TOGGLE_DESC": "Hinweise für jede Organisation erhalten, bei der du angemeldet bist",
+        "ACCOUNT_CARD": "Dein Konto",
+        "ACCOUNT_CARD_DESC": "Gilt für alle deine Geräte",
+        "ACCOUNT_TOGGLE": "Push-Benachrichtigungen",
+        "ACCOUNT_TOGGLE_DESC": "Diesem Konto erlauben, überhaupt Push-Benachrichtigungen zu senden",
+        "UNSUPPORTED": "Push-Benachrichtigungen benötigen ein echtes Telefon oder Tablet und einen Development-Build.",
+        "NO_PROJECT": "Push ist in diesem Build nicht eingerichtet (die EAS-Projekt-ID fehlt).",
+        "DENIED_TITLE": "Benachrichtigungen sind blockiert",
+        "DENIED_DESC": "Erlaube Benachrichtigungen für diese App in den Systemeinstellungen, um sie zu erhalten.",
+        "OPEN_SETTINGS": "Systemeinstellungen öffnen",
+        "LOAD_FAILED": "Deine Benachrichtigungseinstellungen konnten nicht geladen werden.",
+        "SAVE_FAILED": "Deine Benachrichtigungseinstellung konnte nicht gespeichert werden."
+    },
     "SETTINGS_HUB": {
         "TITLE": "Einstellungen",
         "SUBTITLE": "Wählen Sie einen Bereich zum Konfigurieren",
@@ -548,7 +575,9 @@
         "INVITATIONS_DESC": "Einladungen, die noch angenommen werden müssen",
         "SIGN_OUT_DESC": "Von diesem Gerät abmelden",
         "SOCIAL": "Verknüpfte Konten",
-        "SOCIAL_DESC": "Soziale und Unternehmensanmeldungen"
+        "SOCIAL_DESC": "Soziale und Unternehmensanmeldungen",
+        "NOTIFICATIONS": "Benachrichtigungen",
+        "NOTIFICATIONS_DESC": "Push auf diesem Gerät und für dein Konto"
     },
     "ACCOUNT": {
         "TITLE": "Mein Profil",
