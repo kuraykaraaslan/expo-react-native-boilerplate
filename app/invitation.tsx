@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -40,11 +40,15 @@ export default function InvitationLinkScreen() {
     if (invitations.length > 0) setSeen(true);
   }, [invitations.length]);
 
+  // Once the session was usable here, a later sign-out must not park the link for the NEXT account.
+  const wasOpen = useRef(false);
+
   useEffect(() => {
     if (!open) {
-      usePendingLinkStore.getState().setInvitation({ tenantId, action });
+      if (!wasOpen.current) usePendingLinkStore.getState().setInvitation({ tenantId, action });
       return;
     }
+    wasOpen.current = true;
     usePendingLinkStore.getState().setInvitation(null);
     let cancelled = false;
     setLoading(true);

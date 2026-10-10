@@ -1,4 +1,4 @@
-import { render, renderHook, screen, waitFor } from "@testing-library/react-native";
+import { act, render, renderHook, screen, waitFor } from "@testing-library/react-native";
 import { router } from "expo-router";
 import InvitationLinkScreen from "@/app/invitation";
 import { usePendingLinks } from "@/libs/usePendingLinks";
@@ -84,6 +84,17 @@ describe("invitation link screen", () => {
     await render(<InvitationLinkScreen />);
     expect(screen.getByTestId("redirect").props.children).toBe("/2fa");
     expect(usePendingLinkStore.getState().invitation).not.toBeNull();
+  });
+});
+
+describe("sign-out while the screen is open", () => {
+  it("does not park the link for the next account", async () => {
+    await render(<InvitationLinkScreen />);
+    await waitFor(() => expect(service.getMyTenants).toHaveBeenCalled());
+    await act(async () => {
+      useAuthStore.setState({ isAuthenticated: false });
+    });
+    expect(usePendingLinkStore.getState().invitation).toBeNull();
   });
 });
 

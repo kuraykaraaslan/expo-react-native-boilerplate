@@ -9,6 +9,7 @@ describe("pathOf", () => {
     expect(pathOf("expoboilerplate://auth/callback?rawAccessToken=a")).toBe("/auth/callback");
     expect(pathOf("expoboilerplate:///auth/callback")).toBe("/auth/callback");
     expect(pathOf("https://app.example.com")).toBe("/");
+    expect(pathOf("exp://192.168.1.5:8081/--/auth/callback?state=s")).toBe("/auth/callback");
   });
 });
 
@@ -44,6 +45,7 @@ describe("SSO return", () => {
   it("recognises the callback in both URL spellings", () => {
     expect(isSsoCallback("expoboilerplate://auth/callback?rawAccessToken=a&state=s")).toBe(true);
     expect(isSsoCallback("expoboilerplate:///auth/callback?state=s")).toBe(true);
+    expect(isSsoCallback("exp://192.168.1.5:8081/--/auth/callback?state=s")).toBe(true);
     expect(isSsoCallback("/auth/login")).toBe(false);
   });
 

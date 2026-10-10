@@ -155,3 +155,17 @@ The server flow is now committed in next-boilerplate (`modules/auth_sso`, `app/a
 - Android: package name (`EXPO_PUBLIC_ANDROID_PACKAGE`, server `MOBILE_ANDROID_PACKAGE_NAME`) and the signing-certificate SHA-256 (`MOBILE_ANDROID_CERT_SHA256`).
 - iOS: app ID `<TeamID>.<bundle id>` (`MOBILE_IOS_APP_IDS`, bundle id `EXPO_PUBLIC_IOS_BUNDLE_ID`).
 - App: `EXPO_PUBLIC_ASSOCIATED_DOMAIN` = the host that serves `/.well-known/assetlinks.json` and `/.well-known/apple-app-site-association` and appears in the invitation e-mail links; optionally `EXPO_PUBLIC_APP_SCHEME`. A development/production build is required (Expo Go cannot claim https links).
+
+---
+
+## Adversarial review fixes - 2026-10-10
+
+Server contract re-read from source (`sso-provider.route.ts`, `auth_sso.device-redirect.service.ts`, `app/api/auth/callback/[provider]/route.ts`, `mobile-app-links.ts`, `tenant_domain.url.ts`, the by-id invitation routes, `auth-session.route.ts`): routes, query/callback parameter names and bodies match the client. Fixed on the client:
+- An invitation link screen that was open while the user signed out re-parked the link, so the NEXT account was sent to `/invitation` after sign-in. The screen now records the link only if it never saw a usable session, and `clearLocalSession` clears the pending link.
+- SSO sign-in committed tokens and then parsed the user; a parse failure left a token pair in SecureStore without a session. The user is parsed first and the pair is removed if anything after `setTokens` fails.
+- A session that appeared while the browser was open (up to 3 minutes) could be overwritten by the SSO result; the flow now ends as `cancelled` and stores nothing.
+- Expo Go URLs (`exp://host:8081/--/auth/callback`) were not recognised as the SSO return by `pathOf`; the `/--` prefix is now stripped.
+
+Differences between the server summary and the source: the server working tree is clean (everything is committed, only six new route tests are untracked); Expo receipts ARE read (commit "read Expo receipts, bind native tokens to their session"), contrary to the summary; `assetlinks.json` also carries `delegate_permission/common.get_login_creds`; association paths are only `/auth/invitation/*` and `/t/*/auth/invitation/*`.
+
+Not verified: any run against a deployed server or a device (same as above).

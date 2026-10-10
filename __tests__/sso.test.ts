@@ -148,6 +148,17 @@ describe("browser flow", () => {
     expect(useComplianceStore.getState().tenantId).toBe(OTHER_TENANT_ID);
   });
 
+  it("does not replace a session that appeared while the browser was open", async () => {
+    mockRoute("get", "/auth/session", { ...sessionJson, tenant: { ...sessionJson.tenant, tenantId: OTHER_TENANT_ID } });
+    open.mockImplementation(async () => {
+      useAuthStore.setState({ isAuthenticated: true });
+      return callback({ state: STATE, rawAccessToken: deviceAccess, rawRefreshToken: "device-refresh" });
+    });
+    await expect(signInWithProvider("google")).resolves.toBe("cancelled");
+    expect(await getToken("accessToken", OTHER_TENANT_ID)).toBeNull();
+    expect(useTenantStore.getState().activeTenantId).toBe(TENANT_ID);
+  });
+
   it("gives up when the browser never redirects back to the app", async () => {
     jest.useFakeTimers();
     try {

@@ -12,6 +12,7 @@ import { clearPendingAgreements } from '@/libs/pendingAgreements';
 import { clearOutbox } from '@/libs/outbox';
 import { unregisterAllPush } from '@/libs/push';
 import { usePushStore } from '@/stores/pushStore';
+import { usePendingLinkStore } from '@/stores/pendingLinkStore';
 
 /**
  * Wipes everything this device holds for the signed-in account: every organization's tokens,
@@ -23,6 +24,7 @@ export async function clearLocalSession(): Promise<void> {
   clearOutbox(); // unsent messages belong to this account: never carry them to the next one
   useAuthStore.getState().logout();
   clearPendingAgreements(); // the flag is per account
+  usePendingLinkStore.getState().setInvitation(null); // an invitation link opened before sign-in belongs to no one else
   useFlagStore.getState().clear(); // flags are evaluated per user
   useAppLockStore.getState().reset(); // the next account must not inherit this one's lock
   useTenantStore.getState().flush();

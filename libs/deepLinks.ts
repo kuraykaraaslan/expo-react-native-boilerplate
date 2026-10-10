@@ -28,7 +28,8 @@ export function pathOf(raw: string): string {
   if (url) {
     const web = /^https?$/i.test(url[1]);
     // A custom-scheme URL has no host: `app://auth/callback` carries `auth` as its first segment.
-    path = web ? url[3] : `/${url[2]}${url[3]}`;
+    // Expo Go (`exp://host:8081/--/auth/callback`) puts the app path after `/--`.
+    path = web ? url[3] : /^exps?$/i.test(url[1]) ? url[3].replace(/^\/--(?=\/|$)/, "") : `/${url[2]}${url[3]}`;
   } else {
     path = raw.split(/[?#]/)[0];
   }

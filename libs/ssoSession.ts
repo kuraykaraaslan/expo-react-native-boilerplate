@@ -4,7 +4,7 @@ import { normalizeApiError } from "@/libs/apiError";
 import axiosInstance from "@/libs/axios";
 import logger from "@/libs/logger";
 import { applyCompliance } from "@/libs/pendingAgreements";
-import { setTokens } from "@/libs/secureStorage";
+import { clearTenantTokens, setTokens } from "@/libs/secureStorage";
 import { SafeUserSchema, SessionResponseSchema } from "@/services/auth/auth.dto";
 import type { SSOProvider } from "@/services/auth/sso.dto";
 import { SSOClientService } from "@/services/auth/sso.service.client";
@@ -119,13 +119,17 @@ export async function signInWithProvider(provider: SSOProvider): Promise<SSOOutc
 
   try {
     const session = await verifyBearer(tenantId, returned.accessToken);
+    // The browser may have been open for minutes: if a session appeared meanwhile, do not replace it with this one.
+    if (useAuthStore.getState().isAuthenticated) return "cancelled";
     await setTokens(tenantId, { accessToken: returned.accessToken, refreshToken: returned.refreshToken });
+    const user = SafeUserSchema.parse(session.user); // parsed before anything is committed
     useTenantStore.getState().setActiveTenantId(tenantId);
-    useAuthStore.getState().setUser(SafeUserSchema.parse(session.user)); // slim user: the profile loads on demand
+    useAuthStore.getState().setUser(user); // slim user: the profile loads on demand
     useAuthStore.getState().clearPasswordChange(); // same reset a password login does (the OTP gate is skipped server side)
     applyCompliance(tenantId, session.compliance);
     return "signed-in";
   } catch (err) {
+    await clearTenantTokens(tenantId).catch(() => undefined); // never leave a half-signed-in token pair behind
     // Today: the callback produced a web-audience token, which the bearer path refuses (401). Nothing was stored.
     logger.error("SSO callback returned a token the device bearer path rejects (web audience?) - see docs/phases/06-auth-sso/README.md", err instanceof Error ? err.message : "");
     return "unavailable";
