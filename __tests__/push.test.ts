@@ -8,6 +8,7 @@ import {
   UNREGISTER_CAP_MS,
   getPushPermission,
   pushTargetFor,
+  registerPushForAllTenants,
   registerPushForTenant,
   requestPushPermission,
   resolveProjectId,
@@ -340,17 +341,43 @@ describe("usePushNotifications", () => {
     expect(notif.addPushTokenListener).not.toHaveBeenCalled();
   });
 
-  it("opens the screen of a cold-start tap only once the shell is open", async () => {
-    notif.useLastNotificationResponse.mockReturnValue({
+  it("opens the screen of a cold-start tap only once the shell is open, and follows live taps", async () => {
+    const cold = {
       actionIdentifier: Notifications.DEFAULT_ACTION_IDENTIFIER,
       notification: { request: { identifier: "cold-1", content: { data: { conversationId: "c5" } } } },
-    } as never);
+    };
+    let live: (r: unknown) => void = () => undefined;
+    notif.getLastNotificationResponseAsync.mockResolvedValue(cold as never);
+    notif.addNotificationResponseReceivedListener.mockImplementation(((cb: (r: unknown) => void) => {
+      live = cb;
+      return { remove: jest.fn() };
+    }) as never);
     mockRoute("post", TOKENS, {});
     const closed = await renderHook(() => usePushNotifications(false));
-    expect(router.push).not.toHaveBeenCalled();
+    expect(notif.getLastNotificationResponseAsync).not.toHaveBeenCalled();
     await closed.unmount();
     await renderHook(() => usePushNotifications(true));
-    expect(router.push).toHaveBeenCalledWith({ pathname: "/messages/[conversationId]", params: { conversationId: "c5" } });
-    notif.useLastNotificationResponse.mockReturnValue(undefined as never);
+    await waitFor(() => expect(router.push).toHaveBeenCalledWith({ pathname: "/messages/[conversationId]", params: { conversationId: "c5" } }));
+    await act(async () => live({ ...cold, notification: { request: { identifier: "live-1", content: { data: {} } } } }));
+    expect(router.push).toHaveBeenLastCalledWith("/notifications");
+    notif.getLastNotificationResponseAsync.mockResolvedValue(null as never);
+  });
+
+  it("never touches the native notification emitter where push is unsupported (web, simulator)", async () => {
+    mockDevice.isDevice = false;
+    await renderHook(() => usePushNotifications(true));
+    expect(notif.getLastNotificationResponseAsync).not.toHaveBeenCalled();
+    expect(notif.addNotificationResponseReceivedListener).not.toHaveBeenCalled();
+    expect(notif.setNotificationHandler).not.toHaveBeenCalled();
+  });
+});
+
+describe("registerPushForAllTenants", () => {
+  it("registers every organization with its own token pair and answers with the active one", async () => {
+    await setTokens(OTHER_TENANT_ID, { accessToken: makeJwt({ userId: USER_ID, userSessionId: SESSION_ID, tenantId: OTHER_TENANT_ID }), refreshToken: "r2" });
+    useTenantStore.setState({ knownTenantIds: [TENANT_ID, OTHER_TENANT_ID] });
+    const seen = mockRoute("post", TOKENS, {});
+    await expect(registerPushForAllTenants()).resolves.toBe("registered");
+    expect(seen.map((s) => s.tenantId).sort()).toEqual([TENANT_ID, OTHER_TENANT_ID].sort());
   });
 });

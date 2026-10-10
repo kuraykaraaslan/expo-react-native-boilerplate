@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { Button, Modal, Text } from '@/components/ui';
-import { registerPushForActiveTenant, requestPushPermission } from '@/libs/push';
+import { registerPushForAllTenants, requestPushPermission } from '@/libs/push';
 import { safeHaptic } from '@/libs/safeHaptics';
 import { usePushPermission } from '@/libs/usePushPermission';
 import { usePushStore } from '@/stores/pushStore';
@@ -45,7 +45,7 @@ export function PushPrePrompt() {
         toast.info(t('PUSH.DENIED_TOAST'));
         return;
       }
-      const result = await registerPushForActiveTenant();
+      const result = await registerPushForAllTenants();
       if (result === 'registered') {
         void safeHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success));
         toast.success(t('PUSH.ENABLED_TOAST'));

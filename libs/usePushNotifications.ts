@@ -41,7 +41,6 @@ export function openFromResponse(response: Notifications.NotificationResponse | 
 export function usePushNotifications(enabled: boolean): void {
   const tenantId = useTenantStore((s) => s.activeTenantId);
   const deviceEnabled = usePushStore((s) => s.enabled);
-  const lastResponse = Notifications.useLastNotificationResponse();
 
   // Foreground presentation (set once; the handler reads live state).
   useEffect(() => {
@@ -66,8 +65,21 @@ export function usePushNotifications(enabled: boolean): void {
     return () => sub.remove();
   }, [enabled, deviceEnabled]);
 
-  // Taps: only once the signed-in shell is open (a cold-start tap waits for the session restore).
+  // Taps: only once the signed-in shell is open (a cold-start tap waits for the session restore). The hook
+  // `Notifications.useLastNotificationResponse` is not used: it throws on web (no native emitter), and this shell
+  // is rendered there too. Everything below is native-only.
   useEffect(() => {
-    if (enabled) openFromResponse(lastResponse);
-  }, [enabled, lastResponse]);
+    if (!enabled || !pushSupported()) return;
+    let cancelled = false;
+    Notifications.getLastNotificationResponseAsync()
+      .then((last) => {
+        if (!cancelled) openFromResponse(last);
+      })
+      .catch((err: unknown) => logger.warn("[push] last notification response unavailable", err instanceof Error ? err.name : "unknown"));
+    const sub = Notifications.addNotificationResponseReceivedListener(openFromResponse);
+    return () => {
+      cancelled = true;
+      sub.remove();
+    };
+  }, [enabled]);
 }

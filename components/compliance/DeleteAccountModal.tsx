@@ -7,7 +7,7 @@ import { finishAccountDeletion } from '@/libs/accountDeletion';
 import { normalizeApiError } from '@/libs/apiError';
 import { handleApiError } from '@/libs/errorUtils';
 import logger from '@/libs/logger';
-import { registerPushForActiveTenant, unregisterAllPush } from '@/libs/push';
+import { registerPushForAllTenants, unregisterAllPush } from '@/libs/push';
 import { safeHaptic } from '@/libs/safeHaptics';
 import { reauthFailure } from '@/libs/reauth';
 import type { DeletionConflictTenant } from '@/services/compliance/compliance.dto';
@@ -65,7 +65,7 @@ export function DeleteAccountModal({ open, onClose, hasPassword }: Props) {
       void safeHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success));
     } catch (err: unknown) {
       await safeHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error));
-      void registerPushForActiveTenant(); // nothing was deleted: this device keeps receiving notifications
+      void registerPushForAllTenants(); // nothing was deleted: this device keeps receiving notifications
       if (!mounted.current) return;
       const failure = reauthFailure(err);
       const tenants = ComplianceClientService.deletionConflictTenants(err);

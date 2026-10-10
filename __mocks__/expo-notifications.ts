@@ -8,4 +8,5 @@ export const getExpoPushTokenAsync = jest.fn().mockResolvedValue({ type: "expo",
 export const setNotificationChannelAsync = jest.fn().mockResolvedValue(null);
 export const setNotificationHandler = jest.fn();
 export const addPushTokenListener = jest.fn(() => ({ remove: jest.fn() }));
-export const useLastNotificationResponse = jest.fn(() => undefined);
+export const getLastNotificationResponseAsync = jest.fn().mockResolvedValue(null);
+export const addNotificationResponseReceivedListener = jest.fn(() => ({ remove: jest.fn() }));

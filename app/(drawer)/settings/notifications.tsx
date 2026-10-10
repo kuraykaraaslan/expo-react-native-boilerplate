@@ -7,7 +7,7 @@ import { Screen } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { AlertBanner, Card, Toggle } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
-import { registerPushForActiveTenant, requestPushPermission, unregisterAllPush } from '@/libs/push';
+import { registerPushForAllTenants, requestPushPermission, unregisterAllPush } from '@/libs/push';
 import { safeHaptic } from '@/libs/safeHaptics';
 import { usePushPermission } from '@/libs/usePushPermission';
 import { ProfileClientService } from '@/services/user/profile.service.client';
@@ -57,7 +57,7 @@ export default function NotificationSettingsScreen() {
         if (current === 'denied') toast.info(t('PUSH.DENIED_TOAST'));
         return;
       }
-      const result = await registerPushForActiveTenant();
+      const result = await registerPushForAllTenants();
       if (result === 'registered') {
         void safeHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success));
         toast.success(t('PUSH.ENABLED_TOAST'));

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:58:45.102Z",
+  "generatedAt": "2026-10-10T12:01:15.805Z",
   "libs": [
     {
       "filePath": "libs/accountDeletion.ts",
@@ -189,6 +189,7 @@
         "requestPushPermission",
         "registerPushForTenant",
         "registerPushForActiveTenant",
+        "registerPushForAllTenants",
         "unregisterAllPush",
         "PushTarget",
         "pushTargetFor"

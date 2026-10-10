@@ -161,6 +161,18 @@ export function registerPushForActiveTenant(): Promise<PushRegistrationResult> {
 }
 
 /**
+ * Registers for the ACTIVE organization first, then for every other one this device holds a session for (used after
+ * the device switch is turned on, and when a refused account deletion put the tokens back). Resolves with the
+ * ACTIVE organization's outcome; the others are best effort.
+ */
+export async function registerPushForAllTenants(): Promise<PushRegistrationResult> {
+  const active = getActiveTenantId();
+  const others = useTenantStore.getState().knownTenantIds.filter((id) => id !== active);
+  const [result] = await Promise.all([registerPushForTenant(active), ...others.map((id) => registerPushForTenant(id))]);
+  return result;
+}
+
+/**
  * Asks the server to forget this device in every organization it holds a session for. Call it BEFORE the access
  * tokens are cleared (sign-out) or the sessions are revoked (account deletion): the request needs the bearer token.
  *
