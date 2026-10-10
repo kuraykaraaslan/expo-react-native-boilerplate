@@ -851,5 +851,23 @@
         "NOT_FOUND": "Bu davet artık hesabınız için kullanılamıyor.",
         "ALREADY_ANSWERED": "Bu davet zaten yanıtlanmış.",
         "EXPIRED": "Bu davetin süresi dolmuş veya iptal edilmiş."
+    },
+    "AGREEMENTS": {
+        "BANNER_TITLE": "Sözleşmeler incelemenizi bekliyor",
+        "BANNER_ONE": "\"{{title}}\" için onayınızı bekleyen bir sürüm var.",
+        "BANNER_MANY": "{{count}} sözleşme onayınızı bekliyor.",
+        "REVIEW": "İncele",
+        "CARD": "Sözleşmeler",
+        "CARD_DESC": "Kuruluşunuzun kabul etmenizi istediği belgeler.",
+        "NONE": "Kuruluşunuzun gösterilecek bir sözleşmesi yok.",
+        "NEEDS_ACCEPTANCE": "Onay bekliyor",
+        "ACCEPTED": "Kabul edildi",
+        "VERSION": "Sürüm {{version}}",
+        "PUBLISHED": "Yayınlanma: {{date}}",
+        "READER_TITLE": "Sözleşme",
+        "NOT_AVAILABLE": "Bu belge şu anda kullanılamıyor.",
+        "ACCEPT": "Okudum ve kabul ediyorum",
+        "ACCEPTED_TOAST": "Teşekkürler, sözleşme kabul edildi.",
+        "CHANGED": "Bu belge siz okurken değişti. Lütfen yeni sürümü inceleyin."
     }
 }

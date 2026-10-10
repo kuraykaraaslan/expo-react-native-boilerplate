@@ -1,3 +1,4 @@
+import { applyCompliance } from "@/libs/pendingAgreements";
 import { getToken } from "@/libs/secureStorage";
 import { AuthClientService } from "@/services/auth/auth.service.client";
 import type { MemberRole, TenantMembership } from "@/services/tenant/tenant.dto";
@@ -32,6 +33,7 @@ export async function switchToTenant(membership: TenantMembership): Promise<Swit
   try {
     const session = await AuthClientService.getSession(tenantId);
     activate(membership, session.tenantMember.memberRole);
+    applyCompliance(tenantId, session.compliance);
     return "switched";
   } catch (err) {
     // The interceptor cleared a dead pair: ask for the password. Anything else (offline, 5xx) is the caller's to report.

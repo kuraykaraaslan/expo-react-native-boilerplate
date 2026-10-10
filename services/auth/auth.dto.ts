@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { MemberRoleEnum, TenantStatusEnum } from "@/services/tenant/tenant.dto";
+import { OptionalComplianceSchema } from "@/services/compliance/compliance.dto";
 import { UserProfileSchema } from "@/services/user/profile.dto";
 
 // ============================================================================
@@ -218,7 +219,7 @@ export type TOTPCodeRequest = z.infer<typeof TOTPCodeRequestSchema>;
 
 // ── Response DTOs ─────────────────────────────────────────────────────────────
 
-/** POST /auth/device/login (200) — the nine real fields. */
+/** POST /auth/device/login (200) — the nine real fields, plus the optional `compliance` section. */
 export const DeviceLoginResponseSchema = z.object({
   accessToken: z.string().min(1),
   refreshToken: z.string().min(1),
@@ -229,6 +230,8 @@ export const DeviceLoginResponseSchema = z.object({
   userSecurity: UserSecuritySchema,
   mustChangePassword: z.boolean(),
   passwordExpiresInDays: z.number().nullish(),
+  /** `{ pendingAgreements }` when terms_consent is enabled. A flag only: nothing is blocked. */
+  compliance: OptionalComplianceSchema,
 });
 export type DeviceLoginResponse = z.infer<typeof DeviceLoginResponseSchema>;
 
@@ -256,6 +259,7 @@ export const SessionResponseSchema = z.object({
     memberStatus: z.string(),
   }),
   message: z.string().optional(),
+  compliance: OptionalComplianceSchema,
 });
 export type SessionResponse = z.infer<typeof SessionResponseSchema>;
 

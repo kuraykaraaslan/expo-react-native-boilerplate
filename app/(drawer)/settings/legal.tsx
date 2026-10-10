@@ -4,18 +4,22 @@ import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import * as WebBrowser from 'expo-web-browser';
 import { toast } from 'sonner-native';
-import { faFileContract, faUserShield } from '@fortawesome/free-solid-svg-icons';
+import { faFileContract, faFileSignature, faUserShield } from '@fortawesome/free-solid-svg-icons';
+import { PendingAgreementsBanner } from '@/components/compliance/PendingAgreementsBanner';
 import { LinkTile } from '@/components/common/LinkTile';
 import { Screen } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { Button, Card, Text, Toggle } from '@/components/ui';
+import logger from '@/libs/logger';
 import { env } from '@/libs/env';
+import { normalizeApiError } from '@/libs/apiError';
 import { handleApiError } from '@/libs/errorUtils';
-import type { ConsentConfig } from '@/services/compliance/compliance.dto';
+import { refreshPendingAgreements, usePendingAgreements } from '@/libs/pendingAgreements';
+import type { ConsentConfig, CurrentAgreement } from '@/services/compliance/compliance.dto';
 import { ComplianceClientService } from '@/services/compliance/compliance.service.client';
 import { TenantClientService } from '@/services/tenant/tenant.service.client';
 import { useAuthStore } from '@/stores/authStore';
-import { useTenantStore } from '@/stores/tenantStore';
+import { getActiveTenantId, useTenantStore } from '@/stores/tenantStore';
 import { safeWebUrl } from '@/utils/notification';
 
 type Choices = Record<string, boolean>;
@@ -29,10 +33,12 @@ function initialChoices(config: ConsentConfig, state: Choices): Choices {
 
 export default function LegalScreen() {
   const { t } = useTranslation();
-  const userId = useAuthStore((s) => s.user?.userId);
+  const signedIn = useAuthStore((s) => s.isAuthenticated);
+  const pending = usePendingAgreements();
   const tenantId = useTenantStore((s) => s.activeTenantId);
 
   const [policies, setPolicies] = useState<{ privacy: string | null; terms: string | null }>({ privacy: null, terms: null });
+  const [agreements, setAgreements] = useState<CurrentAgreement[]>([]);
   const [config, setConfig] = useState<ConsentConfig | null>(null);
   const [saved, setSaved] = useState<Choices>({});
   const [draft, setDraft] = useState<Choices>({});
@@ -41,12 +47,21 @@ export default function LegalScreen() {
   const [saving, setSaving] = useState(false);
 
   const load = useCallback(async () => {
-    if (!userId) return;
+    if (!signedIn) return;
+    const tenantAtStart = getActiveTenantId();
     // Independent reads: a tenant without consent configured must not hide the policy links, and vice versa.
-    const [brand, cfg] = await Promise.allSettled([
+    const [brand, cfg, docs] = await Promise.allSettled([
       TenantClientService.getPublicBranding(),
       ComplianceClientService.getConsentConfig(),
+      ComplianceClientService.getCurrentAgreements(),
     ]);
+    if (getActiveTenantId() !== tenantAtStart) return; // the organization changed while these were in flight
+    if (docs.status === 'fulfilled') setAgreements(docs.value);
+    else {
+      setAgreements([]);
+      logger.warn('[LegalScreen] agreements', normalizeApiError(docs.reason).statusCode ?? 'no response');
+    }
+    void refreshPendingAgreements(); // the banner and the badges below read the store
     if (brand.status === 'fulfilled') {
       const s = brand.value.settings;
       setPolicies({
@@ -57,7 +72,8 @@ export default function LegalScreen() {
     if (cfg.status === 'fulfilled') {
       setConfig(cfg.value);
       try {
-        const next = initialChoices(cfg.value, await ComplianceClientService.getConsentState(userId));
+        const next = initialChoices(cfg.value, await ComplianceClientService.getConsentState());
+        if (getActiveTenantId() !== tenantAtStart) return;
         setSaved(next);
         setDraft(next);
       } catch (err: unknown) {
@@ -66,7 +82,7 @@ export default function LegalScreen() {
     } else {
       handleApiError(cfg.reason, 'LegalScreen.consentConfig');
     }
-  }, [userId]);
+  }, [signedIn]);
 
   // Reload when the active organization changes (the drawer keeps this screen mounted).
   useEffect(() => {
@@ -84,11 +100,10 @@ export default function LegalScreen() {
   const dirty = optional.some((p) => draft[p.key] !== saved[p.key]);
 
   async function save() {
-    if (!config || !userId || !dirty) return;
+    if (!config || !signedIn || !dirty) return;
     setSaving(true);
     try {
       await ComplianceClientService.recordConsent({
-        userId,
         policyVersion: config.policyVersion || undefined,
         decisions: optional.map((p) => ({ purpose: p.key, granted: draft[p.key] ?? false })),
       });
@@ -109,6 +124,31 @@ export default function LegalScreen() {
   return (
     <Screen refreshing={refreshing} onRefresh={refresh}>
       <ScreenHeader back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }} title={t('PRIVACY.TITLE')} subtitle={t('PRIVACY.SUBTITLE')} />
+
+      <PendingAgreementsBanner testID="legal-pending-banner" />
+
+      <Card title={t('AGREEMENTS.CARD')} subtitle={t('AGREEMENTS.CARD_DESC')} loading={loading}>
+        {agreements.length > 0 ? (
+          <View className="gap-3 py-2">
+            {agreements.map(({ agreement, version }) => {
+              const isPending = pending.some((p) => p.agreementId === agreement.agreementId);
+              const status = isPending ? t('AGREEMENTS.NEEDS_ACCEPTANCE') : agreement.requiresAcceptance ? t('AGREEMENTS.ACCEPTED') : null;
+              return (
+                <LinkTile
+                  key={agreement.agreementId}
+                  icon={faFileSignature}
+                  title={agreement.title}
+                  description={[t('AGREEMENTS.VERSION', { version: version.version }), status].filter(Boolean).join(' · ')}
+                  href={{ pathname: '/settings/agreement', params: { type: agreement.type } }}
+                  testID={`legal-agreement-${agreement.agreementId}`}
+                />
+              );
+            })}
+          </View>
+        ) : (
+          <Text className="py-3 text-sm text-text-secondary">{t('AGREEMENTS.NONE')}</Text>
+        )}
+      </Card>
 
       <Card title={t('PRIVACY.POLICIES_CARD')} loading={loading}>
         {hasPolicies ? (

@@ -851,5 +851,23 @@
         "NOT_FOUND": "This invitation is no longer available for your account.",
         "ALREADY_ANSWERED": "This invitation has already been answered.",
         "EXPIRED": "This invitation has expired or was revoked."
+    },
+    "AGREEMENTS": {
+        "BANNER_TITLE": "Agreements need your review",
+        "BANNER_ONE": "\"{{title}}\" has a version waiting for your acceptance.",
+        "BANNER_MANY": "{{count}} agreements are waiting for your acceptance.",
+        "REVIEW": "Review",
+        "CARD": "Agreements",
+        "CARD_DESC": "The documents your organization asks you to accept.",
+        "NONE": "Your organization has no agreements to show.",
+        "NEEDS_ACCEPTANCE": "Needs acceptance",
+        "ACCEPTED": "Accepted",
+        "VERSION": "Version {{version}}",
+        "PUBLISHED": "Published {{date}}",
+        "READER_TITLE": "Agreement",
+        "NOT_AVAILABLE": "This document is not available right now.",
+        "ACCEPT": "I have read and accept",
+        "ACCEPTED_TOAST": "Thank you, the agreement is accepted.",
+        "CHANGED": "This document changed while you were reading it. Please review the new version."
     }
 }

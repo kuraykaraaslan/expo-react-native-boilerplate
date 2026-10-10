@@ -109,6 +109,11 @@
     "category": "common",
     "file": "common-StatTile.md"
   },
+  "compliance/PendingAgreementsBanner": {
+    "name": "PendingAgreementsBanner",
+    "category": "compliance",
+    "file": "compliance-PendingAgreementsBanner.md"
+  },
   "media/MediaGalleryEditor": {
     "name": "MediaGalleryEditor",
     "category": "media",

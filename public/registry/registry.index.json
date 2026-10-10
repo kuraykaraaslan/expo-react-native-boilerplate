@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:34:42.576Z",
+  "generatedAt": "2026-10-10T11:39:15.920Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -194,6 +194,18 @@
       "layoutChain": [
         "app/_layout.tsx",
         "app/(drawer)/_layout.tsx"
+      ]
+    },
+    {
+      "filePath": "app/(drawer)/settings/agreement.tsx",
+      "route": "/settings/agreement",
+      "kind": "screen",
+      "group": "drawer",
+      "dynamic": false,
+      "layoutChain": [
+        "app/_layout.tsx",
+        "app/(drawer)/_layout.tsx",
+        "app/(drawer)/settings/_layout.tsx"
       ]
     },
     {
@@ -711,6 +723,16 @@
       "props": [
         "icon"
       ]
+    },
+    {
+      "id": "compliance/PendingAgreementsBanner",
+      "filePath": "components/compliance/PendingAgreementsBanner.tsx",
+      "name": "PendingAgreementsBanner",
+      "category": "compliance",
+      "exports": [
+        "PendingAgreementsBanner"
+      ],
+      "props": []
     },
     {
       "id": "media/MediaGalleryEditor",
@@ -1591,11 +1613,16 @@
         "getConsentConfig",
         "getConsentState",
         "recordConsent",
+        "getCurrentAgreements",
+        "getCurrentAgreement",
+        "acceptAgreement",
         "getAuditLogs"
       ],
       "endpoints": [
         "/consent/config",
         "/consent",
+        "/agreements/current",
+        "/agreements/accept",
         "/audit-logs"
       ]
     },
@@ -1860,6 +1887,19 @@
       "persisted": true
     },
     {
+      "filePath": "stores/complianceStore.ts",
+      "name": "complianceStore",
+      "hook": "useComplianceStore",
+      "stateKeys": [
+        "tenantId",
+        "pending",
+        "set",
+        "resolve",
+        "clear"
+      ],
+      "persisted": false
+    },
+    {
       "filePath": "stores/flagStore.ts",
       "name": "flagStore",
       "hook": "useFlagStore",
@@ -2093,7 +2133,16 @@
         "RecordConsentRequestSchema",
         "AuditSeverityEnum",
         "AuditLogSchema",
-        "AuditLogsResponseSchema"
+        "AuditLogsResponseSchema",
+        "PendingAgreementSchema",
+        "ComplianceSectionSchema",
+        "OptionalComplianceSchema",
+        "AgreementSchema",
+        "AgreementVersionSchema",
+        "CurrentAgreementSchema",
+        "CurrentAgreementsResponseSchema",
+        "AcceptAgreementRequestSchema",
+        "AcceptAgreementResponseSchema"
       ],
       "types": [
         "ConsentPurpose",
@@ -2102,7 +2151,14 @@
         "RecordConsentRequest",
         "AuditSeverity",
         "AuditLog",
-        "AuditLogsResponse"
+        "AuditLogsResponse",
+        "PendingAgreement",
+        "ComplianceSection",
+        "Agreement",
+        "AgreementVersion",
+        "CurrentAgreement",
+        "AcceptAgreementRequest",
+        "AcceptAgreementResponse"
       ]
     },
     {
@@ -2503,6 +2559,16 @@
         "reconcileOutbox",
         "clearOutbox",
         "pruneOutboxFor"
+      ]
+    },
+    {
+      "filePath": "libs/pendingAgreements.ts",
+      "name": "pendingAgreements",
+      "exports": [
+        "applyCompliance",
+        "clearPendingAgreements",
+        "refreshPendingAgreements",
+        "usePendingAgreements"
       ]
     },
     {

@@ -851,5 +851,23 @@
         "NOT_FOUND": "Diese Einladung ist für Ihr Konto nicht mehr verfügbar.",
         "ALREADY_ANSWERED": "Diese Einladung wurde bereits beantwortet.",
         "EXPIRED": "Diese Einladung ist abgelaufen oder wurde widerrufen."
+    },
+    "AGREEMENTS": {
+        "BANNER_TITLE": "Vereinbarungen warten auf Ihre Prüfung",
+        "BANNER_ONE": "Für „{{title}}“ wartet eine Version auf Ihre Zustimmung.",
+        "BANNER_MANY": "{{count}} Vereinbarungen warten auf Ihre Zustimmung.",
+        "REVIEW": "Prüfen",
+        "CARD": "Vereinbarungen",
+        "CARD_DESC": "Die Dokumente, deren Annahme Ihre Organisation verlangt.",
+        "NONE": "Ihre Organisation hat keine Vereinbarungen anzuzeigen.",
+        "NEEDS_ACCEPTANCE": "Zustimmung erforderlich",
+        "ACCEPTED": "Akzeptiert",
+        "VERSION": "Version {{version}}",
+        "PUBLISHED": "Veröffentlicht am {{date}}",
+        "READER_TITLE": "Vereinbarung",
+        "NOT_AVAILABLE": "Dieses Dokument ist derzeit nicht verfügbar.",
+        "ACCEPT": "Ich habe gelesen und akzeptiere",
+        "ACCEPTED_TOAST": "Vielen Dank, die Vereinbarung wurde akzeptiert.",
+        "CHANGED": "Dieses Dokument hat sich geändert, während Sie es gelesen haben. Bitte prüfen Sie die neue Version."
     }
 }

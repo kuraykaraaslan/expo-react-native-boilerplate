@@ -851,5 +851,23 @@
         "NOT_FOUND": "Cette invitation n'est plus disponible pour votre compte.",
         "ALREADY_ANSWERED": "Cette invitation a déjà reçu une réponse.",
         "EXPIRED": "Cette invitation a expiré ou a été révoquée."
+    },
+    "AGREEMENTS": {
+        "BANNER_TITLE": "Des accords attendent votre examen",
+        "BANNER_ONE": "« {{title}} » a une version en attente de votre acceptation.",
+        "BANNER_MANY": "{{count}} accords attendent votre acceptation.",
+        "REVIEW": "Examiner",
+        "CARD": "Accords",
+        "CARD_DESC": "Les documents que votre organisation vous demande d'accepter.",
+        "NONE": "Votre organisation n'a aucun accord à afficher.",
+        "NEEDS_ACCEPTANCE": "Acceptation requise",
+        "ACCEPTED": "Accepté",
+        "VERSION": "Version {{version}}",
+        "PUBLISHED": "Publié le {{date}}",
+        "READER_TITLE": "Accord",
+        "NOT_AVAILABLE": "Ce document n'est pas disponible pour le moment.",
+        "ACCEPT": "J'ai lu et j'accepte",
+        "ACCEPTED_TOAST": "Merci, l'accord a été accepté.",
+        "CHANGED": "Ce document a changé pendant votre lecture. Veuillez examiner la nouvelle version."
     }
 }

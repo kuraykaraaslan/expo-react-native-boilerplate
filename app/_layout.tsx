@@ -17,6 +17,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useAuthStore } from '@/stores/authStore';
 import { useAppStore } from '@/stores/appStore';
 import { normalizeApiError } from '@/libs/apiError';
+import { applyCompliance } from '@/libs/pendingAgreements';
 import { getToken } from '@/libs/secureStorage';
 import { getActiveTenantId, useTenantStore } from '@/stores/tenantStore';
 import { AuthClientService } from '@/services/auth/auth.service.client';
@@ -55,6 +56,7 @@ export default function RootLayout() {
         // just confirm the session (and which tenant it belongs to) is alive.
         const session = await AuthClientService.getSession();
         useTenantStore.getState().setActiveTenantId(session.tenant.tenantId);
+        applyCompliance(session.tenant.tenantId, session.compliance);
         setAuthenticated(true);
       } catch (err: unknown) {
         // Refresh / session-end is the transport's job; only a refusal signs

@@ -17,8 +17,10 @@ import { Screen } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { SectionLabel } from '@/components/common/SectionLabel';
 import { StatTile } from '@/components/common/StatTile';
+import { PendingAgreementsBanner } from '@/components/compliance/PendingAgreementsBanner';
 import { Button, Card, Text } from '@/components/ui';
 import logger from '@/libs/logger';
+import { refreshPendingAgreements } from '@/libs/pendingAgreements';
 import { AuthClientService } from '@/services/auth/auth.service.client';
 import { NotificationClientService } from '@/services/user/notification.service.client';
 import { useNotificationStore } from '@/stores/notificationStore';
@@ -35,6 +37,7 @@ export default function DashboardScreen() {
 
   // Dashboard tiles are glanceable extras: failures are logged, not toasted.
   const load = useCallback(async () => {
+    void refreshPendingAgreements(); // background: the banner reads the store
     const [n, s] = await Promise.allSettled([NotificationClientService.getNotifications(), AuthClientService.getSessions()]);
     if (n.status === 'fulfilled') setUnread(n.value.filter((x) => !x.isRead).length);
     else logger.warn('[Dashboard] notifications', n.reason);
@@ -55,6 +58,8 @@ export default function DashboardScreen() {
   return (
     <Screen refreshing={refreshing} onRefresh={refresh}>
       <ScreenHeader title={t('DASHBOARD.TITLE')} subtitle={t('DASHBOARD.SUBTITLE')} />
+
+      <PendingAgreementsBanner />
 
       {membership ? (
         <Card

@@ -1,3 +1,4 @@
+import { applyCompliance } from "@/libs/pendingAgreements";
 import { setTokens } from "@/libs/secureStorage";
 import type { DeviceLoginResponse } from "@/services/auth/auth.dto";
 import { useAuthStore } from "@/stores/authStore";
@@ -19,6 +20,7 @@ export async function startDeviceSession(login: DeviceLoginResponse): Promise<{ 
   await setTokens(tenantId, { accessToken: login.accessToken, refreshToken: login.refreshToken });
   useTenantStore.getState().setActiveTenantId(tenantId);
   useAuthStore.getState().setUser(login.user);
+  applyCompliance(tenantId, login.compliance);
   if (login.otpRequired) useAuthStore.getState().requireOtp(login.userSecurity.otpMethods);
   if (login.mustChangePassword) useAuthStore.getState().requirePasswordChange();
   else useAuthStore.getState().clearPasswordChange();

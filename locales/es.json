@@ -851,5 +851,23 @@
         "NOT_FOUND": "Esta invitación ya no está disponible para tu cuenta.",
         "ALREADY_ANSWERED": "Esta invitación ya se ha respondido.",
         "EXPIRED": "Esta invitación ha caducado o fue revocada."
+    },
+    "AGREEMENTS": {
+        "BANNER_TITLE": "Hay acuerdos pendientes de revisión",
+        "BANNER_ONE": "«{{title}}» tiene una versión pendiente de su aceptación.",
+        "BANNER_MANY": "{{count}} acuerdos esperan su aceptación.",
+        "REVIEW": "Revisar",
+        "CARD": "Acuerdos",
+        "CARD_DESC": "Los documentos que su organización le pide aceptar.",
+        "NONE": "Su organización no tiene acuerdos que mostrar.",
+        "NEEDS_ACCEPTANCE": "Requiere aceptación",
+        "ACCEPTED": "Aceptado",
+        "VERSION": "Versión {{version}}",
+        "PUBLISHED": "Publicado el {{date}}",
+        "READER_TITLE": "Acuerdo",
+        "NOT_AVAILABLE": "Este documento no está disponible en este momento.",
+        "ACCEPT": "He leído y acepto",
+        "ACCEPTED_TOAST": "Gracias, el acuerdo ha sido aceptado.",
+        "CHANGED": "Este documento cambió mientras lo leía. Revise la nueva versión."
     }
 }

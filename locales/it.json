@@ -851,5 +851,23 @@
         "NOT_FOUND": "Questo invito non è più disponibile per il tuo account.",
         "ALREADY_ANSWERED": "A questo invito è già stata data risposta.",
         "EXPIRED": "Questo invito è scaduto o è stato revocato."
+    },
+    "AGREEMENTS": {
+        "BANNER_TITLE": "Ci sono accordi da rivedere",
+        "BANNER_ONE": "«{{title}}» ha una versione in attesa della tua accettazione.",
+        "BANNER_MANY": "{{count}} accordi attendono la tua accettazione.",
+        "REVIEW": "Rivedi",
+        "CARD": "Accordi",
+        "CARD_DESC": "I documenti che la tua organizzazione ti chiede di accettare.",
+        "NONE": "La tua organizzazione non ha accordi da mostrare.",
+        "NEEDS_ACCEPTANCE": "Accettazione richiesta",
+        "ACCEPTED": "Accettato",
+        "VERSION": "Versione {{version}}",
+        "PUBLISHED": "Pubblicato il {{date}}",
+        "READER_TITLE": "Accordo",
+        "NOT_AVAILABLE": "Questo documento non è disponibile al momento.",
+        "ACCEPT": "Ho letto e accetto",
+        "ACCEPTED_TOAST": "Grazie, l'accordo è stato accettato.",
+        "CHANGED": "Questo documento è cambiato mentre lo leggevi. Rivedi la nuova versione."
     }
 }

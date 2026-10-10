@@ -2,6 +2,7 @@ import { getSessionIdFromToken } from "@/libs/jwt";
 import { getToken, setTokens } from "@/libs/secureStorage";
 import { startDeviceSession } from "@/libs/session";
 import { AuthClientService } from "@/services/auth/auth.service.client";
+import { useComplianceStore } from "@/stores/complianceStore";
 import { useAuthStore } from "@/stores/authStore";
 import { useTenantStore } from "@/stores/tenantStore";
 import { OTHER_TENANT_ID, SESSION_ID, TENANT_ID, deviceLoginJson, makeJwt, safeUserJson, sessionJson, sessionsJson, userSecurityJson } from "./fixtures";
@@ -96,6 +97,45 @@ describe("register / session", () => {
     expect(seen[0].headers.authorization).toMatch(/^Bearer /);
     expect(res.user).toEqual({ userId: sessionJson.user.userId, email: "ayse@example.com", userRole: "USER" });
     expect(res.tenantMember.memberRole).toBe("OWNER");
+  });
+});
+
+describe("compliance.pendingAgreements", () => {
+  const pendingItem = { agreementId: "a1", type: "terms_of_use", key: "terms", title: "Terms", versionId: "v1", version: 2, contentHash: "h", futureKey: 1 };
+
+  it("getSession and deviceLogin carry the pending flag", async () => {
+    mockRoute("get", "/auth/session", { ...sessionJson, compliance: { pendingAgreements: [pendingItem] } });
+    const session = await AuthClientService.getSession();
+    expect(session.compliance?.pendingAgreements).toHaveLength(1);
+    expect(session.compliance?.pendingAgreements[0]).toMatchObject({ agreementId: "a1", version: 2 });
+
+    mockRoute("post", "/auth/device/login", { ...deviceLoginJson, compliance: { pendingAgreements: [pendingItem] } });
+    const login = await AuthClientService.deviceLogin({ email: "ayse@example.com", password: "x" });
+    expect(login.compliance?.pendingAgreements[0].title).toBe("Terms");
+  });
+
+  it("is lenient: an absent, null or malformed section never fails the answer, and a bad entry is dropped", async () => {
+    mockRoute("get", "/auth/session", sessionJson);
+    expect((await AuthClientService.getSession()).compliance).toBeUndefined();
+
+    mockRoute("get", "/auth/session", { ...sessionJson, compliance: null });
+    expect((await AuthClientService.getSession()).compliance).toBeNull();
+
+    mockRoute("get", "/auth/session", { ...sessionJson, compliance: "oops" });
+    expect((await AuthClientService.getSession()).compliance).toBeUndefined();
+
+    mockRoute("get", "/auth/session", { ...sessionJson, compliance: { pendingAgreements: [pendingItem, { nope: true }] } });
+    expect((await AuthClientService.getSession()).compliance?.pendingAgreements).toHaveLength(1);
+  });
+
+  it("startDeviceSession stores the flag for the tenant that signed in", async () => {
+    const parsed = await (async () => {
+      mockRoute("post", "/auth/device/login", { ...deviceLoginJson, compliance: { pendingAgreements: [pendingItem] } });
+      return AuthClientService.deviceLogin({ email: "ayse@example.com", password: "x" });
+    })();
+    await startDeviceSession(parsed);
+    expect(useComplianceStore.getState()).toMatchObject({ tenantId: TENANT_ID });
+    expect(useComplianceStore.getState().pending).toHaveLength(1);
   });
 });
 

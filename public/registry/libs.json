@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:34:42.576Z",
+  "generatedAt": "2026-10-10T11:39:15.920Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",
@@ -136,6 +136,16 @@
         "reconcileOutbox",
         "clearOutbox",
         "pruneOutboxFor"
+      ]
+    },
+    {
+      "filePath": "libs/pendingAgreements.ts",
+      "name": "pendingAgreements",
+      "exports": [
+        "applyCompliance",
+        "clearPendingAgreements",
+        "refreshPendingAgreements",
+        "usePendingAgreements"
       ]
     },
     {

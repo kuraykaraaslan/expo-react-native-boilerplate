@@ -10,6 +10,7 @@ import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { Button, Input, RadioGroup } from '@/components/ui';
 import type { OTPMethod } from '@/services/auth/auth.dto';
+import { applyCompliance } from '@/libs/pendingAgreements';
 import { handleApiError } from '@/libs/errorUtils';
 import { useCountdown } from '@/libs/useCountdown';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
@@ -64,7 +65,8 @@ export default function TwoFactorScreen() {
     try {
       await AuthClientService.verifyOTP(method, 'authenticate', code);
       // The reply carries no user — the session is the same; its OTP gate is open now.
-      await AuthClientService.getSession();
+      const session = await AuthClientService.getSession();
+      applyCompliance(session.tenant.tenantId, session.compliance);
       clearOtp();
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       router.replace('/');

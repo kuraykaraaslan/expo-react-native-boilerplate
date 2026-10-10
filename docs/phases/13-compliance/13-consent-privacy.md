@@ -128,3 +128,35 @@ Server contract re-checked against `modules/audit_log/server/{audit-logs.route,a
 - Test: `escapeLike` in `__tests__/auditFilters.test.ts`.
 
 **Not fixed / not verified:** audit metadata is shown as returned by the server (admin-only route, no client-side redaction); still no component render tests.
+
+---
+
+## Agreements reader, pending flag and session-subject consent — 2026-10-10
+
+Covers 13.2 (read and accept agreements, "something is pending" signal) and the consent-subject change. Not the blocking guard: the server flag is informational by design, so the client shows a non-blocking banner and never gates entry.
+
+**Server contract (READ from the uncommitted working tree of next-boilerplate `modules/terms_consent` and `modules/auth`, not from the summary)**
+- `GET /agreements/current` (public, rate-limited, `terms_consent.agreements.read_current`, GUEST). `?type=<AgreementType>` returns a bare `{ agreement, version }` (404 `AGREEMENT_NOT_FOUND`, 409 `NO_PUBLISHED_VERSION`); without `type` it returns `{ data: [{ agreement, version }] }`, `?requiresAcceptance=true` narrows it. Only active reusable agreements with a published, current version; order-specific types (`distance_selling`, `pre_information`) are never listed. `version.content` is the text; `version` is an integer; `contentHash` is returned.
+- `POST /agreements/accept` (public, GUEST) body `{ agreementId? | type?, accepted (default true), userId?, anonymousId?, authMethod?, loa?, subjectRefType?, subjectRefId? }`. Answers **201** `{ acceptance }`. The server stamps the version that is CURRENT when the request arrives (not one the client names). A session makes the subject the session user; a body `userId` for someone else is 403; a body `userId` with no session is 401; no session and no `anonymousId` is 400.
+- `POST /consent` and `GET /consent` follow the same subject rule (`resolveConsentSubject`): signed in, the subject is the session user; with no session only `anonymousId` is honoured.
+- `GET /auth/session` and `POST /auth/device/login` merge `auth:session_extension` contributions at the TOP LEVEL of the body: `compliance: { pendingAgreements: [{ agreementId, type, key, title, versionId, version, contentHash }] }`. It lists required agreements whose current version has no latest `accepted: true` for the user; a newly published version re-opens it. Best-effort: a failing contribution is skipped, and the section is absent when `terms_consent` is not enabled for the tenant. Device login's `compliance` is added only on the final 200 body (computed for the signing-in user and tenant).
+
+**Shipped**
+- DTOs (`services/compliance/compliance.dto.ts`): `PendingAgreement`, a lenient `compliance` section (absent, null or malformed reads as nothing pending; a bad entry is dropped; an unknown agreement `type` never fails a sign-in), `Agreement`/`AgreementVersion`/`CurrentAgreement`, accept request and response. `SessionResponseSchema` and `DeviceLoginResponseSchema` gained an optional `compliance`.
+- Service: `getCurrentAgreements`, `getCurrentAgreement(type)`, `acceptAgreement`.
+- Consent: `getConsentState()` takes no argument and sends no `userId`; `recordConsent` no longer has `userId` in its schema (a stray one is stripped). The client never sends `anonymousId`: the app has no guest screens and no anonymous identifier, so there is no guest behaviour to keep.
+- `stores/complianceStore.ts` (in memory, not persisted; tagged with the organization it was read for) and `libs/pendingAgreements.ts` (`applyCompliance`, `refreshPendingAgreements`, `clearPendingAgreements`, `usePendingAgreements`). Fed by device login (`startDeviceSession`), session restore, the 2FA completion read, a tenant switch, the home screen load and the legal screen load. Cleared on logout and on a session death. A refresh drops its answer after an organization switch, a sign-out or a newer refresh (same stance as `libs/realtime.ts`); the hook ignores a flag read for another organization.
+- `components/compliance/PendingAgreementsBanner.tsx` (warning `AlertBanner` with "Review"): on the home screen and the legal screen. One pending document opens the reader, several open the legal screen.
+- Legal screen: an "Agreements" card listing current agreements with version and status (needs acceptance / accepted).
+- Reader `app/(drawer)/settings/agreement.tsx` (`?type=`): shows the text as selectable plain `Text` (markup is displayed, never interpreted; no WebView), and an accept button only when that agreement is pending. Success haptic and toast, then back.
+- `AGREEMENTS.*` strings in all six locales. Tests: `__tests__/pendingAgreements.test.tsx` (flag, guards, banner, reader), additions to `compliance.service.test.ts` and `auth.service.test.ts`.
+
+**Deviations**
+- No blocking guard (13.2's original "blocking acceptance"): the server defines the flag as informational. The banner is the only prompt.
+- The reader opens by `type`, not by id: `/agreements/current` has no by-id form. Two active agreements of the same type are not distinguishable by this route (the server's `getByType` picks one); the legal list opens each by type.
+- Accept sends `agreementId` (precise), and the reader compares the acceptance's `versionId` with the version it displayed; if the server stamped a different one, the text is reloaded and the user is told, and the pending flag is NOT cleared.
+- Acceptance history and "withdraw" (`accepted: false`) are not offered.
+
+**Not verified:** nothing ran against a live server or device; shapes come from reading source. The device login `compliance` key was read from the route diff, not observed.
+
+**Owner still must supply:** nothing for this item (no new env keys or identifiers).

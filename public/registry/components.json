@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:34:42.576Z",
+  "generatedAt": "2026-10-10T11:39:15.920Z",
   "components": [
     {
       "id": "account/AvatarPicker",
@@ -287,6 +287,16 @@
       "props": [
         "icon"
       ]
+    },
+    {
+      "id": "compliance/PendingAgreementsBanner",
+      "filePath": "components/compliance/PendingAgreementsBanner.tsx",
+      "name": "PendingAgreementsBanner",
+      "category": "compliance",
+      "exports": [
+        "PendingAgreementsBanner"
+      ],
+      "props": []
     },
     {
       "id": "media/MediaGalleryEditor",

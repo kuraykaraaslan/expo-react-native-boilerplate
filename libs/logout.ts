@@ -8,6 +8,7 @@ import { AuthClientService } from '@/services/auth/auth.service.client';
 import { clearAllTokens } from '@/libs/secureStorage';
 import { useFlagStore } from '@/stores/flagStore';
 import logger from '@/libs/logger';
+import { clearPendingAgreements } from '@/libs/pendingAgreements';
 import { clearOutbox } from '@/libs/outbox';
 
 /**
@@ -24,6 +25,7 @@ export async function logout(): Promise<void> {
   await clearAllTokens();
   clearOutbox(); // unsent messages belong to this account: never carry them to the next one
   useAuthStore.getState().logout();
+  clearPendingAgreements(); // the flag is per account
   useFlagStore.getState().clear(); // flags are evaluated per user
   useAppLockStore.getState().reset(); // the next account must not inherit this one's lock
   useTenantStore.getState().flush();

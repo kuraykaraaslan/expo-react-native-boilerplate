@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:34:42.576Z",
+  "generatedAt": "2026-10-10T11:39:15.920Z",
   "services": [
     {
       "filePath": "services/platform/apiKey.service.client.ts",
@@ -76,11 +76,16 @@
         "getConsentConfig",
         "getConsentState",
         "recordConsent",
+        "getCurrentAgreements",
+        "getCurrentAgreement",
+        "acceptAgreement",
         "getAuditLogs"
       ],
       "endpoints": [
         "/consent/config",
         "/consent",
+        "/agreements/current",
+        "/agreements/accept",
         "/audit-logs"
       ]
     },
