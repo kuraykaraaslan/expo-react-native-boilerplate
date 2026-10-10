@@ -55,6 +55,28 @@ describe("consent", () => {
 });
 
 describe("audit log", () => {
+  it("passes the action, actor, resource type and date filters as query params", async () => {
+    const seen = mockRoute("get", "/audit-logs", { logs: [], total: 0 });
+    await ComplianceClientService.getAuditLogs({
+      page: 1,
+      pageSize: 20,
+      action: "tenant.",
+      actorId: USER_ID,
+      resourceType: "tenant_domain",
+      fromDate: "2026-10-01T00:00:00.000Z",
+      toDate: "2026-10-10T23:59:59.999Z",
+    });
+    expect(seen[0].query).toEqual({
+      page: "1",
+      pageSize: "20",
+      action: "tenant.",
+      actorId: USER_ID,
+      resourceType: "tenant_domain",
+      fromDate: "2026-10-01T00:00:00.000Z",
+      toDate: "2026-10-10T23:59:59.999Z",
+    });
+  });
+
   it("parses the list (page is 1-based) and passes the filters", async () => {
     const seen = mockRoute("get", "/audit-logs", {
       logs: [

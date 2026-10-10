@@ -35,7 +35,13 @@ export class ComplianceClientService {
     page?: number;
     pageSize?: number;
     severity?: AuditSeverity;
+    /** Substring match on the action name. */
     action?: string;
+    actorId?: string;
+    resourceType?: string;
+    /** Inclusive bounds on `createdAt` (ISO datetimes). */
+    fromDate?: string;
+    toDate?: string;
   }): Promise<AuditLogsResponse> {
     const res = await axiosInstance.get("/audit-logs", { params });
     return AuditLogsResponseSchema.parse(res.data);

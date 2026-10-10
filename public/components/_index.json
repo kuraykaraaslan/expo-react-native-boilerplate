@@ -169,6 +169,11 @@
     "category": "shell",
     "file": "shell-UserMenu.md"
   },
+  "tenant/AuditLogDetailSheet": {
+    "name": "AuditLogDetailSheet",
+    "category": "tenant",
+    "file": "tenant-AuditLogDetailSheet.md"
+  },
   "tenant/EditMemberModal": {
     "name": "EditMemberModal",
     "category": "tenant",

@@ -91,3 +91,26 @@ On `main`. Typecheck 0 errors, jest 169/169 (5 new), web export OK. Screenshots:
 **Deliberate deviations:** no agreement reader (no route to read from — the policy links open the web pages instead); audit log has no free-text/date filters or detail sheet (severity filter only); consent history is not shown.
 
 **Not verified:** nothing ran against a live server; the web build was driven against a mock built from the server's shapes.
+
+---
+
+## Audit log filters and detail sheet — 2026-10-10
+
+Closes the 13.4 leftover (the earlier "severity filter only" deviation).
+
+**Contract (re-read from `modules/audit_log/server/{audit-logs.route,audit_log.dto,audit_log.query}.ts`):** the route takes `page` (1-based), `pageSize`, `actorId`, `action` (case-insensitive substring), `severity`, `resourceType` (exact match), `resourceId`, `fromDate`, `toDate` (inclusive bounds on `createdAt`; a bare date is read as UTC midnight).
+
+**Shipped**
+- `app/(drawer)/settings/tenant/audit-log.tsx`: action text filter and resource type filter (debounced 400 ms), From / To day fields, a "Clear filters" button, and tap-to-open rows.
+- `components/tenant/AuditLogDetailSheet.tsx`: a modal with time, actor kind and id, resource type and id, IP address, entry id and pretty-printed metadata.
+- `utils/auditFilters.ts`: strict `YYYY-MM-DD` validation; From is sent as the start of the UTC day and To as its end so the chosen day is included.
+- `ComplianceClientService.getAuditLogs` also accepts `actorId`, `resourceType`, `fromDate`, `toDate`.
+- 21 new `AUDIT.*` strings in all six locales.
+- Guards: answers (first page and Load more) are dropped on a filter change or an organization switch (request sequence plus `getActiveTenantId()`); the detail sheet closes on a switch. An invalid or inverted date shows an inline error and is not sent, so the list always matches the filters it shows.
+- Tests: `__tests__/auditFilters.test.ts`, plus a filter query-param test in `__tests__/compliance.service.test.ts`. Typecheck clean, jest 254/254.
+
+**Deviations**
+- Dates are typed as `YYYY-MM-DD` text: no date picker is re-exported through `@/components/ui` yet. Days are UTC, not device-local.
+- No `actorId` filter field in the UI (the service supports it); the actor is visible in the detail sheet.
+
+**Not verified:** not run against a live server or on a device; no component render tests (the repo has no render-test setup), so the screen and sheet were checked by typecheck and the service and util tests only.
