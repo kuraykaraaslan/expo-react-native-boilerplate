@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T07:43:07.055Z",
+  "generatedAt": "2026-10-10T11:27:29.225Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -1863,13 +1863,11 @@
       "name": "messagingStore",
       "hook": "useMessagingStore",
       "stateKeys": [
-        "nonce",
         "connection",
         "conversations",
         "conversationsLoaded",
         "messages",
         "olderCursor",
-        "pending",
         "typing",
         "names",
         "setConnection",
@@ -1880,10 +1878,7 @@
         "receiveMessage",
         "removeMessage",
         "setModeration",
-        "addPending",
-        "settlePending",
-        "failPending",
-        "retryPending",
+        "confirmSent",
         "setTyping",
         "setNames",
         "reset"
@@ -1899,6 +1894,20 @@
         "setUnreadCount"
       ],
       "persisted": false
+    },
+    {
+      "filePath": "stores/outboxStore.ts",
+      "name": "outboxStore",
+      "hook": "useOutboxStore",
+      "stateKeys": [
+        "entries",
+        "enqueue",
+        "setStatus",
+        "remove",
+        "pruneOthers",
+        "clearAll"
+      ],
+      "persisted": true
     },
     {
       "filePath": "stores/ssoStore.ts",
@@ -2155,6 +2164,7 @@
         "MessageSchema",
         "MessageListResponseSchema",
         "MessageResponseSchema",
+        "SendMessageResponseSchema",
         "UnreadCountResponseSchema",
         "CreateConversationRequestSchema",
         "AddParticipantRequestSchema",
@@ -2170,6 +2180,7 @@
         "Participant",
         "Conversation",
         "Message",
+        "SendMessageResponse",
         "CreateConversationRequest",
         "PARTICIPANT_ROLES",
         "ParticipantRole",
@@ -2452,6 +2463,19 @@
       "name": "mmkv",
       "exports": [
         "mmkv"
+      ]
+    },
+    {
+      "filePath": "libs/outbox.ts",
+      "name": "outbox",
+      "exports": [
+        "currentScope",
+        "queueMessage",
+        "retryQueued",
+        "flushOutbox",
+        "reconcileOutbox",
+        "clearOutbox",
+        "pruneOutboxFor"
       ]
     },
     {

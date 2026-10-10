@@ -78,35 +78,15 @@ describe("messaging store", () => {
     expect(useMessagingStore.getState().conversations[0].lastMessagePreview).toBe("body m3");
   });
 
-  it("an optimistic send is replaced by the confirmed message, even when the socket echo came first", () => {
+  it("a confirmed send is deduped by id with its socket echo, whichever arrives first", () => {
     const s = useMessagingStore.getState();
     s.setConversations([conv("c1")]);
-    s.addPending({ nonce: "n1", conversationId: "c1", body: "hi", createdAt: "2026-10-01T10:00:00Z", status: "sending" });
-    const real = msg("m1", "2026-10-01T10:00:01Z", { senderUserId: "me", body: "hi" });
+    const real = msg("m1", "2026-10-01T10:00:01Z", { senderUserId: "me", body: "hi", clientNonce: "n1" });
     s.receiveMessage(real, { fromMe: true, open: true }); // echo first
-    s.settlePending("n1", real); // then the REST answer
+    s.confirmSent(real); // then the REST answer
     const state = useMessagingStore.getState();
-    expect(state.pending).toEqual([]);
     expect(state.messages.c1.map((m) => m.messageId)).toEqual(["m1"]);
-  });
-
-  it("a send confirmed after the store was reset (tenant switch) is dropped, not leaked into the new tenant", () => {
-    const s = useMessagingStore.getState();
-    s.addPending({ nonce: "n1", conversationId: "c1", body: "hi", createdAt: "2026-10-01T10:00:00Z", status: "sending" });
-    s.reset();
-    s.settlePending("n1", msg("m1", "2026-10-01T10:00:01Z"));
-    expect(useMessagingStore.getState().messages.c1).toBeUndefined();
-  });
-
-  it("a failed send stays for retry and goes back to sending", () => {
-    const s = useMessagingStore.getState();
-    s.addPending({ nonce: "n1", conversationId: "c1", body: "hi", createdAt: "2026-10-01T10:00:00Z", status: "sending" });
-    s.failPending("n1");
-    expect(useMessagingStore.getState().pending[0].status).toBe("failed");
-    s.retryPending("n1");
-    expect(useMessagingStore.getState().pending[0].status).toBe("sending");
-    s.settlePending("n1", null); // gave up
-    expect(useMessagingStore.getState().pending).toEqual([]);
+    expect(state.conversations[0].lastMessagePreview).toBe("hi");
   });
 
   it("typing expires and can be cleared; reset forgets everything", () => {
@@ -148,11 +128,18 @@ describe("MessagingClientService", () => {
 
   it("sends with a client nonce and reports a message", async () => {
     const sent = mockRoute("post", "/conversations/c1/messages", () => ({ body: { message: msg("m1", "2026-10-01T10:00:00Z") }, init: { status: 201 } }));
-    await MessagingClientService.sendMessage("c1", { body: "hi", clientNonce: "n1" });
+    const first = await MessagingClientService.sendMessage("c1", { body: "hi", clientNonce: "n1" });
+    expect(first.replayed).toBe(false);
     expect(sent[0].body).toEqual({ body: "hi", clientNonce: "n1" });
     const report = mockRoute("post", "/conversations/c1/messages/m1/report", () => ({ body: { report: {} }, init: { status: 201 } }));
     await MessagingClientService.reportMessage("c1", "m1", "spam");
     expect(report[0].body).toEqual({ reason: "spam" });
+  });
+
+  it("reads a replayed send (200, replayed: true) as the original message", async () => {
+    mockRoute("post", "/conversations/c1/messages", () => ({ body: { message: msg("m1", "2026-10-01T10:00:00Z", { clientNonce: "n1" }), replayed: true }, init: { status: 200 } }));
+    const out = await MessagingClientService.sendMessage("c1", { body: "hi", clientNonce: "n1" });
+    expect(out).toMatchObject({ replayed: true, message: { messageId: "m1", clientNonce: "n1" } });
   });
 
   it("validates a direct conversation needs exactly one other person", async () => {

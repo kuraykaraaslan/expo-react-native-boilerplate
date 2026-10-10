@@ -8,6 +8,7 @@ import { AuthClientService } from '@/services/auth/auth.service.client';
 import { clearAllTokens } from '@/libs/secureStorage';
 import { useFlagStore } from '@/stores/flagStore';
 import logger from '@/libs/logger';
+import { clearOutbox } from '@/libs/outbox';
 
 /**
  * Signs out of every organization this device holds a session for (one token
@@ -21,6 +22,7 @@ export async function logout(): Promise<void> {
     logger.warn('Server logout failed for some tenants, clearing local state anyway');
   }
   await clearAllTokens();
+  clearOutbox(); // unsent messages belong to this account: never carry them to the next one
   useAuthStore.getState().logout();
   useFlagStore.getState().clear(); // flags are evaluated per user
   useAppLockStore.getState().reset(); // the next account must not inherit this one's lock

@@ -60,3 +60,17 @@ const ROLE_RANK: Record<string, number> = { owner: 0, admin: 1, member: 2 };
 export function sortParticipants(list: Participant[], nameOf: (userId: string) => string | undefined): Participant[] {
   return [...list].sort((a, b) => (ROLE_RANK[a.role] ?? 3) - (ROLE_RANK[b.role] ?? 3) || (nameOf(a.userId) ?? "").localeCompare(nameOf(b.userId) ?? ""));
 }
+
+/** Client idempotency key for a send (server limit: 64 chars). One per message, reused by every retry of it. */
+export function newClientNonce(): string {
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+}
+
+/**
+ * Whether a failed send is worth retrying later. No response (offline, timeout), 401 (the session layer is
+ * handling it), 408, 429 and 5xx are transient; any other refusal (400, 403 not a participant, 404, 413, 422 …)
+ * will not change by resending the same message.
+ */
+export function isTransientSendFailure(statusCode: number | undefined): boolean {
+  return statusCode === undefined || statusCode === 401 || statusCode === 408 || statusCode === 429 || statusCode >= 500;
+}

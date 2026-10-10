@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T07:43:07.055Z",
+  "generatedAt": "2026-10-10T11:27:29.225Z",
   "stores": [
     {
       "filePath": "stores/appStore.ts",
@@ -63,13 +63,11 @@
       "name": "messagingStore",
       "hook": "useMessagingStore",
       "stateKeys": [
-        "nonce",
         "connection",
         "conversations",
         "conversationsLoaded",
         "messages",
         "olderCursor",
-        "pending",
         "typing",
         "names",
         "setConnection",
@@ -80,10 +78,7 @@
         "receiveMessage",
         "removeMessage",
         "setModeration",
-        "addPending",
-        "settlePending",
-        "failPending",
-        "retryPending",
+        "confirmSent",
         "setTyping",
         "setNames",
         "reset"
@@ -99,6 +94,20 @@
         "setUnreadCount"
       ],
       "persisted": false
+    },
+    {
+      "filePath": "stores/outboxStore.ts",
+      "name": "outboxStore",
+      "hook": "useOutboxStore",
+      "stateKeys": [
+        "entries",
+        "enqueue",
+        "setStatus",
+        "remove",
+        "pruneOthers",
+        "clearAll"
+      ],
+      "persisted": true
     },
     {
       "filePath": "stores/ssoStore.ts",

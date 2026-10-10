@@ -8,17 +8,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPaperPlane, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { Screen, useListContentStyle } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
+import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { ParticipantsSheet } from '@/components/messaging/ParticipantsSheet';
 import { ReportMessageModal } from '@/components/messaging/ReportMessageModal';
 import { Button, Input, Spinner, Text } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
 import { loadMemberNames } from '@/libs/memberNames';
+import { queueMessage, reconcileOutbox, retryQueued } from '@/libs/outbox';
 import { joinRoom, sendTyping, setOpenConversation } from '@/libs/realtime';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
 import type { Conversation, Message } from '@/services/platform/messaging.dto';
 import { MessagingClientService } from '@/services/platform/messaging.service.client';
 import { useAuthStore } from '@/stores/authStore';
 import { useMessagingStore } from '@/stores/messagingStore';
+import { scopedEntries, useOutboxStore, type OutboxStatus } from '@/stores/outboxStore';
 import { getActiveTenantId, useTenantStore } from '@/stores/tenantStore';
 import { cn } from '@/utils/cn';
 import { formatRelative } from '@/utils/format';
@@ -28,11 +31,7 @@ const TYPING_REFRESH_MS = 3_000;
 
 type Item =
   | { kind: 'message'; message: Message }
-  | { kind: 'pending'; nonce: string; body: string; status: 'sending' | 'failed'; createdAt: string };
-
-function newNonce(): string {
-  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-}
+  | { kind: 'pending'; nonce: string; body: string; status: OutboxStatus; createdAt: string };
 
 function Bubble({ mine, author, body, meta, onLongPress, tone }: { mine: boolean; author?: string; body: string; meta: string; onLongPress?: () => void; tone?: 'failed' | 'sending' }) {
   return (
@@ -60,7 +59,7 @@ export default function ThreadScreen() {
   const me = useAuthStore((s) => s.user?.userId);
   const conversation = useMessagingStore((s) => s.conversations.find((c) => c.conversationId === conversationId));
   const messages = useMessagingStore((s) => s.messages[conversationId] ?? EMPTY);
-  const pending = useMessagingStore((s) => s.pending);
+  const outbox = useOutboxStore((s) => s.entries);
   const typingMap = useMessagingStore((s) => s.typing[conversationId]);
   const names = useMessagingStore((s) => s.names);
   const olderCursor = useMessagingStore((s) => s.olderCursor[conversationId]);
@@ -69,6 +68,7 @@ export default function ThreadScreen() {
   const [text, setText] = useState('');
   const [reporting, setReporting] = useState<Message | null>(null);
   const [peopleOpen, setPeopleOpen] = useState(false);
+  const [discarding, setDiscarding] = useState<string | null>(null);
   const [, tick] = useState(0);
   const lastTypingSent = useRef(0);
   const stopTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -89,6 +89,7 @@ export default function ThreadScreen() {
       const page = await MessagingClientService.listMessages(conversationId);
       if (getActiveTenantId() !== tenant) return;
       useMessagingStore.getState().mergeThread(conversationId, page.messages, page.nextCursor);
+      reconcileOutbox(page.messages);
       void loadMemberNames();
     } catch (err: unknown) {
       handleApiError(err, 'ThreadScreen.load');
@@ -141,31 +142,19 @@ export default function ThreadScreen() {
     }, TYPING_REFRESH_MS);
   }
 
-  async function deliver(nonce: string, body: string) {
-    const store = useMessagingStore.getState();
-    try {
-      const message = await MessagingClientService.sendMessage(conversationId, { body, clientNonce: nonce });
-      store.settlePending(nonce, message);
-    } catch (err: unknown) {
-      store.failPending(nonce);
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      handleApiError(err, 'ThreadScreen.send');
-    }
-  }
-
+  // The message goes into the persisted outbox first (it survives an app kill) and is sent from there, in order,
+  // with a nonce that every retry reuses; a send that already landed is answered as a replay, not duplicated.
   function send() {
     const body = text.trim();
     if (!body) return;
-    const nonce = newNonce();
-    useMessagingStore.getState().addPending({ nonce, conversationId, body, createdAt: new Date().toISOString(), status: 'sending' });
+    if (!queueMessage(conversationId, body)) return;
     setText('');
     sendTyping(conversationId, false);
-    void deliver(nonce, body);
   }
 
-  function retry(nonce: string, body: string) {
-    useMessagingStore.getState().retryPending(nonce);
-    void deliver(nonce, body);
+  function discard(nonce: string) {
+    useOutboxStore.getState().remove(nonce);
+    void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch(() => undefined);
   }
 
   async function loadOlder() {
@@ -184,13 +173,13 @@ export default function ThreadScreen() {
   // Inverted list: index 0 is the newest. Unconfirmed sends sit at the very bottom.
   const items: Item[] = useMemo(
     () => [
-      ...pending
-        .filter((p) => p.conversationId === conversationId)
+      // Only this organization's, this account's unsent messages; newest first for the inverted list.
+      ...(me ? scopedEntries(outbox, { tenantId: tenantId ?? getActiveTenantId(), userId: me }, conversationId) : [])
         .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
         .map((p) => ({ kind: 'pending' as const, nonce: p.nonce, body: p.body, status: p.status, createdAt: p.createdAt })),
       ...messages.map((message) => ({ kind: 'message' as const, message })),
     ],
-    [pending, messages, conversationId],
+    [outbox, messages, conversationId, tenantId, me],
   );
 
   return (
@@ -221,9 +210,15 @@ export default function ThreadScreen() {
               if (item.kind === 'pending') {
                 return (
                   <View>
-                    <Bubble mine body={item.body} tone={item.status} meta={item.status === 'sending' ? t('MESSAGES.SENDING') : t('MESSAGES.FAILED')} />
-                    {item.status === 'failed' ? (
-                      <Pressable onPress={() => retry(item.nonce, item.body)} accessibilityRole="button" className="mb-1 flex-row items-center gap-1.5 self-end px-1" testID={`messages-retry-${item.nonce}`}>
+                    <Bubble
+                      mine
+                      body={item.body}
+                      tone={item.status === 'failed' ? 'failed' : 'sending'}
+                      meta={item.status === 'sending' ? t('MESSAGES.SENDING') : item.status === 'queued' ? t('MESSAGES.QUEUED') : t('MESSAGES.FAILED')}
+                      onLongPress={item.status === 'sending' ? undefined : () => setDiscarding(item.nonce)}
+                    />
+                    {item.status !== 'sending' ? (
+                      <Pressable onPress={() => retryQueued(item.nonce)} accessibilityRole="button" className="mb-1 flex-row items-center gap-1.5 self-end px-1" testID={`messages-retry-${item.nonce}`}>
                         <FontAwesomeIcon icon={faTriangleExclamation} size={11} color={tokens.error} />
                         <Text className="text-xs font-medium text-error">{t('MESSAGES.RETRY')}</Text>
                       </Pressable>
@@ -257,6 +252,16 @@ export default function ThreadScreen() {
           </Button>
         </View>
       </KeyboardAvoidingView>
+      <ConfirmDialog
+        open={discarding !== null}
+        onClose={() => setDiscarding(null)}
+        title={t('MESSAGES.DISCARD_TITLE')}
+        description={t('MESSAGES.DISCARD_DESC')}
+        confirmLabel={t('MESSAGES.DISCARD')}
+        onConfirm={() => {
+          if (discarding) discard(discarding);
+        }}
+      />
       <ParticipantsSheet conversation={conversation} open={peopleOpen} onClose={() => setPeopleOpen(false)} />
       <ReportMessageModal
         message={reporting}

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { AppState } from "react-native";
 import { io, type Socket } from "socket.io-client";
 import logger from "@/libs/logger";
+import { currentScope, flushOutbox, pruneOutboxFor, reconcileOutbox } from "@/libs/outbox";
 import { MessagingClientService } from "@/services/platform/messaging.service.client";
 import {
   MessageRefEventSchema,
@@ -26,6 +27,8 @@ import { getActiveTenantId, useTenantStore } from "@/stores/tenantStore";
 //   - Events go straight into the messaging store; screens never touch the socket.
 //   - Backgrounded for > BACKGROUND_GRACE_MS → closed (iOS suspends sockets);
 //     foregrounding reconnects and backfills what was missed from REST.
+//   - On every connect and every resume the persisted outbox is flushed (libs/outbox.ts), and a message:new
+//     carrying our clientNonce settles its optimistic copy.
 //   - Switching tenant or signing out tears it down: no event of the old
 //     tenant can reach the new one.
 // ============================================================================
@@ -61,7 +64,10 @@ export async function backfill(): Promise<void> {
     const open = openConversationId;
     if (open) {
       const { messages } = await MessagingClientService.listMessages(open);
-      if (getActiveTenantId() === tenantId) store().mergeThread(open, messages);
+      if (getActiveTenantId() === tenantId) {
+        store().mergeThread(open, messages);
+        reconcileOutbox(messages); // a send whose answer was lost is already here: drop its optimistic copy
+      }
     }
   } catch (err) {
     logger.warn("[realtime] backfill failed", err); // background — no toast
@@ -91,6 +97,7 @@ function bindEvents(s: Socket, tenantId: string): void {
     store().setConnection("connected");
     rooms.forEach((id) => s.emit("join", { conversationId: id }));
     void backfill();
+    void flushOutbox(); // (re)connected: send what piled up while offline
   });
   // socket.io retries by itself only for transport failures. A refusal by the gateway's handshake
   // middleware (`connect_error` with `s.active === false`) or a server-initiated disconnect leaves
@@ -125,6 +132,8 @@ function bindEvents(s: Socket, tenantId: string): void {
     const parsed = MessageSchema.safeParse(raw);
     if (!parsed.success) return;
     const message = parsed.data;
+    // `clientNonce` is in the payload: our own optimistic message is confirmed by its nonce, not by guessing.
+    if (message.clientNonce) reconcileOutbox([message]);
     store().receiveMessage(message, { fromMe: message.senderUserId === me(), open: openConversationId === message.conversationId });
     // A conversation the list doesn't know yet (someone started one with us): fetch the list again.
     if (!store().conversations.some((c) => c.conversationId === message.conversationId)) void backfill();
@@ -235,12 +244,17 @@ export function useRealtimeSync(enabled: boolean): void {
 
     // A different organization's conversations must never show up under this one.
     store().reset();
+    const userId = currentScope()?.userId;
+    if (userId) pruneOutboxFor(userId); // another account's unsent messages are not ours to keep or send
+    // Unsent messages from before an app kill go out now; the socket's `connect` flushes again once it is up.
+    void flushOutbox();
     if (AppState.currentState === "active") void connectRealtime(tenant);
 
     const sub = AppState.addEventListener("change", (state) => {
       if (state === "active") {
         if (closeTimer) clearTimeout(closeTimer);
         closeTimer = null;
+        void flushOutbox(); // resume: do not wait for the socket
         void connectRealtime(tenant).then(backfill);
       } else if (!closeTimer) {
         closeTimer = setTimeout(() => {

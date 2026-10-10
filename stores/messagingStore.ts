@@ -4,15 +4,13 @@ import { mergeMessages, sortConversations, upsertMessage } from "@/utils/messagi
 
 // ============================================================================
 // Messaging store — conversations, threads, typing and the connection state.
+// Unsent messages live in `outboxStore` (persisted, per tenant and user).
 // Deliberately NOT persisted: it mirrors the active organization's server state
 // and is rebuilt from REST on every start, so nothing can leak across tenants
 // or sign-outs (`reset()` runs on both).
 // ============================================================================
 
 export type ConnectionState = "idle" | "connecting" | "connected" | "reconnecting";
-
-/** A message the user sent that the server has not confirmed (or refused). */
-export type PendingMessage = { nonce: string; conversationId: string; body: string; createdAt: string; status: "sending" | "failed" };
 
 /** How long a typing indicator stays up without a refresh. */
 export const TYPING_TTL_MS = 5_000;
@@ -25,7 +23,6 @@ interface MessagingState {
   messages: Record<string, Message[]>;
   /** conversationId → cursor for the next older page (null: reached the start). */
   olderCursor: Record<string, string | null>;
-  pending: PendingMessage[];
   /** conversationId → userId → expiry (ms epoch). */
   typing: Record<string, Record<string, number>>;
   /** userId → display name, from the member list (best effort: a plain member may not be allowed to read it). */
@@ -38,10 +35,8 @@ interface MessagingState {
   receiveMessage: (message: Message, opts: { fromMe: boolean; open: boolean }) => void;
   removeMessage: (conversationId: string, messageId: string) => void;
   setModeration: (conversationId: string, messageId: string, status: string) => void;
-  addPending: (p: PendingMessage) => void;
-  settlePending: (nonce: string, message: Message | null) => void;
-  failPending: (nonce: string) => void;
-  retryPending: (nonce: string) => void;
+  /** The server confirmed one of our sends (first send or replay): keep the real message, deduped by id with any socket echo. */
+  confirmSent: (message: Message) => void;
   setTyping: (conversationId: string, userId: string, on: boolean, now?: number) => void;
   setNames: (names: Record<string, string>) => void;
   reset: () => void;
@@ -53,7 +48,6 @@ const INITIAL = {
   conversationsLoaded: false,
   messages: {} as Record<string, Message[]>,
   olderCursor: {} as Record<string, string | null>,
-  pending: [] as PendingMessage[],
   typing: {} as Record<string, Record<string, number>>,
   names: {} as Record<string, string>,
 };
@@ -104,27 +98,13 @@ export const useMessagingStore = create<MessagingState>()((set) => ({
       messages: { ...s.messages, [conversationId]: (s.messages[conversationId] ?? []).map((m) => (m.messageId === messageId ? { ...m, moderationStatus: status } : m)) },
     })),
 
-  addPending: (p) => set((s) => ({ pending: [...s.pending.filter((x) => x.nonce !== p.nonce), p] })),
-
-  // The server answered: drop the optimistic copy and keep the real message (deduped by id with any socket echo).
-  settlePending: (nonce, message) =>
-    set((s) => {
-      const gone = s.pending.find((p) => p.nonce === nonce);
-      const pending = s.pending.filter((p) => p.nonce !== nonce);
-      // No pending entry: the store was reset (tenant switch / sign-out) while the send was in flight.
-      if (!message || !gone) return { pending };
-      return {
-        pending,
-        messages: { ...s.messages, [message.conversationId]: upsertMessage(s.messages[message.conversationId] ?? [], message) },
-        conversations: sortConversations(
-          s.conversations.map((c) => (c.conversationId === (gone?.conversationId ?? message.conversationId) ? { ...c, lastMessageAt: message.createdAt, lastMessagePreview: message.body.slice(0, 120) } : c)),
-        ),
-      };
-    }),
-
-  failPending: (nonce) => set((s) => ({ pending: s.pending.map((p) => (p.nonce === nonce ? { ...p, status: "failed" as const } : p)) })),
-
-  retryPending: (nonce) => set((s) => ({ pending: s.pending.map((p) => (p.nonce === nonce ? { ...p, status: "sending" as const } : p)) })),
+  confirmSent: (message) =>
+    set((s) => ({
+      messages: { ...s.messages, [message.conversationId]: upsertMessage(s.messages[message.conversationId] ?? [], message) },
+      conversations: sortConversations(
+        s.conversations.map((c) => (c.conversationId === message.conversationId ? { ...c, lastMessageAt: message.createdAt, lastMessagePreview: message.body.slice(0, 120) } : c)),
+      ),
+    })),
 
   setTyping: (conversationId, userId, on, now = Date.now()) =>
     set((s) => {

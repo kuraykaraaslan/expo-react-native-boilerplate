@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T07:43:07.055Z",
+  "generatedAt": "2026-10-10T11:27:29.225Z",
   "dtos": [
     {
       "filePath": "services/platform/apiKey.dto.ts",
@@ -223,6 +223,7 @@
         "MessageSchema",
         "MessageListResponseSchema",
         "MessageResponseSchema",
+        "SendMessageResponseSchema",
         "UnreadCountResponseSchema",
         "CreateConversationRequestSchema",
         "AddParticipantRequestSchema",
@@ -238,6 +239,7 @@
         "Participant",
         "Conversation",
         "Message",
+        "SendMessageResponse",
         "CreateConversationRequest",
         "PARTICIPANT_ROLES",
         "ParticipantRole",

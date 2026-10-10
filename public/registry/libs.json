@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T07:43:07.055Z",
+  "generatedAt": "2026-10-10T11:27:29.225Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",
@@ -111,6 +111,19 @@
       "name": "mmkv",
       "exports": [
         "mmkv"
+      ]
+    },
+    {
+      "filePath": "libs/outbox.ts",
+      "name": "outbox",
+      "exports": [
+        "currentScope",
+        "queueMessage",
+        "retryQueued",
+        "flushOutbox",
+        "reconcileOutbox",
+        "clearOutbox",
+        "pruneOutboxFor"
       ]
     },
     {

@@ -5,9 +5,9 @@ import {
   ConversationResponseSchema,
   CreateConversationRequestSchema,
   MessageListResponseSchema,
-  MessageResponseSchema,
   ParticipantResponseSchema,
   SendMessageRequestSchema,
+  SendMessageResponseSchema,
   UnreadCountResponseSchema,
   WsTicketResponseSchema,
   type AddParticipantRequest,
@@ -17,6 +17,7 @@ import {
   type Participant,
   type ReportReason,
   type SendMessageRequest,
+  type SendMessageResponse,
   type WsTicket,
 } from "@/services/platform/messaging.dto";
 
@@ -71,10 +72,14 @@ export class MessagingClientService {
     return { messages: parsed.messages, nextCursor: parsed.nextCursor ?? null };
   }
 
-  static async sendMessage(conversationId: string, payload: SendMessageRequest): Promise<Message> {
+  /**
+   * Idempotent per (sender, conversation, `clientNonce`): a retry of a send that already landed answers 200 with
+   * `replayed: true` and the original message, which callers treat as success.
+   */
+  static async sendMessage(conversationId: string, payload: SendMessageRequest): Promise<SendMessageResponse> {
     const body = SendMessageRequestSchema.parse(payload);
     const res = await axiosInstance.post(`/conversations/${encodeURIComponent(conversationId)}/messages`, body);
-    return MessageResponseSchema.parse(res.data).message;
+    return SendMessageResponseSchema.parse(res.data);
   }
 
   static async markRead(conversationId: string, upToMessageId: string): Promise<void> {

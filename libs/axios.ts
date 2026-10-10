@@ -10,6 +10,7 @@ import { clearTenantTokens, getToken, setTokens } from "@/libs/secureStorage";
 import { useAppStore } from "@/stores/appStore";
 import { useAuthStore } from "@/stores/authStore";
 import { useFlagStore } from "@/stores/flagStore";
+import { useOutboxStore } from "@/stores/outboxStore";
 import { getActiveTenantId, useTenantStore } from "@/stores/tenantStore";
 
 // ============================================================================
@@ -168,6 +169,7 @@ async function endTenantSession(tenantId: string, noticeKey: string): Promise<vo
   }
   auth.logout();
   useFlagStore.getState().clear();
+  useOutboxStore.getState().clearAll(); // no session is left: unsent messages must not outlive the sign-out
   useTenantStore.getState().flush();
   toast.error(i18n.t(noticeKey));
 }

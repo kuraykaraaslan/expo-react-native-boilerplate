@@ -43,13 +43,21 @@ export const MessageSchema = z.object({
   replyToMessageId: z.string().nullish(),
   moderationStatus: z.string().default("CLEAN"),
   createdAt: z.string(),
-  /** Echoed by the server when the sender supplied one. */
+  /** The sender's idempotency key; present in list responses and the socket `message:new` payload. Null when none was sent. */
   clientNonce: z.string().nullish(),
 });
 export type Message = z.infer<typeof MessageSchema>;
 
 export const MessageListResponseSchema = z.object({ messages: z.array(MessageSchema), nextCursor: z.string().nullish() });
 export const MessageResponseSchema = z.object({ message: MessageSchema });
+
+/**
+ * POST /conversations/{id}/messages: 201 `{message, replayed: false}` for a first send, 200 `{message, replayed: true}`
+ * when the (sender, conversation, clientNonce) was already stored (the ORIGINAL message comes back). `replayed` is
+ * defaulted so an older server that omits it still parses.
+ */
+export const SendMessageResponseSchema = z.object({ message: MessageSchema, replayed: z.boolean().default(false) });
+export type SendMessageResponse = z.infer<typeof SendMessageResponseSchema>;
 
 export const UnreadCountResponseSchema = z.object({ unreadCount: z.number() });
 
