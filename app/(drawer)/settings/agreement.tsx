@@ -83,7 +83,7 @@ export default function AgreementScreen() {
     setAccepting(true);
     try {
       const { acceptance } = await ComplianceClientService.acceptAgreement({ agreementId: shown.agreement.agreementId, accepted: true });
-      if (getActiveTenantId() !== tenantAtStart) return; // switched away: the acceptance belongs to the old organization
+      if (getActiveTenantId() !== tenantAtStart || !useAuthStore.getState().isAuthenticated) return; // switched away or signed out: nothing to show or navigate
       if (acceptance.versionId && acceptance.versionId !== shown.version.versionId) {
         // Published between loading and accepting: what was recorded is not what the user read.
         toast.info(t('AGREEMENTS.CHANGED'));

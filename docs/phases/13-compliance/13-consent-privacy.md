@@ -160,3 +160,19 @@ Covers 13.2 (read and accept agreements, "something is pending" signal) and the 
 **Not verified:** nothing ran against a live server or device; shapes come from reading source. The device login `compliance` key was read from the route diff, not observed.
 
 **Owner still must supply:** nothing for this item (no new env keys or identifiers).
+
+---
+
+## Adversarial review of the agreements work — 2026-10-10
+
+Every route, body and response of the section above was re-read against the uncommitted source of next-boilerplate (`agreements-current.route.ts`, `terms_consent.agreements.current.ts`, `agreements-accept.route.ts`, `terms_consent.subject.ts`, `terms_consent.session-extension.ts`, `consent.route.ts`, the DTO and type files, and the auth session and device-login route diffs). No contract mismatch was found: shapes, status codes (201 on accept, 404/409 on `?type=`, 403/401 subject rules) and the top-level `compliance` key all match.
+
+**Fixed**
+- A background `refreshPendingAgreements` that started before a fresher `applyCompliance` (tenant switch, device login, 2FA read) could overwrite the fresher flag with an older answer. `applyCompliance` now bumps the refresh sequence.
+- The reader kept running after a sign-out that happened while an acceptance was in flight (toast, navigation); it now stops when the session is gone.
+- The legal screen's consent save could write `saved` state after an organization switch; it now drops the result like the load does.
+- Test: superseded refresh in `__tests__/pendingAgreements.test.tsx`.
+
+**Checked, no change needed:** only `expo-haptics` and `expo-router` are imported (already used on web-safe paths elsewhere); no tokens in the store or logs (errors are logged by status code only); all six locales carry the same 16 `AGREEMENTS.*` keys; hooks are unconditional.
+
+**Not verified:** still no live server or device run; the legal screen has no render test.

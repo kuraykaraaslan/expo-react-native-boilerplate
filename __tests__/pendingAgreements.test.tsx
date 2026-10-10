@@ -83,6 +83,15 @@ describe("pending agreements flag", () => {
     expect(useComplianceStore.getState().pending).toEqual([]);
   });
 
+  it("refresh drops a late answer that a fresher applyCompliance superseded", async () => {
+    mockRoute("get", "/auth/session", () => {
+      applyCompliance(TENANT_ID, undefined);
+      return { body: { ...sessionJson, compliance: section } };
+    });
+    await refreshPendingAgreements();
+    expect(useComplianceStore.getState().pending).toEqual([]);
+  });
+
   it("a failed refresh keeps the previous flag", async () => {
     applyCompliance(TENANT_ID, section);
     mockRoute("get", "/auth/session", () => fail(500, { message: "boom" }));

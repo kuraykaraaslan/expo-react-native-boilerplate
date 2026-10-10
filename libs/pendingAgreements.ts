@@ -19,6 +19,7 @@ let refreshSeq = 0;
 
 /** Stores what a session answer said for `tenantId`. An absent section means nothing is pending there. */
 export function applyCompliance(tenantId: string, compliance: ComplianceSection | null | undefined): void {
+  refreshSeq += 1; // a fresher answer supersedes any background refresh still in flight
   useComplianceStore.getState().set(tenantId, compliance?.pendingAgreements ?? []);
 }
 

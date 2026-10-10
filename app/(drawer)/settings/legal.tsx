@@ -101,12 +101,14 @@ export default function LegalScreen() {
 
   async function save() {
     if (!config || !signedIn || !dirty) return;
+    const tenantAtStart = getActiveTenantId();
     setSaving(true);
     try {
       await ComplianceClientService.recordConsent({
         policyVersion: config.policyVersion || undefined,
         decisions: optional.map((p) => ({ purpose: p.key, granted: draft[p.key] ?? false })),
       });
+      if (getActiveTenantId() !== tenantAtStart) return; // the choices belong to the organization that was shown
       setSaved(draft);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       toast.success(t('PRIVACY.SAVED'));
