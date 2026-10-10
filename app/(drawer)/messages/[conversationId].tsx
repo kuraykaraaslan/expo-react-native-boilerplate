@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPaperPlane, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { Screen, useListContentStyle } from '@/components/common/Screen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
+import { ParticipantsSheet } from '@/components/messaging/ParticipantsSheet';
 import { ReportMessageModal } from '@/components/messaging/ReportMessageModal';
 import { Button, Input, Spinner, Text } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
@@ -67,6 +68,7 @@ export default function ThreadScreen() {
   const [loadingOlder, setLoadingOlder] = useState(false);
   const [text, setText] = useState('');
   const [reporting, setReporting] = useState<Message | null>(null);
+  const [peopleOpen, setPeopleOpen] = useState(false);
   const [, tick] = useState(0);
   const lastTypingSent = useRef(0);
   const stopTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -104,6 +106,9 @@ export default function ThreadScreen() {
       sendTyping(conversationId, false);
     };
   }, [conversationId, tenantId, load]);
+
+  // The roster sheet belongs to one organization's conversation: close it when either changes.
+  useEffect(() => setPeopleOpen(false), [conversationId, tenantId]);
 
   // Newest message from someone else on screen → tell the server (clears the badge on every device).
   const newestId = messages[0]?.messageId;
@@ -192,7 +197,12 @@ export default function ThreadScreen() {
     <Screen scroll={false}>
       <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
         <View className="px-4 pt-6">
-          <ScreenHeader back={{ label: t('MESSAGES.TITLE'), href: '/messages' }} title={title} />
+          <ScreenHeader
+            back={{ label: t('MESSAGES.TITLE'), href: '/messages' }}
+            title={title}
+            subtitle={isGroup && conversation ? t('MESSAGES.PARTICIPANTS_COUNT', { count: conversation.participants.length }) : undefined}
+            actions={isGroup ? [{ label: t('MESSAGES.PEOPLE'), variant: 'outline', onPress: () => setPeopleOpen(true) }] : undefined}
+          />
         </View>
         {loading && items.length === 0 ? (
           <Spinner />
@@ -247,6 +257,7 @@ export default function ThreadScreen() {
           </Button>
         </View>
       </KeyboardAvoidingView>
+      <ParticipantsSheet conversation={conversation} open={peopleOpen} onClose={() => setPeopleOpen(false)} />
       <ReportMessageModal
         message={reporting}
         onClose={() => setReporting(null)}

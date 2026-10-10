@@ -1,6 +1,6 @@
 import { MessagingClientService } from "@/services/platform/messaging.service.client";
 import { useMessagingStore } from "@/stores/messagingStore";
-import { compareNewestFirst, conversationTitle, mergeMessages, sortConversations, totalUnread, upsertMessage } from "@/utils/messaging";
+import { canManageParticipants, compareNewestFirst, conversationTitle, sortParticipants, withParticipant, mergeMessages, sortConversations, totalUnread, upsertMessage } from "@/utils/messaging";
 import type { Conversation, Message } from "@/services/platform/messaging.dto";
 import { TENANT_ID } from "./fixtures";
 import { mockRoute, signIn } from "./_helpers";
@@ -159,5 +159,49 @@ describe("MessagingClientService", () => {
     const seen = mockRoute("post", "/conversations", { conversation: conv("c1") });
     await expect(MessagingClientService.createConversation({ type: "direct", participantUserIds: ["a", "b"] })).rejects.toThrow();
     expect(seen).toHaveLength(0);
+  });
+});
+
+describe("group conversations", () => {
+  it("creates a group with a title and several people", async () => {
+    const seen = mockRoute("post", "/conversations", () => ({ body: { conversation: conv("g1", { type: "group", title: "Team" }) }, init: { status: 201 } }));
+    const created = await MessagingClientService.createConversation({ type: "group", title: "Team", participantUserIds: ["a", "b"] });
+    expect(seen[0].body).toEqual({ type: "group", title: "Team", participantUserIds: ["a", "b"] });
+    expect(created.type).toBe("group");
+  });
+
+  it("refuses a group without a title before any request", async () => {
+    const seen = mockRoute("post", "/conversations", { conversation: conv("g1") });
+    await expect(MessagingClientService.createConversation({ type: "group", participantUserIds: ["a"] })).rejects.toThrow();
+    expect(seen).toHaveLength(0);
+  });
+
+  it("adds a participant with the member role by default", async () => {
+    const seen = mockRoute("post", "/conversations/g1/participants", () => ({ body: { participant: { userId: "u9", role: "member" } }, init: { status: 201 } }));
+    const p = await MessagingClientService.addParticipant("g1", { userId: "u9" });
+    expect(seen[0].body).toEqual({ userId: "u9", role: "member" });
+    expect(p).toMatchObject({ userId: "u9", role: "member" });
+  });
+
+  it("surfaces a conflict when the person is already in the group", async () => {
+    mockRoute("post", "/conversations/g1/participants", () => ({ body: { message: "Already a participant." }, init: { status: 409 } }));
+    await expect(MessagingClientService.addParticipant("g1", { userId: "u2" })).rejects.toBeTruthy();
+  });
+
+  it("lets only a group's owner or admin manage people", () => {
+    const group = (role: string) => conv("g1", { type: "group", participants: [{ userId: "me", role }, { userId: "u2", role: "owner" }] });
+    expect(canManageParticipants(group("owner"), "me")).toBe(true);
+    expect(canManageParticipants(group("admin"), "me")).toBe(true);
+    expect(canManageParticipants(group("member"), "me")).toBe(false);
+    expect(canManageParticipants(conv("d1", { participants: [{ userId: "me", role: "owner" }] }), "me")).toBe(false);
+    expect(canManageParticipants(group("owner"), undefined)).toBe(false);
+  });
+
+  it("adds a participant once and orders the roster owner first", () => {
+    const g = conv("g1", { type: "group", participants: [{ userId: "b", role: "member" }, { userId: "a", role: "owner" }] });
+    const next = withParticipant(withParticipant(g, { userId: "c", role: "member" }), { userId: "c", role: "admin" });
+    expect(next.participants.filter((p) => p.userId === "c")).toEqual([{ userId: "c", role: "admin" }]);
+    const names: Record<string, string> = { a: "Ann", b: "Bob", c: "Cy" };
+    expect(sortParticipants(next.participants, (id) => names[id]).map((p) => p.userId)).toEqual(["a", "c", "b"]);
   });
 });

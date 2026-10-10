@@ -114,6 +114,11 @@
     "category": "messaging",
     "file": "messaging-NewConversationModal.md"
   },
+  "messaging/ParticipantsSheet": {
+    "name": "ParticipantsSheet",
+    "category": "messaging",
+    "file": "messaging-ParticipantsSheet.md"
+  },
   "messaging/ReportMessageModal": {
     "name": "ReportMessageModal",
     "category": "messaging",

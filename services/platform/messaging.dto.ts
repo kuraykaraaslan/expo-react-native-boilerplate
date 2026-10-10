@@ -63,6 +63,19 @@ export const CreateConversationRequestSchema = z
   .refine((v) => v.type !== "group" || !!v.title, { message: "A group needs a title" });
 export type CreateConversationRequest = z.infer<typeof CreateConversationRequestSchema>;
 
+/** Conversation roles (server `ParticipantRoleEnum`). Only owner and admin may add people. */
+export const PARTICIPANT_ROLES = ["owner", "admin", "member"] as const;
+export type ParticipantRole = (typeof PARTICIPANT_ROLES)[number];
+
+/** POST /conversations/{id}/participants (group conversations only; owner/admin). */
+export const AddParticipantRequestSchema = z.object({
+  userId: z.string().min(1),
+  role: z.enum(PARTICIPANT_ROLES).default("member"),
+});
+export type AddParticipantRequest = z.input<typeof AddParticipantRequestSchema>;
+/** 201 `{ participant }`. */
+export const ParticipantResponseSchema = z.object({ participant: ParticipantSchema });
+
 export const SendMessageRequestSchema = z.object({
   body: z.string().min(1).max(8000),
   clientNonce: z.string().max(64).optional(),

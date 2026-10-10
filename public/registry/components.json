@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T07:35:39.974Z",
+  "generatedAt": "2026-10-10T07:37:38.372Z",
   "components": [
     {
       "id": "account/AvatarPicker",
@@ -298,6 +298,18 @@
       ],
       "props": [
         "open"
+      ]
+    },
+    {
+      "id": "messaging/ParticipantsSheet",
+      "filePath": "components/messaging/ParticipantsSheet.tsx",
+      "name": "ParticipantsSheet",
+      "category": "messaging",
+      "exports": [
+        "ParticipantsSheet"
+      ],
+      "props": [
+        "conversation"
       ]
     },
     {

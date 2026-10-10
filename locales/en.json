@@ -283,7 +283,26 @@
         "REASON_OTHER": "Something else",
         "MODERATION_PENDING": "Held for review",
         "MODERATION_REJECTED": "Removed by a moderator",
-        "MODERATION_HIDDEN": "Hidden by a moderator"
+        "MODERATION_HIDDEN": "Hidden by a moderator",
+        "NEW_GROUP": "New group",
+        "NEW_GROUP_DESC": "Name the group and choose who joins.",
+        "MODE_DIRECT": "Direct",
+        "MODE_GROUP": "Group",
+        "GROUP_TITLE": "Group name",
+        "CREATE_GROUP": "Create group ({{count}})",
+        "PEOPLE": "People",
+        "PARTICIPANTS_COUNT": "{{count}} people",
+        "PARTICIPANTS_TITLE": "People ({{count}})",
+        "ADD_PEOPLE": "Add people",
+        "ADD_PEOPLE_DESC": "Pick colleagues to add to this group.",
+        "NO_ONE_TO_ADD": "Everyone is already in this group.",
+        "ADD_PERSON_A11Y": "Add {{name}}",
+        "PARTICIPANT_ADDED": "{{name}} was added.",
+        "DONE": "Done",
+        "YOU": "You",
+        "ROLE_OWNER": "Owner",
+        "ROLE_ADMIN": "Admin",
+        "ROLE_MEMBER": "Member"
     },
     "ERRORS": {
         "AUTH": {

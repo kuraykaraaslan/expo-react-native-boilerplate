@@ -283,7 +283,26 @@
         "REASON_OTHER": "Etwas anderes",
         "MODERATION_PENDING": "Zur Prüfung zurückgehalten",
         "MODERATION_REJECTED": "Von einem Moderator entfernt",
-        "MODERATION_HIDDEN": "Von einem Moderator ausgeblendet"
+        "MODERATION_HIDDEN": "Von einem Moderator ausgeblendet",
+        "NEW_GROUP": "Neue Gruppe",
+        "NEW_GROUP_DESC": "Gib der Gruppe einen Namen und wähle die Teilnehmenden.",
+        "MODE_DIRECT": "Direkt",
+        "MODE_GROUP": "Gruppe",
+        "GROUP_TITLE": "Gruppenname",
+        "CREATE_GROUP": "Gruppe erstellen ({{count}})",
+        "PEOPLE": "Personen",
+        "PARTICIPANTS_COUNT": "{{count}} Personen",
+        "PARTICIPANTS_TITLE": "Personen ({{count}})",
+        "ADD_PEOPLE": "Personen hinzufügen",
+        "ADD_PEOPLE_DESC": "Wähle Kolleginnen und Kollegen für diese Gruppe.",
+        "NO_ONE_TO_ADD": "Alle sind bereits in dieser Gruppe.",
+        "ADD_PERSON_A11Y": "{{name}} hinzufügen",
+        "PARTICIPANT_ADDED": "{{name}} wurde hinzugefügt.",
+        "DONE": "Fertig",
+        "YOU": "Du",
+        "ROLE_OWNER": "Inhaber",
+        "ROLE_ADMIN": "Admin",
+        "ROLE_MEMBER": "Mitglied"
     },
     "ERRORS": {
         "AUTH": {

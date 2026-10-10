@@ -81,3 +81,21 @@ Modules: `websocket`, `messaging`. Priority 2. Largest phase of the set; split i
 
 **Corrections 2026-10-10 (review):** a gateway refusal (`connect_error` with an inactive socket) or a server-side disconnect does not trigger socket.io's own retry, so `libs/realtime.ts` now reconnects by hand with backoff and a fresh ticket. Thread loads, send confirmations and the member directory (now paged, up to 1000) drop answers that arrive after a tenant switch; the read-marking effect fires only when the newest message changes. Search and the API key / domain screens got the same stale-answer guards; the flag cache is cleared on sign-out and never written while signed out.
 
+
+---
+
+## 🟡 Group conversations — 2026-10-10
+
+**Contract check (server source, `modules/messaging/server`):** `POST /conversations` takes `{type, title?, participantUserIds (1..256), metadata?}`; a group requires a title and the caller becomes owner. `POST /conversations/{id}/participants` takes `{userId, role: owner|admin|member = member}` and returns 201 `{participant}`; it needs a conversation owner/admin (`assertCanManageParticipants`), refuses direct conversations (400) and a person already in (409). The same route file has **only POST and DELETE: there is no `GET` for participants**, so the roster comes from `participants` on the conversation (list rows and `GET /conversations/{id}`).
+
+**Built:**
+- `NewConversationModal`: Direct / Group switch; group mode has a name field, a multi-select people list (checkboxes) and a Create button (success haptic); a result that arrives after an organization switch is dropped, as is a stale member directory.
+- `components/messaging/ParticipantsSheet.tsx`: roster with role badges, "You" marker, owner first; owner/admin get "Add people" with a filterable picker of members not yet in the group (adds as `member`, success haptic and toast, store updated in place). Resets on close, conversation change and organization switch; add answers after a switch are dropped.
+- Thread header: group threads show a participant count and a "People" action opening the sheet.
+- `AddParticipantRequestSchema` / `ParticipantResponseSchema`, `MessagingClientService.addParticipant`, helpers `canManageParticipants`, `withParticipant`, `sortParticipants`; strings in all six locales; tests in `__tests__/messaging.test.ts`.
+
+**Deviations / not done:**
+- Removing a person or leaving a group (`DELETE …/participants?userId=`) and changing roles are not built; adds always use the `member` role.
+- The server does not tell a plain member whether they may add people beyond their conversation role: the control is hidden unless the viewer is owner/admin of that group. The tenant-level permission `messaging.participants.add` is not checked client-side; a refusal surfaces through the normal error toast.
+- Names in the roster come from the tenant member list; if the viewer may not read it, rows show "Someone".
+- Not run on a device or against a live server.

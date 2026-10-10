@@ -283,7 +283,26 @@
         "REASON_OTHER": "Başka bir şey",
         "MODERATION_PENDING": "İnceleme için bekletiliyor",
         "MODERATION_REJECTED": "Bir moderatör tarafından kaldırıldı",
-        "MODERATION_HIDDEN": "Bir moderatör tarafından gizlendi"
+        "MODERATION_HIDDEN": "Bir moderatör tarafından gizlendi",
+        "NEW_GROUP": "Yeni grup",
+        "NEW_GROUP_DESC": "Gruba bir ad verin ve katılacak kişileri seçin.",
+        "MODE_DIRECT": "Birebir",
+        "MODE_GROUP": "Grup",
+        "GROUP_TITLE": "Grup adı",
+        "CREATE_GROUP": "Grup oluştur ({{count}})",
+        "PEOPLE": "Kişiler",
+        "PARTICIPANTS_COUNT": "{{count}} kişi",
+        "PARTICIPANTS_TITLE": "Kişiler ({{count}})",
+        "ADD_PEOPLE": "Kişi ekle",
+        "ADD_PEOPLE_DESC": "Bu gruba eklenecek iş arkadaşlarını seçin.",
+        "NO_ONE_TO_ADD": "Herkes zaten bu grupta.",
+        "ADD_PERSON_A11Y": "{{name}} kişisini ekle",
+        "PARTICIPANT_ADDED": "{{name}} eklendi.",
+        "DONE": "Bitti",
+        "YOU": "Siz",
+        "ROLE_OWNER": "Sahip",
+        "ROLE_ADMIN": "Yönetici",
+        "ROLE_MEMBER": "Üye"
     },
     "ERRORS": {
         "AUTH": {

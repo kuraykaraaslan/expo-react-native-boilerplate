@@ -1,16 +1,20 @@
 import axiosInstance from "@/libs/axios";
 import {
+  AddParticipantRequestSchema,
   ConversationListResponseSchema,
   ConversationResponseSchema,
   CreateConversationRequestSchema,
   MessageListResponseSchema,
   MessageResponseSchema,
+  ParticipantResponseSchema,
   SendMessageRequestSchema,
   UnreadCountResponseSchema,
   WsTicketResponseSchema,
+  type AddParticipantRequest,
   type Conversation,
   type CreateConversationRequest,
   type Message,
+  type Participant,
   type ReportReason,
   type SendMessageRequest,
   type WsTicket,
@@ -40,6 +44,13 @@ export class MessagingClientService {
     const body = CreateConversationRequestSchema.parse(payload);
     const res = await axiosInstance.post("/conversations", body);
     return ConversationResponseSchema.parse(res.data).conversation;
+  }
+
+  /** Adds a person to a group conversation (owner/admin only; a direct conversation refuses). 409 when already in. */
+  static async addParticipant(conversationId: string, payload: AddParticipantRequest): Promise<Participant> {
+    const body = AddParticipantRequestSchema.parse(payload);
+    const res = await axiosInstance.post(`/conversations/${encodeURIComponent(conversationId)}/participants`, body);
+    return ParticipantResponseSchema.parse(res.data).participant;
   }
 
   static async getUnreadCount(): Promise<number> {

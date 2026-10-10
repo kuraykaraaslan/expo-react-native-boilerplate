@@ -1,4 +1,4 @@
-import type { Conversation, Message } from "@/services/platform/messaging.dto";
+import type { Conversation, Message, Participant } from "@/services/platform/messaging.dto";
 
 // ============================================================================
 // Pure helpers for the messaging store — ordering and merging, kept free of
@@ -40,4 +40,23 @@ export function conversationTitle(conversation: Conversation, viewerUserId: stri
 /** "unread" is what the server counted plus nothing client-side: it is only ever replaced, never incremented blindly. */
 export function totalUnread(list: Conversation[]): number {
   return list.reduce((sum, c) => sum + c.unreadCount, 0);
+}
+
+/** Owner and admin of a group may add people; a direct conversation has no roster to manage. */
+export function canManageParticipants(conversation: Conversation, viewerUserId: string | undefined): boolean {
+  if (conversation.type !== "group" || !viewerUserId) return false;
+  const role = conversation.participants.find((p) => p.userId === viewerUserId)?.role;
+  return role === "owner" || role === "admin";
+}
+
+/** Adds (or replaces, by user) a participant; returns the same conversation when nothing changed shape. */
+export function withParticipant(conversation: Conversation, participant: Participant): Conversation {
+  return { ...conversation, participants: [...conversation.participants.filter((p) => p.userId !== participant.userId), participant] };
+}
+
+const ROLE_RANK: Record<string, number> = { owner: 0, admin: 1, member: 2 };
+
+/** Owner first, then admins, then members; ties by name. */
+export function sortParticipants(list: Participant[], nameOf: (userId: string) => string | undefined): Participant[] {
+  return [...list].sort((a, b) => (ROLE_RANK[a.role] ?? 3) - (ROLE_RANK[b.role] ?? 3) || (nameOf(a.userId) ?? "").localeCompare(nameOf(b.userId) ?? ""));
 }

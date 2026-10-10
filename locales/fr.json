@@ -283,7 +283,26 @@
         "REASON_OTHER": "Autre chose",
         "MODERATION_PENDING": "Retenu pour examen",
         "MODERATION_REJECTED": "Supprimé par un modérateur",
-        "MODERATION_HIDDEN": "Masqué par un modérateur"
+        "MODERATION_HIDDEN": "Masqué par un modérateur",
+        "NEW_GROUP": "Nouveau groupe",
+        "NEW_GROUP_DESC": "Nommez le groupe et choisissez qui le rejoint.",
+        "MODE_DIRECT": "Direct",
+        "MODE_GROUP": "Groupe",
+        "GROUP_TITLE": "Nom du groupe",
+        "CREATE_GROUP": "Créer le groupe ({{count}})",
+        "PEOPLE": "Personnes",
+        "PARTICIPANTS_COUNT": "{{count}} personnes",
+        "PARTICIPANTS_TITLE": "Personnes ({{count}})",
+        "ADD_PEOPLE": "Ajouter des personnes",
+        "ADD_PEOPLE_DESC": "Choisissez des collègues à ajouter à ce groupe.",
+        "NO_ONE_TO_ADD": "Tout le monde est déjà dans ce groupe.",
+        "ADD_PERSON_A11Y": "Ajouter {{name}}",
+        "PARTICIPANT_ADDED": "{{name}} a été ajouté.",
+        "DONE": "Terminé",
+        "YOU": "Vous",
+        "ROLE_OWNER": "Propriétaire",
+        "ROLE_ADMIN": "Admin",
+        "ROLE_MEMBER": "Membre"
     },
     "ERRORS": {
         "AUTH": {
