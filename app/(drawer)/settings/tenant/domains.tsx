@@ -32,12 +32,22 @@ export default function DomainsScreen() {
 
   const load = useCallback(async () => {
     if (!membership || !canManage) return;
+    const tenant = membership.tenantId;
     try {
-      setDomains((await DomainClientService.list({ pageSize: 100 })).domains);
+      const res = await DomainClientService.list({ pageSize: 100 });
+      if (useTenantStore.getState().selectedTenantMembership?.tenantId !== tenant) return; // switched meanwhile
+      setDomains(res.domains);
     } catch (err: unknown) {
       handleApiError(err, 'DomainsScreen.load');
     }
   }, [membership, canManage]);
+
+  const activeTenant = membership?.tenantId;
+  useEffect(() => {
+    setDomains([]);
+    setSelected(null);
+    setLoading(true);
+  }, [activeTenant]);
 
   useEffect(() => {
     load().finally(() => setLoading(false));

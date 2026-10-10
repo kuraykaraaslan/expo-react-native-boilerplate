@@ -90,6 +90,14 @@ describe("messaging store", () => {
     expect(state.messages.c1.map((m) => m.messageId)).toEqual(["m1"]);
   });
 
+  it("a send confirmed after the store was reset (tenant switch) is dropped, not leaked into the new tenant", () => {
+    const s = useMessagingStore.getState();
+    s.addPending({ nonce: "n1", conversationId: "c1", body: "hi", createdAt: "2026-10-01T10:00:00Z", status: "sending" });
+    s.reset();
+    s.settlePending("n1", msg("m1", "2026-10-01T10:00:01Z"));
+    expect(useMessagingStore.getState().messages.c1).toBeUndefined();
+  });
+
   it("a failed send stays for retry and goes back to sending", () => {
     const s = useMessagingStore.getState();
     s.addPending({ nonce: "n1", conversationId: "c1", body: "hi", createdAt: "2026-10-01T10:00:00Z", status: "sending" });

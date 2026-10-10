@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
@@ -21,9 +21,23 @@ export function AvatarPicker({ name, src, onUploaded }: Props) {
   const { t } = useTranslation();
   const [progress, setProgress] = useState<number | null>(null);
   const abort = useRef<AbortController | null>(null);
+  const picking = useRef(false);
   const uploading = progress !== null;
 
+  // Leaving the screen cancels a running upload.
+  useEffect(() => () => abort.current?.abort(), []);
+
   async function run(source: ImageSource) {
+    if (picking.current || uploading) return; // one pick at a time
+    picking.current = true;
+    try {
+      await pickAndUpload(source);
+    } finally {
+      picking.current = false;
+    }
+  }
+
+  async function pickAndUpload(source: ImageSource) {
     const picked = await pickAvatarImage(source);
     if (picked.status === 'denied') return toast.error(t('UPLOAD.PERMISSION_DENIED'));
     if (picked.status === 'cancelled') return;
@@ -35,7 +49,7 @@ export function AvatarPicker({ name, src, onUploaded }: Props) {
     abort.current = controller;
     setProgress(0);
     try {
-      const stored = await StorageClientService.upload(picked.file, { folder: 'avatars', signal: controller.signal, onProgress: (f) => setProgress(f) });
+      const stored = await StorageClientService.upload(picked.file, { folder: 'users', signal: controller.signal, onProgress: (f) => setProgress(f) });
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       onUploaded(stored.url);
     } catch (err: unknown) {

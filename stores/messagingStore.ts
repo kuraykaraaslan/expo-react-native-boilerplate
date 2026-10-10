@@ -111,7 +111,8 @@ export const useMessagingStore = create<MessagingState>()((set) => ({
     set((s) => {
       const gone = s.pending.find((p) => p.nonce === nonce);
       const pending = s.pending.filter((p) => p.nonce !== nonce);
-      if (!message) return { pending };
+      // No pending entry: the store was reset (tenant switch / sign-out) while the send was in flight.
+      if (!message || !gone) return { pending };
       return {
         pending,
         messages: { ...s.messages, [message.conversationId]: upsertMessage(s.messages[message.conversationId] ?? [], message) },

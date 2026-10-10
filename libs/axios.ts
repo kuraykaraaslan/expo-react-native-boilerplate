@@ -9,6 +9,7 @@ import { serverLocaleFor } from "@/libs/serverLocale";
 import { clearTenantTokens, getToken, setTokens } from "@/libs/secureStorage";
 import { useAppStore } from "@/stores/appStore";
 import { useAuthStore } from "@/stores/authStore";
+import { useFlagStore } from "@/stores/flagStore";
 import { getActiveTenantId, useTenantStore } from "@/stores/tenantStore";
 
 // ============================================================================
@@ -166,6 +167,7 @@ async function endTenantSession(tenantId: string, noticeKey: string): Promise<vo
     return;
   }
   auth.logout();
+  useFlagStore.getState().clear();
   useTenantStore.getState().flush();
   toast.error(i18n.t(noticeKey));
 }

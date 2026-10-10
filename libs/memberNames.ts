@@ -10,11 +10,18 @@ export function memberLabel(m: Pick<TenantMember, "user">): string {
   return profile?.displayName?.trim() || profile?.name?.trim() || m.user?.email || "";
 }
 
+const MAX_MEMBER_PAGES = 10; // 1000 people; beyond that the picker's filter is the way in
+
 /** Loads the member directory into the messaging store (userId → name). Failure keeps what is known. */
 export async function loadMemberNames(): Promise<TenantMember[]> {
   const tenantId = getActiveTenantId();
   try {
-    const { members } = await TenantClientService.getMembers(tenantId, { page: 0, pageSize: 100, memberStatus: "ACTIVE" });
+    const members: TenantMember[] = [];
+    for (let page = 0; page < MAX_MEMBER_PAGES; page++) {
+      const res = await TenantClientService.getMembers(tenantId, { page, pageSize: 100, memberStatus: "ACTIVE" });
+      members.push(...res.members);
+      if (res.members.length === 0 || members.length >= res.total) break;
+    }
     const names: Record<string, string> = {};
     for (const m of members) {
       const label = memberLabel(m);

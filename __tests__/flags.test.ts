@@ -2,6 +2,7 @@ import { isPlanGateError, normalizeApiError } from "@/libs/apiError";
 import { serverLocaleFor, SERVER_LOCALE } from "@/libs/serverLocale";
 import { SUPPORTED_LOCALES } from "@/libs/i18n";
 import { refreshFlags } from "@/libs/useFeatureFlag";
+import { useAuthStore } from "@/stores/authStore";
 import { useAppStore } from "@/stores/appStore";
 import { useFlagStore } from "@/stores/flagStore";
 import { useTenantStore } from "@/stores/tenantStore";
@@ -44,6 +45,14 @@ describe("feature flags", () => {
     mockRoute("post", "/feature-flags/evaluate", { flags: { beta_chat: true, new_home: false } });
     await refreshFlags();
     expect(useFlagStore.getState().byTenant[TENANT_ID]).toEqual({ beta_chat: true, new_home: false });
+  });
+
+  it("does not evaluate or cache flags for a signed-out device", async () => {
+    const seen = mockRoute("post", "/feature-flags/evaluate", { flags: { beta_chat: true } });
+    useAuthStore.setState({ isAuthenticated: false });
+    await refreshFlags();
+    expect(seen).toHaveLength(0);
+    expect(useFlagStore.getState().byTenant[TENANT_ID]).toBeUndefined();
   });
 
   it("keeps the cached flags when evaluation fails", async () => {

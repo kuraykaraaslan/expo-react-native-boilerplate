@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
@@ -20,6 +20,9 @@ export function ProfileCard() {
   const [form, setForm] = useState<UpdateProfileRequest>(EMPTY);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  // The upload callback outlives the render it was created in: read the form as it is when the upload ends.
+  const formRef = useRef(form);
+  formRef.current = form;
 
   useEffect(() => {
     let cancelled = false;
@@ -77,7 +80,7 @@ export function ProfileCard() {
             name={displayName}
             src={form.profilePicture}
             onUploaded={(url) => {
-              const next = { ...form, profilePicture: url };
+              const next = { ...formRef.current, profilePicture: url };
               setForm(next);
               void save(next); // the new photo is stored on the account right away
             }}

@@ -6,6 +6,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { getActiveTenantId, useTenantStore } from '@/stores/tenantStore';
 import { AuthClientService } from '@/services/auth/auth.service.client';
 import { clearAllTokens } from '@/libs/secureStorage';
+import { useFlagStore } from '@/stores/flagStore';
 import logger from '@/libs/logger';
 
 /**
@@ -21,6 +22,7 @@ export async function logout(): Promise<void> {
   }
   await clearAllTokens();
   useAuthStore.getState().logout();
+  useFlagStore.getState().clear(); // flags are evaluated per user
   useAppLockStore.getState().reset(); // the next account must not inherit this one's lock
   useTenantStore.getState().flush();
   router.replace('/login');

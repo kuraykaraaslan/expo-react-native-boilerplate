@@ -72,3 +72,5 @@ Modules: `storage`, `media_gallery`, `drive`. Priority 2. Build 15.1 first; 15.2
 - 15.2 (media gallery) and 15.3 (drive) were not started; both are optional.
 - Needs a development build (new native modules, P3); not verified on a device. The "shows on the web profile" criterion needs a live check.
 
+**Correction 2026-10-10 (review of the above):** the upload folder is `users`, not `avatars`. The server only accepts a folder from `StorageFolderSchema` (`general`, `users`, `images`, …) or one a module registers; `avatars` would have been rejected with `INVALID_FOLDER_NAME` on every upload. The profile callback also reads the form at the moment the upload ends (it used a stale copy), and a running upload is aborted when the screen unmounts.
+

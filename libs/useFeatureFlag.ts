@@ -4,6 +4,7 @@ import { env } from "@/libs/env";
 import logger from "@/libs/logger";
 import { FlagsClientService } from "@/services/platform/flags.service.client";
 import { useFlagStore } from "@/stores/flagStore";
+import { useAuthStore } from "@/stores/authStore";
 import { getActiveTenantId, useTenantStore } from "@/stores/tenantStore";
 
 // ============================================================================
@@ -15,10 +16,11 @@ import { getActiveTenantId, useTenantStore } from "@/stores/tenantStore";
 /** Evaluates the active tenant's flags and caches them. A failure keeps the last cached value. */
 export async function refreshFlags(): Promise<void> {
   const tenantId = getActiveTenantId();
+  if (!useAuthStore.getState().isAuthenticated) return; // signed out: flags belong to the user who was
   try {
     const flags = await FlagsClientService.evaluateAll();
     // The user switched organization while this was in flight: that answer belongs to the old tenant.
-    if (getActiveTenantId() !== tenantId) return;
+    if (getActiveTenantId() !== tenantId || !useAuthStore.getState().isAuthenticated) return;
     useFlagStore.getState().setFlags(tenantId, flags);
   } catch (err) {
     logger.warn("[flags] evaluation failed, keeping cached flags", err); // background — no toast

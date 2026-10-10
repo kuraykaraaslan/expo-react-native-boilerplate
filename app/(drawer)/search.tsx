@@ -81,15 +81,22 @@ export default function SearchScreen() {
   const [history, setHistory] = useState<SearchHistoryEntry[]>([]);
   const [saved, setSaved] = useState<SavedSearch[]>([]);
   const inFlight = useRef<AbortController | null>(null);
+  /** Bumped when the query or organization changes: answers that started under an older value are dropped. */
+  const epoch = useRef(0);
+  const tenantEpoch = useRef(0);
 
   const loadSidebars = useCallback(async () => {
+    const mine = tenantEpoch.current;
     const [h, s] = await Promise.allSettled([SearchClientService.getHistory(10), SearchClientService.getSaved()]);
+    if (tenantEpoch.current !== mine) return; // another organization is on screen now
     setHistory(h.status === 'fulfilled' ? h.value : []);
     setSaved(s.status === 'fulfilled' ? s.value : []);
   }, []);
 
   // Another organization has its own index, history and saved searches: start clean.
   useEffect(() => {
+    tenantEpoch.current += 1;
+    epoch.current += 1;
     inFlight.current?.abort();
     setInput('');
     setHits([]);
@@ -101,6 +108,7 @@ export default function SearchScreen() {
   }, [tenantId, loadSidebars]);
 
   useEffect(() => {
+    epoch.current += 1;
     inFlight.current?.abort();
     if (!query) {
       setHits([]);
@@ -122,6 +130,8 @@ export default function SearchScreen() {
       .catch((err: unknown) => {
         if (axios.isCancel(err)) return; // superseded by a newer query
         setFailed(true);
+        setHits([]); // never show the previous query's rows under this query's error
+        setTotal(0);
         handleApiError(err, 'SearchScreen.search');
       })
       .finally(() => {
@@ -133,8 +143,10 @@ export default function SearchScreen() {
   async function loadMore() {
     if (loading || loadingMore || hits.length >= total || !query) return;
     setLoadingMore(true);
+    const mine = epoch.current;
     try {
       const res = await SearchClientService.search(query, { offset: hits.length });
+      if (epoch.current !== mine) return; // the query or organization changed while this page was loading
       setHits((prev) => [...prev, ...res.hits]);
       setTotal(res.total);
     } catch (err: unknown) {

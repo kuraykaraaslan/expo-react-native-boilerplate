@@ -79,3 +79,5 @@ Modules: `websocket`, `messaging`. Priority 2. Largest phase of the set; split i
 - No push (Phase 8 is server-gated); the badge is live only while the app is open.
 - The new native-free dependency `socket.io-client` and the Phase 15 modules need no dev build to run in Expo Go, but none of this was run on a device or against a live gateway.
 
+**Corrections 2026-10-10 (review):** a gateway refusal (`connect_error` with an inactive socket) or a server-side disconnect does not trigger socket.io's own retry, so `libs/realtime.ts` now reconnects by hand with backoff and a fresh ticket. Thread loads, send confirmations and the member directory (now paged, up to 1000) drop answers that arrive after a tenant switch; the read-marking effect fires only when the newest message changes. Search and the API key / domain screens got the same stale-answer guards; the flag cache is cleared on sign-out and never written while signed out.
+

@@ -92,11 +92,32 @@ function bindEvents(s: Socket, tenantId: string): void {
     rooms.forEach((id) => s.emit("join", { conversationId: id }));
     void backfill();
   });
-  s.on("disconnect", () => current() && store().setConnection("reconnecting"));
+  // socket.io retries by itself only for transport failures. A refusal by the gateway's handshake
+  // middleware (`connect_error` with `s.active === false`) or a server-initiated disconnect leaves
+  // the socket closed, so reconnect by hand with backoff — each attempt mints a fresh ticket.
+  let manualAttempts = 0;
+  let manualTimer: ReturnType<typeof setTimeout> | null = null;
+  const reviveLater = () => {
+    if (manualTimer || !current()) return;
+    const delay = Math.min(30_000, 1_000 * 2 ** manualAttempts++) * (0.5 + Math.random() / 2);
+    manualTimer = setTimeout(() => {
+      manualTimer = null;
+      if (current() && !s.connected) s.connect();
+    }, delay);
+  };
+  s.on("connect", () => {
+    manualAttempts = 0;
+  });
+  s.on("disconnect", (reason: string) => {
+    if (!current()) return;
+    store().setConnection("reconnecting");
+    if (reason === "io server disconnect") reviveLater();
+  });
   s.on("connect_error", (err) => {
     if (!current()) return;
     logger.warn("[realtime] connect error", err.message);
     store().setConnection("reconnecting");
+    if (!s.active) reviveLater();
   });
 
   s.on("message:new", (raw: unknown) => {
@@ -192,7 +213,7 @@ export function disconnectRealtime(): void {
   socket = null;
   boundTenant = null;
   rooms.clear();
-  s?.removeAllListeners();
+  s?.removeAllListeners(); // also silences the reconnect timer: its `current()` check fails
   s?.disconnect();
   store().setConnection("idle");
 }

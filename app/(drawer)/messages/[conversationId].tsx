@@ -18,7 +18,7 @@ import type { Conversation, Message } from '@/services/platform/messaging.dto';
 import { MessagingClientService } from '@/services/platform/messaging.service.client';
 import { useAuthStore } from '@/stores/authStore';
 import { useMessagingStore } from '@/stores/messagingStore';
-import { useTenantStore } from '@/stores/tenantStore';
+import { getActiveTenantId, useTenantStore } from '@/stores/tenantStore';
 import { cn } from '@/utils/cn';
 import { formatRelative } from '@/utils/format';
 import { conversationTitle } from '@/utils/messaging';
@@ -77,12 +77,15 @@ export default function ThreadScreen() {
   // The conversation may not be in the list yet (opened right after creating it, or from a stale link).
   const load = useCallback(async () => {
     try {
+      const tenant = getActiveTenantId();
       const store = useMessagingStore.getState();
       if (!store.conversations.some((c) => c.conversationId === conversationId)) {
         const c: Conversation = await MessagingClientService.getConversation(conversationId);
+        if (getActiveTenantId() !== tenant) return; // switched organization meanwhile: this answer is the old one's
         store.upsertConversation(c);
       }
       const page = await MessagingClientService.listMessages(conversationId);
+      if (getActiveTenantId() !== tenant) return;
       useMessagingStore.getState().mergeThread(conversationId, page.messages, page.nextCursor);
       void loadMemberNames();
     } catch (err: unknown) {
@@ -103,13 +106,13 @@ export default function ThreadScreen() {
   }, [conversationId, tenantId, load]);
 
   // Newest message from someone else on screen → tell the server (clears the badge on every device).
-  const newestOther = messages.find((m) => m.senderUserId !== me);
   const newestId = messages[0]?.messageId;
+  const newestFromOther = messages[0] !== undefined && messages[0].senderUserId !== me;
   useEffect(() => {
-    if (!newestOther || !newestId || messages[0]?.senderUserId === me) return;
+    if (!newestId || !newestFromOther) return;
     useMessagingStore.getState().setUnread(conversationId, 0);
     MessagingClientService.markRead(conversationId, newestId).catch(() => undefined); // best effort; the next open retries
-  }, [newestId, conversationId, me, newestOther, messages]);
+  }, [newestId, newestFromOther, conversationId]);
 
   // Typing indicators expire on their own: re-render while any is up.
   const typingUsers = useMemo(() => Object.entries(typingMap ?? {}).filter(([, until]) => until > Date.now()).map(([id]) => id), [typingMap, tick]); // eslint-disable-line react-hooks/exhaustive-deps

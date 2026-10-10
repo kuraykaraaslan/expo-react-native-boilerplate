@@ -74,12 +74,23 @@ export default function ApiKeysScreen() {
 
   const load = useCallback(async () => {
     if (!membership || !canManage) return;
+    const tenant = membership.tenantId;
     try {
-      setKeys((await ApiKeyClientService.list({ pageSize: 100 })).keys);
+      const res = await ApiKeyClientService.list({ pageSize: 100 });
+      if (useTenantStore.getState().selectedTenantMembership?.tenantId !== tenant) return; // switched meanwhile
+      setKeys(res.keys);
     } catch (err: unknown) {
       handleApiError(err, 'ApiKeysScreen.load');
     }
   }, [membership, canManage]);
+
+  // Another organization has its own keys: never show (or keep a freshly issued key from) the previous one.
+  const activeTenant = membership?.tenantId;
+  useEffect(() => {
+    setKeys([]);
+    setRawKey(null);
+    setLoading(true);
+  }, [activeTenant]);
 
   useEffect(() => {
     load().finally(() => setLoading(false));
