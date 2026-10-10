@@ -93,3 +93,18 @@ Modules: `api_key`, `tenant_domain`, `tenant_session`. Priority 2.
 - The timeline shows action, severity, actor kind and time only; metadata is not rendered.
 
 **Not verified:** not run against a live server; no component render tests (the repo has no render-test setup), so the cards and the modal timeline were checked only by typecheck and the service tests.
+
+---
+
+## Review fixes — 2026-10-10 (reports and domain timeline)
+
+Contract re-check against `api_key.report.service.ts`, `tenant_domain.report.service.ts` and the timeline route: DTO shapes, wrappers and paths match; no change needed.
+
+**Fixed (`components/admin/DomainDetailModal.tsx`):**
+- "Show more" derived the next page from `rows / 20`; the server clamps the page size per tenant, so a smaller page would repeat or skip rows. It now uses the last page the server answered, and de-duplicates rows by `auditLogId`.
+- A failed "show more" replaced the already loaded rows with the "not available" note; the loaded rows are now kept.
+- An answer that arrived after an organization switch was dropped but left the spinner running forever; it now ends in the "not available" note.
+
+**Tests:** refused timeline and report (403), and the encoded domain id in the timeline path.
+
+**Known, not changed:** the activity report only covers keys *created* in the window (server behavior; the card text already says so). Still not run against a live server; no component render tests.

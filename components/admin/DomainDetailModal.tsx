@@ -58,6 +58,8 @@ export function DomainDetailModal({ domain, onClose, onChanged }: Props) {
   const [timelineMore, setTimelineMore] = useState(false);
   /** Identifies the latest timeline request, so an answer for another domain or organization is dropped. */
   const timelineSeq = useRef(0);
+  /** Last page the server answered: the server may clamp the page size, so the next page is never derived from the row count. */
+  const timelinePage = useRef(0);
 
   const load = useCallback(async () => {
     if (!id) return;
@@ -83,14 +85,21 @@ export function DomainDetailModal({ domain, onClose, onChanged }: Props) {
       if (append) setTimelineMore(true);
       try {
         const res = await DomainClientService.getTimeline(id, { page, pageSize: TIMELINE_PAGE_SIZE });
-        if (mine !== timelineSeq.current || useTenantStore.getState().selectedTenantMembership?.tenantId !== tenant) return;
-        setTimeline((prev) => (append ? [...prev, ...res.logs] : res.logs));
+        if (mine !== timelineSeq.current) return;
+        if (useTenantStore.getState().selectedTenantMembership?.tenantId !== tenant) {
+          // Answer for the organization we switched away from: never show it, and don't leave the spinner running.
+          setTimelineState('failed');
+          return;
+        }
+        timelinePage.current = page;
+        setTimeline((prev) => (append ? [...prev, ...res.logs.filter((l) => !prev.some((p) => p.auditLogId === l.auditLogId))] : res.logs));
         setTimelineTotal(res.total);
         setTimelineState('ready');
       } catch (err: unknown) {
         // The timeline has its own permission: a refusal is a note in the modal, not a toast.
         logger.warn('[DomainDetailModal.timeline]', err);
-        if (mine === timelineSeq.current) setTimelineState('failed');
+        // A failed "show more" keeps the rows already loaded.
+        if (mine === timelineSeq.current && !append) setTimelineState('failed');
       } finally {
         if (mine === timelineSeq.current) setTimelineMore(false);
       }
@@ -100,6 +109,7 @@ export function DomainDetailModal({ domain, onClose, onChanged }: Props) {
 
   useEffect(() => {
     timelineSeq.current += 1; // drops any answer still in flight for the previous domain
+    timelinePage.current = 0;
     setTimeline([]);
     setTimelineTotal(0);
     setTimelineMore(false);
@@ -228,7 +238,7 @@ export function DomainDetailModal({ domain, onClose, onChanged }: Props) {
                 </View>
               ))}
               {timelineState === 'ready' && timeline.length < timelineTotal ? (
-                <Button size="sm" variant="outline" loading={timelineMore} onPress={() => loadTimeline(true, Math.floor(timeline.length / TIMELINE_PAGE_SIZE) + 1)} testID="domains-timeline-more">
+                <Button size="sm" variant="outline" loading={timelineMore} onPress={() => loadTimeline(true, timelinePage.current + 1)} testID="domains-timeline-more">
                   <Text className="text-xs font-medium text-text-primary">{t('DOMAINS.TIMELINE_MORE')}</Text>
                 </Button>
               ) : null}

@@ -186,6 +186,19 @@ describe("Domain timeline and report", () => {
     expect(seen[1].query).toEqual({ page: "3", pageSize: "5" });
   });
 
+  it("surfaces a refused timeline and a refused report as such", async () => {
+    mockRoute("get", "/domains/d1/timeline", () => fail(403, { message: "Forbidden" }));
+    mockRoute("get", "/domains/report", () => fail(403, { message: "Forbidden" }));
+    await expect(DomainClientService.getTimeline("d1")).rejects.toMatchObject({ response: { status: 403 } });
+    await expect(DomainClientService.getReport()).rejects.toMatchObject({ response: { status: 403 } });
+  });
+
+  it("encodes the domain id in the timeline path", async () => {
+    const seen = mockRoute("get", "/domains/a%2Fb/timeline", { success: true, logs: [], total: 0 });
+    await DomainClientService.getTimeline("a/b");
+    expect(seen).toHaveLength(1);
+  });
+
   it("unwraps the health report", async () => {
     mockRoute("get", "/domains/report", {
       success: true,

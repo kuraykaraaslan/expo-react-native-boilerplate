@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T07:29:13.395Z",
+  "generatedAt": "2026-10-10T07:30:22.099Z",
   "dtos": [
     {
       "filePath": "services/platform/apiKey.dto.ts",
