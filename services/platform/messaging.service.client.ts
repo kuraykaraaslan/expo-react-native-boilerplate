@@ -43,7 +43,11 @@ export class MessagingClientService {
   static async createConversation(payload: CreateConversationRequest): Promise<Conversation> {
     const body = CreateConversationRequestSchema.parse(payload);
     const res = await axiosInstance.post("/conversations", body);
-    return ConversationResponseSchema.parse(res.data).conversation;
+    const created = ConversationResponseSchema.parse(res.data).conversation;
+    // The create route answers with the bare conversation (no roster); the detail route carries the participants
+    // the thread header and the roster sheet need (and the creator's owner role, which gates adding people).
+    const hasRoster = Array.isArray((res.data as { conversation?: { participants?: unknown } })?.conversation?.participants);
+    return hasRoster ? created : this.getConversation(created.conversationId);
   }
 
   /** Adds a person to a group conversation (owner/admin only; a direct conversation refuses). 409 when already in. */

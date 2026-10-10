@@ -69,7 +69,7 @@ export function ParticipantsSheet({ conversation, open, onClose }: Props) {
       const store = useMessagingStore.getState();
       const current = store.conversations.find((c) => c.conversationId === conversation.conversationId) ?? conversation;
       store.upsertConversation(withParticipant(current, participant));
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => undefined); // feedback only: never fail an added person
       toast.success(t('MESSAGES.PARTICIPANT_ADDED', { name: memberLabel(member) || t('MESSAGES.UNKNOWN') }));
     } catch (err: unknown) {
       handleApiError(err, 'ParticipantsSheet.add');

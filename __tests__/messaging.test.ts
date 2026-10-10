@@ -164,10 +164,14 @@ describe("MessagingClientService", () => {
 
 describe("group conversations", () => {
   it("creates a group with a title and several people", async () => {
-    const seen = mockRoute("post", "/conversations", () => ({ body: { conversation: conv("g1", { type: "group", title: "Team" }) }, init: { status: 201 } }));
+    // The server's create route answers with the bare conversation (no participants).
+    const seen = mockRoute("post", "/conversations", () => ({ body: { conversation: { conversationId: "g1", type: "group", title: "Team" } }, init: { status: 201 } }));
+    const detail = mockRoute("get", "/conversations/g1", { conversation: { conversationId: "g1", type: "group", title: "Team", participants: [{ userId: "me", role: "owner" }, { userId: "a", role: "member" }] } });
     const created = await MessagingClientService.createConversation({ type: "group", title: "Team", participantUserIds: ["a", "b"] });
     expect(seen[0].body).toEqual({ type: "group", title: "Team", participantUserIds: ["a", "b"] });
+    expect(detail).toHaveLength(1);
     expect(created.type).toBe("group");
+    expect(canManageParticipants(created, "me")).toBe(true); // creator is the owner, known from the detail fetch
   });
 
   it("refuses a group without a title before any request", async () => {

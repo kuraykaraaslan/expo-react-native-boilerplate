@@ -55,7 +55,7 @@ export function NewConversationModal({ open, onClose, onStarted }: Props) {
     try {
       const conversation = await MessagingClientService.createConversation(payload);
       if (getActiveTenantId() !== tenant) return; // switched organization meanwhile: do not open the old one's conversation
-      if (payload.type === 'group') await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      if (payload.type === 'group') void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => undefined); // feedback only: never fail a created group
       onStarted(conversation);
     } catch (err: unknown) {
       handleApiError(err, 'NewConversationModal.create');

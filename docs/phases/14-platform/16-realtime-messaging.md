@@ -99,3 +99,10 @@ Modules: `websocket`, `messaging`. Priority 2. Largest phase of the set; split i
 - The server does not tell a plain member whether they may add people beyond their conversation role: the control is hidden unless the viewer is owner/admin of that group. The tenant-level permission `messaging.participants.add` is not checked client-side; a refusal surfaces through the normal error toast.
 - Names in the roster come from the tenant member list; if the viewer may not read it, rows show "Someone".
 - Not run on a device or against a live server.
+
+## 2026-10-10 — Review corrections for group conversations
+
+- **Server contract:** `POST /conversations` answers with the bare conversation (`SafeConversation`, no `participants`). The client defaulted the roster to `[]`, so a freshly created group showed 0 people and the creator (owner) could not add anyone, and a new direct thread could not be titled. `createConversation` now fetches the detail route when the response carries no roster.
+- **Haptics:** success feedback after create/add is fire-and-forget, so a haptics failure can no longer surface an error for a group that was created.
+- **Tests:** create-then-detail fetch, creator recognised as owner.
+- **Not done:** removing a participant / leaving (`DELETE .../participants?userId=`) is not built; the sheet only adds. UI components are not rendered in Jest (no component test harness here); not verified on a device.
