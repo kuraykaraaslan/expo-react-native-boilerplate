@@ -152,6 +152,7 @@ async function findOtherSignedInTenant(lostTenantId: string): Promise<string | n
 
 async function endTenantSession(tenantId: string, noticeKey: string): Promise<void> {
   await clearTenantTokens(tenantId);
+  useOutboxStore.getState().clearTenant(tenantId); // that organization's session is gone: its unsent messages can never be sent
   // Another tenant's stored pair died in the background: stay signed in here.
   if (tenantId !== getActiveTenantId()) return;
   const auth = useAuthStore.getState();

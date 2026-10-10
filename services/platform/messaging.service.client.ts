@@ -76,9 +76,11 @@ export class MessagingClientService {
    * Idempotent per (sender, conversation, `clientNonce`): a retry of a send that already landed answers 200 with
    * `replayed: true` and the original message, which callers treat as success.
    */
-  static async sendMessage(conversationId: string, payload: SendMessageRequest): Promise<SendMessageResponse> {
+  static async sendMessage(conversationId: string, payload: SendMessageRequest, opts?: { tenantId?: string }): Promise<SendMessageResponse> {
     const body = SendMessageRequestSchema.parse(payload);
-    const res = await axiosInstance.post(`/conversations/${encodeURIComponent(conversationId)}/messages`, body);
+    // `tenantId` pins the request to the organization the message was written for, even if the active one changes
+    // while the request is being prepared.
+    const res = await axiosInstance.post(`/conversations/${encodeURIComponent(conversationId)}/messages`, body, opts?.tenantId ? { tenantId: opts.tenantId } : undefined);
     return SendMessageResponseSchema.parse(res.data);
   }
 

@@ -7,6 +7,7 @@ import { useOutboxStore } from "@/stores/outboxStore";
 import { useTenantStore } from "@/stores/tenantStore";
 import { MessagingClientService } from "@/services/platform/messaging.service.client";
 import { mmkv } from "@/libs/mmkv";
+import { axiosInstance } from "@/libs/axios";
 import { server } from "./_server";
 import { http, HttpResponse } from "msw";
 import { OTHER_TENANT_ID, TENANT_ID } from "./fixtures";
@@ -174,6 +175,24 @@ describe("offline outbox", () => {
     await logout();
     expect(entries()).toEqual([]);
     clearOutbox();
+  });
+});
+
+describe("tenant pinning", () => {
+  it("addresses the request to the organization the entry was written for", async () => {
+    mockRoute("post", "/conversations/c1/messages", { message: stored("n-a"), replayed: false });
+    const post = jest.spyOn(axiosInstance, "post");
+    useOutboxStore.getState().enqueue({ nonce: "n-a", tenantId: TENANT_ID, userId: ME, conversationId: "c1", body: "hi", createdAt: "2026-10-01T10:00:00Z" });
+    await flushOutbox();
+    expect(post).toHaveBeenCalledWith(expect.any(String), expect.anything(), { tenantId: TENANT_ID });
+  });
+
+  it("clearTenant drops only that organization's entries", () => {
+    const base = { userId: ME, conversationId: "c1", createdAt: "2026-10-01T10:00:00Z" };
+    useOutboxStore.getState().enqueue({ nonce: "a", tenantId: TENANT_ID, body: "x", ...base });
+    useOutboxStore.getState().enqueue({ nonce: "b", tenantId: OTHER_TENANT_ID, body: "y", ...base });
+    useOutboxStore.getState().clearTenant(TENANT_ID);
+    expect(entries().map((e) => e.nonce)).toEqual(["b"]);
   });
 });
 

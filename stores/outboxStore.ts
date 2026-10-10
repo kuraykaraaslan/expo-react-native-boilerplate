@@ -39,6 +39,8 @@ interface OutboxState {
   remove: (nonce: string) => void;
   /** Drops every entry written for someone other than `userId` (a different account signed in on this device). */
   pruneOthers: (userId: string) => void;
+  /** Drops every entry of one organization (its session ended while others remain). */
+  clearTenant: (tenantId: string) => void;
   clearAll: () => void;
 }
 
@@ -50,6 +52,7 @@ export const useOutboxStore = create<OutboxState>()(
       setStatus: (nonce, status) => set((s) => ({ entries: s.entries.map((e) => (e.nonce === nonce ? { ...e, status } : e)) })),
       remove: (nonce) => set((s) => ({ entries: s.entries.filter((e) => e.nonce !== nonce) })),
       pruneOthers: (userId) => set((s) => (s.entries.every((e) => e.userId === userId) ? s : { entries: s.entries.filter((e) => e.userId === userId) })),
+      clearTenant: (tenantId) => set((s) => ({ entries: s.entries.filter((e) => e.tenantId !== tenantId) })),
       clearAll: () => set({ entries: [] }),
     }),
     {

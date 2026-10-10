@@ -109,7 +109,10 @@ export default function ThreadScreen() {
   }, [conversationId, tenantId, load]);
 
   // The roster sheet belongs to one organization's conversation: close it when either changes.
-  useEffect(() => setPeopleOpen(false), [conversationId, tenantId]);
+  useEffect(() => {
+    setPeopleOpen(false);
+    setDiscarding(null);
+  }, [conversationId, tenantId]);
 
   // Newest message from someone else on screen → tell the server (clears the badge on every device).
   const newestId = messages[0]?.messageId;
@@ -153,6 +156,8 @@ export default function ThreadScreen() {
   }
 
   function discard(nonce: string) {
+    // A request already in flight cannot be called back: discarding it would only hide a message that still arrives.
+    if (useOutboxStore.getState().entries.find((e) => e.nonce === nonce)?.status === 'sending') return;
     useOutboxStore.getState().remove(nonce);
     void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch(() => undefined);
   }

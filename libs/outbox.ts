@@ -95,7 +95,7 @@ async function run(): Promise<void> {
     store.setStatus(entry.nonce, "sending");
 
     try {
-      const { message, replayed } = await MessagingClientService.sendMessage(entry.conversationId, { body: entry.body, clientNonce: entry.nonce });
+      const { message, replayed } = await MessagingClientService.sendMessage(entry.conversationId, { body: entry.body, clientNonce: entry.nonce }, { tenantId: entry.tenantId });
       if (replayed) logger.info("[outbox] send was already stored on the server (replayed)");
       useOutboxStore.getState().remove(entry.nonce); // delivered either way
       if (sameScope(scope)) useMessagingStore.getState().confirmSent(message);

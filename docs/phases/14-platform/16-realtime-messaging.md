@@ -131,3 +131,12 @@ Modules: `websocket`, `messaging`. Priority 2. Largest phase of the set; split i
 - Not run on a device or against a live server; the replay behaviour is verified from source and with MSW only.
 
 **Owner still has to supply:** nothing for this item (no new env or identifiers). Deploying the next-boilerplate working-tree changes (idempotent send) is required before replays work against a real server; until then a resend of a lost response would create a duplicate.
+
+## Offline outbox review fixes — 2026-10-10
+
+Adversarial review of the outbox commit against the working-tree source of `modules/messaging/server` (route, lifecycle service, DTO, entity, types: all matched the contract above; `clientNonce` max 64, body max 8000, 201/200 + `replayed`).
+- **Fixed:** the flusher checked the scope and then sent through the shared axios instance, which addresses the ACTIVE tenant when the request interceptor runs (after an awaited token read). An organization switch in that gap would have posted tenant A's message to tenant B. `sendMessage` now takes `{tenantId}` and the outbox pins every request to `entry.tenantId`.
+- **Fixed:** when one organization's session dies while others remain (`endTenantSession` fallback path) its unsent messages stayed on disk forever; `outboxStore.clearTenant` now drops them.
+- **Fixed:** the thread's discard dialog could outlive a conversation or organization change and could "discard" an entry whose request was already in flight (the message would still arrive); the dialog is reset with the roster sheet and discard ignores `sending` entries.
+- **Tests:** request pinning and `clearTenant`.
+- **Not verified:** no device or live-server run; web/Expo Go were reviewed statically (`expo-haptics` and MMKV are already used by existing screens/stores and no-op or fall back on web).
