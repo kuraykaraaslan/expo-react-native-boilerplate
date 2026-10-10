@@ -153,16 +153,16 @@ export function MediaGalleryEditor({ entityType, entityId, readOnly = false, cla
     if (!canMove(items, item.itemId, direction)) return;
     void mutate(
       item.itemId,
-      async () => {
+      async (started) => {
         const previous = items;
         setItems(next); // shown at once; put back if the server refuses
         try {
           await MediaGalleryClientService.reorder(entityType, entityId, gallery.galleryId, next.map((i) => i.itemId));
         } catch (err: unknown) {
-          setItems(previous);
+          if (isLive(started)) setItems(previous); // after a switch these belong to another organization
           throw err;
         }
-        void Haptics.selectionAsync().catch(() => undefined);
+        if (isLive(started)) void Haptics.selectionAsync().catch(() => undefined);
       },
       'MediaGalleryEditor.reorder',
     );
