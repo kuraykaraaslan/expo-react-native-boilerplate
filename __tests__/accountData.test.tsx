@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { Share } from "react-native";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
@@ -8,6 +8,7 @@ import { DeleteAccountModal } from "@/components/compliance/DeleteAccountModal";
 import { ExportDataModal } from "@/components/compliance/ExportDataModal";
 import { accountHasOwnPassword, reauthFailure } from "@/libs/reauth";
 import { getToken, setTokens } from "@/libs/secureStorage";
+import axiosInstance from "@/libs/axios";
 import { ComplianceClientService } from "@/services/compliance/compliance.service.client";
 import { useAuthStore } from "@/stores/authStore";
 import { useOutboxStore } from "@/stores/outboxStore";
@@ -83,6 +84,19 @@ describe("account deletion service", () => {
   });
 });
 
+describe("self-service timeouts", () => {
+  it("gives deletion and export a long timeout (a client timeout must not outlive a completed deletion)", async () => {
+    mockRoute("post", DELETE, completed);
+    mockRoute("post", EXPORT, { privacyRequestId: "r2", account: {} });
+    const post = jest.spyOn(axiosInstance, "post");
+    await ComplianceClientService.requestAccountDeletion("pw");
+    await ComplianceClientService.requestDataExport(TENANT_ID, "pw");
+    expect(post.mock.calls[0][2]).toMatchObject({ timeout: 120_000 });
+    expect(post.mock.calls[1][2]).toMatchObject({ timeout: 120_000, tenantId: TENANT_ID });
+    post.mockRestore();
+  });
+});
+
 describe("data export service", () => {
   it("pins the request to the given organization and parses the link answer", async () => {
     const seen = mockRoute("post", EXPORT, { privacyRequestId: "r2", account: { user: { userId: "u1" } }, url: "https://files.test/d.json?sig=1", expiresIn: 900 });
@@ -154,6 +168,19 @@ describe("DeleteAccountModal", () => {
     expect(Haptics.notificationAsync).toHaveBeenCalledWith("warning");
     expect(Haptics.notificationAsync).toHaveBeenCalledWith("success");
     expect(toast.success).toHaveBeenCalledWith("Your account was deleted.", expect.anything());
+  });
+
+  it("still wipes the device when the haptic engine fails after the server deleted the account", async () => {
+    mockRoute("post", DELETE, completed);
+    (Haptics.notificationAsync as jest.Mock).mockRejectedValue(new Error("no haptics"));
+    await renderModal();
+    await fireEvent.changeText(screen.getByTestId("delete-account-word"), "DELETE");
+    await fireEvent.changeText(screen.getByTestId("delete-account-password"), "pw");
+    await fireEvent.press(screen.getByTestId("delete-account-confirm"));
+    await waitFor(() => expect(router.replace).toHaveBeenCalledWith("/login"));
+    expect(await getToken("accessToken", TENANT_ID)).toBeNull();
+    expect(toast.error).not.toHaveBeenCalled();
+    (Haptics.notificationAsync as jest.Mock).mockResolvedValue(undefined);
   });
 
   it("explains a PARTIAL result but still signs out", async () => {
@@ -295,6 +322,19 @@ describe("ExportDataModal", () => {
     await new Promise((r) => setTimeout(r, 50));
     expect(WebBrowser.openBrowserAsync).not.toHaveBeenCalled();
     expect(screen.queryByTestId("export-data-share")).toBeNull();
+  });
+
+  it("closes itself when the organization changes while the answer is on screen", async () => {
+    mockRoute("post", EXPORT, { privacyRequestId: "r2", account: {}, dossier: { totalRows: 1 } });
+    const onClose = jest.fn();
+    await render(<ExportDataModal open onClose={onClose} hasPassword={false} />);
+    await fireEvent.press(screen.getByTestId("export-data-confirm"));
+    await waitFor(() => expect(screen.getByTestId("export-data-share")).toBeTruthy());
+    expect(onClose).not.toHaveBeenCalled();
+    await act(async () => {
+      useTenantStore.setState({ activeTenantId: OTHER_TENANT_ID });
+    });
+    expect(onClose).toHaveBeenCalled();
   });
 
   it("drops an answer that arrives after a sign-out", async () => {

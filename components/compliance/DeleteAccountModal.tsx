@@ -7,6 +7,7 @@ import { finishAccountDeletion } from '@/libs/accountDeletion';
 import { normalizeApiError } from '@/libs/apiError';
 import { handleApiError } from '@/libs/errorUtils';
 import logger from '@/libs/logger';
+import { safeHaptic } from '@/libs/safeHaptics';
 import { reauthFailure } from '@/libs/reauth';
 import type { DeletionConflictTenant } from '@/services/compliance/compliance.dto';
 import { ComplianceClientService } from '@/services/compliance/compliance.service.client';
@@ -51,14 +52,15 @@ export function DeleteAccountModal({ open, onClose, hasPassword }: Props) {
     if (!armed || busy) return;
     setBusy(true);
     setPasswordError(undefined);
-    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+    await safeHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
     try {
       const result = await ComplianceClientService.requestAccountDeletion(askPassword ? password : undefined);
       // The account is gone whatever happened to this screen meanwhile: wipe even if the modal was dismissed.
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      // Wipe first: nothing after the server's answer may keep this device signed in to a deleted account.
       await finishAccountDeletion(result);
+      void safeHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success));
     } catch (err: unknown) {
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      await safeHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error));
       if (!mounted.current) return;
       const failure = reauthFailure(err);
       const tenants = ComplianceClientService.deletionConflictTenants(err);

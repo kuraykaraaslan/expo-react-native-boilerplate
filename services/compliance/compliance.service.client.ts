@@ -26,6 +26,13 @@ import {
 
 // Paths are relative: libs/axios adds the active tenant's address prefix.
 
+/**
+ * Erasure and dossier building run per workspace on the server and can outlast the default 10 s transport
+ * timeout. A client timeout on a deletion that the server then completes would leave the device signed in
+ * to an account that no longer exists, so these two calls wait longer.
+ */
+const SELF_SERVICE_TIMEOUT_MS = 120_000;
+
 export class ComplianceClientService {
   /** The organization's consent purposes (what the web cookie banner shows). Public. */
   static async getConsentConfig(): Promise<ConsentConfig> {
@@ -92,14 +99,14 @@ export class ComplianceClientService {
    */
   static async requestAccountDeletion(password?: string): Promise<AccountDeletionResponse> {
     const body = SelfServiceReauthRequestSchema.parse(password ? { password } : {});
-    const res = await axiosInstance.post("/auth/me/deletion-request", body);
+    const res = await axiosInstance.post("/auth/me/deletion-request", body, { timeout: SELF_SERVICE_TIMEOUT_MS });
     return AccountDeletionResponseSchema.parse(res.data);
   }
 
   /** POST /auth/me/data-export-request for one workspace (TENANT scope; the caller must be a member). Same re-auth as deletion. */
   static async requestDataExport(tenantId: string, password?: string): Promise<DataExportResponse> {
     const body = SelfServiceReauthRequestSchema.parse(password ? { password } : {});
-    const res = await axiosInstance.post("/auth/me/data-export-request", body, { tenantId });
+    const res = await axiosInstance.post("/auth/me/data-export-request", body, { tenantId, timeout: SELF_SERVICE_TIMEOUT_MS });
     return DataExportResponseSchema.parse(res.data);
   }
 

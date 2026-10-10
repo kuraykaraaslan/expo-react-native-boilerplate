@@ -9,10 +9,11 @@ import { env } from '@/libs/env';
 import { handleApiError } from '@/libs/errorUtils';
 import logger from '@/libs/logger';
 import { reauthFailure } from '@/libs/reauth';
+import { safeHaptic } from '@/libs/safeHaptics';
 import type { DataExportResponse } from '@/services/compliance/compliance.dto';
 import { ComplianceClientService } from '@/services/compliance/compliance.service.client';
 import { useAuthStore } from '@/stores/authStore';
-import { getActiveTenantId } from '@/stores/tenantStore';
+import { getActiveTenantId, useTenantStore } from '@/stores/tenantStore';
 import { safeWebUrl } from '@/utils/notification';
 
 type Props = {
@@ -45,6 +46,15 @@ export function ExportDataModal({ open, onClose, hasPassword }: Props) {
     };
   }, []);
 
+  // The answer is personal data of the organization it was requested for: leave when that organization
+  // is no longer the active one, or the session ends.
+  const activeTenant = useTenantStore((st) => st.activeTenantId);
+  const signedIn = useAuthStore((st) => st.isAuthenticated);
+  const openedFor = useRef(activeTenant);
+  useEffect(() => {
+    if (activeTenant !== openedFor.current || !signedIn) onClose();
+  }, [activeTenant, signedIn, onClose]);
+
   const link = result?.url ? safeWebUrl(result.url, env.EXPO_PUBLIC_API_URL) : null;
 
   async function requestExport() {
@@ -52,18 +62,18 @@ export function ExportDataModal({ open, onClose, hasPassword }: Props) {
     const tenantAtStart = getActiveTenantId();
     setBusy(true);
     setPasswordError(undefined);
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    await safeHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium));
     try {
       const answer = await ComplianceClientService.requestDataExport(tenantAtStart, askPassword ? password : undefined);
       if (!mounted.current || getActiveTenantId() !== tenantAtStart || !useAuthStore.getState().isAuthenticated) return;
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      await safeHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success));
       setPassword('');
       setResult(answer);
       const safe = answer.url ? safeWebUrl(answer.url, env.EXPO_PUBLIC_API_URL) : null;
       if (safe) void WebBrowser.openBrowserAsync(safe).catch(() => undefined);
     } catch (err: unknown) {
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      if (!mounted.current || getActiveTenantId() !== tenantAtStart) return;
+      await safeHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error));
+      if (!mounted.current || getActiveTenantId() !== tenantAtStart || !useAuthStore.getState().isAuthenticated) return;
       const failure = reauthFailure(err);
       if (failure === 'password-required') {
         setAskPassword(true);

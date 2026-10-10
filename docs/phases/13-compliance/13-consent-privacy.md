@@ -212,3 +212,20 @@ Closes the release-blocking 13.3 gap: a signed-in user can delete their own acco
 **Not verified:** nothing ran against a live server or device; the contract was read from source and the tests run against MSW built from it. No screen render test for `account-data.tsx` (the modals are rendered, the screen is covered by typecheck). `accountHasOwnPassword` uses `GET /auth/me/social-accounts` (`listConnectedAccounts`) as a stand-in for the server's `getByUserId`; if the two differ for some provider, the server's 400 fallback covers it. The presigned URL was not seen (relative or absolute); a relative one is resolved against `EXPO_PUBLIC_API_URL`.
 
 **Owner still must supply:** nothing for this item (no new env keys or identifiers).
+
+## 2026-10-10 adversarial review of "delete account and export my data"
+
+Routes, bodies and responses were re-read from the uncommitted `next-boilerplate/modules/privacy/server/{me-deletion-request.route,me-data-export-request.route,privacy.self-service.service,privacy.dto,privacy.messages}.ts` and `account/server/me-{security,social-accounts}.route.ts`. No contract mismatch was found: bodies are `{password?}` (min 1, max 256), responses and the 409 `details: { tenants: [{ tenantId, name? }] }` match the DTOs, the two password refusals match `PRIVACY_MESSAGES` (400 / 401 strings), and `accountHasOwnPassword` mirrors `assertReauthenticated`.
+
+Fixed:
+- A haptic failure after the server had already deleted the account fell into the error path and left the device signed in to a deleted account. The wipe now runs first and every haptic goes through `libs/safeHaptics.ts` (also used by the export modal).
+- Deletion and export used the 10 s transport timeout while the server erases / builds the dossier per workspace; a client timeout on a completed deletion would look like a failure. Both calls now use a 120 s timeout.
+- The export modal kept showing personal data after an organization switch or sign-out while the answer was on screen, and a late error after a sign-out still toasted. It now closes itself on either change and drops late errors.
+- Tests added for the timeouts, the failing haptic engine, and the close-on-switch behaviour.
+
+Server differences observed (source over summary):
+- `account` in the export answer is `{ user, profile, preferences, socialAccounts, memberships }`; `expiresIn` is present only with `url`.
+- The platform-admin and tenant-deletion-refused 409s carry no `details.tenants` (the latter carries `details.reason`), so only the last-owner 409 produces the workspace list.
+- `listConnectedAccounts` (what the app reads) can include SAML / government identities that the server's own re-auth check (`getByUserId`) does not, so the app may skip the password prompt where the server wants one; the server's 400 PASSWORD_REQUIRED then reveals the field (covered by a test).
+
+Not verified: live server run; a request that times out after 120 s leaves the outcome unknown (the next authenticated call 401s and the guards sign out). Other in-flight requests may toast "session ended" in the instant between the server deleting sessions and the local wipe. Owner still supplies nothing for this task.

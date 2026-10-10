@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T11:45:55.339Z",
+  "generatedAt": "2026-10-10T11:49:50.999Z",
   "libs": [
     {
       "filePath": "libs/accountDeletion.ts",
@@ -199,6 +199,13 @@
         "accountHasOwnPassword",
         "ReauthFailure",
         "reauthFailure"
+      ]
+    },
+    {
+      "filePath": "libs/safeHaptics.ts",
+      "name": "safeHaptics",
+      "exports": [
+        "safeHaptic"
       ]
     },
     {
