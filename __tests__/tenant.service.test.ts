@@ -139,6 +139,13 @@ describe("member transition", () => {
     await expect(TenantClientService.transitionMember(TENANT_ID, MEMBER_ID, { action: "delete" })).rejects.toBeDefined();
     expect(seen).toHaveLength(0);
   });
+
+  it("rejects an over-long reason and a non-ISO until before sending", async () => {
+    const seen = mockRoute("post", "/members/:id/transition", { message: "x" });
+    await expect(TenantClientService.transitionMember(TENANT_ID, MEMBER_ID, { action: "suspend", reason: "x".repeat(501) })).rejects.toBeDefined();
+    await expect(TenantClientService.transitionMember(TENANT_ID, MEMBER_ID, { action: "suspend", until: "2026-10-20" })).rejects.toBeDefined();
+    expect(seen).toHaveLength(0);
+  });
 });
 
 describe("member activity", () => {

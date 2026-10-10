@@ -52,6 +52,15 @@ export default function MembersScreen() {
   const [suspending, setSuspending] = useState<TenantMember | null>(null);
   const [viewing, setViewing] = useState<TenantMember | null>(null);
 
+  // Dialogs hold members of the previous organization once it switches: close them.
+  const activeTenantId = membership?.tenantId;
+  useEffect(() => {
+    setEditing(null);
+    setRemoving(null);
+    setSuspending(null);
+    setViewing(null);
+  }, [activeTenantId]);
+
   const load = useCallback(async () => {
     if (!membership) return;
     const mine = ++seq.current;

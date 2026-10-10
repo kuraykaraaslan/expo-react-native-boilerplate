@@ -20,7 +20,7 @@ type MemberDetailSheetProps = {
   onClose: () => void;
 };
 
-/** Member profile plus the member's audit-log timeline (`GET /members/{id}/activity`). */
+/** Member profile (the suspension reason is an admin note, shown to admins only) plus the member's audit-log timeline (`GET /members/{id}/activity`). */
 export function MemberDetailSheet({ member, canViewActivity, onClose }: MemberDetailSheetProps) {
   const { t } = useTranslation();
   const [logs, setLogs] = useState<AuditLog[]>([]);
@@ -120,10 +120,10 @@ export function MemberDetailSheet({ member, canViewActivity, onClose }: MemberDe
             </View>
           </View>
 
-          {member.memberStatus === 'SUSPENDED' && (member.suspensionReason || member.suspendedUntil) ? (
+          {member.memberStatus === 'SUSPENDED' && (member.suspendedUntil || (canViewActivity && member.suspensionReason)) ? (
             <View className="gap-1 rounded-lg border border-border bg-surface-overlay px-3 py-2" testID="members-detail-suspension">
               {member.suspendedUntil ? <Text className="text-xs text-text-secondary">{t('MEMBERS.SUSPENDED_UNTIL', { date: formatDate(member.suspendedUntil) })}</Text> : null}
-              {member.suspensionReason ? <Text className="text-xs text-text-secondary">{t('MEMBERS.SUSPENDED_REASON', { reason: member.suspensionReason })}</Text> : null}
+              {canViewActivity && member.suspensionReason ? <Text className="text-xs text-text-secondary">{t('MEMBERS.SUSPENDED_REASON', { reason: member.suspensionReason })}</Text> : null}
             </View>
           ) : null}
 

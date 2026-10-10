@@ -122,3 +122,11 @@ Typecheck 0 errors, jest 249/249 (6 new).
 
 **Not verified**
 - Nothing was run against a live server or on a device; no screenshots were taken. Component behaviour (sheet, form) has no automated tests because the repo has no component-test setup; the service and validation parts are covered.
+
+## 2026-10-10 - Review fixes for suspend reason / member detail sheet
+
+- Fixed: dialogs (edit, remove, suspend, detail sheet) stay open with the previous organization's member after an organization switch; they now close when the active tenant changes.
+- Fixed: the suspension reason (an admin-written note) was shown to non-admin viewers of the detail sheet; it is now shown to ADMIN/OWNER only. The until date stays visible.
+- Tests: transition request rejects a >500 char reason and a non-ISO `until` before sending.
+- Verified against next-boilerplate `members-member-id-activity.route.ts` and `members-member-id-transition.route.ts` (`reason`, `until`, 1-based `page`, `{logs,total}`).
+- Not verified: on-device rendering of the sheet; there are no component render tests in this repo. Activity rows are the member's own actions (actorId), not actions done to the member.
