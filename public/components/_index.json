@@ -179,10 +179,20 @@
     "category": "tenant",
     "file": "tenant-InviteMemberModal.md"
   },
+  "tenant/MemberDetailSheet": {
+    "name": "MemberDetailSheet",
+    "category": "tenant",
+    "file": "tenant-MemberDetailSheet.md"
+  },
   "tenant/NoOrganization": {
     "name": "NoOrganization",
     "category": "tenant",
     "file": "tenant-NoOrganization.md"
+  },
+  "tenant/SuspendMemberModal": {
+    "name": "SuspendMemberModal",
+    "category": "tenant",
+    "file": "tenant-SuspendMemberModal.md"
   },
   "ui/AlertBanner": {
     "name": "AlertBanner",

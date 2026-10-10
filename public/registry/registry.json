@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T07:30:22.099Z",
+  "generatedAt": "2026-10-10T07:32:32.108Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -879,6 +879,20 @@
       ]
     },
     {
+      "id": "tenant/MemberDetailSheet",
+      "filePath": "components/tenant/MemberDetailSheet.tsx",
+      "name": "MemberDetailSheet",
+      "category": "tenant",
+      "exports": [
+        "MemberDetailSheet"
+      ],
+      "props": [
+        "member",
+        "canViewActivity",
+        "onClose"
+      ]
+    },
+    {
       "id": "tenant/NoOrganization",
       "filePath": "components/tenant/NoOrganization.tsx",
       "name": "NoOrganization",
@@ -887,6 +901,20 @@
         "NoOrganization"
       ],
       "props": []
+    },
+    {
+      "id": "tenant/SuspendMemberModal",
+      "filePath": "components/tenant/SuspendMemberModal.tsx",
+      "name": "SuspendMemberModal",
+      "category": "tenant",
+      "exports": [
+        "SuspendMemberModal"
+      ],
+      "props": [
+        "name",
+        "onClose",
+        "onSubmit"
+      ]
     },
     {
       "id": "ui/AlertBanner",
@@ -1681,6 +1709,7 @@
         "getMember",
         "updateMember",
         "transitionMember",
+        "getMemberActivity",
         "removeMember",
         "getInvitations",
         "sendInvitation",
@@ -1701,6 +1730,7 @@
         "/members",
         "/members/${encodeURIComponent(memberId)}",
         "/members/${encodeURIComponent(memberId)}/transition",
+        "/members/${encodeURIComponent(memberId)}/activity",
         "/invitations",
         "/invitations/${encodeURIComponent(invitationId)}",
         "/invitations/${encodeURIComponent(invitationId)}/resend",

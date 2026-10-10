@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-10T07:30:22.099Z",
+  "generatedAt": "2026-10-10T07:32:32.108Z",
   "services": [
     {
       "filePath": "services/platform/apiKey.service.client.ts",
@@ -244,6 +244,7 @@
         "getMember",
         "updateMember",
         "transitionMember",
+        "getMemberActivity",
         "removeMember",
         "getInvitations",
         "sendInvitation",
@@ -264,6 +265,7 @@
         "/members",
         "/members/${encodeURIComponent(memberId)}",
         "/members/${encodeURIComponent(memberId)}/transition",
+        "/members/${encodeURIComponent(memberId)}/activity",
         "/invitations",
         "/invitations/${encodeURIComponent(invitationId)}",
         "/invitations/${encodeURIComponent(invitationId)}/resend",

@@ -328,7 +328,9 @@
         "MORE_ACTIONS": "Plus d'actions",
         "SHOWING_RANGE": "Affichage de {{start}} à {{end}} sur {{total}}",
         "LOAD_MORE": "Charger plus",
-        "NO_RESULTS": "Aucun résultat trouvé."
+        "NO_RESULTS": "Aucun résultat trouvé.",
+        "CLOSE": "Fermer",
+        "RETRY": "Réessayer"
     },
     "ROLES": {
         "OWNER": "Propriétaire",
@@ -706,7 +708,18 @@
         "STATUS_PENDING": "En attente",
         "YOU": "Vous",
         "UPDATED": "Membre mis à jour",
-        "PENDING_APPROVAL": "Changement de rôle soumis pour approbation"
+        "PENDING_APPROVAL": "Changement de rôle soumis pour approbation",
+        "DETAILS": "Détails du membre",
+        "DETAILS_ACTION": "Voir les détails",
+        "ACTIVITY": "Activité récente",
+        "ACTIVITY_EMPTY": "Aucune activité enregistrée pour ce membre pour l'instant.",
+        "ACTIVITY_FAILED": "Impossible de charger l'activité.",
+        "SUSPEND_REASON": "Motif (facultatif)",
+        "SUSPEND_UNTIL": "Suspendu jusqu'au (facultatif)",
+        "SUSPEND_UNTIL_HINT": "Laissez la date vide pour suspendre jusqu'à la réactivation.",
+        "SUSPEND_UNTIL_INVALID": "Saisissez une date future au format AAAA-MM-JJ.",
+        "SUSPENDED_REASON": "Motif : {{reason}}",
+        "SUSPENDED_UNTIL": "Suspendu jusqu'au {{date}}"
     },
     "INVITATIONS": {
         "TITLE": "Invitations",

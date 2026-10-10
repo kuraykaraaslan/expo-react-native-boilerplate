@@ -93,8 +93,8 @@ Branches `feat/members-invitations` + `feat/members-pagination`. Typecheck 0 err
 - Screenshots of every state: `.junk/screenshots/phase-7-members-invitations/` (local, not committed; made from the web build against a mock API built from the test fixtures).
 
 **Deliberate deviations**
-- Suspend has no `reason` / `until` field; the route accepts both. Add a small form if wanted.
-- No member detail sheet: the existing edit modal and the row menu cover role/status changes; the server's `GET /members/{id}/activity` is not used.
+- (Resolved 2026-10-10, see the last section) Suspend now takes `reason` / `until`.
+- (Resolved 2026-10-10) The member detail sheet and `GET /members/{id}/activity` are now used.
 
 **Not done / blocked**
 - **Accept / decline an invitation in the app.** The server takes the emailed raw `token` (hashed at rest), and `GET /auth/me/tenants` returns invitations without it, so there is no one-tap accept from the Phase 5 list. Two things were not verified because the server source reads were denied in this session: what `me-tenants.route.ts` returns for invitations beyond the slim shape, and whether `POST /invitations/accept` (scope `ACCOUNT`) accepts a device token bound to a *different* tenant. Build the deep-link / paste-the-code screen only after those are confirmed.
@@ -102,3 +102,23 @@ Branches `feat/members-invitations` + `feat/members-pagination`. Typecheck 0 err
 
 **Update 2026-10-09 (server source read):** `GET /auth/me/tenants` returns `invitations` as `{invitationId, tenantId, memberRole, status, expiresAt, createdAt, tenant}` — **no token**. `POST /invitations/accept` and `/decline` both take `{token}` (the emailed raw token) and authorize with scope `ACCOUNT`; `GET /invitations/accept?token=` is a public preview. So a one-tap accept from the Phase 5 list is impossible; the open question that remains is whether the `ACCOUNT`-scope guard accepts a device token bound to another tenant when the URL addresses the invited tenant (not provable from source alone). Build the paste-the-code / deep-link screen only after testing that against a live server.
 
+
+---
+
+## ✅ Leftovers coded — 2026-10-10 (Suspend reason/until, member detail sheet)
+
+Typecheck 0 errors, jest 249/249 (6 new).
+
+**What shipped**
+- **Suspend form** (`components/tenant/SuspendMemberModal.tsx`) replaces the plain confirmation: optional reason (max 500) and optional end date typed as `YYYY-MM-DD` (`utils/suspendUntil.ts` validates it: real calendar day, today or later, ends at 23:59:59 local, sent as ISO `until`). The form stays open with the typed values when the server refuses (for example OWNER rules).
+- **Member detail sheet** (`components/tenant/MemberDetailSheet.tsx`): profile, role/status badges, suspension reason and end date, and the member's activity timeline from `GET /members/{id}/activity` (`{logs, total}`, `page` 1-based, 10 per page, Load more). Activity is requested only for OWNER/ADMIN (`members.view_activity`); other roles see the profile only. Opened by tapping a row or the new "View details" menu item.
+- `TenantClientService.getMemberActivity`; rows reuse the existing `AuditLogsResponseSchema` (the route returns the tenant audit-log rows filtered to the member's user).
+- Organization-switch guards: transition answers and activity pages are dropped when the active organization changed or the sheet moved to another member (sequence counter + `getActiveTenantId`).
+- Strings in all six locales (`MEMBERS.*`, `COMMON.CLOSE`, `COMMON.RETRY`).
+
+**Deviations**
+- The end date is a validated text field, not a calendar picker: no date-picker dependency exists in the app and adding one needs a dev build. Swap in a picker later; `parseSuspendUntil` stays the validation.
+- The existing Edit modal still offers `SUSPENDED` in its status select (plain `PUT`, no reason); it was left unchanged.
+
+**Not verified**
+- Nothing was run against a live server or on a device; no screenshots were taken. Component behaviour (sheet, form) has no automated tests because the repo has no component-test setup; the service and validation parts are covered.

@@ -119,11 +119,44 @@ describe("member transition", () => {
     expect(res.memberStatus).toBe("SUSPENDED");
   });
 
+  it("sends reason and until with a suspend", async () => {
+    const member = { ...membersJson.members[0], memberStatus: "SUSPENDED", suspensionReason: "audit", suspendedUntil: "2026-10-20T20:59:59.000Z" };
+    const seen = mockRoute("post", "/members/:id/transition", { message: "Member updated successfully", member });
+    const res = await TenantClientService.transitionMember(TENANT_ID, MEMBER_ID, { action: "suspend", reason: "audit", until: "2026-10-20T20:59:59.000Z" });
+    expect(seen[0].body).toEqual({ action: "suspend", reason: "audit", until: "2026-10-20T20:59:59.000Z" });
+    expect(res).toMatchObject({ suspensionReason: "audit", suspendedUntil: "2026-10-20T20:59:59.000Z" });
+  });
+
+  it("rejects a non-ISO until before sending", async () => {
+    const seen = mockRoute("post", "/members/:id/transition", { message: "x" });
+    await expect(TenantClientService.transitionMember(TENANT_ID, MEMBER_ID, { action: "suspend", until: "2026-10-20" })).rejects.toBeDefined();
+    expect(seen).toHaveLength(0);
+  });
+
   it("rejects an unknown action before sending", async () => {
     const seen = mockRoute("post", "/members/:id/transition", { message: "x" });
     // @ts-expect-error not a valid action
     await expect(TenantClientService.transitionMember(TENANT_ID, MEMBER_ID, { action: "delete" })).rejects.toBeDefined();
     expect(seen).toHaveLength(0);
+  });
+});
+
+describe("member activity", () => {
+  it("getMemberActivity reads the member's audit rows with 1-based paging", async () => {
+    const logs = [
+      { auditLogId: "a1", actorId: "u1", actorType: "USER", action: "member.suspend", severity: "high", resourceType: "tenant_member", resourceId: MEMBER_ID, metadata: { reason: "audit" }, ipAddress: null, createdAt: "2026-10-06T10:00:00.000Z" },
+    ];
+    const seen = mockRoute("get", "/members/:id/activity", { logs, total: 11 });
+    const res = await TenantClientService.getMemberActivity(TENANT_ID, MEMBER_ID, { page: 2, pageSize: 10 });
+    expect(seen[0].path).toBe(`/members/${MEMBER_ID}/activity`);
+    expect(seen[0].query).toEqual({ page: "2", pageSize: "10" });
+    expect(res.total).toBe(11);
+    expect(res.logs[0]).toMatchObject({ action: "member.suspend", severity: "high" });
+  });
+
+  it("surfaces the server's refusal for a non-admin", async () => {
+    mockRoute("get", "/members/:id/activity", () => fail(403, { message: "FORBIDDEN" }));
+    await expect(TenantClientService.getMemberActivity(TENANT_ID, MEMBER_ID)).rejects.toBeDefined();
   });
 });
 

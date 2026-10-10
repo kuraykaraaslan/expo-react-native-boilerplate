@@ -328,7 +328,9 @@
         "MORE_ACTIONS": "Weitere Aktionen",
         "SHOWING_RANGE": "{{start}}–{{end}} von {{total}} werden angezeigt",
         "LOAD_MORE": "Mehr laden",
-        "NO_RESULTS": "Keine Ergebnisse gefunden."
+        "NO_RESULTS": "Keine Ergebnisse gefunden.",
+        "CLOSE": "Schließen",
+        "RETRY": "Erneut versuchen"
     },
     "ROLES": {
         "OWNER": "Inhaber",
@@ -706,7 +708,18 @@
         "STATUS_PENDING": "Ausstehend",
         "YOU": "Sie",
         "UPDATED": "Mitglied aktualisiert",
-        "PENDING_APPROVAL": "Rollenänderung zur Genehmigung eingereicht"
+        "PENDING_APPROVAL": "Rollenänderung zur Genehmigung eingereicht",
+        "DETAILS": "Mitgliedsdetails",
+        "DETAILS_ACTION": "Details anzeigen",
+        "ACTIVITY": "Letzte Aktivität",
+        "ACTIVITY_EMPTY": "Für dieses Mitglied wurde noch keine Aktivität erfasst.",
+        "ACTIVITY_FAILED": "Aktivität konnte nicht geladen werden.",
+        "SUSPEND_REASON": "Grund (optional)",
+        "SUSPEND_UNTIL": "Gesperrt bis (optional)",
+        "SUSPEND_UNTIL_HINT": "Lassen Sie das Datum leer, um bis zur Reaktivierung zu sperren.",
+        "SUSPEND_UNTIL_INVALID": "Geben Sie ein zukünftiges Datum als JJJJ-MM-TT ein.",
+        "SUSPENDED_REASON": "Grund: {{reason}}",
+        "SUSPENDED_UNTIL": "Gesperrt bis {{date}}"
     },
     "INVITATIONS": {
         "TITLE": "Einladungen",

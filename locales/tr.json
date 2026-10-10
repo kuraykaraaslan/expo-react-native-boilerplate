@@ -328,7 +328,9 @@
         "MORE_ACTIONS": "Diğer işlemler",
         "SHOWING_RANGE": "{{total}} kayıttan {{start}}–{{end}} arası gösteriliyor",
         "LOAD_MORE": "Daha fazla yükle",
-        "NO_RESULTS": "Sonuç bulunamadı."
+        "NO_RESULTS": "Sonuç bulunamadı.",
+        "CLOSE": "Kapat",
+        "RETRY": "Yeniden dene"
     },
     "ROLES": {
         "OWNER": "Sahip",
@@ -706,7 +708,18 @@
         "STATUS_PENDING": "Bekliyor",
         "YOU": "Siz",
         "UPDATED": "Üye güncellendi",
-        "PENDING_APPROVAL": "Rol değişikliği onaya gönderildi"
+        "PENDING_APPROVAL": "Rol değişikliği onaya gönderildi",
+        "DETAILS": "Üye ayrıntıları",
+        "DETAILS_ACTION": "Ayrıntıları gör",
+        "ACTIVITY": "Son etkinlik",
+        "ACTIVITY_EMPTY": "Bu üye için henüz kayıtlı etkinlik yok.",
+        "ACTIVITY_FAILED": "Etkinlik yüklenemedi.",
+        "SUSPEND_REASON": "Neden (isteğe bağlı)",
+        "SUSPEND_UNTIL": "Askıya alma bitişi (isteğe bağlı)",
+        "SUSPEND_UNTIL_HINT": "Yeniden etkinleştirilene kadar askıya almak için tarihi boş bırakın.",
+        "SUSPEND_UNTIL_INVALID": "Gelecekte bir tarihi YYYY-AA-GG biçiminde girin.",
+        "SUSPENDED_REASON": "Neden: {{reason}}",
+        "SUSPENDED_UNTIL": "{{date}} tarihine kadar askıda"
     },
     "INVITATIONS": {
         "TITLE": "Davetler",

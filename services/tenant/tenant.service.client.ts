@@ -1,4 +1,5 @@
 import axiosInstance from "@/libs/axios";
+import { AuditLogsResponseSchema, type AuditLogsResponse } from "@/services/compliance/compliance.dto";
 import { AckResponseSchema } from "@/services/auth/auth.dto";
 import { PublicBrandingResponseSchema, type PublicBrandingResponse } from "@/services/tenant/branding.dto";
 import {
@@ -98,6 +99,12 @@ export class TenantClientService {
     const body = TransitionMemberRequestSchema.parse(payload);
     const res = await axiosInstance.post(`/members/${encodeURIComponent(memberId)}/transition`, body, { tenantId });
     return TransitionMemberResponseSchema.parse(res.data).member;
+  }
+
+  /** A member's audit-log timeline (ADMIN+; `page` is 1-based). Rows are the tenant audit log filtered to the member's user. */
+  static async getMemberActivity(tenantId: string, memberId: string, params?: { page?: number; pageSize?: number }): Promise<AuditLogsResponse> {
+    const res = await axiosInstance.get(`/members/${encodeURIComponent(memberId)}/activity`, { tenantId, params });
+    return AuditLogsResponseSchema.parse(res.data);
   }
 
   static async removeMember(tenantId: string, memberId: string): Promise<void> {
