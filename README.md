@@ -148,7 +148,7 @@ libs/               axios, env, i18n, logger, mmkv, secureStorage, theme, ...
 utils/              cn() and small pure helpers
 locales/            en, tr, de, fr, es, it
 __tests__/          Jest tests with an MSW mock server
-phases/             phase-by-phase plan and records
+docs/concepts/             phase-by-phase plan and records
 public/             AI catalog (registry JSON, per-component markdown, llms.txt)
 ```
 
@@ -177,7 +177,7 @@ Always pin a tag, never a branch.
 
 ## Roadmap
 
-Work is organized into phases; [phases/README.md](phases/README.md) has the full plan, decisions and status.
+Work is organized into phases; [docs/concepts/README.md](docs/concepts/README.md) has the full plan, decisions and status.
 
 - [x] Build fix, Expo SDK 57, kui-native as a dependency, visual parity with next-boilerplate
 - [x] Device-bearer transport, DTOs and services aligned with the server
