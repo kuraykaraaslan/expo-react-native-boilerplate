@@ -13,7 +13,7 @@ import {
 //
 // NOTE (K4): the OAuth callback on the server mints a `web` audience token and
 // redirects to a web URL, so a device cannot finish an SSO login yet — see
-// docs/concepts/auth-sso. These calls only discover providers and build the URL.
+// docs/phases/06-auth-sso. These calls only discover providers and build the URL.
 
 export class SSOClientService {
   /** Providers this tenant allows (providers unknown to this app version are dropped). */

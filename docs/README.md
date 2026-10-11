@@ -4,7 +4,7 @@ This repository follows the shared documentation layout. Create a folder only wh
 
 | Folder | What is here |
 |---|---|
-| [concepts/](concepts/) | Long-lived descriptions of an area (what and why), each with its own `phases/`. |
+| [phases/](phases/) | Repository-wide plans, ordered by `NN-subject` (status table and legend in the index). |
 
 ## Where does a new document go?
 

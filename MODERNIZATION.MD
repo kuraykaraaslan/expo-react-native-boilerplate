@@ -2,7 +2,7 @@
 
 > **Superseded.** This is the original modernization plan (Expo 52, `/api/system/...` routes, cookie auth). It is kept for history only and is
 > no longer accurate: the app is on Expo SDK 57 and talks to next-boilerplate's tenant-addressed device-bearer routes
-> (`/api/tenant/{tenantId}/...`). The current plan and its per-phase records live in [docs/concepts/README.md](docs/concepts/README.md).
+> (`/api/tenant/{tenantId}/...`). The current plan and its per-phase records live in [docs/phases/README.md](docs/phases/README.md).
 
 ## Context
 

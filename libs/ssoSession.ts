@@ -76,7 +76,7 @@ export async function signInWithProvider(provider: SSOProvider): Promise<SSOOutc
   const result = await openBrowser(url, redirectUrl);
   if (result === "timeout") {
     useSSOStore.getState().setPendingState(null);
-    logger.error("SSO browser never redirected back to the app (web redirect) - see docs/concepts/auth-sso/README.md");
+    logger.error("SSO browser never redirected back to the app (web redirect) - see docs/phases/06-auth-sso/README.md");
     return "unavailable";
   }
   if (result.type !== "success") {
@@ -91,7 +91,7 @@ export async function signInWithProvider(provider: SSOProvider): Promise<SSOOutc
 
   const tenantId = tenantFromState(expected);
   if (!tenantId || !returned.accessToken || !returned.refreshToken) {
-    logger.error("SSO callback carried no device tokens - device bearer flow requires server-side `audience: 'device'`; see docs/concepts/auth-sso/README.md");
+    logger.error("SSO callback carried no device tokens - device bearer flow requires server-side `audience: 'device'`; see docs/phases/06-auth-sso/README.md");
     return "unavailable";
   }
 
@@ -103,7 +103,7 @@ export async function signInWithProvider(provider: SSOProvider): Promise<SSOOutc
     return "signed-in";
   } catch (err) {
     // Today: the callback produced a web-audience token, which the bearer path refuses (401). Nothing was stored.
-    logger.error("SSO callback returned a token the device bearer path rejects (web audience?) - see docs/concepts/auth-sso/README.md", err instanceof Error ? err.message : "");
+    logger.error("SSO callback returned a token the device bearer path rejects (web audience?) - see docs/phases/06-auth-sso/README.md", err instanceof Error ? err.message : "");
     return "unavailable";
   }
 }

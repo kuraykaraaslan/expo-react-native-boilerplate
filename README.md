@@ -177,7 +177,7 @@ Always pin a tag, never a branch.
 
 ## Roadmap
 
-Work is organized into phases; [docs/concepts/README.md](docs/concepts/README.md) has the full plan, decisions and status.
+Work is organized into phases; [docs/phases/README.md](docs/phases/README.md) has the full plan, decisions and status.
 
 - [x] Build fix, Expo SDK 57, kui-native as a dependency, visual parity with next-boilerplate
 - [x] Device-bearer transport, DTOs and services aligned with the server
