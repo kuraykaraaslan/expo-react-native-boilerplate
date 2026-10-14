@@ -1,4 +1,4 @@
-import type { Session } from "@/services/auth/auth.dto";
+import type { Session } from "@/modules/auth/auth.dto";
 
 export type SessionDescription = {
   /** "Pixel 8 · Android" from the device metadata, else a user-agent guess; null when neither says anything. */

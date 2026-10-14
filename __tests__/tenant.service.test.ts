@@ -1,5 +1,5 @@
-import { SSOClientService } from "@/services/auth/sso.service.client";
-import { TenantClientService } from "@/services/tenant/tenant.service.client";
+import { SSOClientService } from "@/modules/auth/sso.service.client";
+import { TenantClientService } from "@/modules/tenant/tenant.service.client";
 import { MEMBER_ID, OTHER_TENANT_ID, TENANT_ID, invitationsJson, meTenantsJson, membersJson } from "./fixtures";
 import { fail, mockRoute, signIn } from "./_helpers";
 

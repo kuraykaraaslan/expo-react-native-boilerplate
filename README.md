@@ -142,7 +142,7 @@ components/
   common/           Screen, ScreenHeader, LinkTile, StatTile, ConfirmDialog, ...
   shell/            AppHeader, DrawerContent, UserMenu, ThemeToggle, LangSwitcher
   auth/ account/ tenant/
-services/<domain>/  <domain>.service.client.ts + <domain>.dto.ts (auth, tenant, user)
+modules/<domain>/  <domain>.service.client.ts + <domain>.dto.ts (auth, tenant, user)
 stores/             Zustand stores: auth, tenant, notification, sso, app
 libs/               axios, env, i18n, logger, mmkv, secureStorage, theme, ...
 utils/              cn() and small pure helpers

@@ -10,13 +10,13 @@ import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { SSOButtons } from '@/components/auth/SSOButtons';
 import { Button, Checkbox, Input, Text } from '@/components/ui';
-import { LoginRequestSchema } from '@/services/auth/auth.dto';
+import { LoginRequestSchema } from '@/modules/auth/auth.dto';
 import { getDeviceInfo } from '@/libs/deviceInfo';
 import { normalizeApiError } from '@/libs/apiError';
 import { handleApiError } from '@/libs/errorUtils';
 import { startDeviceSession } from '@/libs/session';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { AuthClientService } from '@/services/auth/auth.service.client';
+import { AuthClientService } from '@/modules/auth/auth.service.client';
 
 type FieldErrors = { email?: string; password?: string };
 

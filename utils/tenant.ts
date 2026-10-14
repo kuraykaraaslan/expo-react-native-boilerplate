@@ -1,4 +1,4 @@
-import type { TenantMembership } from "@/services/tenant/tenant.dto";
+import type { TenantMembership } from "@/modules/tenant/tenant.dto";
 
 /** Selectable only when both the membership and the organization itself are active. */
 export function isSelectable(m: Pick<TenantMembership, "memberStatus" | "tenant">): boolean {

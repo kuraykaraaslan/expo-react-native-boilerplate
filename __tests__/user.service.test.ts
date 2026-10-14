@@ -1,5 +1,5 @@
-import { NotificationClientService } from "@/services/user/notification.service.client";
-import { ProfileClientService } from "@/services/user/profile.service.client";
+import { NotificationClientService } from "@/modules/user/notification.service.client";
+import { ProfileClientService } from "@/modules/user/profile.service.client";
 import { notificationsJson, preferencesJson, userProfileJson } from "./fixtures";
 import { mockRoute, signIn } from "./_helpers";
 

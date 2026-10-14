@@ -1,6 +1,6 @@
 import axiosInstance from "@/libs/axios";
-import { AckResponseSchema } from "@/services/auth/auth.dto";
-import { PublicBrandingResponseSchema, type PublicBrandingResponse } from "@/services/tenant/branding.dto";
+import { AckResponseSchema } from "@/modules/auth/auth.dto";
+import { PublicBrandingResponseSchema, type PublicBrandingResponse } from "@/modules/tenant/branding.dto";
 import {
   CreateTenantRequest,
   CreateTenantRequestSchema,
@@ -33,7 +33,7 @@ import {
   UpdateMemberResponseSchema,
   UpdateTenantProfileRequest,
   UpdateTenantProfileRequestSchema,
-} from "@/services/tenant/tenant.dto";
+} from "@/modules/tenant/tenant.dto";
 
 // Paths are relative: libs/axios adds the tenant address prefix. Methods that
 // act on a specific tenant take its id and pass it as `{ tenantId }` so the

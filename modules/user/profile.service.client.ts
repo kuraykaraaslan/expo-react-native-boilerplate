@@ -4,13 +4,13 @@ import {
   UpdatePreferencesRequest,
   UpdatePreferencesRequestSchema,
   UserPreferences,
-} from "@/services/user/preferences.dto";
+} from "@/modules/user/preferences.dto";
 import {
   ProfileResponseSchema,
   UpdateProfileRequest,
   UpdateProfileRequestSchema,
   UserProfile,
-} from "@/services/user/profile.dto";
+} from "@/modules/user/profile.dto";
 
 // Paths are relative: libs/axios adds the active tenant's address prefix.
 

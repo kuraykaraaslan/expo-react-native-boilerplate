@@ -3,14 +3,14 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-14T12:30:12.999Z",
+  "generatedAt": "2026-10-14T12:59:15.281Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
     "components": "Reusable UI under components/<category>/<Component>.tsx. NativeWind className styling; FontAwesome icons.",
-    "services": "Data fetching via services/<module>/*.service.client.ts files. Use axiosInstance from @/libs/axios — never fetch() or ad-hoc axios.",
+    "services": "Data fetching via modules/<module>/*.service.client.ts files. Use axiosInstance from @/libs/axios — never fetch() or ad-hoc axios.",
     "stores": "Zustand stores under stores/<name>Store.ts. Persisted via zustandStorage (MMKV). Never AsyncStorage. Tokens NEVER live in stores.",
-    "dtos": "Zod schemas + inferred TS types in services/<module>/<module>.dto.ts. Parse every response with the matching schema; never trust raw JSON.",
+    "dtos": "Zod schemas + inferred TS types in modules/<module>/<module>.dto.ts. Parse every response with the matching schema; never trust raw JSON.",
     "libs": "Primitives — axios, env (Zod-validated), i18n, logger, mmkv, secureStorage, zustandStorage. Tokens live in SecureStore only."
   },
   "conventions": {
@@ -19,9 +19,9 @@
     "state": "Zustand 5 + MMKV. Persist via @/libs/zustandStorage. NEVER AsyncStorage. Stores named <name>Store.ts, exporting use<Name>Store.",
     "tokens": "expo-secure-store ONLY (@/libs/secureStorage). Tokens NEVER stored in Zustand or MMKV. axios interceptor injects them at request time.",
     "dataFetch": "Always axiosInstance from @/libs/axios. Never fetch(). Never ad-hoc axios. Auth header (cookie-based) injected by interceptor.",
-    "validation": "Zod for every input + every response. DTOs live in services/<module>/<module>.dto.ts; use *.parse() / .safeParse(). Types are z.infer<...>.",
+    "validation": "Zod for every input + every response. DTOs live in modules/<module>/<module>.dto.ts; use *.parse() / .safeParse(). Types are z.infer<...>.",
     "icons": "FontAwesome 6 (@fortawesome/react-native-fontawesome + free-solid/free-brands). No expo/vector-icons for new code.",
-    "fileNaming": "app/<route>.tsx | app/**/_layout.tsx | components/<cat>/<Pascal>.tsx | services/<module>/<module>.service.client.ts | services/<module>/<module>.dto.ts | stores/<n>Store.ts | libs/<n>.ts | utils/<n>.ts | __tests__/<n>.test.ts(x)"
+    "fileNaming": "app/<route>.tsx | app/**/_layout.tsx | components/<cat>/<Pascal>.tsx | modules/<module>/<module>.service.client.ts | modules/<module>/<module>.dto.ts | stores/<n>Store.ts | libs/<n>.ts | utils/<n>.ts | __tests__/<n>.test.ts(x)"
   },
   "screens": [
     {
@@ -1265,7 +1265,7 @@
   ],
   "services": [
     {
-      "filePath": "services/auth/auth.service.client.ts",
+      "filePath": "modules/auth/auth.service.client.ts",
       "module": "auth",
       "name": "auth.service.client",
       "className": "AuthClientService",
@@ -1304,7 +1304,7 @@
       ]
     },
     {
-      "filePath": "services/compliance/compliance.service.client.ts",
+      "filePath": "modules/compliance/compliance.service.client.ts",
       "module": "compliance",
       "name": "compliance.service.client",
       "className": "ComplianceClientService",
@@ -1321,7 +1321,7 @@
       ]
     },
     {
-      "filePath": "services/user/notification.service.client.ts",
+      "filePath": "modules/user/notification.service.client.ts",
       "module": "user",
       "name": "notification.service.client",
       "className": "NotificationClientService",
@@ -1339,7 +1339,7 @@
       ]
     },
     {
-      "filePath": "services/user/profile.service.client.ts",
+      "filePath": "modules/user/profile.service.client.ts",
       "module": "user",
       "name": "profile.service.client",
       "className": "ProfileClientService",
@@ -1355,7 +1355,7 @@
       ]
     },
     {
-      "filePath": "services/auth/sso.service.client.ts",
+      "filePath": "modules/auth/sso.service.client.ts",
       "module": "auth",
       "name": "sso.service.client",
       "className": "SSOClientService",
@@ -1371,7 +1371,7 @@
       ]
     },
     {
-      "filePath": "services/tenant/tenant.service.client.ts",
+      "filePath": "modules/tenant/tenant.service.client.ts",
       "module": "tenant",
       "name": "tenant.service.client",
       "className": "TenantClientService",
@@ -1415,8 +1415,8 @@
       ]
     },
     {
-      "filePath": "services/i18n/translation.service.client.ts",
-      "module": "i18n",
+      "filePath": "modules/localization/translation.service.client.ts",
+      "module": "localization",
       "name": "translation.service.client",
       "className": "TranslationClientService",
       "methods": [
@@ -1533,7 +1533,7 @@
   ],
   "dtos": [
     {
-      "filePath": "services/auth/auth.dto.ts",
+      "filePath": "modules/auth/auth.dto.ts",
       "module": "auth",
       "name": "auth.dto",
       "schemas": [
@@ -1608,7 +1608,7 @@
       ]
     },
     {
-      "filePath": "services/tenant/branding.dto.ts",
+      "filePath": "modules/tenant/branding.dto.ts",
       "module": "tenant",
       "name": "branding.dto",
       "schemas": [
@@ -1619,8 +1619,8 @@
       ]
     },
     {
-      "filePath": "services/common.dto.ts",
-      "module": "services",
+      "filePath": "modules/common.dto.ts",
+      "module": "modules",
       "name": "common.dto",
       "schemas": [
         "PaginationSchema",
@@ -1633,7 +1633,7 @@
       ]
     },
     {
-      "filePath": "services/compliance/compliance.dto.ts",
+      "filePath": "modules/compliance/compliance.dto.ts",
       "module": "compliance",
       "name": "compliance.dto",
       "schemas": [
@@ -1657,7 +1657,7 @@
       ]
     },
     {
-      "filePath": "services/user/notification.dto.ts",
+      "filePath": "modules/user/notification.dto.ts",
       "module": "user",
       "name": "notification.dto",
       "schemas": [
@@ -1671,7 +1671,7 @@
       ]
     },
     {
-      "filePath": "services/user/preferences.dto.ts",
+      "filePath": "modules/user/preferences.dto.ts",
       "module": "user",
       "name": "preferences.dto",
       "schemas": [
@@ -1691,7 +1691,7 @@
       ]
     },
     {
-      "filePath": "services/user/profile.dto.ts",
+      "filePath": "modules/user/profile.dto.ts",
       "module": "user",
       "name": "profile.dto",
       "schemas": [
@@ -1708,7 +1708,7 @@
       ]
     },
     {
-      "filePath": "services/auth/sso.dto.ts",
+      "filePath": "modules/auth/sso.dto.ts",
       "module": "auth",
       "name": "sso.dto",
       "schemas": [
@@ -1726,7 +1726,7 @@
       ]
     },
     {
-      "filePath": "services/tenant/tenant.dto.ts",
+      "filePath": "modules/tenant/tenant.dto.ts",
       "module": "tenant",
       "name": "tenant.dto",
       "schemas": [
@@ -1784,8 +1784,8 @@
       ]
     },
     {
-      "filePath": "services/i18n/translation.dto.ts",
-      "module": "i18n",
+      "filePath": "modules/localization/translation.dto.ts",
+      "module": "localization",
       "name": "translation.dto",
       "schemas": [
         "TranslationTreeSchema",

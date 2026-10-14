@@ -21,7 +21,7 @@ Modules: `storage`, `media_gallery`, `drive`. Priority 2. Build 15.1 first; 15.2
 - [ ] Contract: `POST /api/storage` takes **multipart form data** (`file`, `folder`, `provider`), validates MIME from content and may virus-scan; `GET /api/storage/usage` reports quota. Read `storage.route.ts`, the DTO and the response (public URL vs. `UploadedFile` id).
 - [ ] Add `expo-image-picker` (camera + library) and `expo-image-manipulator` (resize/compress before upload). Permission strings in `app.config.ts`.
 - [ ] `libs/upload.ts`: build `FormData` with `{uri, name, type}` parts; **do not set `Content-Type` manually** (axios/RN add the boundary); progress callback; cancel via `AbortController`; size and type pre-checks matching the server limits.
-- [ ] `services/platform/storage.{dto,service.client}.ts`: `upload`, `getUsage`.
+- [ ] `modules/platform/storage.{dto,service.client}.ts`: `upload`, `getUsage`.
 - [ ] Avatar: profile screen picks → crops/compresses → uploads → `PUT /auth/me/profile` with the returned URL/id (confirm which field the profile accepts). Show progress and a failure state with retry.
 
 ## 15.2 Media gallery (optional)
@@ -35,7 +35,7 @@ Modules: `storage`, `media_gallery`, `drive`. Priority 2. Build 15.1 first; 15.2
 
 ## Files touched / created
 
-- New: `libs/upload.ts`, `services/platform/storage.*`, `components/media/*`, optionally `app/(drawer)/drive/*`
+- New: `libs/upload.ts`, `modules/platform/storage.*`, `components/media/*`, optionally `app/(drawer)/drive/*`
 - Changed: `app/(drawer)/settings/profile.tsx`, `app.config.ts`, `package.json`, `locales/*.json`
 - Test: FormData construction (no manual content type), oversize/invalid-type rejection, avatar update flow with MSW
 

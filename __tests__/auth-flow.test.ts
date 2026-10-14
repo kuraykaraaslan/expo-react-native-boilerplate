@@ -2,7 +2,7 @@ import { getSessionIdFromToken } from "@/libs/jwt";
 import { pullPreferences, pushPreferences } from "@/libs/preferences";
 import { getToken } from "@/libs/secureStorage";
 import { startDeviceSession } from "@/libs/session";
-import { AuthClientService } from "@/services/auth/auth.service.client";
+import { AuthClientService } from "@/modules/auth/auth.service.client";
 import { useAppStore } from "@/stores/appStore";
 import { useAuthStore } from "@/stores/authStore";
 import { describeSession } from "@/utils/session";

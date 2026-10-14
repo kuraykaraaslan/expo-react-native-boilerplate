@@ -1,5 +1,5 @@
 import { setTokens } from "@/libs/secureStorage";
-import type { DeviceLoginResponse } from "@/services/auth/auth.dto";
+import type { DeviceLoginResponse } from "@/modules/auth/auth.dto";
 import { useAuthStore } from "@/stores/authStore";
 import { useTenantStore } from "@/stores/tenantStore";
 

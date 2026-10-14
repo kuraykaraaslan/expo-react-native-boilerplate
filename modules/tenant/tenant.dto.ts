@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { UserProfileSchema } from "@/services/user/profile.dto";
+import { UserProfileSchema } from "@/modules/user/profile.dto";
 
 // ============================================================================
 // Tenant DTOs — mirror of next-boilerplate tenant / tenant_member /

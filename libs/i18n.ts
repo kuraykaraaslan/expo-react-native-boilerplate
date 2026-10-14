@@ -1,6 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import type { TranslationTree } from "@/services/i18n/translation.dto";
+import type { TranslationTree } from "@/modules/localization/translation.dto";
 import { useTranslationStore } from "@/stores/translationStore";
 
 // ============================================================================

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { AppState } from "react-native";
 import logger from "@/libs/logger";
-import { NotificationClientService } from "@/services/user/notification.service.client";
+import { NotificationClientService } from "@/modules/user/notification.service.client";
 import { useNotificationStore } from "@/stores/notificationStore";
 import { useTenantStore } from "@/stores/tenantStore";
 

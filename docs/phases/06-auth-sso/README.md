@@ -59,7 +59,7 @@ is **fixed** per provider.
 
 ## Dependency graph (summary)
 
-- Phase 6 depends on Phase 3's `services/auth/sso.dto.ts` and `services/auth/sso.service.client.ts`.
+- Phase 6 depends on Phase 3's `modules/auth/sso.dto.ts` and `modules/auth/sso.service.client.ts`.
 - Phase 6 depends on Phase 5's `activeTenantId` (`state = "{tenantId}.{uuid}"`).
 - The `scheme` to be added to `app.config.ts` is also used by Phase 4's `reset-password` deep link.
 

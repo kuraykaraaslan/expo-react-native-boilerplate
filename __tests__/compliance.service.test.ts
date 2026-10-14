@@ -1,4 +1,4 @@
-import { ComplianceClientService } from "@/services/compliance/compliance.service.client";
+import { ComplianceClientService } from "@/modules/compliance/compliance.service.client";
 import { USER_ID } from "./fixtures";
 import { mockRoute } from "./_helpers";
 

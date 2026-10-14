@@ -8,7 +8,7 @@ import {
   type AuditSeverity,
   type ConsentConfig,
   type RecordConsentRequest,
-} from "@/services/compliance/compliance.dto";
+} from "@/modules/compliance/compliance.dto";
 
 // Paths are relative: libs/axios adds the active tenant's address prefix.
 

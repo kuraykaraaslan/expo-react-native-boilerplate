@@ -6,7 +6,7 @@ import {
   SSOAuthUrlResponseSchema,
   SSOProvider,
   SSOProvidersResponseSchema,
-} from "@/services/auth/sso.dto";
+} from "@/modules/auth/sso.dto";
 
 // Paths are relative: libs/axios adds the active tenant's address prefix.
 // Both routes are public (no bearer needed).

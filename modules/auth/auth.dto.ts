@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { MemberRoleEnum, TenantStatusEnum } from "@/services/tenant/tenant.dto";
-import { UserProfileSchema } from "@/services/user/profile.dto";
+import { MemberRoleEnum, TenantStatusEnum } from "@/modules/tenant/tenant.dto";
+import { UserProfileSchema } from "@/modules/user/profile.dto";
 
 // ============================================================================
 // Auth DTOs — mirror of next-boilerplate auth / user / user_security /
@@ -30,7 +30,7 @@ export type SessionStatus = z.infer<typeof SessionStatusEnum>;
 /**
  * SafeUser, as returned by login. It has NO `name` / `image` / `language` /
  * `theme`: the display name and picture are under `userProfile`, language and
- * theme under user preferences (services/user/preferences.dto.ts).
+ * theme under user preferences (modules/user/preferences.dto.ts).
  */
 export const SafeUserSchema = z.object({
   userId: z.string(),

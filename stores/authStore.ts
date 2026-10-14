@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { zustandMMKVStorage } from "@/libs/zustandStorage";
-import type { OTPMethod, SafeUser } from "@/services/auth/auth.dto";
+import type { OTPMethod, SafeUser } from "@/modules/auth/auth.dto";
 
 // ============================================================================
 // Auth Store

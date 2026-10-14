@@ -20,7 +20,7 @@ import { useAppStore } from '@/stores/appStore';
 import { normalizeApiError } from '@/libs/apiError';
 import { getToken } from '@/libs/secureStorage';
 import { getActiveTenantId, useTenantStore } from '@/stores/tenantStore';
-import { AuthClientService } from '@/services/auth/auth.service.client';
+import { AuthClientService } from '@/modules/auth/auth.service.client';
 import { ThemeProvider } from '@/libs/theme/ThemeContext';
 import i18n from '@/libs/i18n';
 import logger from '@/libs/logger';

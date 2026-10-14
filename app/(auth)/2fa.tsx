@@ -9,11 +9,11 @@ import { faCommentSms, faEnvelope, faMobileScreen, faShieldHalved } from '@forta
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { Button, Input, RadioGroup } from '@/components/ui';
-import type { OTPMethod } from '@/services/auth/auth.dto';
+import type { OTPMethod } from '@/modules/auth/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useCountdown } from '@/libs/useCountdown';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { AuthClientService } from '@/services/auth/auth.service.client';
+import { AuthClientService } from '@/modules/auth/auth.service.client';
 import { useAuthStore } from '@/stores/authStore';
 
 const RESEND_SECONDS = 30;

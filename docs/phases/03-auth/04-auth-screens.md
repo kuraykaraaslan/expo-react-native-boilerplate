@@ -57,7 +57,7 @@ WHERE WE ARE: docs/phases/README.md §Order
 
 ## 4.6 New source of profile fields
 
-- [ ] `SafeUser` no longer has `name` / `image`. The `UserMenu` initials and the profile header are wired to `userProfile.name` / `userProfile.profilePicture` (`services/user/profile.dto.ts` already models them).
+- [ ] `SafeUser` no longer has `name` / `image`. The `UserMenu` initials and the profile header are wired to `userProfile.name` / `userProfile.profilePicture` (`modules/user/profile.dto.ts` already models them).
 - [ ] `language` / `theme` are read from `GET /auth/me/preferences`; synced with `appStore.locale` / `colorScheme`.
 - [ ] `app/(drawer)/settings/change-email.tsx` → there is **no** `/auth/change-email`; it is wired to the `POST /auth/me/complete-email` + `POST /auth/verify-email/send|verify` flow.
 
@@ -71,7 +71,7 @@ WHERE WE ARE: docs/phases/README.md §Order
 
 - `components/auth/AuthLayout.tsx` — the shared frame of the auth screens, not rewritten.
 - `@/components/ui` (kui-native, Phase 1C): `Button`, `Input`, `Label`, `AlertBanner`, `Spinner`, `Card`, `EmptyState`.
-- `libs/apiError.ts` + `services/common.dto.ts:extractErrorMessage` — all error messages.
+- `libs/apiError.ts` + `modules/common.dto.ts:extractErrorMessage` — all error messages.
 - `libs/deviceInfo.ts` (Phase 2) — the `device` in the login body.
 - `libs/i18n.ts` + `locales/*.json` — the `AUTH`, `ERRORS`, `SETTINGS` namespaces already exist; new keys are added to all six languages.
 - `expo-haptics`, `sonner-native` — existing usage pattern.

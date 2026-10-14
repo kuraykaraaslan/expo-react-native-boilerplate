@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import i18n, { applyLanguageTexts, BUNDLED_LOCALE_META, BUNDLED_LOCALES, hasLanguageTexts, normalizeLocale } from "@/libs/i18n";
 import logger from "@/libs/logger";
-import { TranslationClientService } from "@/services/i18n/translation.service.client";
-import type { RemoteLanguage } from "@/services/i18n/translation.dto";
+import { TranslationClientService } from "@/modules/localization/translation.service.client";
+import type { RemoteLanguage } from "@/modules/localization/translation.dto";
 import { useAppStore } from "@/stores/appStore";
 import { useTranslationStore } from "@/stores/translationStore";
 

@@ -9,8 +9,8 @@ import { handleApiError } from '@/libs/errorUtils';
 import logger from '@/libs/logger';
 import { signInWithProvider } from '@/libs/ssoSession';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import type { SSOProvider } from '@/services/auth/sso.dto';
-import { SSOClientService } from '@/services/auth/sso.service.client';
+import type { SSOProvider } from '@/modules/auth/sso.dto';
+import { SSOClientService } from '@/modules/auth/sso.service.client';
 import { SSO_PROVIDER_META } from './ssoProviders';
 
 type SSOButtonsProps = {

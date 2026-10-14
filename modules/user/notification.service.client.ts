@@ -1,6 +1,6 @@
 import axiosInstance from "@/libs/axios";
-import { AckResponseSchema } from "@/services/auth/auth.dto";
-import { Notification, NotificationsResponseSchema } from "@/services/user/notification.dto";
+import { AckResponseSchema } from "@/modules/auth/auth.dto";
+import { Notification, NotificationsResponseSchema } from "@/modules/user/notification.dto";
 
 // Paths are relative: libs/axios adds the active tenant's address prefix.
 

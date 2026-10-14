@@ -23,14 +23,14 @@ Modules: `search`, `navigation`. Priority 2.
 
 ## 17.2 Search
 
-- [ ] `services/platform/search.{dto,service.client}.ts` (K6).
+- [ ] `modules/platform/search.{dto,service.client}.ts` (K6).
 - [ ] `app/(drawer)/search.tsx`: debounced input, recent history, saved searches, grouped results by `entityType`, empty and error states, pagination on scroll.
 - [ ] **Result routing:** a `libs/searchRoutes.ts` map from `entityType` (+ id) to app routes; unknown types open the web `url` in `expo-web-browser`. Tenant members, notifications and messages (when those phases ship) are the first local targets.
 - [ ] Search entry in the top bar; respects the active tenant only.
 
 ## Files touched / created
 
-- New: `services/platform/search.*`, `app/(drawer)/search.tsx`, `libs/searchRoutes.ts`
+- New: `modules/platform/search.*`, `app/(drawer)/search.tsx`, `libs/searchRoutes.ts`
 - Changed: top bar, drawer layout, `locales/*.json`
 - Test: debounce, pagination, result routing incl. unknown type fallback
 

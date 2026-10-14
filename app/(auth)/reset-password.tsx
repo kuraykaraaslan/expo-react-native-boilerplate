@@ -9,10 +9,10 @@ import { faEnvelope, faKey, faLock } from '@fortawesome/free-solid-svg-icons';
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { Button, Input } from '@/components/ui';
-import { ResetPasswordRequestSchema } from '@/services/auth/auth.dto';
+import { ResetPasswordRequestSchema } from '@/modules/auth/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { AuthClientService } from '@/services/auth/auth.service.client';
+import { AuthClientService } from '@/modules/auth/auth.service.client';
 
 type FieldErrors = { email?: string; token?: string; password?: string; confirm?: string };
 

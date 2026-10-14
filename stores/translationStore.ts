@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { zustandMMKVStorage } from "@/libs/zustandStorage";
-import type { RemoteLanguage, TranslationTree } from "@/services/i18n/translation.dto";
+import type { RemoteLanguage, TranslationTree } from "@/modules/localization/translation.dto";
 
 // ============================================================================
 // Translation cache — the server's language list and every language bundle

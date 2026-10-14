@@ -35,7 +35,7 @@ import {
   TOTPSetupResponse,
   TOTPSetupResponseSchema,
   UserSecurity,
-} from "@/services/auth/auth.dto";
+} from "@/modules/auth/auth.dto";
 
 // Paths are relative: libs/axios adds the active tenant's address prefix.
 

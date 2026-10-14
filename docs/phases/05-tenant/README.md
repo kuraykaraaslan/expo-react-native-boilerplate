@@ -13,7 +13,7 @@ WHERE WE ARE: docs/phases/README.md §Order
 
 # tenant — tenant selection, switching and creation (Phase Plan index)
 
-> **This is not a new module.** It rewires the existing `stores/tenantStore.ts`, `services/tenant/tenant.service.client.ts`
+> **This is not a new module.** It rewires the existing `stores/tenantStore.ts`, `modules/tenant/tenant.service.client.ts`
 > and `app/(tenant)/{select-tenant,create-tenant}.tsx` screens to the device token's tenant binding.
 
 ## Why (context)

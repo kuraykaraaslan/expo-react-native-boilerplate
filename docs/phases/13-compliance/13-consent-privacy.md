@@ -25,7 +25,7 @@ Modules: `terms_consent`, `privacy`, `audit_log`. Priority 2.
 
 ## 13.2 Agreements and consent
 
-- [ ] `services/compliance/{terms,privacy,audit}.{dto,service.client}.ts` (K6 — new domain folder `compliance/`, update the K6 list in `docs/phases/README.md`).
+- [ ] `modules/compliance/{terms,privacy,audit}.{dto,service.client}.ts` (K6 — new domain folder `compliance/`, update the K6 list in `docs/phases/README.md`).
 - [ ] Screen "Legal" (settings): list current agreements with version and date; open the document in a scrollable reader (plain text/markdown rendering; no WebView unless the content is HTML — then sanitize).
 - [ ] Blocking acceptance: when the server reports a required agreement is not accepted, show it before the drawer opens (guard sits next to the OTP / forced-password guards). Accept stamps the version/hash it displayed.
 - [ ] Consent toggles from `consent/config` + `consent/records` (marketing, analytics) with save and history.
@@ -42,7 +42,7 @@ Modules: `terms_consent`, `privacy`, `audit_log`. Priority 2.
 
 ## Files touched / created
 
-- New: `services/compliance/*`, `app/(drawer)/settings/{legal,privacy}.tsx`, `app/(drawer)/settings/tenant/audit-log.tsx`, `libs/useRequiredAgreements.ts`
+- New: `modules/compliance/*`, `app/(drawer)/settings/{legal,privacy}.tsx`, `app/(drawer)/settings/tenant/audit-log.tsx`, `libs/useRequiredAgreements.ts`
 - Changed: `app/(drawer)/_layout.tsx` (guard), `app/(auth)/register.tsx` (acceptance), `stores/*` (flush on deletion), `locales/*.json`
 - Test: pending-acceptance guard, accept stamps version, deletion clears every tenant's tokens
 
@@ -78,7 +78,7 @@ On `main`. Typecheck 0 errors, jest 169/169 (5 new), web export OK. Screenshots:
 - `audit_log`: `GET /audit-logs` is ADMIN (`audit_log.logs.read`), **1-based** pages, filters `severity/action/actorId/resourceType/fromDate/toDate`, and the route is plan-gated (`assertAuditLogEntitled` — a 403 on plans without it, surfaced by the generic error handler).
 
 **What shipped**
-- `services/compliance/{compliance.dto,compliance.service.client}.ts`: consent config / state / record and the audit list, with tests of the real shapes.
+- `modules/compliance/{compliance.dto,compliance.service.client}.ts`: consent config / state / record and the audit list, with tests of the real shapes.
 - **Privacy & legal** (`app/(drawer)/settings/legal.tsx` + hub tile): Privacy policy and Terms of service links taken from the tenant's **public branding** (`privacyPolicyUrl`, `termsOfServiceUrl`) and opened in the in-app browser — only http(s) is ever opened (`safeWebUrl`); and **Privacy choices** from `consent/config` (required purposes are always-on and disabled, optional ones default to off until answered) saved as one batch tagged with the policy version. The two reads are independent: a tenant without consent configured still shows its policy links and vice versa.
 - **Audit log** (`app/(drawer)/settings/tenant/audit-log.tsx` + tile on the organization page): admin-only (others get a note and no request), severity filter, 20 per page with Load more, stale answers dropped.
 - Strings in all six locales.

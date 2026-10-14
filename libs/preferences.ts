@@ -1,7 +1,7 @@
 import logger from "@/libs/logger";
 import { selectLanguage } from "@/libs/translations";
-import type { Theme } from "@/services/user/preferences.dto";
-import { ProfileClientService } from "@/services/user/profile.service.client";
+import type { Theme } from "@/modules/user/preferences.dto";
+import { ProfileClientService } from "@/modules/user/profile.service.client";
 import { useAppStore } from "@/stores/appStore";
 
 // ============================================================================

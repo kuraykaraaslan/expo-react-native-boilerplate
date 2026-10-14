@@ -33,7 +33,7 @@ The subscribe route validates `{endpoint: url, keys: {p256dh, auth}}` and the ch
 
 - [ ] Add `expo-notifications` (and `expo-device` is already present). Config plugin + Android notification channel + iOS permission string in `app.config.ts`.
 - [ ] `libs/push.ts`: request permission **after sign-in, in context** (not at launch); obtain token; `registerPush(tenantId)` / `unregisterPush(tenantId)`.
-- [ ] `services/user/push.service.client.ts` + `push.dto.ts` (K6): `POST/DELETE /notifications/push/subscribe` (DELETE accepts `?endpoint=`; without it the server removes every subscription of the user in that tenant).
+- [ ] `modules/user/push.service.client.ts` + `push.dto.ts` (K6): `POST/DELETE /notifications/push/subscribe` (DELETE accepts `?endpoint=`; without it the server removes every subscription of the user in that tenant).
 - [ ] Register on login and tenant activation; re-register when the token rotates; keep the registered token per tenant in MMKV (not SecureStore — it is not a secret).
 - [ ] `logout` and `flush()` call `unregisterPush` for **every** `knownTenantIds` entry **before** the tokens are deleted (the request needs the bearer token).
 - [ ] Foreground handler shows a toast (`sonner-native`); tap handler routes via `expo-router` using a `data.route` field.
@@ -45,7 +45,7 @@ The subscribe route validates `{endpoint: url, keys: {p256dh, auth}}` and the ch
 
 ## Files touched / created
 
-- New: `libs/push.ts`, `services/user/push.{dto,service.client}.ts`, `app/(drawer)/settings/notifications.tsx`
+- New: `libs/push.ts`, `modules/user/push.{dto,service.client}.ts`, `app/(drawer)/settings/notifications.tsx`
 - Changed: `app.config.ts`, `stores/authStore.ts` (logout), `stores/tenantStore.ts` (`flush`), `libs/tenantSwitch.ts`, `locales/*.json`, `package.json`
 - Test: register/unregister per tenant, cleanup order on logout, permission-denied state
 

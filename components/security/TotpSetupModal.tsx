@@ -6,8 +6,8 @@ import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { Button, Input, Modal, Text } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
-import { AuthClientService } from '@/services/auth/auth.service.client';
-import type { TOTPSetupResponse } from '@/services/auth/auth.dto';
+import { AuthClientService } from '@/modules/auth/auth.service.client';
+import type { TOTPSetupResponse } from '@/modules/auth/auth.dto';
 import { formatSecret, isCompleteCode, sanitizeCode } from '@/utils/totp';
 
 type Props = { open: boolean; onClose: () => void; onEnabled: () => void };

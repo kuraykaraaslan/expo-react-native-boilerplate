@@ -34,7 +34,7 @@ Modules: `api_key`, `tenant_domain`, `tenant_session`. Priority 2.
 
 ## Files touched / created
 
-- New: `services/platform/{apiKey,domain}.*`, `app/(drawer)/settings/tenant/{api-keys,domains}.tsx`
+- New: `modules/platform/{apiKey,domain}.*`, `app/(drawer)/settings/tenant/{api-keys,domains}.tsx`
 - Changed: tenant settings navigation, `locales/*.json`
 - Test: one-time key display clears state, role gating, revoke-all confirmation
 

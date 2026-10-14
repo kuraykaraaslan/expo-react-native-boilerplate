@@ -1,10 +1,10 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-14T12:30:12.999Z",
+  "generatedAt": "2026-10-14T12:59:15.281Z",
   "services": [
     {
-      "filePath": "services/auth/auth.service.client.ts",
+      "filePath": "modules/auth/auth.service.client.ts",
       "module": "auth",
       "name": "auth.service.client",
       "className": "AuthClientService",
@@ -43,7 +43,7 @@
       ]
     },
     {
-      "filePath": "services/compliance/compliance.service.client.ts",
+      "filePath": "modules/compliance/compliance.service.client.ts",
       "module": "compliance",
       "name": "compliance.service.client",
       "className": "ComplianceClientService",
@@ -60,7 +60,7 @@
       ]
     },
     {
-      "filePath": "services/user/notification.service.client.ts",
+      "filePath": "modules/user/notification.service.client.ts",
       "module": "user",
       "name": "notification.service.client",
       "className": "NotificationClientService",
@@ -78,7 +78,7 @@
       ]
     },
     {
-      "filePath": "services/user/profile.service.client.ts",
+      "filePath": "modules/user/profile.service.client.ts",
       "module": "user",
       "name": "profile.service.client",
       "className": "ProfileClientService",
@@ -94,7 +94,7 @@
       ]
     },
     {
-      "filePath": "services/auth/sso.service.client.ts",
+      "filePath": "modules/auth/sso.service.client.ts",
       "module": "auth",
       "name": "sso.service.client",
       "className": "SSOClientService",
@@ -110,7 +110,7 @@
       ]
     },
     {
-      "filePath": "services/tenant/tenant.service.client.ts",
+      "filePath": "modules/tenant/tenant.service.client.ts",
       "module": "tenant",
       "name": "tenant.service.client",
       "className": "TenantClientService",
@@ -154,8 +154,8 @@
       ]
     },
     {
-      "filePath": "services/i18n/translation.service.client.ts",
-      "module": "i18n",
+      "filePath": "modules/localization/translation.service.client.ts",
+      "module": "localization",
       "name": "translation.service.client",
       "className": "TranslationClientService",
       "methods": [

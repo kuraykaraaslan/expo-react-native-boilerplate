@@ -18,7 +18,7 @@ Modules: `user_security`, `auth` (totp/otp), `account`. Priority 1. No server ch
 
 ## 10.1 Contract check
 
-- [ ] Read `GET /auth/me/security` response (TOTP enabled, OTP methods, password age, lock state) and the totp/otp DTOs; align `services/auth/auth.dto.ts` or add `services/auth/security.dto.ts` (K6).
+- [ ] Read `GET /auth/me/security` response (TOTP enabled, OTP methods, password age, lock state) and the totp/otp DTOs; align `modules/auth/auth.dto.ts` or add `modules/auth/security.dto.ts` (K6).
 - [ ] Confirm the `setup` response (secret, `otpauth://` URI, recovery codes?) and what `enable` / `disable` require (code, password).
 - [ ] Confirm the per-tenant policy (MFA methods allowed) is exposed so the screen hides disabled methods.
 
@@ -38,7 +38,7 @@ Modules: `user_security`, `auth` (totp/otp), `account`. Priority 1. No server ch
 
 ## Files touched / created
 
-- New: `app/(drawer)/settings/security.tsx`, `services/auth/security.{dto,service.client}.ts`, `libs/appLock.ts`, `components/security/*` (QR, recovery codes)
+- New: `app/(drawer)/settings/security.tsx`, `modules/auth/security.{dto,service.client}.ts`, `libs/appLock.ts`, `components/security/*` (QR, recovery codes)
 - Changed: `app/(drawer)/settings/_layout.tsx`, drawer entries, `app.config.ts`, `locales/*.json`, `package.json`
 - Test: TOTP enable/disable with MSW shapes, recovery-code display-once, lock/unlock state machine
 

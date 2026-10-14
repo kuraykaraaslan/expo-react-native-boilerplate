@@ -2,7 +2,7 @@ import { configureTheme } from "kui-native/libs/theme";
 import logger from "@/libs/logger";
 import { BASE_THEME } from "@/libs/theme/brand";
 import { deriveBrandTokens, normalizeHex } from "@/libs/theme/brandColor";
-import { TenantClientService } from "@/services/tenant/tenant.service.client";
+import { TenantClientService } from "@/modules/tenant/tenant.service.client";
 import { useAppliedBrand, useBrandingStore } from "@/stores/brandingStore";
 
 // ============================================================================

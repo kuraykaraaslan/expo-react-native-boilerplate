@@ -9,7 +9,7 @@ import { NoOrganization } from '@/components/tenant/NoOrganization';
 import { Button, Card, Select, Text, Toggle } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
 import { useLocales } from '@/libs/translations';
-import { TenantClientService } from '@/services/tenant/tenant.service.client';
+import { TenantClientService } from '@/modules/tenant/tenant.service.client';
 import { useTenantStore } from '@/stores/tenantStore';
 import {
   changedSettings,

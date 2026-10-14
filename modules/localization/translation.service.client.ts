@@ -7,7 +7,7 @@ import {
   TranslationBundleSchema,
   type RemoteLanguage,
   type TranslationBundle,
-} from "@/services/i18n/translation.dto";
+} from "@/modules/localization/translation.dto";
 
 // ============================================================================
 // Translation Client Service — guest routes (no token), see translation.dto.ts.

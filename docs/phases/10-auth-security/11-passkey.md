@@ -25,13 +25,13 @@ Module: `auth_passkey`. Priority 1. **Login half is blocked on a server change (
 ## 11.2 Client
 
 - [ ] Native module: `react-native-passkey` (or Expo's equivalent when available for SDK 57) — requires a **development build**, not Expo Go. Add the associated-domains entitlement (iOS) and asset-links verification (Android) in `app.config.ts`.
-- [ ] `services/auth/passkey.{dto,service.client}.ts` (K6): `GET /auth/me/security/passkeys`, `POST …/register` (options), `POST …/register/verify`, `DELETE …/passkeys/[credentialId]`; login `options` / `verify`.
+- [ ] `modules/auth/passkey.{dto,service.client}.ts` (K6): `GET /auth/me/security/passkeys`, `POST …/register` (options), `POST …/register/verify`, `DELETE …/passkeys/[credentialId]`; login `options` / `verify`.
 - [ ] `app/(drawer)/settings/passkeys.tsx`: list (name, created, last used, transports), add, rename if supported, delete with confirmation; refuse to remove the last credential if the account has no password (show the server error).
 - [ ] Login screen: "Sign in with a passkey" button → options → OS sheet → verify → `startDeviceSession` exactly as `deviceLogin` does (per-tenant pair, K2). Hide the button when the platform does not support passkeys or the tenant policy disallows them.
 
 ## Files touched / created
 
-- New: `services/auth/passkey.{dto,service.client}.ts`, `app/(drawer)/settings/passkeys.tsx`, `libs/passkey.ts`
+- New: `modules/auth/passkey.{dto,service.client}.ts`, `app/(drawer)/settings/passkeys.tsx`, `libs/passkey.ts`
 - Changed: `app/(auth)/login.tsx`, `app.config.ts`, `package.json`, `locales/*.json`
 - Test: registration and list with MSW, login → session start (mocked native module), unsupported-platform hiding
 

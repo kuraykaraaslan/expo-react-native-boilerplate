@@ -59,7 +59,7 @@ WHERE WE ARE: docs/phases/README.md §Order
   2. `{message: 'Validation error', issues: [...]}` (ZodError)
   3. `{error: '<string>'}` (login/register 403/404)
   4. `{error: [<zod issues>]}` (device login 400)
-- [ ] `services/common.dto.ts:extractErrorMessage` and `libs/errorUtils.ts` **delegate** to it — both are kept, so existing call sites do not break.
+- [ ] `modules/common.dto.ts:extractErrorMessage` and `libs/errorUtils.ts` **delegate** to it — both are kept, so existing call sites do not break.
 - [ ] Unknown shape → `i18n.t('ERRORS.UNEXPECTED')` (today's behavior).
 
 ## 2.5 Device info
@@ -83,14 +83,14 @@ WHERE WE ARE: docs/phases/README.md §Order
 ## Files touched / created
 
 - New: `libs/apiError.ts`, `libs/deviceInfo.ts`
-- Changed: `libs/axios.ts` (full rewrite), `libs/env.ts`, `libs/secureStorage.ts`, `libs/errorUtils.ts`, `services/common.dto.ts`, `stores/tenantStore.ts` (+`activeTenantId`), `package.json` (+`expo-device`), `.env.example`
+- Changed: `libs/axios.ts` (full rewrite), `libs/env.ts`, `libs/secureStorage.ts`, `libs/errorUtils.ts`, `modules/common.dto.ts`, `stores/tenantStore.ts` (+`activeTenantId`), `package.json` (+`expo-device`), `.env.example`
 - Test: `__tests__/_handlers.ts`, `__tests__/_server.ts` (MSW), new `__tests__/axios.test.ts`, `__tests__/apiError.test.ts`
 
 ## Reuse
 
 - `libs/secureStorage.ts` — not deleted, its signature is extended (AGENTS.md §6 Rule 5: tokens **only** in SecureStore).
 - `libs/logger.ts` — all interceptor logs go through it (Rule 9: `console.*` is forbidden).
-- `services/common.dto.ts:extractErrorMessage` + `libs/errorUtils.ts` — kept, delegating to `apiError.ts`.
+- `modules/common.dto.ts:extractErrorMessage` + `libs/errorUtils.ts` — kept, delegating to `apiError.ts`.
 - `sonner-native` — 429 and session-drop notifications (Rule 12).
 - The existing single-flight `isRefreshing` + `failedQueue` pattern — extended into a per-tenant queue, not written from scratch.
 

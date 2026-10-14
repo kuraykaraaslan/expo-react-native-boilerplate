@@ -9,8 +9,8 @@ import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { AlertBanner, Badge, Card, EmptyState, Text } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { SSOProviderEnum, type ConnectedAccount } from '@/services/auth/sso.dto';
-import { SSOClientService } from '@/services/auth/sso.service.client';
+import { SSOProviderEnum, type ConnectedAccount } from '@/modules/auth/sso.dto';
+import { SSOClientService } from '@/modules/auth/sso.service.client';
 
 function AccountRow({ item, last }: Readonly<{ item: ConnectedAccount; last: boolean }>) {
   const { t } = useTranslation();
