@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T23:34:43.775Z",
+  "generatedAt": "2026-10-14T12:30:12.999Z",
   "services": [
     {
       "filePath": "services/auth/auth.service.client.ts",
@@ -151,6 +151,20 @@
         "/invitations/decline",
         "/settings/public",
         "/settings"
+      ]
+    },
+    {
+      "filePath": "services/i18n/translation.service.client.ts",
+      "module": "i18n",
+      "name": "translation.service.client",
+      "className": "TranslationClientService",
+      "methods": [
+        "getLanguages",
+        "getBundle"
+      ],
+      "endpoints": [
+        "/localization/languages",
+        "/localization/languages/${encodeURIComponent(code)}"
       ]
     }
   ]

@@ -437,7 +437,8 @@
         "THEME_LIGHT": "Claro",
         "THEME_DARK": "Oscuro",
         "THEME_SYSTEM": "Sistema",
-        "LANGUAGE": "Idioma"
+        "LANGUAGE": "Idioma",
+        "LANGUAGE_UNAVAILABLE": "No se pudo descargar este idioma. Comprueba tu conexión e inténtalo de nuevo."
     },
     "ORGANIZATION": {
         "TITLE": "Organización",

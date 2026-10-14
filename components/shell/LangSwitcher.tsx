@@ -1,19 +1,18 @@
 import { Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner-native';
 import { DropdownMenu, Text } from '@/components/ui';
-import { LOCALE_META, SUPPORTED_LOCALES, type Locale } from '@/libs/i18n';
-import { useAppStore } from '@/stores/appStore';
+import { changeLanguage } from '@/libs/preferences';
+import { localeOption, useLocales } from '@/libs/translations';
 
 /** next-boilerplate's language switcher: flag + code trigger, flag + endonym menu. */
 export function LangSwitcher() {
   const { t, i18n } = useTranslation();
-  const setLocale = useAppStore((s) => s.setLocale);
-  const code = (i18n.language ?? 'en').split('-')[0];
-  const locale: Locale = code in LOCALE_META ? (code as Locale) : 'en';
+  const locales = useLocales();
+  const current = localeOption(i18n.language ?? 'en', locales);
 
-  const switchTo = (lang: Locale) => {
-    i18n.changeLanguage(lang);
-    setLocale(lang);
+  const switchTo = async (lang: string) => {
+    if (!(await changeLanguage(lang))) toast.error(t('PREFERENCES.LANGUAGE_UNAVAILABLE'));
   };
 
   return (
@@ -23,19 +22,19 @@ export function LangSwitcher() {
         // Must be a Pressable: DropdownMenu injects onPress into the trigger element.
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={t('SHELL.LANGUAGE_A11Y', { language: LOCALE_META[locale].name })}
+          accessibilityLabel={t('SHELL.LANGUAGE_A11Y', { language: current.name })}
           testID="shell-lang-trigger"
           className="min-h-[36px] flex-row items-center gap-1.5 rounded-md px-2 active:bg-surface-overlay"
         >
-          <Text className="text-base">{LOCALE_META[locale].flag}</Text>
-          <Text className="text-xs font-medium text-text-secondary">{locale.toUpperCase()}</Text>
+          <Text className="text-base">{current.flag}</Text>
+          <Text className="text-xs font-medium text-text-secondary">{current.code.toUpperCase()}</Text>
         </Pressable>
       }
-      items={SUPPORTED_LOCALES.map((lang) => ({
-        label: LOCALE_META[lang].name,
-        icon: LOCALE_META[lang].flag,
-        onPress: () => switchTo(lang),
-        disabled: lang === locale,
+      items={locales.map((lang) => ({
+        label: lang.name,
+        icon: lang.flag,
+        onPress: () => void switchTo(lang.code),
+        disabled: lang.code === current.code,
       }))}
     />
   );

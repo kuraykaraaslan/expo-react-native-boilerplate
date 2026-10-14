@@ -1,24 +1,27 @@
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
+import { toast } from 'sonner-native';
 import { Card, Select } from '@/components/ui';
-import { LOCALE_META, SUPPORTED_LOCALES, type Locale } from '@/libs/i18n';
-import { pushPreferences } from '@/libs/preferences';
+import { changeLanguage, pushPreferences } from '@/libs/preferences';
 import { useTheme } from '@/libs/theme/ThemeContext';
+import { useLocales } from '@/libs/translations';
 import { useAppStore } from '@/stores/appStore';
 
 /** next-boilerplate "Tercihler" → appearance + language; applied immediately and persisted (MMKV). */
 export function PreferencesCard() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { colorScheme, setColorScheme } = useTheme();
   const locale = useAppStore((s) => s.locale);
-  const setLocale = useAppStore((s) => s.setLocale);
+  const locales = useLocales();
 
-  function changeLanguage(code: string) {
-    i18n.changeLanguage(code);
-    setLocale(code);
-    void pushPreferences({ language: code });
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  async function onLanguage(code: string) {
+    if (await changeLanguage(code)) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    } else {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      toast.error(t('PREFERENCES.LANGUAGE_UNAVAILABLE'));
+    }
   }
 
   return (
@@ -42,8 +45,8 @@ export function PreferencesCard() {
           id="preferences-language"
           label={t('PREFERENCES.LANGUAGE')}
           value={locale}
-          onChange={changeLanguage}
-          options={SUPPORTED_LOCALES.map((code: Locale) => ({ value: code, label: `${LOCALE_META[code].flag}  ${LOCALE_META[code].name}` }))}
+          onChange={(code) => void onLanguage(code)}
+          options={locales.map((l) => ({ value: l.code, label: `${l.flag}  ${l.name}` }))}
         />
       </View>
     </Card>

@@ -437,7 +437,8 @@
         "THEME_LIGHT": "Hell",
         "THEME_DARK": "Dunkel",
         "THEME_SYSTEM": "System",
-        "LANGUAGE": "Sprache"
+        "LANGUAGE": "Sprache",
+        "LANGUAGE_UNAVAILABLE": "Diese Sprache konnte nicht heruntergeladen werden. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut."
     },
     "ORGANIZATION": {
         "TITLE": "Organisation",

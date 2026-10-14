@@ -437,7 +437,8 @@
         "THEME_LIGHT": "Light",
         "THEME_DARK": "Dark",
         "THEME_SYSTEM": "System",
-        "LANGUAGE": "Language"
+        "LANGUAGE": "Language",
+        "LANGUAGE_UNAVAILABLE": "This language could not be downloaded. Check your connection and try again."
     },
     "ORGANIZATION": {
         "TITLE": "Organization",

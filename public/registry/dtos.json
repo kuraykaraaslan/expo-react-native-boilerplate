@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T23:34:43.775Z",
+  "generatedAt": "2026-10-14T12:30:12.999Z",
   "dtos": [
     {
       "filePath": "services/auth/auth.dto.ts",
@@ -252,6 +252,28 @@
         "UpdateTenantProfileRequest",
         "SendInvitationRequest",
         "UpdateMemberRequest"
+      ]
+    },
+    {
+      "filePath": "services/i18n/translation.dto.ts",
+      "module": "i18n",
+      "name": "translation.dto",
+      "schemas": [
+        "TranslationTreeSchema",
+        "LanguageCodeSchema",
+        "RemoteLanguageSchema",
+        "LanguagesResponseSchema",
+        "TranslationPlatformSchema",
+        "TranslationBundleRequestSchema",
+        "TranslationBundleSchema"
+      ],
+      "types": [
+        "TranslationTree",
+        "RemoteLanguage",
+        "LanguagesResponse",
+        "TranslationPlatform",
+        "TranslationBundleRequest",
+        "TranslationBundle"
       ]
     }
   ]

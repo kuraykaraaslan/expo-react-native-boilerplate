@@ -437,7 +437,8 @@
         "THEME_LIGHT": "Açık",
         "THEME_DARK": "Koyu",
         "THEME_SYSTEM": "Sistem",
-        "LANGUAGE": "Dil"
+        "LANGUAGE": "Dil",
+        "LANGUAGE_UNAVAILABLE": "Bu dil indirilemedi. Bağlantınızı kontrol edip tekrar deneyin."
     },
     "ORGANIZATION": {
         "TITLE": "Organizasyon",

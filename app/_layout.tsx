@@ -2,6 +2,7 @@ import '../global.css';
 import '@/libs/theme/brand'; // brand tokens before first render
 import '@/libs/i18n'; // initialise i18next before any component renders
 import { useEffect, useState } from 'react';
+import { AppState } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Slot } from 'expo-router';
@@ -23,6 +24,7 @@ import { AuthClientService } from '@/services/auth/auth.service.client';
 import { ThemeProvider } from '@/libs/theme/ThemeContext';
 import i18n from '@/libs/i18n';
 import logger from '@/libs/logger';
+import { syncTranslations } from '@/libs/translations';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,6 +43,15 @@ export default function RootLayout() {
       i18n.changeLanguage(locale);
     }
   }, [locale]);
+
+  // Remote texts: cached ones are already applied; refresh in the background at startup and on resume.
+  useEffect(() => {
+    void syncTranslations();
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active') void syncTranslations();
+    });
+    return () => sub.remove();
+  }, []);
 
   // Restore session from stored tokens on app startup
   useEffect(() => {
