@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-14T12:59:15.281Z",
+  "generatedAt": "2026-10-14T14:25:21.273Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",
@@ -70,11 +70,12 @@
       "exports": [
         "NAMESPACE",
         "FALLBACK_LOCALE",
+        "BUNDLED_DICTIONARIES",
         "BUNDLED_LOCALES",
         "BUNDLED_LOCALE_META",
         "normalizeLocale",
         "applyLanguageTexts",
-        "hasLanguageTexts",
+        "isBundledLocale",
         "default"
       ]
     },
@@ -165,9 +166,14 @@
         "syncTranslations",
         "ensureLanguage",
         "selectLanguage",
+        "isLanguageOffered",
+        "deferLanguage",
+        "getPendingLanguage",
+        "clearPendingLanguage",
         "getAvailableLocales",
         "useLocales",
         "localeOption",
+        "localeName",
         "resetTranslationSyncForTests"
       ]
     },

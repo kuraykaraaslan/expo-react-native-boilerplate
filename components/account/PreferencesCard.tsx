@@ -7,6 +7,7 @@ import { changeLanguage, pushPreferences } from '@/libs/preferences';
 import { useTheme } from '@/libs/theme/ThemeContext';
 import { useLocales } from '@/libs/translations';
 import { useAppStore } from '@/stores/appStore';
+import { useTranslationStore } from '@/stores/translationStore';
 
 /** next-boilerplate "Tercihler" → appearance + language; applied immediately and persisted (MMKV). */
 export function PreferencesCard() {
@@ -14,6 +15,7 @@ export function PreferencesCard() {
   const { colorScheme, setColorScheme } = useTheme();
   const locale = useAppStore((s) => s.locale);
   const locales = useLocales();
+  const switching = useTranslationStore((s) => s.switchingTo) !== null;
 
   async function onLanguage(code: string) {
     if (await changeLanguage(code)) {
@@ -46,6 +48,8 @@ export function PreferencesCard() {
           label={t('PREFERENCES.LANGUAGE')}
           value={locale}
           onChange={(code) => void onLanguage(code)}
+          disabled={switching}
+          hint={switching ? t('PREFERENCES.LANGUAGE_DOWNLOADING') : undefined}
           options={locales.map((l) => ({ value: l.code, label: `${l.flag}  ${l.name}` }))}
         />
       </View>

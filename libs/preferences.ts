@@ -1,5 +1,14 @@
+import { toast } from "sonner-native";
+import i18n from "@/libs/i18n";
 import logger from "@/libs/logger";
-import { selectLanguage } from "@/libs/translations";
+import {
+  clearPendingLanguage,
+  deferLanguage,
+  getPendingLanguage,
+  isLanguageOffered,
+  localeName,
+  selectLanguage,
+} from "@/libs/translations";
 import type { Theme } from "@/modules/user/preferences.dto";
 import { ProfileClientService } from "@/modules/user/profile.service.client";
 import { useAppStore } from "@/stores/appStore";
@@ -13,7 +22,11 @@ import { useAppStore } from "@/stores/appStore";
 const SCHEME_FROM_THEME = { LIGHT: "light", DARK: "dark", SYSTEM: "system" } as const;
 const THEME_FROM_SCHEME: Record<"light" | "dark" | "system", Theme> = { light: "LIGHT", dark: "DARK", system: "SYSTEM" };
 
-/** Server → device. A language whose texts cannot be shown (not bundled, not downloadable) is ignored. */
+/**
+ * Server → device. A language the app and the server do not offer is ignored; one
+ * that could not be downloaded yet is deferred (retried on every sync) and the user
+ * is told why the app is not in it yet.
+ */
 export async function pullPreferences(): Promise<void> {
   try {
     const prefs = await ProfileClientService.getPreferences();
@@ -21,7 +34,12 @@ export async function pullPreferences(): Promise<void> {
     const scheme = SCHEME_FROM_THEME[prefs.theme];
     if (scheme && scheme !== app.colorScheme) app.setColorScheme(scheme);
     const language = prefs.language.toLowerCase().split("-")[0];
-    if (language && language !== app.locale) await selectLanguage(language);
+    if (language && language !== app.locale && isLanguageOffered(language) && !(await selectLanguage(language))) {
+      if (getPendingLanguage() !== language) {
+        toast.info(i18n.t("PREFERENCES.LANGUAGE_PENDING", { language: localeName(language) }));
+      }
+      deferLanguage(language);
+    }
   } catch (err: unknown) {
     logger.warn("Preference pull failed", err instanceof Error ? err.message : "unknown");
   }
@@ -44,6 +62,7 @@ export async function pushPreferences(patch: { language?: string; colorScheme?: 
  * device, then record it on the profile. False when it cannot be shown yet.
  */
 export async function changeLanguage(code: string): Promise<boolean> {
+  clearPendingLanguage();
   if (!(await selectLanguage(code))) return false;
   void pushPreferences({ language: code });
   return true;

@@ -68,7 +68,7 @@ npm run registry:snapshot
 | New persistent client state | `stores/<name>Store.ts` (use `zustandStorage`) |
 | New Zod schema / shared contract | `modules/<module>/<module>.dto.ts` |
 | New primitive (axios interceptor, env key, etc.) | `libs/<name>.ts` |
-| New translation key | `locales/<lang>/<namespace>.json` |
+| New translation key | `modules/<module>/dictionary/<lang>.json` (all six languages; one i18next namespace — a top-level section belongs to exactly one module) |
 | Expo config (icons, splash, plugins) | `app.config.ts` |
 | Tailwind theme | `tailwind.config.js` |
 | Tests | `__tests__/<name>.test.ts(x)` |

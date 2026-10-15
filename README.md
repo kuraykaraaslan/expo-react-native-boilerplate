@@ -142,11 +142,11 @@ components/
   common/           Screen, ScreenHeader, LinkTile, StatTile, ConfirmDialog, ...
   shell/            AppHeader, DrawerContent, UserMenu, ThemeToggle, LangSwitcher
   auth/ account/ tenant/
-modules/<domain>/  <domain>.service.client.ts + <domain>.dto.ts (auth, tenant, user)
+modules/<domain>/   <domain>.service.client.ts + <domain>.dto.ts + dictionary/<lang>.json
+                    (common, auth, tenant, user, compliance, localization)
 stores/             Zustand stores: auth, tenant, notification, sso, app
 libs/               axios, env, i18n, logger, mmkv, secureStorage, theme, ...
 utils/              cn() and small pure helpers
-locales/            en, tr, de, fr, es, it
 __tests__/          Jest tests with an MSW mock server
 docs/concepts/             phase-by-phase plan and records
 public/             AI catalog (registry JSON, per-component markdown, llms.txt)

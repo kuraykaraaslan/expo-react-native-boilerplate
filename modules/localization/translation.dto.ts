@@ -7,12 +7,14 @@ import { z } from "zod";
 // Contract (next-boilerplate `localization` module). Both are GUEST routes under
 // the tenant prefix, so the login screen is translated before sign-in:
 //   GET  /localization/languages
-//     → { languages: [{ code, name, flag?, version }] }
+//     → { languages: [{ code, name, flag?, versions: { <module>: "<version>" } }] }
 //   POST /localization/languages/{code}   body { platform, module }
 //     → { code, version, platform, module, messages: { KEY: "text" | { … } } }
-// `version` changes whenever any text of that language changes (e.g. the max
-// updatedAt of its rows); the app downloads a language only when it differs.
-// `messages` has the same nested shape as locales/en.json.
+// Texts are split per server module, like modules/<module>/dictionary/ here.
+// A module's `version` changes whenever any of its texts changes in that
+// language (e.g. the max updatedAt of its rows); the app downloads only the
+// modules whose version differs. `messages` has the same nested shape as
+// modules/<module>/dictionary/en.json.
 // ============================================================================
 
 export type TranslationTree = { [key: string]: string | TranslationTree };
@@ -29,7 +31,8 @@ export const RemoteLanguageSchema = z.object({
   /** Endonym — the language named in itself ("Български"). */
   name: z.string().min(1),
   flag: z.string().nullish(),
-  version: z.string().min(1),
+  /** module → version of that module's texts in this language. */
+  versions: z.record(z.string().min(1)),
 });
 export type RemoteLanguage = z.infer<typeof RemoteLanguageSchema>;
 

@@ -44,7 +44,7 @@ A **production-grade Expo + React Native boilerplate** for cross-platform mobile
 - **Tokens**: `expo-secure-store` only — tokens NEVER live in Zustand
 - **Data fetch**: `axiosInstance` from `libs/axios.ts` (auth header injected by interceptor from SecureStore)
 - **Validation**: Zod (DTOs in `modules/<module>/`)
-- **i18n**: i18next via `libs/i18n.ts`
+- **i18n**: i18next via `libs/i18n.ts` — texts per module in `modules/<module>/dictionary/<lang>.json` (bundled fallback), overridden by the server's `localization` dictionaries cached in MMKV (`libs/translations.ts`)
 - **UI kit**: [kui-native](https://github.com/kuraykaraaslan/kui-native) — git dependency pinned to a tag, re-exported from `@/components/ui`; semantic tokens (`bg-primary`, `text-text-primary`, `border-border`), same palette as next-boilerplate; brand overrides (if any) in `libs/theme/brand.ts`
 - **Icons**: FontAwesome 7 via `@fortawesome/react-native-fontawesome`
 - **Testing**: Jest + `jest-expo`
@@ -98,13 +98,12 @@ app/  (screens)  ──→  modules/ + stores/  ──→  libs/axios + libs/sec
 │   ├── auth/                 ← AuthLayout, SSOButtons
 │   └── ui/index.ts           ← kui-native re-exports (Button, Input, Card, Spinner, …)
 │
-├── modules/                  ← one folder per server module (mirrors next-boilerplate modules/): <module>/<name>.service.client.ts + <name>.dto.ts (auth, tenant, user, compliance, localization); common.dto.ts at the root
+├── modules/                  ← one folder per server module (mirrors next-boilerplate modules/): <module>/<name>.service.client.ts + <name>.dto.ts (auth, tenant, user, compliance, localization) + dictionary/<lang>.json (bundled UI texts; common/ holds shared ones); common.dto.ts at the root
 ├── stores/                   ← Zustand stores (MMKV-persisted)
 ├── libs/                     ← primitives (axios, env, i18n, logger, mmkv, secureStorage, zustandStorage)
 ├── utils/                    ← cn() and other helpers
 ├── config/                   ← runtime config
 ├── constants/                ← compile-time constants
-├── locales/                  ← i18n message catalogs
 ├── static/                   ← logo, screenshots, design assets
 ├── assets/                   ← Expo asset bundle (fonts, icons, splash)
 ├── __mocks__/                ← Jest mocks
@@ -186,7 +185,7 @@ import { getToken } from "@/libs/secureStorage";
 | add a new persistent client state | `stores/<name>Store.ts` (use `zustandStorage`) |
 | add a new DTO / schema | `modules/<module>/<module>.dto.ts` (Zod) |
 | add a new primitive (axios interceptor, env key, etc.) | `libs/<name>.ts` |
-| add a new translation key | `locales/<lang>/<namespace>.json` |
+| add a new translation key | `modules/<module>/dictionary/<lang>.json` (all six languages; one i18next namespace — a top-level section belongs to exactly one module) |
 | configure Expo (icons, splash, plugins) | [app.config.ts](app.config.ts) |
 | change Tailwind theme | [tailwind.config.js](tailwind.config.js) |
 | change runtime config | [config/](config/) |

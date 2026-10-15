@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-14T12:59:15.281Z",
+  "generatedAt": "2026-10-14T14:25:21.273Z",
   "dtos": [
     {
       "filePath": "modules/auth/auth.dto.ts",
