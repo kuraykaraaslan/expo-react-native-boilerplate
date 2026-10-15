@@ -1,9 +1,28 @@
-import { normalizeApiError } from "@/libs/apiError";
+import { isPlanLimitError, normalizeApiError } from "@/libs/apiError";
 
 /** An axios-like rejection carrying a server response. */
 function responseError(status: number, data: unknown, headers: Record<string, string> = {}) {
   return { isAxiosError: true, message: `Request failed with status code ${status}`, response: { status, data, headers } };
 }
+
+describe("plan limits (feature_gate / seat limit)", () => {
+  it.each([
+    ["FEATURE_NOT_AVAILABLE", "isn't included in your organization's plan"],
+    ["QUOTA_EXCEEDED", "reached its limit for this period"],
+    ["SEAT_LIMIT_REACHED", "no free seats"],
+  ])("%s becomes an upgrade message, not the raw server sentence", (code, fragment) => {
+    const e = normalizeApiError(responseError(403, { message: "You have reached the limit for this feature on your current plan", code }));
+    expect(e).toMatchObject({ planLimit: true, code, statusCode: 403 });
+    expect(e.message).toContain(fragment);
+    expect(isPlanLimitError(responseError(403, { message: "x", code }))).toBe(true);
+  });
+
+  it("any other 403 is an ordinary error", () => {
+    const e = normalizeApiError(responseError(403, { message: "Forbidden", code: "FORBIDDEN" }));
+    expect(e.planLimit).toBeUndefined();
+    expect(isPlanLimitError(responseError(403, { message: "Forbidden", code: "FORBIDDEN" }))).toBe(false);
+  });
+});
 
 describe("normalizeApiError — next-boilerplate's four error bodies", () => {
   it("1. AppError { message, code }: keeps code, translates known constants", () => {

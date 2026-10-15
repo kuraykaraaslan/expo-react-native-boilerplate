@@ -145,6 +145,9 @@
         "REFRESH_TOKEN_REUSED": "Per la tua sicurezza, tutte le sessioni sono state disconnesse. Accedi di nuovo.",
         "OTP_REQUIRED": "Inserisci il codice di verifica per continuare.",
         "INVALID_OTP": "Il codice di verifica non è corretto.",
-        "OTP_EXPIRED": "Il codice di verifica è scaduto. Richiedine uno nuovo."
+        "OTP_EXPIRED": "Il codice di verifica è scaduto. Richiedine uno nuovo.",
+        "PLAN_FEATURE": "Questo non è incluso nel piano della tua organizzazione. Chiedi a un proprietario di aggiornarlo.",
+        "PLAN_QUOTA": "La tua organizzazione ha raggiunto il limite per questo periodo. Chiedi a un proprietario di aggiornare il piano.",
+        "PLAN_SEATS": "La tua organizzazione non ha più posti liberi. Chiedi a un proprietario di aggiungere posti o aggiornare il piano."
     }
 }

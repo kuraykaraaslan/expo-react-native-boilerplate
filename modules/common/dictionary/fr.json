@@ -145,6 +145,9 @@
         "REFRESH_TOKEN_REUSED": "Par mesure de sécurité, toutes les sessions ont été déconnectées. Veuillez vous reconnecter.",
         "OTP_REQUIRED": "Saisissez votre code de vérification pour continuer.",
         "INVALID_OTP": "Le code de vérification est incorrect.",
-        "OTP_EXPIRED": "Le code de vérification a expiré. Demandez-en un nouveau."
+        "OTP_EXPIRED": "Le code de vérification a expiré. Demandez-en un nouveau.",
+        "PLAN_FEATURE": "Cela n'est pas inclus dans le forfait de votre organisation. Demandez à un propriétaire de le faire évoluer.",
+        "PLAN_QUOTA": "Votre organisation a atteint sa limite pour cette période. Demandez à un propriétaire de faire évoluer le forfait.",
+        "PLAN_SEATS": "Votre organisation n'a plus de place libre. Demandez à un propriétaire d'ajouter des places ou de faire évoluer le forfait."
     }
 }

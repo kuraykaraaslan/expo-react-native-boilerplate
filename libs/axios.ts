@@ -85,6 +85,9 @@ axiosInstance.interceptors.request.use(async (config: InternalAxiosRequestConfig
     config.url = tenantPath(config.tenantId, url);
   }
 
+  // The server localizes its own messages (errors, e-mails) from Accept-Language.
+  if (!config.headers.has("Accept-Language")) config.headers.set("Accept-Language", i18n.language || "en");
+
   if (!config.skipAuth && config.tenantId) {
     const accessToken = await getToken("accessToken", config.tenantId);
     if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;

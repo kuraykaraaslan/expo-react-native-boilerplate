@@ -145,6 +145,9 @@
         "REFRESH_TOKEN_REUSED": "Por tu seguridad, se cerraron todas las sesiones. Inicia sesión de nuevo.",
         "OTP_REQUIRED": "Introduce tu código de verificación para continuar.",
         "INVALID_OTP": "El código de verificación es incorrecto.",
-        "OTP_EXPIRED": "El código de verificación ha caducado. Solicita uno nuevo."
+        "OTP_EXPIRED": "El código de verificación ha caducado. Solicita uno nuevo.",
+        "PLAN_FEATURE": "Esto no está incluido en el plan de tu organización. Pide a un propietario que lo mejore.",
+        "PLAN_QUOTA": "Tu organización alcanzó su límite de este periodo. Pide a un propietario que mejore el plan.",
+        "PLAN_SEATS": "Tu organización no tiene plazas libres. Pide a un propietario que añada plazas o mejore el plan."
     }
 }

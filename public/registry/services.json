@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-14T14:25:21.273Z",
+  "generatedAt": "2026-10-15T10:24:06.615Z",
   "services": [
     {
       "filePath": "modules/auth/auth.service.client.ts",
@@ -57,6 +57,18 @@
         "/consent/config",
         "/consent",
         "/audit-logs"
+      ]
+    },
+    {
+      "filePath": "modules/feature_flags/feature_flags.service.client.ts",
+      "module": "feature_flags",
+      "name": "feature_flags.service.client",
+      "className": "FeatureFlagsClientService",
+      "methods": [
+        "evaluateAll"
+      ],
+      "endpoints": [
+        "/feature-flags/evaluate"
       ]
     },
     {

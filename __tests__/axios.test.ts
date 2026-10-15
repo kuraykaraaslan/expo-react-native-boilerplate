@@ -55,6 +55,19 @@ describe("request addressing", () => {
     expect(seen).toEqual({ path: `/api/tenant/${TENANT}/auth/me`, auth: "Bearer A1", cookie: null, csrf: null });
   });
 
+  it("sends the app language as Accept-Language, but never overrides one a caller set", async () => {
+    const seen: (string | null)[] = [];
+    server.use(
+      http.get(`${API}/lang`, ({ request }) => {
+        seen.push(request.headers.get("accept-language"));
+        return HttpResponse.json({});
+      }),
+    );
+    await axiosInstance.get("/lang");
+    await axiosInstance.get("/lang", { headers: { "Accept-Language": "tr" } });
+    expect(seen).toEqual(["en", "tr"]); // the test i18n language is English
+  });
+
   it("falls back to the default tenant when none is active (never /tenant/undefined)", async () => {
     useTenantStore.setState({ activeTenantId: null });
     let path = "";

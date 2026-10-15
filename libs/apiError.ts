@@ -22,6 +22,15 @@ export type NormalizedApiError = {
   issues?: ZodIssueLike[];
   /** Seconds from a 429's Retry-After header. */
   retryAfter?: number;
+  /** The organization's plan blocks this (feature not included, quota or seats used up): show an upgrade message, not a failure. */
+  planLimit?: boolean;
+};
+
+// next-boilerplate feature_gate / seat-limit codes → the API_ERRORS key with the translated copy.
+const PLAN_LIMIT_CODES: Record<string, string> = {
+  FEATURE_NOT_AVAILABLE: "PLAN_FEATURE",
+  QUOTA_EXCEEDED: "PLAN_QUOTA",
+  SEAT_LIMIT_REACHED: "PLAN_SEATS",
 };
 
 type AxiosLike = {
@@ -63,6 +72,11 @@ function parseRetryAfter(headers?: Record<string, unknown>): number | undefined 
   return Number.isFinite(secs) && secs > 0 ? secs : undefined;
 }
 
+/** True when the failure is the organization's plan limit (see `NormalizedApiError.planLimit`). */
+export function isPlanLimitError(err: unknown): boolean {
+  return normalizeApiError(err).planLimit === true;
+}
+
 const HANDLED = Symbol.for("api-error.handled");
 
 /** The transport already told the user (session ended, OTP gate) — screens should not toast again. */
@@ -99,6 +113,9 @@ export function normalizeApiError(err: unknown): NormalizedApiError {
     const raw = typeof data.message === "string" ? data.message : typeof data.error === "string" ? data.error : undefined;
     if (status === 429) {
       return { message: i18n.t("ERRORS.RATE_LIMITED", { seconds: retryAfter ?? 60 }), rawMessage: raw, code, statusCode: status, retryAfter };
+    }
+    if (code && PLAN_LIMIT_CODES[code]) {
+      return { message: i18n.t(`API_ERRORS.${PLAN_LIMIT_CODES[code]}`), rawMessage: raw, code, statusCode: status, planLimit: true };
     }
     if (raw) {
       const known = (KNOWN_MESSAGES as readonly string[]).includes(raw);

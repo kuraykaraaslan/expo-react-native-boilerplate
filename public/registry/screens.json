@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-14T14:25:21.273Z",
+  "generatedAt": "2026-10-15T10:24:06.615Z",
   "screens": [
     {
       "filePath": "app/_layout.tsx",
@@ -16,9 +16,7 @@
       "kind": "layout",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/2fa.tsx",
@@ -26,10 +24,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/change-password.tsx",
@@ -37,10 +32,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/forgot-password.tsx",
@@ -48,10 +40,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/login.tsx",
@@ -59,10 +48,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/register.tsx",
@@ -70,10 +56,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/reset-password.tsx",
@@ -81,10 +64,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/_layout.tsx",
@@ -92,9 +72,7 @@
       "kind": "layout",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/index.tsx",
@@ -102,10 +80,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/notifications.tsx",
@@ -113,10 +88,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/_layout.tsx",
@@ -124,10 +96,7 @@
       "kind": "layout",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/change-language.tsx",
@@ -135,11 +104,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/index.tsx",
@@ -147,11 +112,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/legal.tsx",
@@ -159,11 +120,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/profile.tsx",
@@ -171,11 +128,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/security.tsx",
@@ -183,11 +136,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/sessions.tsx",
@@ -195,11 +144,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/social-accounts.tsx",
@@ -207,11 +152,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/tenant/audit-log.tsx",
@@ -219,11 +160,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/tenant/index.tsx",
@@ -231,11 +168,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/tenant/invitations.tsx",
@@ -243,11 +176,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/tenant/members.tsx",
@@ -255,11 +184,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/tenant/settings.tsx",
@@ -267,11 +192,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(tenant)/_layout.tsx",
@@ -279,9 +200,7 @@
       "kind": "layout",
       "group": "tenant",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(tenant)/create-tenant.tsx",
@@ -289,10 +208,7 @@
       "kind": "screen",
       "group": "tenant",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(tenant)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(tenant)/select-tenant.tsx",
@@ -300,10 +216,7 @@
       "kind": "screen",
       "group": "tenant",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(tenant)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(tenant)/tenant-login.tsx",
@@ -311,28 +224,21 @@
       "kind": "screen",
       "group": "tenant",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(tenant)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/+html.tsx",
       "route": "/+html",
       "kind": "html",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/+not-found.tsx",
       "route": "/+not-found",
       "kind": "not-found",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx"
-      ]
+      "layoutChain": []
     }
   ]
 }

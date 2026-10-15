@@ -145,6 +145,9 @@
         "REFRESH_TOKEN_REUSED": "Güvenliğiniz için tüm oturumlar kapatıldı. Lütfen tekrar giriş yapın.",
         "OTP_REQUIRED": "Devam etmek için doğrulama kodunu girin.",
         "INVALID_OTP": "Doğrulama kodu hatalı.",
-        "OTP_EXPIRED": "Doğrulama kodunun süresi doldu. Yeni kod isteyin."
+        "OTP_EXPIRED": "Doğrulama kodunun süresi doldu. Yeni kod isteyin.",
+        "PLAN_FEATURE": "Bu özellik organizasyonunuzun planına dahil değil. Bir sahibinden planı yükseltmesini isteyin.",
+        "PLAN_QUOTA": "Organizasyonunuz bu dönemki sınırına ulaştı. Bir sahibinden planı yükseltmesini isteyin.",
+        "PLAN_SEATS": "Organizasyonunuzda boş koltuk kalmadı. Bir sahibinden koltuk eklemesini veya planı yükseltmesini isteyin."
     }
 }

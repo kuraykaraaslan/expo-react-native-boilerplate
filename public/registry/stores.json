@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-14T14:25:21.273Z",
+  "generatedAt": "2026-10-15T10:24:06.615Z",
   "stores": [
     {
       "filePath": "stores/appStore.ts",
@@ -44,6 +44,17 @@
       "stateKeys": [
         "byTenant",
         "setBrand"
+      ],
+      "persisted": true
+    },
+    {
+      "filePath": "stores/flagStore.ts",
+      "name": "flagStore",
+      "hook": "useFlagStore",
+      "stateKeys": [
+        "byTenant",
+        "setFlags",
+        "clear"
       ],
       "persisted": true
     },

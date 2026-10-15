@@ -145,6 +145,9 @@
         "REFRESH_TOKEN_REUSED": "For your security, all sessions were signed out. Please sign in again.",
         "OTP_REQUIRED": "Enter your verification code to continue.",
         "INVALID_OTP": "The verification code is incorrect.",
-        "OTP_EXPIRED": "The verification code has expired. Request a new one."
+        "OTP_EXPIRED": "The verification code has expired. Request a new one.",
+        "PLAN_FEATURE": "This isn't included in your organization's plan. Ask an owner to upgrade it.",
+        "PLAN_QUOTA": "Your organization has reached its limit for this period. Ask an owner to upgrade the plan.",
+        "PLAN_SEATS": "Your organization has no free seats left. Ask an owner to add seats or upgrade the plan."
     }
 }

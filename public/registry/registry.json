@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-14T14:25:21.273Z",
+  "generatedAt": "2026-10-15T10:24:06.615Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -37,9 +37,7 @@
       "kind": "layout",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/2fa.tsx",
@@ -47,10 +45,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/change-password.tsx",
@@ -58,10 +53,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/forgot-password.tsx",
@@ -69,10 +61,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/login.tsx",
@@ -80,10 +69,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/register.tsx",
@@ -91,10 +77,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(auth)/reset-password.tsx",
@@ -102,10 +85,7 @@
       "kind": "screen",
       "group": "auth",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(auth)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/_layout.tsx",
@@ -113,9 +93,7 @@
       "kind": "layout",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/index.tsx",
@@ -123,10 +101,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/notifications.tsx",
@@ -134,10 +109,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/_layout.tsx",
@@ -145,10 +117,7 @@
       "kind": "layout",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/change-language.tsx",
@@ -156,11 +125,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/index.tsx",
@@ -168,11 +133,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/legal.tsx",
@@ -180,11 +141,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/profile.tsx",
@@ -192,11 +149,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/security.tsx",
@@ -204,11 +157,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/sessions.tsx",
@@ -216,11 +165,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/social-accounts.tsx",
@@ -228,11 +173,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/tenant/audit-log.tsx",
@@ -240,11 +181,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/tenant/index.tsx",
@@ -252,11 +189,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/tenant/invitations.tsx",
@@ -264,11 +197,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/tenant/members.tsx",
@@ -276,11 +205,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(drawer)/settings/tenant/settings.tsx",
@@ -288,11 +213,7 @@
       "kind": "screen",
       "group": "drawer",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(drawer)/_layout.tsx",
-        "app/(drawer)/settings/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(tenant)/_layout.tsx",
@@ -300,9 +221,7 @@
       "kind": "layout",
       "group": "tenant",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(tenant)/create-tenant.tsx",
@@ -310,10 +229,7 @@
       "kind": "screen",
       "group": "tenant",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(tenant)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(tenant)/select-tenant.tsx",
@@ -321,10 +237,7 @@
       "kind": "screen",
       "group": "tenant",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(tenant)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/(tenant)/tenant-login.tsx",
@@ -332,28 +245,21 @@
       "kind": "screen",
       "group": "tenant",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx",
-        "app/(tenant)/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/+html.tsx",
       "route": "/+html",
       "kind": "html",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx"
-      ]
+      "layoutChain": []
     },
     {
       "filePath": "app/+not-found.tsx",
       "route": "/+not-found",
       "kind": "not-found",
       "dynamic": false,
-      "layoutChain": [
-        "app/_layout.tsx"
-      ]
+      "layoutChain": []
     }
   ],
   "components": [
@@ -1321,6 +1227,18 @@
       ]
     },
     {
+      "filePath": "modules/feature_flags/feature_flags.service.client.ts",
+      "module": "feature_flags",
+      "name": "feature_flags.service.client",
+      "className": "FeatureFlagsClientService",
+      "methods": [
+        "evaluateAll"
+      ],
+      "endpoints": [
+        "/feature-flags/evaluate"
+      ]
+    },
+    {
       "filePath": "modules/user/notification.service.client.ts",
       "module": "user",
       "name": "notification.service.client",
@@ -1471,6 +1389,17 @@
       "stateKeys": [
         "byTenant",
         "setBrand"
+      ],
+      "persisted": true
+    },
+    {
+      "filePath": "stores/flagStore.ts",
+      "name": "flagStore",
+      "hook": "useFlagStore",
+      "stateKeys": [
+        "byTenant",
+        "setFlags",
+        "clear"
       ],
       "persisted": true
     },
@@ -1659,6 +1588,17 @@
       ]
     },
     {
+      "filePath": "modules/feature_flags/feature_flags.dto.ts",
+      "module": "feature_flags",
+      "name": "feature_flags.dto",
+      "schemas": [
+        "EvaluateAllFlagsResponseSchema"
+      ],
+      "types": [
+        "FlagMap"
+      ]
+    },
+    {
       "filePath": "modules/user/notification.dto.ts",
       "module": "user",
       "name": "notification.dto",
@@ -1815,6 +1755,7 @@
       "exports": [
         "ZodIssueLike",
         "NormalizedApiError",
+        "isPlanLimitError",
         "markHandled",
         "isHandled",
         "normalizeApiError"
@@ -1868,6 +1809,16 @@
       "name": "errorUtils",
       "exports": [
         "handleApiError"
+      ]
+    },
+    {
+      "filePath": "libs/featureFlags.ts",
+      "name": "featureFlags",
+      "exports": [
+        "FLAGS_RESUME_THROTTLE_MS",
+        "refreshFlags",
+        "useFeatureFlag",
+        "useFlagsSync"
       ]
     },
     {

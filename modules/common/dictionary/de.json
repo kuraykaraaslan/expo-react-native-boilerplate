@@ -145,6 +145,9 @@
         "REFRESH_TOKEN_REUSED": "Zu Ihrer Sicherheit wurden alle Sitzungen abgemeldet. Bitte melden Sie sich erneut an.",
         "OTP_REQUIRED": "Geben Sie Ihren Bestätigungscode ein, um fortzufahren.",
         "INVALID_OTP": "Der Bestätigungscode ist falsch.",
-        "OTP_EXPIRED": "Der Bestätigungscode ist abgelaufen. Fordern Sie einen neuen an."
+        "OTP_EXPIRED": "Der Bestätigungscode ist abgelaufen. Fordern Sie einen neuen an.",
+        "PLAN_FEATURE": "Das ist im Tarif Ihrer Organisation nicht enthalten. Bitten Sie einen Inhaber, den Tarif zu erhöhen.",
+        "PLAN_QUOTA": "Ihre Organisation hat das Limit für diesen Zeitraum erreicht. Bitten Sie einen Inhaber, den Tarif zu erhöhen.",
+        "PLAN_SEATS": "Ihrer Organisation sind keine freien Plätze mehr verfügbar. Bitten Sie einen Inhaber, Plätze hinzuzufügen oder den Tarif zu erhöhen."
     }
 }
