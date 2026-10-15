@@ -31,6 +31,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     "expo-router",
     "expo-secure-store",
+    ["expo-image-picker", { photosPermission: "Allow $(PRODUCT_NAME) to access your photos to set your profile picture.", cameraPermission: "Allow $(PRODUCT_NAME) to use the camera to take your profile picture." }],
     ["expo-local-authentication", { faceIDPermission: "Allow $(PRODUCT_NAME) to use Face ID to unlock the app." }],
     [
       "expo-splash-screen",

@@ -38,7 +38,16 @@
         "ROW_EMAIL": "E-Mail",
         "ROW_GLOBAL_ROLE": "Globale Rolle",
         "ROW_TENANT_ROLE": "Mandantenrolle",
-        "ROW_MEMBER_SINCE": "Mitglied seit"
+        "ROW_MEMBER_SINCE": "Mitglied seit",
+        "PHOTO_CHANGE": "Foto ändern",
+        "PHOTO_UPLOADING": "Wird hochgeladen…",
+        "PHOTO_TAKE": "Foto aufnehmen",
+        "PHOTO_CHOOSE": "Aus der Mediathek wählen",
+        "PHOTO_REMOVE": "Foto entfernen",
+        "PHOTO_UPLOADED": "Foto hochgeladen. Speichern Sie, um es zu übernehmen.",
+        "PHOTO_DENIED": "Erlauben Sie in den Einstellungen den Kamerazugriff, um ein Foto aufzunehmen.",
+        "PHOTO_NOT_IMAGE": "Wählen Sie eine Bilddatei.",
+        "PHOTO_TOO_LARGE": "Dieses Bild ist zu groß (max. 25 MB)."
     },
     "PREFERENCES": {
         "TITLE": "Präferenzen",

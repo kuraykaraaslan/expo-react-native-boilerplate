@@ -3,8 +3,9 @@ import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
-import { Avatar, Button, Card, Input, Textarea } from '@/components/ui';
+import { Avatar, Button, Card, DropdownMenu, Input, Textarea } from '@/components/ui';
 import type { UpdateProfileRequest } from '@/modules/user/profile.dto';
+import { pickAndUploadAvatar, type AvatarSource } from '@/libs/avatar';
 import { handleApiError } from '@/libs/errorUtils';
 import { ProfileClientService } from '@/modules/user/profile.service.client';
 import { useAuthStore } from '@/stores/authStore';
@@ -19,6 +20,7 @@ export function ProfileCard() {
   const [form, setForm] = useState<UpdateProfileRequest>(EMPTY);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -55,6 +57,26 @@ export function ProfileCard() {
     }
   }
 
+  async function changePhoto(source: AvatarSource) {
+    setUploading(true);
+    try {
+      const result = await pickAndUploadAvatar(source);
+      if (result.status === 'ok') {
+        setForm((f) => ({ ...f, profilePicture: result.url }));
+        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        toast.success(t('ACCOUNT.PHOTO_UPLOADED'));
+      } else if (result.status === 'denied') {
+        toast.error(t('ACCOUNT.PHOTO_DENIED'));
+      } else if (result.status === 'invalid') {
+        toast.error(t(result.reason === 'TOO_LARGE' ? 'ACCOUNT.PHOTO_TOO_LARGE' : 'ACCOUNT.PHOTO_NOT_IMAGE'));
+      }
+    } catch (err: unknown) {
+      handleApiError(err, 'ProfileCard.photo');
+    } finally {
+      setUploading(false);
+    }
+  }
+
   const displayName = form.name || getUserDisplayName(user) || '?';
 
   return (
@@ -73,6 +95,23 @@ export function ProfileCard() {
       <View className="gap-4">
         <View className="items-center py-2">
           <Avatar name={displayName} src={form.profilePicture ?? undefined} size="xl" />
+          <View className="mt-3">
+            <DropdownMenu
+              align="left"
+              trigger={
+                <Button variant="outline" size="sm" loading={uploading} disabled={uploading} testID="account-photo-change">
+                  {uploading ? t('ACCOUNT.PHOTO_UPLOADING') : t('ACCOUNT.PHOTO_CHANGE')}
+                </Button>
+              }
+              items={[
+                { label: t('ACCOUNT.PHOTO_TAKE'), onPress: () => changePhoto('camera') },
+                { label: t('ACCOUNT.PHOTO_CHOOSE'), onPress: () => changePhoto('library') },
+                ...(form.profilePicture
+                  ? [{ label: t('ACCOUNT.PHOTO_REMOVE'), danger: true, onPress: () => setForm((f) => ({ ...f, profilePicture: null })) }]
+                  : []),
+              ]}
+            />
+          </View>
         </View>
         <Input
           label={t('ACCOUNT.DISPLAY_NAME')}

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-15T10:24:06.615Z",
+  "generatedAt": "2026-10-15T10:30:00.295Z",
   "services": [
     {
       "filePath": "modules/auth/auth.service.client.ts",
@@ -119,6 +119,18 @@
         "/auth/sso",
         "/auth/sso/${encodeURIComponent(provider)}",
         "/auth/me/social-accounts"
+      ]
+    },
+    {
+      "filePath": "modules/storage/storage.service.client.ts",
+      "module": "storage",
+      "name": "storage.service.client",
+      "className": "StorageClientService",
+      "methods": [
+        "upload"
+      ],
+      "endpoints": [
+        "/storage"
       ]
     },
     {

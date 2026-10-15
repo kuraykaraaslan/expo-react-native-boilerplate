@@ -38,7 +38,16 @@
         "ROW_EMAIL": "E-mail",
         "ROW_GLOBAL_ROLE": "Ruolo globale",
         "ROW_TENANT_ROLE": "Ruolo nell'organizzazione",
-        "ROW_MEMBER_SINCE": "Membro dal"
+        "ROW_MEMBER_SINCE": "Membro dal",
+        "PHOTO_CHANGE": "Cambia foto",
+        "PHOTO_UPLOADING": "Caricamento…",
+        "PHOTO_TAKE": "Scatta una foto",
+        "PHOTO_CHOOSE": "Scegli dalla libreria",
+        "PHOTO_REMOVE": "Rimuovi foto",
+        "PHOTO_UPLOADED": "Foto caricata. Salva per applicarla.",
+        "PHOTO_DENIED": "Consenti l’accesso alla fotocamera nelle Impostazioni per scattare una foto.",
+        "PHOTO_NOT_IMAGE": "Scegli un file immagine.",
+        "PHOTO_TOO_LARGE": "Questa immagine è troppo grande (max 25 MB)."
     },
     "PREFERENCES": {
         "TITLE": "Preferenze",

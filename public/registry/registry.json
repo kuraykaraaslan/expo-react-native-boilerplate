@@ -3,7 +3,7 @@
   "name": "client",
   "version": "1.0.0",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-15T10:24:06.615Z",
+  "generatedAt": "2026-10-15T10:30:00.295Z",
   "description": "Production-grade Expo + React Native boilerplate with multi-tenant SaaS conventions mirroring next-boilerplate.",
   "layers": {
     "app": "Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).",
@@ -1289,6 +1289,18 @@
       ]
     },
     {
+      "filePath": "modules/storage/storage.service.client.ts",
+      "module": "storage",
+      "name": "storage.service.client",
+      "className": "StorageClientService",
+      "methods": [
+        "upload"
+      ],
+      "endpoints": [
+        "/storage"
+      ]
+    },
+    {
       "filePath": "modules/tenant/tenant.service.client.ts",
       "module": "tenant",
       "name": "tenant.service.client",
@@ -1668,6 +1680,18 @@
       ]
     },
     {
+      "filePath": "modules/storage/storage.dto.ts",
+      "module": "storage",
+      "name": "storage.dto",
+      "schemas": [
+        "UploadResponseSchema"
+      ],
+      "types": [
+        "UploadResponse",
+        "LocalFile"
+      ]
+    },
+    {
       "filePath": "modules/tenant/tenant.dto.ts",
       "module": "tenant",
       "name": "tenant.dto",
@@ -1768,6 +1792,16 @@
         "APP_LOCK_GRACE_MS",
         "shouldLock",
         "useAppLockStore"
+      ]
+    },
+    {
+      "filePath": "libs/avatar.ts",
+      "name": "avatar",
+      "exports": [
+        "AvatarSource",
+        "AvatarResult",
+        "AVATAR_SIZE_PX",
+        "pickAndUploadAvatar"
       ]
     },
     {
@@ -1932,6 +1966,16 @@
         "localeOption",
         "localeName",
         "resetTranslationSyncForTests"
+      ]
+    },
+    {
+      "filePath": "libs/upload.ts",
+      "name": "upload",
+      "exports": [
+        "MAX_SOURCE_IMAGE_BYTES",
+        "ImageCheck",
+        "checkImage",
+        "avatarFileName"
       ]
     },
     {

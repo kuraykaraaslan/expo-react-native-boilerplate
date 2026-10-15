@@ -56,3 +56,28 @@ Modules: `storage`, `media_gallery`, `drive`. Priority 2. Build 15.1 first; 15.2
 - **Manual `Content-Type`** breaks multipart boundaries on RN.
 - **Local file lifetime.** Picker URIs can be cache paths that disappear; copy into the app cache before queuing a retry.
 - **Quota and plan gates** (`feature_gate`, Phase 14) can reject uploads; map the error.
+
+---
+
+## ✅ CODED (15.1 upload + avatar) — 2026-10-15 · 15.2 and 15.3 not built
+
+On `main`. Typecheck 0 errors, jest 310/310 (5 new), web export OK. Screenshots: `.junk/screenshots/phase-15-files/` (4 images, from the web build with the browser's file chooser standing in for the picker).
+
+**Corrections to this plan** (read from `storage` and `account` server source)
+- **The shared axios instance defaults to `Content-Type: application/json`, and axios converts a FormData body to JSON when it sees that header.** The plan's "do not set Content-Type manually" is therefore wrong *for this instance*: the upload sets `multipart/form-data` explicitly (the platform adds the boundary), and a test pins that the request is multipart, not JSON.
+- `POST /storage` is `scope: 'ACCOUNT'` (any signed-in user, `storage.files.upload`), multipart `file` + optional `folder` + optional `provider`, and answers `{message, uploadedFileId, url, key, bucket, size, provider}`. **The size/type limits are per-tenant settings (`maxFileSizeMb`, `allowedMimeTypes`, …) that no API exposes**, so the app cannot pre-check them; it only refuses non-images and absurd sources and shows the server's own message otherwise.
+- The profile takes the avatar as a **URL string** in `profilePicture`, and the PUT requires all five profile keys (nullable) — the existing profile form already sends them all.
+
+**What shipped**
+- `modules/storage/storage.{dto,service.client}.ts`: `StorageClientService.upload` (60 s timeout; a Blob on web, `{uri,name,type}` on native).
+- `libs/upload.ts` (sanity checks), `libs/avatar.ts`: pick (camera or library, square crop) → resize to 512 px JPEG (q 0.8) → upload to `avatars/` → URL. Handles camera-permission denial, non-image and oversize sources, and cancel.
+- Profile card: **Change photo** menu (Take photo / Choose from library / Remove photo), busy state, and a toast "Photo uploaded. Save to apply it." — the photo is applied with the profile's own Save, so an upload never silently saves half-edited fields.
+- New packages `expo-image-picker`, `expo-image-manipulator` (+ the image-picker config plugin with the permission strings; needs a development build). Strings in all six languages (`user` dictionary).
+
+**Deliberate deviations**
+- **15.2 media gallery and 15.3 drive were not built** (the plan marked them optional; no screen needs them yet). Only the shared upload service exists for them to reuse.
+- No upload progress bar or cancel (a single small file after resizing); no retry queue.
+- The previous avatar file is not deleted from storage when replaced or removed.
+- `manipulateAsync` is used (still available in SDK 57); the newer contextual API can replace it later.
+
+**Not verified:** nothing ran against a live server, the real camera, the photo library or a device; the multipart body of a React Native `{uri,name,type}` part is only exercised on device. Whether the server accepts `.jpg` uploads into an `avatars` folder under every tenant's allow-list is unknown.

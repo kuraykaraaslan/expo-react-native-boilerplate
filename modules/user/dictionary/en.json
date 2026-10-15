@@ -38,7 +38,16 @@
         "ROW_EMAIL": "Email",
         "ROW_GLOBAL_ROLE": "Global role",
         "ROW_TENANT_ROLE": "Tenant role",
-        "ROW_MEMBER_SINCE": "Member since"
+        "ROW_MEMBER_SINCE": "Member since",
+        "PHOTO_CHANGE": "Change photo",
+        "PHOTO_UPLOADING": "Uploading…",
+        "PHOTO_TAKE": "Take photo",
+        "PHOTO_CHOOSE": "Choose from library",
+        "PHOTO_REMOVE": "Remove photo",
+        "PHOTO_UPLOADED": "Photo uploaded. Save to apply it.",
+        "PHOTO_DENIED": "Allow camera access in Settings to take a photo.",
+        "PHOTO_NOT_IMAGE": "Choose an image file.",
+        "PHOTO_TOO_LARGE": "That image is too large (max 25 MB)."
     },
     "PREFERENCES": {
         "TITLE": "Preferences",

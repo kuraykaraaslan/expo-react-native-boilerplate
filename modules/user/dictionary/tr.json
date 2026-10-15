@@ -38,7 +38,16 @@
         "ROW_EMAIL": "E-posta",
         "ROW_GLOBAL_ROLE": "Genel rol",
         "ROW_TENANT_ROLE": "Kiracı rolü",
-        "ROW_MEMBER_SINCE": "Üyelik tarihi"
+        "ROW_MEMBER_SINCE": "Üyelik tarihi",
+        "PHOTO_CHANGE": "Fotoğrafı değiştir",
+        "PHOTO_UPLOADING": "Yükleniyor…",
+        "PHOTO_TAKE": "Fotoğraf çek",
+        "PHOTO_CHOOSE": "Kitaplıktan seç",
+        "PHOTO_REMOVE": "Fotoğrafı kaldır",
+        "PHOTO_UPLOADED": "Fotoğraf yüklendi. Uygulamak için kaydedin.",
+        "PHOTO_DENIED": "Fotoğraf çekmek için Ayarlar’dan kamera erişimine izin verin.",
+        "PHOTO_NOT_IMAGE": "Bir görsel dosyası seçin.",
+        "PHOTO_TOO_LARGE": "Bu görsel çok büyük (en fazla 25 MB)."
     },
     "PREFERENCES": {
         "TITLE": "Tercihler",
