@@ -17,6 +17,7 @@ WHERE WE ARE: docs/phases/README.md §Order
 
 | Phase | File | Topic | Modules | Priority |
 |-----|-------|------|---------|---------|
+| 14A | [14a-remote-translations.md](14a-remote-translations.md) | Remote translations, per-module dictionaries | `localization` | 🟡 Client coded |
 | 14 | [14-locale-and-flags.md](14-locale-and-flags.md) | Server-aligned locale, feature flags and gates | `i18n`, `localization`, `feature_flags`, `feature_gate` | ⬜ Pending |
 | 15 | [15-files.md](15-files.md) | Uploads, avatar, media gallery, drive | `storage`, `media_gallery`, `drive` | ⬜ Pending |
 | 16 | [16-realtime-messaging.md](16-realtime-messaging.md) | Socket.IO transport and conversations | `websocket`, `messaging` | ⬜ Pending |

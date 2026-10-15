@@ -22,7 +22,7 @@ Modules: `i18n`, `localization`, `feature_flags`, `feature_gate`. Priority 2.
 - [ ] Send the chosen locale on every request via the interceptor (single place, `libs/axios.ts`), using the header the server actually reads.
 - [ ] Keep `user_preferences.language` in sync with the picker (already stored per Phase 4); map the client's six languages (`en tr de es fr it`) to the server's codes explicitly, no string slicing.
 - [ ] Use `localization` reference data only where it replaces hand-written lists (country / currency / timezone pickers) — fetch lazily, cache in MMKV.
-- [ ] Server error messages are shown as returned; client strings stay in `locales/*.json`. Extend the parity guard if new keys are added.
+- [ ] Server error messages are shown as returned; client strings live in `modules/<module>/dictionary/*.json` and can be overridden from the server (Phase 14A). Extend the parity guard if new keys are added.
 
 ## 14.2 Feature flags
 
