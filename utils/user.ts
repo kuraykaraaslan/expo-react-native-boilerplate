@@ -1,4 +1,4 @@
-import type { SafeUser } from "@/services/auth/auth.dto";
+import type { SafeUser } from "@/modules/auth/auth.dto";
 
 // SafeUser has no `name` / `image`: the display name and picture live under
 // `userProfile` (next-boilerplate user_profile).

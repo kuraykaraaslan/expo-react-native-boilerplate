@@ -17,7 +17,7 @@ WHERE WE ARE: docs/phases/README.md §Order
 
 ## 6.1 Provider list
 
-- [ ] `services/auth/sso.service.client.ts` (created in Phase 3) → `getProviders()` `GET /auth/sso` response `{providers: [...]}`, parsed with `SSOProvidersResponseSchema`.
+- [ ] `modules/auth/sso.service.client.ts` (created in Phase 3) → `getProviders()` `GET /auth/sso` response `{providers: [...]}`, parsed with `SSOProvidersResponseSchema`.
 - [ ] `components/auth/SSOButtons.tsx` → the **hard-coded provider list inside it is removed**; the providers the tenant allows come from the server (`SSOService.isProviderEnabled` gates per tenant).
 - [ ] Provider icons are mapped from `@fortawesome/free-brands-svg-icons` (AGENTS.md §6 Rule 10: no icon library other than FontAwesome). A neutral fallback for providers with no counterpart.
 - [ ] If the list is empty, the SSO section is **not rendered at all** (including the divider line).
@@ -55,7 +55,7 @@ WHERE WE ARE: docs/phases/README.md §Order
 
 ## Reuse
 
-- `services/auth/sso.service.client.ts` + `services/auth/sso.dto.ts` — created in Phase 3, only consumed here.
+- `modules/auth/sso.service.client.ts` + `modules/auth/sso.dto.ts` — created in Phase 3, only consumed here.
 - `libs/secureStorage.ts` per-tenant keys (Phase 2).
 - `stores/tenantStore.ts:activeTenantId` (Phase 5) — the tenant half of `state` comes from here.
 - `libs/apiError.ts` (Phase 2), `libs/logger.ts`, `sonner-native`.

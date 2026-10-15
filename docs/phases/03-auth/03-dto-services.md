@@ -16,11 +16,11 @@ WHERE WE ARE: docs/phases/README.md §Order
 
 **Goal:** Zod schemas must be an exact mirror of the server's `Safe*` schemas; services must call the real paths. After this phase no `.parse()` breaks on a server response.
 
-## 3.1 `services/auth/auth.dto.ts`
+## 3.1 `modules/auth/auth.dto.ts`
 
 - [ ] `UserSchema` / `SafeUserSchema` → the server's `SafeUser`:
   - **Incoming (added):** `userStatus`, `emailVerifiedAt`, `userProfile?`
-  - **Outgoing (dropped):** `name`, `image`, `language`, `theme` — these are not in `SafeUser`. `name` + `profilePicture` live under `userProfile` (`services/user/profile.dto.ts` already models it), `language` / `theme` live under `/auth/me/preferences`.
+  - **Outgoing (dropped):** `name`, `image`, `language`, `theme` — these are not in `SafeUser`. `name` + `profilePicture` live under `userProfile` (`modules/user/profile.dto.ts` already models it), `language` / `theme` live under `/auth/me/preferences`.
   - Remaining: `userId`, `email`, `phone` (nullable), `userRole`, `createdAt`, `updatedAt`.
 - [ ] **New** `DeviceInfoSchema` — `{type?: 'phone'|'tablet'|'watch'|'tv'|'desktop'|'other', brand?, model?, name?, os?, osVersion?, appVersion?}`; identical to `DeviceInfoDTO`, including length limits (`brand`/`model` ≤80, `name` ≤120, `os`/`osVersion`/`appVersion` ≤40).
 - [ ] **New** `DeviceLoginRequestSchema` = `LoginRequestSchema.extend({ captchaToken: optional, rememberMe: optional, device: DeviceInfoSchema.optional() })`.
@@ -37,14 +37,14 @@ WHERE WE ARE: docs/phases/README.md §Order
 - [ ] `ChangeEmailRequestSchema` is **removed** — `/auth/change-email` does not exist on the server.
 - [ ] `RegisterRequestSchema` → `{email, password: min(8), phone?: optional, consentVersion?: optional}`. Today's required `name` is **removed** (not in the server's `RegisterDTO`).
 
-## 3.2 `services/tenant/tenant.dto.ts`
+## 3.2 `modules/tenant/tenant.dto.ts`
 
 - [ ] `TenantSchema` → `SafeTenant`: `{tenantId, name, description (nullable), region?, slug?, metadata?, tenantStatus, createdAt, updatedAt, domains?}`. Today's `logo`, `favicon`, `theme`, `language`, `timezone` fields are **not** in `SafeTenant` — they live under `tenant_branding` / `tenant_setting`, out of scope.
 - [ ] `MyTenantsResponseSchema` → `{tenants, delegatedTenants, pendingInvitations}` (today `{tenants, invitations}` — **both fields are misnamed**).
 - [ ] `CreateTenantRequestSchema` → `{name: min(1).max(100), description?: nullable, region?}`; aligned with the server's `CreateTenantDTO` (today's `min(2)` is relaxed).
 - [ ] `MemberRoleEnum` → `['OWNER','ADMIN','USER']` keeps the same order as on the server.
 
-## 3.3 `services/auth/sso.dto.ts` (new)
+## 3.3 `modules/auth/sso.dto.ts` (new)
 
 - [ ] `SSOProviderEnum` — `google, apple, facebook, github, linkedin, microsoft, twitter, slack, tiktok, wechat, autodesk, yandex, vk, qq, weibo, alipay`.
 - [ ] `SSOProvidersResponseSchema` = `{providers: [...]}`.
@@ -54,7 +54,7 @@ WHERE WE ARE: docs/phases/README.md §Order
 
 All `/api/system/...` paths are **deleted**. Paths are written **relative** to the Phase 2 interceptor prefix.
 
-- [ ] `services/auth/auth.service.client.ts` → `AuthClientService`:
+- [ ] `modules/auth/auth.service.client.ts` → `AuthClientService`:
 
   | Method | Path | Note |
   |---|---|---|
@@ -73,9 +73,9 @@ All `/api/system/...` paths are **deleted**. Paths are written **relative** to t
   | `revokeSession(id)` | `DELETE /auth/me/sessions/{id}` | |
   | `changeEmail` | — | **removed** |
 
-- [ ] `services/user/profile.service.client.ts` → `GET|PUT /auth/me/profile`; **new** `getPreferences()` / `updatePreferences()` → `GET|PUT /auth/me/preferences` (`language`, `theme` come from here).
-- [ ] `services/tenant/tenant.service.client.ts` → `getMyTenants()` `GET /auth/me/tenants`, `createTenant()` `POST /tenants/create`, **new** `getTenantProfile()` / `updateTenantProfile()` `GET|PUT /tenant/profile`. Members / invitations methods are **left untouched** (out of scope) — only the `/api/tenant/{id}` prefixes are removed so that the interceptor prefix works correctly.
-- [ ] `services/auth/sso.service.client.ts` (new) → `getProviders()` `GET /auth/sso`, `getAuthUrl(provider)` `GET /auth/sso/{provider}`.
+- [ ] `modules/user/profile.service.client.ts` → `GET|PUT /auth/me/profile`; **new** `getPreferences()` / `updatePreferences()` → `GET|PUT /auth/me/preferences` (`language`, `theme` come from here).
+- [ ] `modules/tenant/tenant.service.client.ts` → `getMyTenants()` `GET /auth/me/tenants`, `createTenant()` `POST /tenants/create`, **new** `getTenantProfile()` / `updateTenantProfile()` `GET|PUT /tenant/profile`. Members / invitations methods are **left untouched** (out of scope) — only the `/api/tenant/{id}` prefixes are removed so that the interceptor prefix works correctly.
+- [ ] `modules/auth/sso.service.client.ts` (new) → `getProviders()` `GET /auth/sso`, `getAuthUrl(provider)` `GET /auth/sso/{provider}`.
 - [ ] Every service response is `.parse()`d with the relevant DTO (AGENTS.md §6 Rule 7), and errors are wrapped with `normalizeApiError`.
 
 ## 3.5 Test infrastructure
@@ -86,14 +86,14 @@ All `/api/system/...` paths are **deleted**. Paths are written **relative** to t
 
 ## Files touched / created
 
-- New: `services/auth/sso.dto.ts`, `services/auth/sso.service.client.ts`
-- Changed: `services/auth/auth.dto.ts`, `services/tenant/tenant.dto.ts`, `services/auth/auth.service.client.ts`, `services/user/profile.service.client.ts`, `services/tenant/tenant.service.client.ts`, `stores/authStore.ts` (new `SafeUser` shape), `__tests__/_handlers.ts`
+- New: `modules/auth/sso.dto.ts`, `modules/auth/sso.service.client.ts`
+- Changed: `modules/auth/auth.dto.ts`, `modules/tenant/tenant.dto.ts`, `modules/auth/auth.service.client.ts`, `modules/user/profile.service.client.ts`, `modules/tenant/tenant.service.client.ts`, `stores/authStore.ts` (new `SafeUser` shape), `__tests__/_handlers.ts`
 - Affected (to be updated in Phase 4/5): `app/(auth)/**`, `app/(drawer)/settings/**`
 
 ## Reuse
 
-- `services/user/profile.dto.ts` — the `userProfile` shape is already modeled (`name`, `biography`, `profilePicture`, `headerImage`, `socialLinks`); `SafeUser.userProfile` is wired to it, not rewritten.
-- `services/common.dto.ts` — `PaginationSchema`, `paginatedResponseSchema`, `ApiErrorSchema` are kept.
+- `modules/user/profile.dto.ts` — the `userProfile` shape is already modeled (`name`, `biography`, `profilePicture`, `headerImage`, `socialLinks`); `SafeUser.userProfile` is wired to it, not rewritten.
+- `modules/common.dto.ts` — `PaginationSchema`, `paginatedResponseSchema`, `ApiErrorSchema` are kept.
 - `libs/apiError.ts` (Phase 2) — all service errors pass through it.
 - `libs/axios.ts` interceptor prefix — services **do not build** the tenant path themselves.
 - The existing `__tests__/_server.ts` MSW setup.

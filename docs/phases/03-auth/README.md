@@ -13,7 +13,7 @@ WHERE WE ARE: docs/phases/README.md §Order
 
 # auth — device bearer identity flow (Phase Plan index)
 
-> **This is not a new module.** It aligns the existing `services/auth/auth.dto.ts`, `services/auth/auth.service.client.ts`, `stores/authStore.ts`
+> **This is not a new module.** It aligns the existing `modules/auth/auth.dto.ts`, `modules/auth/auth.service.client.ts`, `stores/authStore.ts`
 > and `app/(auth)/**` screens with the server's real contract. No screen is written from scratch.
 
 ## Why (context)
@@ -40,7 +40,7 @@ In other words, without this set no auth call returns 200; even if it did, `.par
 - **DTOs mirror the server's `Safe*` schemas.** The client does not invent fields for its own convenience; if a field is missing, it is fetched from its real source on the server (`userProfile`, `preferences`).
 - **Service paths are relative to the interceptor prefix.** Services never write `/api/tenant/...`; they write `/auth/device/login`, and Phase 2's interceptor adds the prefix.
 - **Tokens never enter Zustand** (AGENTS.md §6 Rule 5). `authStore` holds only `isAuthenticated` + `user`.
-- **Members / invitations / roles are out of scope.** The related methods in `services/tenant/tenant.service.client.ts` are left **untouched** in this set; their paths only fix themselves thanks to the interceptor prefix.
+- **Members / invitations / roles are out of scope.** The related methods in `modules/tenant/tenant.service.client.ts` are left **untouched** in this set; their paths only fix themselves thanks to the interceptor prefix.
 - **The `change-email` screen is not deleted**; it is rewired to its real counterpart on the server (`/auth/me/complete-email` + `/auth/verify-email/*`).
 
 ## Dependency graph (summary)

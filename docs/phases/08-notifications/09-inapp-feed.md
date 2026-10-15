@@ -37,7 +37,7 @@ React Native has no `EventSource`; the SSE endpoint holds a connection open with
 
 ## Files touched / created
 
-- Changed: `services/user/notification.{dto,service.client}.ts`, `app/(drawer)/notifications.tsx`, `components/shell/{TopBar,DrawerContent}.tsx`, `locales/*.json`
+- Changed: `modules/user/notification.{dto,service.client}.ts`, `app/(drawer)/notifications.tsx`, `components/shell/{TopBar,DrawerContent}.tsx`, `locales/*.json`
 - New: `libs/useNotifications.ts` (or under `stores/` if it needs shared state)
 - Test: unread count, optimistic mark-read rollback, tenant switch resets the feed
 

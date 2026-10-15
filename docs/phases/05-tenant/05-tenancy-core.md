@@ -59,7 +59,7 @@ WHERE WE ARE: docs/phases/README.md §Order
 
 ## Files touched / created
 
-- Changed: `stores/tenantStore.ts`, `app/(auth)/{select-tenant,create-tenant,login}.tsx`, `app/(drawer)/settings/tenant/index.tsx`, `components/shell/{DrawerContent,UserMenu}.tsx`, `services/tenant/tenant.service.client.ts`, `libs/secureStorage.ts` (`knownTenantIds` integration)
+- Changed: `stores/tenantStore.ts`, `app/(auth)/{select-tenant,create-tenant,login}.tsx`, `app/(drawer)/settings/tenant/index.tsx`, `components/shell/{DrawerContent,UserMenu}.tsx`, `modules/tenant/tenant.service.client.ts`, `libs/secureStorage.ts` (`knownTenantIds` integration)
 - Test: tenant switching (token present / absent), `flush()` cleanup, inactive-tenant rejection under `__tests__/`
 
 ## Reuse
@@ -67,7 +67,7 @@ WHERE WE ARE: docs/phases/README.md §Order
 - **Phase 4's login flow** — the login in tenant switching is not a separate implementation; the same screen opens with a `tenantId` parameter.
 - `libs/secureStorage.ts` per-tenant keys (Phase 2) — all of the switching mechanics rest on this.
 - `libs/axios.ts` interceptor's `TENANT_INACTIVE` / `NOT_TENANT_MEMBER` redirection (Phase 2) — screens do not catch these errors separately.
-- `services/tenant/tenant.dto.ts` (aligned in Phase 3) — `SafeTenant`, `MyTenantsResponseSchema`.
+- `modules/tenant/tenant.dto.ts` (aligned in Phase 3) — `SafeTenant`, `MyTenantsResponseSchema`.
 - `@/components/ui` (kui-native, Phase 1C): `Card`, `Badge`, `EmptyState`, `Avatar`, `Select`, `Spinner`.
 - `app/(drawer)/settings/tenant/{members,invitations}.tsx` — **untouched**, out of scope.
 

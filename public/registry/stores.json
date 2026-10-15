@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T23:34:43.775Z",
+  "generatedAt": "2026-10-14T14:25:21.273Z",
   "stores": [
     {
       "filePath": "stores/appStore.ts",
@@ -87,6 +87,21 @@
         "rememberTenant",
         "forgetTenant",
         "flush"
+      ],
+      "persisted": true
+    },
+    {
+      "filePath": "stores/translationStore.ts",
+      "name": "translationStore",
+      "hook": "useTranslationStore",
+      "stateKeys": [
+        "languages",
+        "bundles",
+        "switchingTo",
+        "setSwitchingTo",
+        "setLanguages",
+        "setBundle",
+        "removeBundle"
       ],
       "persisted": true
     }

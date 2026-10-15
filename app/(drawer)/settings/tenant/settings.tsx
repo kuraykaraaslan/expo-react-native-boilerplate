@@ -8,8 +8,8 @@ import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { NoOrganization } from '@/components/tenant/NoOrganization';
 import { Button, Card, Select, Text, Toggle } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
-import { LOCALE_META, SUPPORTED_LOCALES } from '@/libs/i18n';
-import { TenantClientService } from '@/services/tenant/tenant.service.client';
+import { useLocales } from '@/libs/translations';
+import { TenantClientService } from '@/modules/tenant/tenant.service.client';
 import { useTenantStore } from '@/stores/tenantStore';
 import {
   changedSettings,
@@ -22,6 +22,7 @@ import {
 
 export default function TenantSettingsScreen() {
   const { t } = useTranslation();
+  const locales = useLocales();
   const membership = useTenantStore((s) => s.selectedTenantMembership);
   const tenantId = membership?.tenantId;
   // The settings routes are admin-only on the server; others get a read-only note and no request.
@@ -136,7 +137,7 @@ export default function TenantSettingsScreen() {
             label={t('TENANT_SETTINGS.LANGUAGE_LABEL')}
             value={draft.defaultLanguage}
             onChange={(v) => setDraft((d) => ({ ...d, defaultLanguage: v }))}
-            options={SUPPORTED_LOCALES.map((l) => ({ value: l, label: `${LOCALE_META[l].flag} ${LOCALE_META[l].name}` }))}
+            options={locales.map((l) => ({ value: l.code, label: `${l.flag} ${l.name}` }))}
           />
           <Text className="text-xs text-text-secondary">{t('TENANT_SETTINGS.LANGUAGE_DESC')}</Text>
         </View>

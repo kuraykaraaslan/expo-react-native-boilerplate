@@ -1,6 +1,6 @@
 import * as Device from 'expo-device';
 import { env } from '@/libs/env';
-import type { DeviceInfo } from '@/services/auth/auth.dto';
+import type { DeviceInfo } from '@/modules/auth/auth.dto';
 
 // ============================================================================
 // Device info for a device-bearer login (next-boilerplate DeviceInfoDTO).

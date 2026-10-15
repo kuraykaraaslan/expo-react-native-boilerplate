@@ -25,21 +25,21 @@ Modules: `account`, `tenant_setting`, `tenant_branding`. Priority 1.
 ## 12.2 Tenant settings
 
 - [ ] Read `tenant_setting` DTOs and the `*.setting.keys.ts` files that modules declare; choose the allowlist for the app (A3): general, locale/timezone, registration/verification policy, and anything an OWNER/ADMIN reasonably changes on a phone.
-- [ ] `services/tenant/settings.{dto,service.client}.ts` (K6): `GET/PUT /settings` (tenant admin) — keep `/admin-settings` and `/modules` out unless the contract shows a need.
+- [ ] `modules/tenant/settings.{dto,service.client}.ts` (K6): `GET/PUT /settings` (tenant admin) — keep `/admin-settings` and `/modules` out unless the contract shows a need.
 - [ ] `app/(drawer)/settings/tenant/settings.tsx`: grouped form with per-key validation, dirty tracking, save with haptic, error mapping; read-only for non-admins.
 - [ ] Tests with the server's real shapes (typed values come back as strings — convert once at the service boundary).
 
 ## 12.3 Branding
 
 - [ ] Confirm whether `GET /settings/public` works unauthenticated for a tenant path; if so it also lets the login screen show the tenant's logo/colors before sign-in.
-- [ ] `services/tenant/branding.{dto,service.client}.ts`: `GET /settings/public` (and `GET /settings/branding` for admins if useful).
+- [ ] `modules/tenant/branding.{dto,service.client}.ts`: `GET /settings/public` (and `GET /settings/branding` for admins if useful).
 - [ ] `libs/theme`: map `primaryColor`/accent/font to the existing tokens through kui-native's theme override API (K5: no patching). Fall back to the default palette on any missing or low-contrast value (contrast guard).
 - [ ] Cache the last branding per tenant in MMKV so cold start does not flash the default theme; refresh on tenant switch and on app resume.
 - [ ] Ignore `customCss` (A2).
 
 ## Files touched / created
 
-- New: `services/tenant/{settings,branding}.{dto,service.client}.ts`, `app/(drawer)/settings/tenant/settings.tsx`, `libs/theme/branding.ts`
+- New: `modules/tenant/{settings,branding}.{dto,service.client}.ts`, `app/(drawer)/settings/tenant/settings.tsx`, `libs/theme/branding.ts`
 - Changed: `libs/theme/*`, `stores/tenantStore.ts` (branding cache) or a new `stores/brandingStore.ts`, account DTOs/screens as the audit finds, `locales/*.json`
 - Test: settings read/write shapes, branding mapping with fallback and contrast guard, tenant switch swaps theme
 
@@ -79,7 +79,7 @@ Modules: `account`, `tenant_setting`, `tenant_branding`. Priority 1.
 On `main`. Typecheck 0 errors, jest 164/164 (21 new across 12.2/12.3), web export OK. **12.1 (account audit) was not redone** — see below.
 
 **12.3 branding — what shipped**
-- `services/tenant/branding.dto.ts` + `getPublicBranding` (`GET /settings/public`, **GUEST** scope: no token, so it works on the login screen and for a fresh install's default tenant). Answer: `{success, settings: {brandName, brandPrimaryColor, …}, tenant: {name}}`; values are strings and unset keys are absent.
+- `modules/tenant/branding.dto.ts` + `getPublicBranding` (`GET /settings/public`, **GUEST** scope: no token, so it works on the login screen and for a fresh install's default tenant). Answer: `{success, settings: {brandName, brandPrimaryColor, …}, tenant: {name}}`; values are strings and unset keys are absent.
 - `libs/theme/brandColor.ts` (pure, tested): `normalizeHex` + `deriveBrandTokens`. From one hex it derives primary / hover / active / subtle / foreground / focus for light **and** dark. **Accessibility guard**: a color under 3:1 against the white surface is rejected (the default palette stays); in dark mode the color is lightened until it is ≥ 3:1 on the dark surface (measured on the *rounded* hex — an unrounded check once let 2.9956 through); button text is whichever of black/white reads better (≥ 4.5:1).
 - `libs/theme/branding.ts`: `applyBrandColor` layers the tenant tokens over `BASE_THEME` (now exported from `brand.ts`) with kui-native's `configureTheme`; `applyCachedBranding` (synchronous) and `syncBranding` (fetch + validate + cache, never throws). `ThemeProvider` applies the cache before the first render, applies a switched-to tenant's cache at once, then refreshes it.
 - `stores/brandingStore.ts`: persisted per-tenant colour cache (MMKV) + a **non-persisted** "applied" store with a version counter. (First version put the applied flag in the persisted store: writing it at module scope during the **web server render** threw "Tried to access storage on the server" and the web build returned 500 — caught by the screenshot run, not by jest. The counter exists because re-applying the *same* tenant would otherwise not re-render the theme root.)

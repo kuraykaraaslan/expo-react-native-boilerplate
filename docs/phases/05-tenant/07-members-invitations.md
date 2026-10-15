@@ -27,7 +27,7 @@ Modules: `tenant_member`, `tenant_invitation`. Priority 1.
 
 ## 7.2 DTOs and services
 
-- [ ] Align `services/tenant/tenant.dto.ts` members/invitation schemas with the server (`Safe*`), split into `services/tenant/member.dto.ts` / `invitation.dto.ts` only if the file gets unwieldy (K6: stay inside `services/tenant/`).
+- [ ] Align `modules/tenant/tenant.dto.ts` members/invitation schemas with the server (`Safe*`), split into `modules/tenant/member.dto.ts` / `invitation.dto.ts` only if the file gets unwieldy (K6: stay inside `modules/tenant/`).
 - [ ] Fix `getMembers`, `getMember`, `updateMember`, `removeMember`, `getInvitations`, `sendInvitation`, `revokeInvitation`, `acceptInvitation`, `declineInvitation`; add `resendInvitation`, `remindInvitation`, `transitionMember`.
 - [ ] MSW handlers and tests with the server's real shapes (Phase 3 pattern).
 
@@ -57,7 +57,7 @@ Modules: `tenant_member`, `tenant_invitation`. Priority 1.
 
 ## Files touched / created
 
-- Changed: `services/tenant/{tenant.dto,tenant.service.client}.ts`, the two settings screens, `app/(tenant)/select-tenant.tsx`, `locales/*.json`
+- Changed: `modules/tenant/{tenant.dto,tenant.service.client}.ts`, the two settings screens, `app/(tenant)/select-tenant.tsx`, `locales/*.json`
 - New: `app/(tenant)/invitation-decision.tsx` (name to be confirmed against the router groups), tests under `__tests__/`
 
 ## Reuse

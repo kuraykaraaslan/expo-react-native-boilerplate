@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T23:34:43.775Z",
+  "generatedAt": "2026-10-14T14:25:21.273Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",
@@ -68,9 +68,14 @@
       "filePath": "libs/i18n.ts",
       "name": "i18n",
       "exports": [
-        "SUPPORTED_LOCALES",
-        "Locale",
-        "LOCALE_META",
+        "NAMESPACE",
+        "FALLBACK_LOCALE",
+        "BUNDLED_DICTIONARIES",
+        "BUNDLED_LOCALES",
+        "BUNDLED_LOCALE_META",
+        "normalizeLocale",
+        "applyLanguageTexts",
+        "isBundledLocale",
         "default"
       ]
     },
@@ -109,7 +114,8 @@
       "name": "preferences",
       "exports": [
         "pullPreferences",
-        "pushPreferences"
+        "pushPreferences",
+        "changeLanguage"
       ]
     },
     {
@@ -149,6 +155,26 @@
         "SwitchOutcome",
         "switchToTenant",
         "activateSignedInTenant"
+      ]
+    },
+    {
+      "filePath": "libs/translations.ts",
+      "name": "translations",
+      "exports": [
+        "LocaleOption",
+        "SYNC_MIN_INTERVAL_MS",
+        "syncTranslations",
+        "ensureLanguage",
+        "selectLanguage",
+        "isLanguageOffered",
+        "deferLanguage",
+        "getPendingLanguage",
+        "clearPendingLanguage",
+        "getAvailableLocales",
+        "useLocales",
+        "localeOption",
+        "localeName",
+        "resetTranslationSyncForTests"
       ]
     },
     {

@@ -37,7 +37,7 @@ Modules: `websocket`, `messaging`. Priority 2. Largest phase of the set; split i
 
 ## Files touched / created
 
-- New: `libs/realtime.ts`, `services/platform/messaging.*`, `stores/messagingStore.ts`, `app/(drawer)/messages/*`
+- New: `libs/realtime.ts`, `modules/platform/messaging.*`, `stores/messagingStore.ts`, `app/(drawer)/messages/*`
 - Changed: `libs/env.ts`, drawer layout, `locales/*.json`, `package.json`
 - Test: reconnect with a new ticket, tenant switch tears down and reconnects, optimistic send rollback, queue flush de-duplication
 

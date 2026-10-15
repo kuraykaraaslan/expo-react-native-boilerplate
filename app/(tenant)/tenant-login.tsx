@@ -12,7 +12,7 @@ import { handleApiError } from '@/libs/errorUtils';
 import { startDeviceSession } from '@/libs/session';
 import { activateSignedInTenant } from '@/libs/tenantSwitch';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { AuthClientService } from '@/services/auth/auth.service.client';
+import { AuthClientService } from '@/modules/auth/auth.service.client';
 import { useAuthStore } from '@/stores/authStore';
 
 /**

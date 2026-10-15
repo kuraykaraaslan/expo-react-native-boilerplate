@@ -7,8 +7,8 @@ import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { NoOrganization } from '@/components/tenant/NoOrganization';
 import { Badge, Button, Card, EmptyState, Select, Text } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
-import type { AuditLog, AuditSeverity } from '@/services/compliance/compliance.dto';
-import { ComplianceClientService } from '@/services/compliance/compliance.service.client';
+import type { AuditLog, AuditSeverity } from '@/modules/compliance/compliance.dto';
+import { ComplianceClientService } from '@/modules/compliance/compliance.service.client';
 import { useTenantStore } from '@/stores/tenantStore';
 import { formatRelative } from '@/utils/format';
 

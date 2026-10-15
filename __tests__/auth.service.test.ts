@@ -1,7 +1,7 @@
 import { getSessionIdFromToken } from "@/libs/jwt";
 import { getToken, setTokens } from "@/libs/secureStorage";
 import { startDeviceSession } from "@/libs/session";
-import { AuthClientService } from "@/services/auth/auth.service.client";
+import { AuthClientService } from "@/modules/auth/auth.service.client";
 import { useAuthStore } from "@/stores/authStore";
 import { useTenantStore } from "@/stores/tenantStore";
 import { OTHER_TENANT_ID, SESSION_ID, TENANT_ID, deviceLoginJson, makeJwt, safeUserJson, sessionJson, sessionsJson, userSecurityJson } from "./fixtures";

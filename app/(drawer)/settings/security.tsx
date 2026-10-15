@@ -11,8 +11,8 @@ import { TotpSetupModal } from '@/components/security/TotpSetupModal';
 import { Badge, Button, Card, Text } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import type { UserSecurity } from '@/services/auth/auth.dto';
-import { AuthClientService } from '@/services/auth/auth.service.client';
+import type { UserSecurity } from '@/modules/auth/auth.dto';
+import { AuthClientService } from '@/modules/auth/auth.service.client';
 import { formatDate } from '@/utils/format';
 
 export default function SecurityScreen() {

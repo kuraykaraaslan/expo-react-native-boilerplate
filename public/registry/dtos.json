@@ -1,10 +1,10 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-08T23:34:43.775Z",
+  "generatedAt": "2026-10-14T14:25:21.273Z",
   "dtos": [
     {
-      "filePath": "services/auth/auth.dto.ts",
+      "filePath": "modules/auth/auth.dto.ts",
       "module": "auth",
       "name": "auth.dto",
       "schemas": [
@@ -79,7 +79,7 @@
       ]
     },
     {
-      "filePath": "services/tenant/branding.dto.ts",
+      "filePath": "modules/tenant/branding.dto.ts",
       "module": "tenant",
       "name": "branding.dto",
       "schemas": [
@@ -90,8 +90,8 @@
       ]
     },
     {
-      "filePath": "services/common.dto.ts",
-      "module": "services",
+      "filePath": "modules/common.dto.ts",
+      "module": "modules",
       "name": "common.dto",
       "schemas": [
         "PaginationSchema",
@@ -104,7 +104,7 @@
       ]
     },
     {
-      "filePath": "services/compliance/compliance.dto.ts",
+      "filePath": "modules/compliance/compliance.dto.ts",
       "module": "compliance",
       "name": "compliance.dto",
       "schemas": [
@@ -128,7 +128,7 @@
       ]
     },
     {
-      "filePath": "services/user/notification.dto.ts",
+      "filePath": "modules/user/notification.dto.ts",
       "module": "user",
       "name": "notification.dto",
       "schemas": [
@@ -142,7 +142,7 @@
       ]
     },
     {
-      "filePath": "services/user/preferences.dto.ts",
+      "filePath": "modules/user/preferences.dto.ts",
       "module": "user",
       "name": "preferences.dto",
       "schemas": [
@@ -162,7 +162,7 @@
       ]
     },
     {
-      "filePath": "services/user/profile.dto.ts",
+      "filePath": "modules/user/profile.dto.ts",
       "module": "user",
       "name": "profile.dto",
       "schemas": [
@@ -179,7 +179,7 @@
       ]
     },
     {
-      "filePath": "services/auth/sso.dto.ts",
+      "filePath": "modules/auth/sso.dto.ts",
       "module": "auth",
       "name": "sso.dto",
       "schemas": [
@@ -197,7 +197,7 @@
       ]
     },
     {
-      "filePath": "services/tenant/tenant.dto.ts",
+      "filePath": "modules/tenant/tenant.dto.ts",
       "module": "tenant",
       "name": "tenant.dto",
       "schemas": [
@@ -252,6 +252,28 @@
         "UpdateTenantProfileRequest",
         "SendInvitationRequest",
         "UpdateMemberRequest"
+      ]
+    },
+    {
+      "filePath": "modules/localization/translation.dto.ts",
+      "module": "localization",
+      "name": "translation.dto",
+      "schemas": [
+        "TranslationTreeSchema",
+        "LanguageCodeSchema",
+        "RemoteLanguageSchema",
+        "LanguagesResponseSchema",
+        "TranslationPlatformSchema",
+        "TranslationBundleRequestSchema",
+        "TranslationBundleSchema"
+      ],
+      "types": [
+        "TranslationTree",
+        "RemoteLanguage",
+        "LanguagesResponse",
+        "TranslationPlatform",
+        "TranslationBundleRequest",
+        "TranslationBundle"
       ]
     }
   ]

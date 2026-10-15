@@ -8,11 +8,11 @@ import { faKey, faLock } from '@fortawesome/free-solid-svg-icons';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AlertBanner, Button, Input } from '@/components/ui';
-import { ChangePasswordRequestSchema } from '@/services/auth/auth.dto';
+import { ChangePasswordRequestSchema } from '@/modules/auth/auth.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { logout } from '@/libs/logout';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { AuthClientService } from '@/services/auth/auth.service.client';
+import { AuthClientService } from '@/modules/auth/auth.service.client';
 import { useAuthStore } from '@/stores/authStore';
 
 type FieldErrors = { current?: string; next?: string; confirm?: string };

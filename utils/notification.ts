@@ -1,4 +1,4 @@
-import type { Notification } from "@/services/user/notification.dto";
+import type { Notification } from "@/modules/user/notification.dto";
 
 /**
  * A web link that is safe to hand to the in-app browser: an absolute URL, or a path resolved

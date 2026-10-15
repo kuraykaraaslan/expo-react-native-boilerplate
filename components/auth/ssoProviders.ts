@@ -17,7 +17,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import type { SSOProvider } from '@/services/auth/sso.dto';
+import type { SSOProvider } from '@/modules/auth/sso.dto';
 
 export type ProviderMeta = { label: string; icon: IconDefinition; brandColor?: string };
 

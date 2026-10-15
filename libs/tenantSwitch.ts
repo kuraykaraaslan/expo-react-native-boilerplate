@@ -1,7 +1,7 @@
 import { getToken } from "@/libs/secureStorage";
-import { AuthClientService } from "@/services/auth/auth.service.client";
-import type { MemberRole, TenantMembership } from "@/services/tenant/tenant.dto";
-import { TenantClientService } from "@/services/tenant/tenant.service.client";
+import { AuthClientService } from "@/modules/auth/auth.service.client";
+import type { MemberRole, TenantMembership } from "@/modules/tenant/tenant.dto";
+import { TenantClientService } from "@/modules/tenant/tenant.service.client";
 import { useTenantStore } from "@/stores/tenantStore";
 
 // ============================================================================

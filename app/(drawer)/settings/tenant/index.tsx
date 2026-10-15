@@ -10,7 +10,7 @@ import { SectionLabel } from '@/components/common/SectionLabel';
 import { NoOrganization } from '@/components/tenant/NoOrganization';
 import { Badge, Button, Card, Input, Text, Textarea } from '@/components/ui';
 import { handleApiError } from '@/libs/errorUtils';
-import { TenantClientService } from '@/services/tenant/tenant.service.client';
+import { TenantClientService } from '@/modules/tenant/tenant.service.client';
 import * as Haptics from 'expo-haptics';
 import { toast } from 'sonner-native';
 import { useTenantStore } from '@/stores/tenantStore';

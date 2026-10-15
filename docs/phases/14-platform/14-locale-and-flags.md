@@ -22,11 +22,11 @@ Modules: `i18n`, `localization`, `feature_flags`, `feature_gate`. Priority 2.
 - [ ] Send the chosen locale on every request via the interceptor (single place, `libs/axios.ts`), using the header the server actually reads.
 - [ ] Keep `user_preferences.language` in sync with the picker (already stored per Phase 4); map the client's six languages (`en tr de es fr it`) to the server's codes explicitly, no string slicing.
 - [ ] Use `localization` reference data only where it replaces hand-written lists (country / currency / timezone pickers) — fetch lazily, cache in MMKV.
-- [ ] Server error messages are shown as returned; client strings stay in `locales/*.json`. Extend the parity guard if new keys are added.
+- [ ] Server error messages are shown as returned; client strings live in `modules/<module>/dictionary/*.json` and can be overridden from the server (Phase 14A). Extend the parity guard if new keys are added.
 
 ## 14.2 Feature flags
 
-- [ ] `services/platform/flags.{dto,service.client}.ts` (add `platform/` to the K6 domain list): `POST /feature-flags/evaluate` (and `POST /experiments/evaluate` + `/convert` if experiments are wanted) — verify body (keys + subject attributes) and response.
+- [ ] `modules/platform/flags.{dto,service.client}.ts` (add `platform/` to the K6 domain list): `POST /feature-flags/evaluate` (and `POST /experiments/evaluate` + `/convert` if experiments are wanted) — verify body (keys + subject attributes) and response.
 - [ ] `useFeatureFlag(key)` hook backed by a store: fetch on sign-in and tenant switch, cache in MMKV, refresh on resume, safe default `false` when the call fails. No flag logic in screens beyond reading the hook.
 - [ ] Flag management (create/override) is out of scope (P2).
 
@@ -36,7 +36,7 @@ Modules: `i18n`, `localization`, `feature_flags`, `feature_gate`. Priority 2.
 
 ## Files touched / created
 
-- New: `services/platform/flags.*`, `libs/useFeatureFlag.ts`, `stores/flagStore.ts`
+- New: `modules/platform/flags.*`, `libs/useFeatureFlag.ts`, `stores/flagStore.ts`
 - Changed: `libs/axios.ts` (locale header, gate error class), `app/(drawer)/settings/change-language.tsx`, `locales/*.json`
 - Test: locale header sent, flag evaluation default-off on failure, gate error mapped
 

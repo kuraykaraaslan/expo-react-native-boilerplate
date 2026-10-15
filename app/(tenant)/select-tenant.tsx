@@ -8,12 +8,12 @@ import { faBuilding, faChevronRight, faPlus } from '@fortawesome/free-solid-svg-
 import { AuthFooterLink } from '@/components/auth/AuthFooterLink';
 import { AuthShell } from '@/components/auth/AuthShell';
 import { AlertBanner, Badge, Button, EmptyState, Spinner, Text } from '@/components/ui';
-import type { TenantMembership } from '@/services/tenant/tenant.dto';
+import type { TenantMembership } from '@/modules/tenant/tenant.dto';
 import { handleApiError } from '@/libs/errorUtils';
 import { logout } from '@/libs/logout';
 import { switchToTenant } from '@/libs/tenantSwitch';
 import { useThemeTokens } from '@/libs/theme/ThemeContext';
-import { TenantClientService } from '@/services/tenant/tenant.service.client';
+import { TenantClientService } from '@/modules/tenant/tenant.service.client';
 import { useTenantStore } from '@/stores/tenantStore';
 import { isSelectable, unavailableReason } from '@/utils/tenant';
 

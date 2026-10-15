@@ -4,7 +4,7 @@ import i18n from '@/libs/i18n';
 import { useAppLockStore } from '@/libs/appLock';
 import { useAuthStore } from '@/stores/authStore';
 import { getActiveTenantId, useTenantStore } from '@/stores/tenantStore';
-import { AuthClientService } from '@/services/auth/auth.service.client';
+import { AuthClientService } from '@/modules/auth/auth.service.client';
 import { clearAllTokens } from '@/libs/secureStorage';
 import logger from '@/libs/logger';
 

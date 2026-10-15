@@ -2,7 +2,7 @@ import { axiosInstance } from "@/libs/axios";
 import { logout } from "@/libs/logout";
 import { getToken, setTokens } from "@/libs/secureStorage";
 import { activateSignedInTenant, switchToTenant } from "@/libs/tenantSwitch";
-import { TenantMembershipSchema } from "@/services/tenant/tenant.dto";
+import { TenantMembershipSchema } from "@/modules/tenant/tenant.dto";
 import { useAuthStore } from "@/stores/authStore";
 import { useTenantStore } from "@/stores/tenantStore";
 import { isSelectable, unavailableReason } from "@/utils/tenant";

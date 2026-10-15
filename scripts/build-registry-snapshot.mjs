@@ -5,9 +5,9 @@
 //   2. public/registry/registry.index.json  — lightweight index (no source bodies)
 //   3. public/registry/screens.json         — Expo Router screens
 //   4. public/registry/components.json      — UI components
-//   5. public/registry/services.json        — services/<module>/*.service.client.ts files
+//   5. public/registry/services.json        — modules/<module>/*.service.client.ts files
 //   6. public/registry/stores.json          — Zustand stores
-//   7. public/registry/dtos.json            — Zod DTO modules (services/<module>/*.dto.ts)
+//   7. public/registry/dtos.json            — Zod DTO modules (modules/<module>/*.dto.ts)
 //   8. public/registry/libs.json            — libs/ primitives
 //   9. public/components/<id>.md            — per-component markdown chunk
 //  10. public/components/_index.json        — { id → { category, file } } map
@@ -25,7 +25,7 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const PKG_JSON_PATH    = path.join(REPO_ROOT, 'package.json');
 const APP_DIR          = path.join(REPO_ROOT, 'app');
 const COMPONENTS_DIR   = path.join(REPO_ROOT, 'components');
-const SERVICES_DIR     = path.join(REPO_ROOT, 'services');
+const MODULES_DIR     = path.join(REPO_ROOT, 'modules');
 const STORES_DIR       = path.join(REPO_ROOT, 'stores');
 const LIBS_DIR         = path.join(REPO_ROOT, 'libs');
 
@@ -276,7 +276,7 @@ async function collectKuiReexports(barrelSrc) {
 // --- service collection ---------------------------------------------------
 
 async function collectServices() {
-  const files = await walk(SERVICES_DIR, (_f, n) => n.endsWith('.service.client.ts') || n.endsWith('.service.client.tsx'));
+  const files = await walk(MODULES_DIR, (_f, n) => n.endsWith('.service.client.ts') || n.endsWith('.service.client.tsx'));
   const services = [];
   for (const file of files) {
     const src = (await readText(file)) ?? '';
@@ -320,7 +320,7 @@ async function collectStores() {
 // --- DTO collection -------------------------------------------------------
 
 async function collectDtos() {
-  const files = await walk(SERVICES_DIR, (_f, n) => n.endsWith('.dto.ts'));
+  const files = await walk(MODULES_DIR, (_f, n) => n.endsWith('.dto.ts'));
   const dtos = [];
   for (const file of files) {
     const src = (await readText(file)) ?? '';
@@ -407,9 +407,9 @@ async function main() {
   const layers = {
     app:        'Expo Router file-based screens. (group) directories are route groups stripped from URLs. _layout.tsx defines layouts (Stack / Tabs / Slot).',
     components: 'Reusable UI under components/<category>/<Component>.tsx. NativeWind className styling; FontAwesome icons.',
-    services:   'Data fetching via services/<module>/*.service.client.ts files. Use axiosInstance from @/libs/axios — never fetch() or ad-hoc axios.',
+    services:   'Data fetching via modules/<module>/*.service.client.ts files. Use axiosInstance from @/libs/axios — never fetch() or ad-hoc axios.',
     stores:     'Zustand stores under stores/<name>Store.ts. Persisted via zustandStorage (MMKV). Never AsyncStorage. Tokens NEVER live in stores.',
-    dtos:       'Zod schemas + inferred TS types in services/<module>/<module>.dto.ts. Parse every response with the matching schema; never trust raw JSON.',
+    dtos:       'Zod schemas + inferred TS types in modules/<module>/<module>.dto.ts. Parse every response with the matching schema; never trust raw JSON.',
     libs:       'Primitives — axios, env (Zod-validated), i18n, logger, mmkv, secureStorage, zustandStorage. Tokens live in SecureStore only.',
   };
   const conventions = {
@@ -418,9 +418,9 @@ async function main() {
     state:      'Zustand 5 + MMKV. Persist via @/libs/zustandStorage. NEVER AsyncStorage. Stores named <name>Store.ts, exporting use<Name>Store.',
     tokens:     'expo-secure-store ONLY (@/libs/secureStorage). Tokens NEVER stored in Zustand or MMKV. axios interceptor injects them at request time.',
     dataFetch:  'Always axiosInstance from @/libs/axios. Never fetch(). Never ad-hoc axios. Auth header (cookie-based) injected by interceptor.',
-    validation: 'Zod for every input + every response. DTOs live in services/<module>/<module>.dto.ts; use *.parse() / .safeParse(). Types are z.infer<...>.',
+    validation: 'Zod for every input + every response. DTOs live in modules/<module>/<module>.dto.ts; use *.parse() / .safeParse(). Types are z.infer<...>.',
     icons:      'FontAwesome 6 (@fortawesome/react-native-fontawesome + free-solid/free-brands). No expo/vector-icons for new code.',
-    fileNaming: 'app/<route>.tsx | app/**/_layout.tsx | components/<cat>/<Pascal>.tsx | services/<module>/<module>.service.client.ts | services/<module>/<module>.dto.ts | stores/<n>Store.ts | libs/<n>.ts | utils/<n>.ts | __tests__/<n>.test.ts(x)',
+    fileNaming: 'app/<route>.tsx | app/**/_layout.tsx | components/<cat>/<Pascal>.tsx | modules/<module>/<module>.service.client.ts | modules/<module>/<module>.dto.ts | stores/<n>Store.ts | libs/<n>.ts | utils/<n>.ts | __tests__/<n>.test.ts(x)',
   };
 
   const registry = {
