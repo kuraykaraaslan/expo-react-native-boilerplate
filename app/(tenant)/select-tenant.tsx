@@ -23,14 +23,14 @@ function OrgRow({ item, current, onPress }: Readonly<{ item: TenantMembership; c
   const selectable = isSelectable(item);
   const name = item.tenant?.name ?? item.tenantId;
   const blocked = unavailableReason(item);
-  const reason = blocked ? t(blocked.kind === 'membership' ? `AUTH_UI.MEMBERSHIP_${blocked.status}` : `ORGANIZATION.STATUS_${blocked.status}`) : null;
+  const reason = blocked ? t(blocked.kind === 'membership' ? `auth.membershipStatus.${blocked.status.toLowerCase()}` : `tenant.status.${blocked.status.toLowerCase()}`) : null;
   return (
     <Pressable
       onPress={onPress}
       disabled={!selectable}
       accessibilityRole="button"
       accessibilityState={{ disabled: !selectable }}
-      accessibilityLabel={t('AUTH_UI.SELECT_ORG_A11Y', { name })}
+      accessibilityLabel={t('auth.ui.selectOrgA11y', { name })}
       testID={`auth-select-org-${item.tenantId}`}
       className={`min-h-[60px] flex-row items-center gap-3 rounded-lg border border-border px-4 py-3 ${selectable ? 'active:bg-surface-overlay' : 'opacity-60'}`}
     >
@@ -54,7 +54,7 @@ function OrgRow({ item, current, onPress }: Readonly<{ item: TenantMembership; c
         </Badge>
       ) : current ? (
         <Badge variant="primary" size="sm">
-          {t('AUTH_UI.ORG_CURRENT')}
+          {t('auth.ui.orgCurrent')}
         </Badge>
       ) : (
         <FontAwesomeIcon icon={faChevronRight} size={12} color={tokens['text-disabled']} />
@@ -107,24 +107,24 @@ export default function SelectTenantScreen() {
 
   return (
     <AuthShell
-      title={t('AUTH_UI.SELECT_ORG_TITLE')}
-      subtitle={t('AUTH_UI.SELECT_ORG_SUBTITLE')}
+      title={t('auth.ui.selectOrgTitle')}
+      subtitle={t('auth.selectTenant.subtitle')}
       icon={faBuilding}
       footer={
         needsTenantSelection ? (
-          <AuthFooterLink label={t('AUTH_UI.SIGN_OUT')} onPress={() => void logout()} testID="auth-select-org-signout" />
+          <AuthFooterLink label={t('auth.ui.signOut')} onPress={() => void logout()} testID="auth-select-org-signout" />
         ) : (
-          <AuthFooterLink label={t('AUTH_UI.BACK_TO_APP')} href="/" testID="auth-select-org-back" />
+          <AuthFooterLink label={t('auth.ui.backToApp')} href="/" testID="auth-select-org-back" />
         )
       }
     >
-      {invitations.length > 0 ? <AlertBanner variant="info" message={t('AUTH_UI.PENDING_INVITES', { count: invitations.length })} /> : null}
+      {invitations.length > 0 ? <AlertBanner variant="info" message={t('auth.ui.pendingInvites', { count: invitations.length })} /> : null}
       {loading && memberships.length === 0 ? (
         <View className="items-center py-8" accessibilityState={{ busy: true }}>
           <Spinner size="lg" />
         </View>
       ) : memberships.length === 0 ? (
-        <EmptyState icon={faBuilding} title={t('AUTH_UI.NO_ORGS')} description={t('AUTH_UI.NO_ORGS_DESC')} className="py-6" />
+        <EmptyState icon={faBuilding} title={t('auth.ui.noOrgs')} description={t('auth.ui.noOrgsDesc')} className="py-6" />
       ) : (
         // Short list inside the card — FlatList would nest inside AuthShell's ScrollView.
         <View className="gap-2">
@@ -132,7 +132,7 @@ export default function SelectTenantScreen() {
             <OrgRow key={m.tenantMemberId} item={m} current={m.tenantId === activeTenantId && !needsTenantSelection} onPress={() => void handleSelect(m)} />
           ))}
           {unavailable.length > 0 ? (
-            <Text className="mt-2 text-xs font-medium uppercase tracking-widest text-text-disabled">{t('AUTH_UI.ORGS_UNAVAILABLE')}</Text>
+            <Text className="mt-2 text-xs font-medium uppercase tracking-widest text-text-disabled">{t('auth.ui.orgsUnavailable')}</Text>
           ) : null}
           {unavailable.map((m) => (
             <OrgRow key={m.tenantMemberId} item={m} current={false} onPress={() => undefined} />
@@ -152,7 +152,7 @@ export default function SelectTenantScreen() {
           iconLeft={<FontAwesomeIcon icon={faPlus} size={12} color={tokens['text-primary']} />}
           testID="auth-select-org-create"
         >
-          {t('AUTH_UI.CREATE_ORG_LINK')}
+          {t('auth.selectTenant.createButton')}
         </Button>
       </View>
     </AuthShell>

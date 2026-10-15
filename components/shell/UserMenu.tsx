@@ -22,7 +22,7 @@ export function UserMenu() {
       align="right"
       trigger={
         // Must be a Pressable: DropdownMenu injects onPress into the trigger element.
-        <Pressable accessibilityRole="button" accessibilityLabel={t('SHELL.USER_MENU_A11Y', { name })} testID="shell-user-menu-trigger" className="p-1">
+        <Pressable accessibilityRole="button" accessibilityLabel={t('app_shell.shell.userMenuA11y', { name })} testID="shell-user-menu-trigger" className="p-1">
           <Avatar name={name || '?'} src={getUserAvatarUrl(user)} size="sm" />
         </Pressable>
       }
@@ -40,13 +40,13 @@ export function UserMenu() {
       }
       items={[
         {
-          label: t('SHELL.MY_PROFILE'),
+          label: t('app_shell.shell.myProfile'),
           icon: <FontAwesomeIcon icon={faCircleUser} size={14} color={tokens['text-secondary']} />,
           onPress: () => router.push('/settings/profile'),
         },
         { type: 'separator' },
         {
-          label: t('SHELL.SIGN_OUT'),
+          label: t('app_shell.shell.signOut'),
           icon: <FontAwesomeIcon icon={faRightFromBracket} size={14} color={tokens.error} />,
           danger: true,
           onPress: logout,

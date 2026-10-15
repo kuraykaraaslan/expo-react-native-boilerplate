@@ -10,9 +10,9 @@ export default function NotFoundScreen() {
     <View className="flex-1 items-center justify-center bg-surface-base px-4">
       <EmptyState
         icon={faCompass}
-        title={t('NOT_FOUND.TITLE')}
-        description={t('NOT_FOUND.DESC')}
-        actionLabel={t('NOT_FOUND.HOME')}
+        title={t('common.notFound.title')}
+        description={t('common.notFound.desc')}
+        actionLabel={t('common.notFound.home')}
         onAction={() => router.replace('/')}
       />
     </View>

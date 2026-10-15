@@ -26,7 +26,7 @@ export type NormalizedApiError = {
   planLimit?: boolean;
 };
 
-// next-boilerplate feature_gate / seat-limit codes → the API_ERRORS key with the translated copy.
+// next-boilerplate feature_gate / seat-limit codes → the common.apiErrors key with the translated copy.
 const PLAN_LIMIT_CODES: Record<string, string> = {
   FEATURE_NOT_AVAILABLE: "PLAN_FEATURE",
   QUOTA_EXCEEDED: "PLAN_QUOTA",
@@ -61,7 +61,7 @@ function isIssueArray(value: unknown): value is ZodIssueLike[] {
 
 function describeIssues(issues: ZodIssueLike[]): string {
   const first = issues[0];
-  if (!first) return i18n.t("ERRORS.UNEXPECTED");
+  if (!first) return i18n.t("common.errors.unexpected");
   const field = first.path?.filter((p) => typeof p === "string").join(".");
   return field ? `${field}: ${first.message}` : first.message;
 }
@@ -112,22 +112,22 @@ export function normalizeApiError(err: unknown): NormalizedApiError {
     // Shapes 1 and 3: a message string.
     const raw = typeof data.message === "string" ? data.message : typeof data.error === "string" ? data.error : undefined;
     if (status === 429) {
-      return { message: i18n.t("ERRORS.RATE_LIMITED", { seconds: retryAfter ?? 60 }), rawMessage: raw, code, statusCode: status, retryAfter };
+      return { message: i18n.t("common.errors.rateLimited", { seconds: retryAfter ?? 60 }), rawMessage: raw, code, statusCode: status, retryAfter };
     }
     if (code && PLAN_LIMIT_CODES[code]) {
-      return { message: i18n.t(`API_ERRORS.${PLAN_LIMIT_CODES[code]}`), rawMessage: raw, code, statusCode: status, planLimit: true };
+      return { message: i18n.t(`common.apiErrors.${PLAN_LIMIT_CODES[code]}`), rawMessage: raw, code, statusCode: status, planLimit: true };
     }
     if (raw) {
       const known = (KNOWN_MESSAGES as readonly string[]).includes(raw);
       // Unknown SCREAMING_CASE constants are not user copy — fall back to the generic line.
-      const message = known ? i18n.t(`API_ERRORS.${raw}`) : /^[A-Z0-9_]+$/.test(raw) ? i18n.t("ERRORS.UNEXPECTED") : raw;
+      const message = known ? i18n.t(`common.apiErrors.${raw}`) : /^[A-Z0-9_]+$/.test(raw) ? i18n.t("common.errors.unexpected") : raw;
       return { message, rawMessage: raw, code, statusCode: status };
     }
-    return { message: i18n.t("ERRORS.UNEXPECTED"), code, statusCode: status };
+    return { message: i18n.t("common.errors.unexpected"), code, statusCode: status };
   }
 
   // Request never got an answer (offline, DNS, timeout).
-  if (ax.isAxiosError) return { message: i18n.t("ERRORS.NETWORK") };
+  if (ax.isAxiosError) return { message: i18n.t("common.errors.network") };
   if (err instanceof Error && err.message) return { message: err.message };
-  return { message: i18n.t("ERRORS.UNEXPECTED") };
+  return { message: i18n.t("common.errors.unexpected") };
 }

@@ -1,0 +1,10 @@
+{
+  "dashboard.overview.currentOrg": "Current organization",
+  "dashboard.overview.statOrgs": "Organizations",
+  "dashboard.overview.statSessions": "Active sessions",
+  "dashboard.overview.statUnread": "Unread notifications",
+  "dashboard.overview.switch": "Switch",
+  "dashboard.overview.title": "In this workspace",
+  "dashboard.overview.titlePage": "Dashboard",
+  "dashboard.page.subtitle": "Overview of your workspace"
+}

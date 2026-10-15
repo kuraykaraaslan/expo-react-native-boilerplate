@@ -1,0 +1,15 @@
+{
+  "privacy.center.choicesCard": "Gizlilik tercihleri",
+  "privacy.center.choicesDesc": "Verilerinizin hangi isteğe bağlı kullanımlarına izin verdiğinizi seçin.",
+  "privacy.center.choicesOff": "Bu organizasyon için gizlilik tercihleri etkin değil.",
+  "privacy.center.noPolicies": "Organizasyonunuz herhangi bir politika bağlantısı yayınlamadı.",
+  "privacy.center.policiesCard": "Politikalar",
+  "privacy.center.privacyPolicy": "Gizlilik politikası",
+  "privacy.center.required": "Her zaman açık",
+  "privacy.center.save": "Tercihleri kaydet",
+  "privacy.center.saved": "Gizlilik tercihleri kaydedildi",
+  "privacy.center.subtitle": "Politikalar ve veri tercihleriniz",
+  "privacy.center.terms": "Hizmet şartları",
+  "privacy.center.tileDesc": "Politikalar ve veri tercihleriniz",
+  "privacy.center.title": "Gizlilik ve yasal"
+}

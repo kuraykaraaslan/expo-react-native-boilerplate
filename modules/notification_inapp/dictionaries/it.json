@@ -1,0 +1,15 @@
+{
+  "notification_inapp.feed.clearAll": "Elimina tutte",
+  "notification_inapp.feed.clearConfirm": "Elimina tutte",
+  "notification_inapp.feed.clearDesc": "Tutte le notifiche verranno eliminate definitivamente.",
+  "notification_inapp.feed.clearTitle": "Elimina le notifiche",
+  "notification_inapp.feed.cleared": "Notifiche eliminate",
+  "notification_inapp.feed.empty": "Nessuna notifica",
+  "notification_inapp.feed.emptyDesc": "Non hai nulla da leggere.",
+  "notification_inapp.feed.markAllRead": "Segna tutte come lette",
+  "notification_inapp.feed.markedAll": "Tutte le notifiche sono state segnate come lette",
+  "notification_inapp.feed.subtitle": "{{count}} non lette",
+  "notification_inapp.feed.subtitleNone": "Non hai nulla da leggere",
+  "notification_inapp.feed.title": "Notifiche",
+  "notification_inapp.feed.unreadA11y": "Non letta: {{title}}"
+}

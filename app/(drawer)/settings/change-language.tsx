@@ -7,7 +7,7 @@ export default function PreferencesScreen() {
   const { t } = useTranslation();
   return (
     <Screen>
-      <ScreenHeader back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }} title={t('PREFERENCES.TITLE')} subtitle={t('PREFERENCES.SUBTITLE')} />
+      <ScreenHeader back={{ label: t('account.settingsHub.title'), href: '/settings' }} title={t('user.preferences.title')} subtitle={t('user.preferences.subtitle')} />
       <PreferencesCard />
     </Screen>
   );

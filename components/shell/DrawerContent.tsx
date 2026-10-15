@@ -54,31 +54,31 @@ export function DrawerContent(props: DrawerContentComponentProps) {
             router.push('/select-tenant');
           }}
           accessibilityRole="button"
-          accessibilityLabel={t('SHELL.SWITCH_ORG_A11Y', { name: tenantName ?? t('SHELL.PLATFORM') })}
+          accessibilityLabel={t('app_shell.shell.switchOrgA11y', { name: tenantName ?? t('app_shell.shell.platform') })}
           hitSlop={8}
           className="min-w-0 flex-1 flex-row items-center gap-2"
           testID="shell-switch-org"
         >
           <Text className="shrink text-sm font-semibold text-text-primary" numberOfLines={1}>
-            {tenantName ?? t('SHELL.PLATFORM')}
+            {tenantName ?? t('app_shell.shell.platform')}
           </Text>
           <FontAwesomeIcon icon={faChevronDown} size={10} color={tokens['text-disabled']} />
         </Pressable>
       </View>
 
       <DrawerContentScrollView {...props} contentContainerClassName="px-2 pb-4" contentContainerStyle={{ paddingTop: 4 }}>
-        <GroupLabel>{t('SHELL.GROUP_OVERVIEW')}</GroupLabel>
-        <DrawerNavLink href="/" label={t('SHELL.NAV_DASHBOARD')} icon={faHouse} exact />
-        <DrawerNavLink href="/notifications" label={t('SHELL.NAV_NOTIFICATIONS')} icon={faBell} />
+        <GroupLabel>{t('app_shell.shell.groupOverview')}</GroupLabel>
+        <DrawerNavLink href="/" label={t('app_shell.shell.navDashboard')} icon={faHouse} exact />
+        <DrawerNavLink href="/notifications" label={t('app_shell.shell.navNotifications')} icon={faBell} />
 
-        <GroupLabel>{t('SHELL.GROUP_ACCOUNT')}</GroupLabel>
-        <DrawerNavLink href="/settings/profile" label={t('SHELL.NAV_PROFILE')} icon={faCircleUser} />
-        <DrawerNavLink href="/settings/sessions" label={t('SHELL.NAV_SESSIONS')} icon={faLaptop} />
+        <GroupLabel>{t('app_shell.shell.groupAccount')}</GroupLabel>
+        <DrawerNavLink href="/settings/profile" label={t('app_shell.shell.navProfile')} icon={faCircleUser} />
+        <DrawerNavLink href="/settings/sessions" label={t('app_shell.shell.navSessions')} icon={faLaptop} />
 
-        <GroupLabel>{t('SHELL.GROUP_ORGANIZATION')}</GroupLabel>
-        <DrawerNavLink href="/settings/tenant/members" label={t('SHELL.NAV_MEMBERS')} icon={faUsers} />
-        <DrawerNavLink href="/settings/tenant/invitations" label={t('SHELL.NAV_INVITATIONS')} icon={faEnvelopeOpenText} />
-        <DrawerNavLink href="/settings" label={t('SHELL.NAV_SETTINGS')} icon={faGear} exact />
+        <GroupLabel>{t('app_shell.shell.groupOrganization')}</GroupLabel>
+        <DrawerNavLink href="/settings/tenant/members" label={t('app_shell.shell.navMembers')} icon={faUsers} />
+        <DrawerNavLink href="/settings/tenant/invitations" label={t('app_shell.shell.navInvitations')} icon={faEnvelopeOpenText} />
+        <DrawerNavLink href="/settings" label={t('app_shell.shell.navSettings')} icon={faGear} exact />
       </DrawerContentScrollView>
 
       {/* Footer: language + theme */}

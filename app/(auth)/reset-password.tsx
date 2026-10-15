@@ -38,11 +38,11 @@ export default function ResetPasswordScreen() {
     const errs: FieldErrors = {};
     if (!result.success) {
       const f = result.error.flatten().fieldErrors;
-      if (f.email) errs.email = t('AUTH_UI.EMAIL_INVALID');
-      if (f.resetToken) errs.token = t('AUTH_UI.RESET_TOKEN_REQUIRED');
-      if (f.password) errs.password = t('AUTH_UI.PASSWORD_MIN');
+      if (f.email) errs.email = t('auth.ui.emailInvalid');
+      if (f.resetToken) errs.token = t('auth.ui.resetTokenRequired');
+      if (f.password) errs.password = t('auth.ui.passwordMin');
     }
-    if (confirm !== password) errs.confirm = t('AUTH_UI.PASSWORD_MATCH');
+    if (confirm !== password) errs.confirm = t('auth.ui.passwordMatch');
     setErrors(errs);
     if (!result.success || errs.confirm) return;
 
@@ -50,7 +50,7 @@ export default function ResetPasswordScreen() {
     try {
       await AuthClientService.resetPassword(result.data);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('AUTH_UI.PASSWORD_RESET_DONE'));
+      toast.success(t('auth.ui.passwordResetDone'));
       router.replace('/login');
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -62,14 +62,14 @@ export default function ResetPasswordScreen() {
 
   return (
     <AuthShell
-      title={t('AUTH_UI.RESET_TITLE')}
-      subtitle={t('AUTH_UI.RESET_SUBTITLE')}
+      title={t('auth.resetPassword.title')}
+      subtitle={t('auth.ui.resetSubtitle')}
       icon={faKey}
-      footer={<AuthFooterLink prompt={t('AUTH_UI.REMEMBER_PASSWORD')} label={t('AUTH_UI.SIGN_IN_LINK')} href="/login" testID="auth-reset-login" />}
+      footer={<AuthFooterLink prompt={t('auth.forgotPassword.rememberPrompt')} label={t('auth.ui.signInLink')} href="/login" testID="auth-reset-login" />}
     >
       <View className="gap-3">
         <Input
-          label={t('AUTH_UI.EMAIL')}
+          label={t('auth.ui.email')}
           type="email"
           required
           value={email}
@@ -84,7 +84,7 @@ export default function ResetPasswordScreen() {
           testID="auth-reset-email"
         />
         <Input
-          label={t('AUTH_UI.RESET_TOKEN')}
+          label={t('auth.ui.resetToken')}
           required
           value={token}
           onChangeText={(v) => {
@@ -98,10 +98,10 @@ export default function ResetPasswordScreen() {
           testID="auth-reset-token"
         />
         <Input
-          label={t('AUTH_UI.NEW_PASSWORD')}
+          label={t('auth.ui.newPassword')}
           type="password"
           required
-          hint={t('AUTH_UI.PASSWORD_HINT')}
+          hint={t('auth.register.passwordHint')}
           value={password}
           onChangeText={(v) => {
             setPassword(v);
@@ -114,7 +114,7 @@ export default function ResetPasswordScreen() {
           testID="auth-reset-password"
         />
         <Input
-          label={t('AUTH_UI.CONFIRM_PASSWORD')}
+          label={t('auth.ui.confirmPassword')}
           type="password"
           required
           value={confirm}
@@ -132,7 +132,7 @@ export default function ResetPasswordScreen() {
         />
       </View>
       <Button fullWidth loading={loading} onPress={handleReset} testID="auth-reset-submit">
-        {loading ? t('AUTH_UI.SAVING') : t('AUTH_UI.RESET_PASSWORD')}
+        {loading ? t('auth.ui.saving') : t('auth.ui.resetPassword')}
       </Button>
     </AuthShell>
   );

@@ -1,0 +1,22 @@
+{
+  "app_shell.shell.groupAccount": "Hesap",
+  "app_shell.shell.groupOrganization": "Organizasyon",
+  "app_shell.shell.groupOverview": "Genel bakış",
+  "app_shell.shell.languageA11y": "Dil: {{language}}",
+  "app_shell.shell.myProfile": "Profilim",
+  "app_shell.shell.navDashboard": "Panel",
+  "app_shell.shell.navInvitations": "Davetler",
+  "app_shell.shell.navMembers": "Üyeler",
+  "app_shell.shell.navNotifications": "Bildirimler",
+  "app_shell.shell.navProfile": "Profilim",
+  "app_shell.shell.navSessions": "Oturumlar",
+  "app_shell.shell.navSettings": "Ayarlar",
+  "app_shell.shell.notificationsA11y": "Bildirimler, {{count}} okunmamış",
+  "app_shell.shell.openMenu": "Gezinme menüsünü aç",
+  "app_shell.shell.platform": "Platform",
+  "app_shell.shell.signOut": "Çıkış yap",
+  "app_shell.shell.switchOrgA11y": "Organizasyon değiştir, geçerli: {{name}}",
+  "app_shell.shell.themeToDark": "Koyu temaya geç",
+  "app_shell.shell.themeToLight": "Açık temaya geç",
+  "app_shell.shell.userMenuA11y": "{{name}} için hesap menüsü"
+}

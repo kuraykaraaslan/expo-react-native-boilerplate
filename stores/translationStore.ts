@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { zustandMMKVStorage } from "@/libs/zustandStorage";
-import type { RemoteLanguage, TranslationTree } from "@/modules/localization/translation.dto";
+import type { Messages, RemoteLanguage } from "@/modules/localization/translation.dto";
 
 // ============================================================================
 // Translation cache — the server's language list and every module dictionary
@@ -12,7 +12,7 @@ import type { RemoteLanguage, TranslationTree } from "@/modules/localization/tra
 
 export interface CachedBundle {
   version: string;
-  messages: TranslationTree;
+  messages: Messages;
 }
 
 interface TranslationState {
@@ -49,9 +49,10 @@ export const useTranslationStore = create<TranslationState>()(
     }),
     {
       name: "translation-storage",
-      // v1: bundles keyed by module. A v0 cache (one bundle per language) is dropped
-      // and downloaded again; the bundled dictionaries cover the meantime.
-      version: 1,
+      // v2: flat next-boilerplate keys ("auth.login.title"). An older cache (v0: one
+      // bundle per language, v1: nested keys) is dropped and downloaded again; the
+      // bundled dictionaries cover the meantime.
+      version: 2,
       migrate: () => ({ languages: [], bundles: {} }),
       storage: createJSONStorage(() => zustandMMKVStorage),
       partialize: (state) => ({ languages: state.languages, bundles: state.bundles }),

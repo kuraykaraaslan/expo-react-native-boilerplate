@@ -24,7 +24,7 @@ export default function CreateTenantScreen() {
   async function handleCreate() {
     const trimmed = name.trim();
     if (trimmed.length < 2) {
-      setNameError(t('AUTH_UI.ORG_NAME_INVALID'));
+      setNameError(t('auth.ui.orgNameInvalid'));
       return;
     }
     setNameError(undefined);
@@ -32,7 +32,7 @@ export default function CreateTenantScreen() {
     try {
       const { tenant } = await TenantClientService.createTenant({ name: trimmed, description: description.trim() || null });
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('AUTH_UI.ORG_CREATED'));
+      toast.success(t('auth.ui.orgCreated'));
       // The new organization has no token pair on this device yet: sign in to it as its OWNER.
       router.replace({ pathname: '/tenant-login', params: { tenantId: tenant.tenantId, name: tenant.name } });
     } catch (err: unknown) {
@@ -45,14 +45,14 @@ export default function CreateTenantScreen() {
 
   return (
     <AuthShell
-      title={t('AUTH_UI.CREATE_ORG_TITLE')}
-      subtitle={t('AUTH_UI.CREATE_ORG_SUBTITLE')}
+      title={t('auth.ui.createOrgTitle')}
+      subtitle={t('auth.createTenant.subtitle')}
       icon={faBuilding}
-      footer={<AuthFooterLink label={t('AUTH_UI.BACK_TO_ORGS')} href="/select-tenant" testID="auth-create-org-back" />}
+      footer={<AuthFooterLink label={t('auth.ui.backToOrgs')} href="/select-tenant" testID="auth-create-org-back" />}
     >
       <View className="gap-3">
         <Input
-          label={t('AUTH_UI.ORG_NAME')}
+          label={t('auth.ui.orgName')}
           required
           value={name}
           onChangeText={(v) => {
@@ -65,8 +65,8 @@ export default function CreateTenantScreen() {
           testID="auth-create-org-name"
         />
         <Textarea
-          label={t('AUTH_UI.ORG_DESCRIPTION')}
-          hint={t('COMMON.OPTIONAL')}
+          label={t('auth.ui.orgDescription')}
+          hint={t('common.actions.optional')}
           rows={3}
           value={description}
           onChangeText={setDescription}
@@ -74,7 +74,7 @@ export default function CreateTenantScreen() {
         />
       </View>
       <Button fullWidth loading={saving} onPress={handleCreate} testID="auth-create-org-submit">
-        {saving ? t('AUTH_UI.CREATING_ORG') : t('AUTH_UI.CREATE_ORG')}
+        {saving ? t('auth.ui.creatingOrg') : t('auth.ui.createOrg')}
       </Button>
     </AuthShell>
   );

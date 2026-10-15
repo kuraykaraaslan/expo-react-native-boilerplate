@@ -38,11 +38,11 @@ export default function ChangePasswordScreen() {
     const errs: FieldErrors = {};
     if (!result.success) {
       const f = result.error.flatten().fieldErrors;
-      if (f.currentPassword) errs.current = t('AUTH_UI.PASSWORD_REQUIRED');
-      if (f.newPassword) errs.next = t('AUTH_UI.PASSWORD_MIN');
+      if (f.currentPassword) errs.current = t('auth.ui.passwordRequired');
+      if (f.newPassword) errs.next = t('auth.ui.passwordMin');
     }
-    if (confirm !== next) errs.confirm = t('AUTH_UI.PASSWORD_MATCH');
-    if (current && current === next) errs.next = t('AUTH_UI.PASSWORD_SAME_AS_CURRENT');
+    if (confirm !== next) errs.confirm = t('auth.ui.passwordMatch');
+    if (current && current === next) errs.next = t('auth.ui.passwordSameAsCurrent');
     setErrors(errs);
     if (!result.success || errs.confirm || errs.next) return;
 
@@ -50,7 +50,7 @@ export default function ChangePasswordScreen() {
     try {
       await AuthClientService.changePassword(result.data);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('AUTH_UI.PASSWORD_CHANGED'));
+      toast.success(t('auth.ui.passwordChanged'));
       // The server kept this session and dropped the others; the guards route onward.
       clearPasswordChange();
     } catch (err: unknown) {
@@ -63,15 +63,15 @@ export default function ChangePasswordScreen() {
 
   return (
     <AuthShell
-      title={t('AUTH_UI.CHANGE_PASSWORD_TITLE')}
-      subtitle={t('AUTH_UI.CHANGE_PASSWORD_SUBTITLE')}
+      title={t('auth.ui.changePasswordTitle')}
+      subtitle={t('auth.ui.changePasswordSubtitle')}
       icon={faKey}
-      footer={<AuthFooterLink prompt={t('AUTH_UI.WRONG_ACCOUNT')} label={t('AUTH_UI.SIGN_OUT')} onPress={() => void logout()} testID="auth-change-signout" />}
+      footer={<AuthFooterLink prompt={t('auth.ui.wrongAccount')} label={t('auth.ui.signOut')} onPress={() => void logout()} testID="auth-change-signout" />}
     >
-      <AlertBanner variant="warning" message={t('AUTH_UI.CHANGE_PASSWORD_REQUIRED')} />
+      <AlertBanner variant="warning" message={t('auth.ui.changePasswordRequired')} />
       <View className="gap-3">
         <Input
-          label={t('AUTH_UI.CURRENT_PASSWORD')}
+          label={t('auth.ui.currentPassword')}
           type="password"
           required
           value={current}
@@ -86,10 +86,10 @@ export default function ChangePasswordScreen() {
           testID="auth-change-current"
         />
         <Input
-          label={t('AUTH_UI.NEW_PASSWORD')}
+          label={t('auth.ui.newPassword')}
           type="password"
           required
-          hint={t('AUTH_UI.PASSWORD_HINT')}
+          hint={t('auth.register.passwordHint')}
           value={next}
           onChangeText={(v) => {
             setNext(v);
@@ -102,7 +102,7 @@ export default function ChangePasswordScreen() {
           testID="auth-change-new"
         />
         <Input
-          label={t('AUTH_UI.CONFIRM_PASSWORD')}
+          label={t('auth.ui.confirmPassword')}
           type="password"
           required
           value={confirm}
@@ -120,7 +120,7 @@ export default function ChangePasswordScreen() {
         />
       </View>
       <Button fullWidth loading={loading} onPress={handleChange} testID="auth-change-submit">
-        {loading ? t('AUTH_UI.SAVING') : t('AUTH_UI.CHANGE_PASSWORD')}
+        {loading ? t('auth.ui.saving') : t('auth.ui.changePassword')}
       </Button>
     </AuthShell>
   );

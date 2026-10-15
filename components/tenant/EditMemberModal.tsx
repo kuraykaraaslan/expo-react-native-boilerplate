@@ -35,11 +35,11 @@ export function EditMemberModal({ member, onClose, onSaved }: EditMemberModalPro
       const result = await TenantClientService.updateMember(member.tenantId, member.tenantMemberId, { memberRole: role, memberStatus: status });
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       if (result.member) {
-        toast.success(t('MEMBERS.UPDATED'));
+        toast.success(t('tenant_member.list.updated'));
         onSaved(result.member);
       } else {
         // Dual control: the change is queued for approval, the member is unchanged for now.
-        toast.info(t('MEMBERS.PENDING_APPROVAL'));
+        toast.info(t('tenant_member.list.pendingApproval'));
       }
       onClose();
     } catch (err: unknown) {
@@ -53,15 +53,15 @@ export function EditMemberModal({ member, onClose, onSaved }: EditMemberModalPro
     <Modal
       open={member !== null}
       onClose={saving ? () => {} : onClose}
-      title={t('COMMON.EDIT')}
+      title={t('common.actions.edit')}
       description={member?.user?.email ?? undefined}
       footer={
         <>
           <Button variant="ghost" onPress={onClose} disabled={saving}>
-            {t('COMMON.CANCEL')}
+            {t('common.actions.cancel')}
           </Button>
           <Button loading={saving} onPress={save} testID="members-edit-save">
-            {saving ? t('COMMON.SAVING') : t('COMMON.SAVE')}
+            {saving ? t('common.actions.saving') : t('common.actions.save')}
           </Button>
         </>
       }
@@ -69,17 +69,17 @@ export function EditMemberModal({ member, onClose, onSaved }: EditMemberModalPro
       <View className="gap-4">
         <Select
           id="members-edit-role"
-          label={t('MEMBERS.INVITE_ROLE')}
+          label={t('tenant_member.list.colRole')}
           value={role}
           onChange={(v) => setRole(v as MemberRole)}
-          options={(['USER', 'ADMIN'] as const).map((r) => ({ value: r, label: t(`ROLES.${r}`) }))}
+          options={(['USER', 'ADMIN'] as const).map((r) => ({ value: r, label: t(`tenant_member.roles.${r.toLowerCase()}`) }))}
         />
         <Select
           id="members-edit-status"
-          label={t('ORGANIZATION.STATUS')}
+          label={t('tenant.organization.status')}
           value={status}
           onChange={(v) => setStatus(v as MemberStatus)}
-          options={(['ACTIVE', 'INACTIVE', 'SUSPENDED'] as const).map((s) => ({ value: s, label: t(`MEMBERS.STATUS_${s}`) }))}
+          options={(['ACTIVE', 'INACTIVE', 'SUSPENDED'] as const).map((s) => ({ value: s, label: t(`tenant_member.statusBadge.${s.toLowerCase()}`) }))}
         />
       </View>
     </Modal>

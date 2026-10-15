@@ -9,19 +9,18 @@ import { z } from "zod";
 //   GET  /localization/languages
 //     → { languages: [{ code, name, flag?, versions: { <module>: "<version>" } }] }
 //   POST /localization/languages/{code}   body { platform, module }
-//     → { code, version, platform, module, messages: { KEY: "text" | { … } } }
-// Texts are split per server module, like modules/<module>/dictionary/ here.
+//     → { code, version, platform, module, messages: { "<module>.<area>.<slug>": "text" } }
+// Texts are split per server module, like modules/<module>/dictionaries/ here.
 // A module's `version` changes whenever any of its texts changes in that
 // language (e.g. the max updatedAt of its rows); the app downloads only the
-// modules whose version differs. `messages` has the same nested shape as
-// modules/<module>/dictionary/en.json.
+// modules whose version differs. `messages` is flat, like
+// modules/<module>/dictionaries/en.json: { "auth.login.title": "Welcome back" }.
 // ============================================================================
 
-export type TranslationTree = { [key: string]: string | TranslationTree };
+/** Flat key → text map, as in next-boilerplate: { "auth.login.title": "Welcome back" }. */
+export type Messages = Record<string, string>;
 
-export const TranslationTreeSchema: z.ZodType<TranslationTree> = z.lazy(() =>
-  z.record(z.union([z.string(), TranslationTreeSchema])),
-);
+export const MessagesSchema = z.record(z.string());
 
 /** ISO 639-1/-3 code, optionally with a region ("bg", "pt-BR"); normalised to lowercase language + region as sent. */
 export const LanguageCodeSchema = z.string().regex(/^[a-z]{2,3}(-[A-Za-z0-9]{2,8})?$/i);
@@ -58,6 +57,6 @@ export const TranslationBundleSchema = z.object({
   version: z.string().min(1),
   platform: TranslationPlatformSchema,
   module: z.string().min(1),
-  messages: TranslationTreeSchema,
+  messages: MessagesSchema,
 });
 export type TranslationBundle = z.infer<typeof TranslationBundleSchema>;

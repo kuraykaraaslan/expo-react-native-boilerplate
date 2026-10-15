@@ -1,0 +1,18 @@
+{
+  "tenant_setting.general.dualDesc": "Das Vergeben oder Entziehen von Inhaber- oder Admin-Rechten wartet auf eine zweite Prüfung.",
+  "tenant_setting.general.dualLabel": "Genehmigung für sensible Mitgliederänderungen verlangen",
+  "tenant_setting.general.languageCard": "Sprache",
+  "tenant_setting.general.languageDesc": "Neue Mitglieder starten in dieser Sprache, bis sie eine eigene wählen.",
+  "tenant_setting.general.languageLabel": "Standardsprache",
+  "tenant_setting.general.membershipCard": "Mitgliedschaft",
+  "tenant_setting.general.pending": "{{count}} Änderung zur Genehmigung gesendet",
+  "tenant_setting.general.readOnly": "Nur Inhaber und Admins können diese Einstellungen ändern.",
+  "tenant_setting.general.roleDesc": "Rolle, die neue Mitglieder beim Annehmen einer Einladung erhalten.",
+  "tenant_setting.general.roleLabel": "Standardrolle für Mitglieder",
+  "tenant_setting.general.save": "Änderungen speichern",
+  "tenant_setting.general.saved": "Einstellungen gespeichert",
+  "tenant_setting.general.subtitle": "Standardwerte dieser Organisation",
+  "tenant_setting.general.tile": "Einstellungen",
+  "tenant_setting.general.tileDesc": "Mitglieder-Standards und Sprache",
+  "tenant_setting.general.title": "Organisationseinstellungen"
+}

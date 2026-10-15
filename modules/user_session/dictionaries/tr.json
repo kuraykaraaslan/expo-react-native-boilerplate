@@ -1,0 +1,18 @@
+{
+  "user_session.active.cardDesc": "{{count}} etkin oturum",
+  "user_session.active.empty": "Etkin oturum bulunamadı.",
+  "user_session.active.revoke": "İptal Et",
+  "user_session.active.revokeDesc": "{{device}} oturumu hemen kapatılacak.",
+  "user_session.active.revokeTitle": "Oturumu iptal et",
+  "user_session.active.revoked": "Oturum iptal edildi",
+  "user_session.active.signOut": "Oturumu Kapat",
+  "user_session.active.signOutDesc": "Şu an kullandığınız oturum bu. Çıkış yapılacak ve giriş ekranına döneceksiniz.",
+  "user_session.active.signOutTitle": "Bu cihazdan çıkış yap",
+  "user_session.active.started": "{{date}} başladı",
+  "user_session.active.subtitleMobile": "Hesabınızda oturum açık cihazlar",
+  "user_session.active.thisDevice": "Bu cihaz",
+  "user_session.active.title": "Etkin Oturumlar",
+  "user_session.active.titlePage": "Oturumlar",
+  "user_session.active.unknownDevice": "Bilinmeyen cihaz",
+  "user_session.active.unknownIp": "Bilinmeyen IP"
+}

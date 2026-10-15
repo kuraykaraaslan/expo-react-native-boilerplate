@@ -94,7 +94,7 @@ export default function LegalScreen() {
       });
       setSaved(draft);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('PRIVACY.SAVED'));
+      toast.success(t('privacy.center.saved'));
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       handleApiError(err, 'LegalScreen.save');
@@ -108,24 +108,24 @@ export default function LegalScreen() {
 
   return (
     <Screen refreshing={refreshing} onRefresh={refresh}>
-      <ScreenHeader back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }} title={t('PRIVACY.TITLE')} subtitle={t('PRIVACY.SUBTITLE')} />
+      <ScreenHeader back={{ label: t('account.settingsHub.title'), href: '/settings' }} title={t('privacy.center.title')} subtitle={t('privacy.center.subtitle')} />
 
-      <Card title={t('PRIVACY.POLICIES_CARD')} loading={loading}>
+      <Card title={t('privacy.center.policiesCard')} loading={loading}>
         {hasPolicies ? (
           <View className="gap-3 py-2">
             {policies.privacy ? (
-              <LinkTile icon={faUserShield} title={t('PRIVACY.PRIVACY_POLICY')} onPress={() => open(policies.privacy!)} testID="legal-privacy-policy" />
+              <LinkTile icon={faUserShield} title={t('privacy.center.privacyPolicy')} onPress={() => open(policies.privacy!)} testID="legal-privacy-policy" />
             ) : null}
             {policies.terms ? (
-              <LinkTile icon={faFileContract} title={t('PRIVACY.TERMS')} onPress={() => open(policies.terms!)} testID="legal-terms" />
+              <LinkTile icon={faFileContract} title={t('privacy.center.terms')} onPress={() => open(policies.terms!)} testID="legal-terms" />
             ) : null}
           </View>
         ) : (
-          <Text className="py-3 text-sm text-text-secondary">{t('PRIVACY.NO_POLICIES')}</Text>
+          <Text className="py-3 text-sm text-text-secondary">{t('privacy.center.noPolicies')}</Text>
         )}
       </Card>
 
-      <Card title={t('PRIVACY.CHOICES_CARD')} subtitle={t('PRIVACY.CHOICES_DESC')} loading={loading}>
+      <Card title={t('privacy.center.choicesCard')} subtitle={t('privacy.center.choicesDesc')} loading={loading}>
         {config?.enabled && config.purposes.length > 0 ? (
           <View className="gap-4 py-2">
             {config.purposes.map((p) => (
@@ -134,16 +134,16 @@ export default function LegalScreen() {
                 checked={draft[p.key] ?? false}
                 onChange={(on) => setDraft((d) => ({ ...d, [p.key]: on }))}
                 label={p.label || p.key}
-                description={p.required ? `${p.description ? `${p.description} · ` : ''}${t('PRIVACY.REQUIRED')}` : p.description || undefined}
+                description={p.required ? `${p.description ? `${p.description} · ` : ''}${t('privacy.center.required')}` : p.description || undefined}
                 disabled={p.required}
               />
             ))}
             <Button loading={saving} disabled={!dirty} onPress={save} testID="legal-consent-save">
-              {t('PRIVACY.SAVE')}
+              {t('privacy.center.save')}
             </Button>
           </View>
         ) : (
-          <Text className="py-3 text-sm text-text-secondary">{t('PRIVACY.CHOICES_OFF')}</Text>
+          <Text className="py-3 text-sm text-text-secondary">{t('privacy.center.choicesOff')}</Text>
         )}
       </Card>
     </Screen>

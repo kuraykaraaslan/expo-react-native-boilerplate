@@ -1,0 +1,15 @@
+{
+  "notification_inapp.feed.clearAll": "Borrar todo",
+  "notification_inapp.feed.clearConfirm": "Borrar todo",
+  "notification_inapp.feed.clearDesc": "Todas las notificaciones se eliminarán de forma permanente.",
+  "notification_inapp.feed.clearTitle": "Borrar notificaciones",
+  "notification_inapp.feed.cleared": "Notificaciones borradas",
+  "notification_inapp.feed.empty": "No hay notificaciones",
+  "notification_inapp.feed.emptyDesc": "Estás al día.",
+  "notification_inapp.feed.markAllRead": "Marcar todo como leído",
+  "notification_inapp.feed.markedAll": "Todas las notificaciones se marcaron como leídas",
+  "notification_inapp.feed.subtitle": "{{count}} sin leer",
+  "notification_inapp.feed.subtitleNone": "Estás al día",
+  "notification_inapp.feed.title": "Notificaciones",
+  "notification_inapp.feed.unreadA11y": "Sin leer: {{title}}"
+}

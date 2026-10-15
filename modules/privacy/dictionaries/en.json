@@ -1,0 +1,15 @@
+{
+  "privacy.center.choicesCard": "Privacy choices",
+  "privacy.center.choicesDesc": "Choose which optional uses of your data you allow.",
+  "privacy.center.choicesOff": "Privacy choices are not enabled for this organization.",
+  "privacy.center.noPolicies": "Your organization has not published any policy links.",
+  "privacy.center.policiesCard": "Policies",
+  "privacy.center.privacyPolicy": "Privacy policy",
+  "privacy.center.required": "Always on",
+  "privacy.center.save": "Save choices",
+  "privacy.center.saved": "Privacy choices saved",
+  "privacy.center.subtitle": "Policies and your data choices",
+  "privacy.center.terms": "Terms of service",
+  "privacy.center.tileDesc": "Policies and your data choices",
+  "privacy.center.title": "Privacy & legal"
+}

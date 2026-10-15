@@ -13,7 +13,7 @@ export function ThemeToggle() {
     <Pressable
       onPress={() => setColorScheme(isDark ? 'light' : 'dark')}
       accessibilityRole="button"
-      accessibilityLabel={isDark ? t('SHELL.THEME_TO_LIGHT') : t('SHELL.THEME_TO_DARK')}
+      accessibilityLabel={isDark ? t('app_shell.shell.themeToLight') : t('app_shell.shell.themeToDark')}
       testID="shell-theme-toggle"
       className="h-9 w-9 items-center justify-center rounded-md active:bg-surface-overlay"
     >

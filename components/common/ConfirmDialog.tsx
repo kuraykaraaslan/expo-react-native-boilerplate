@@ -41,7 +41,7 @@ export function ConfirmDialog({ open, onClose, title, description, confirmLabel,
       footer={
         <>
           <Button variant="ghost" onPress={onClose} disabled={busy} testID="confirm-dialog-cancel">
-            {t('COMMON.CANCEL')}
+            {t('common.actions.cancel')}
           </Button>
           <Button variant="danger" onPress={confirm} loading={busy} testID="confirm-dialog-confirm">
             {confirmLabel}

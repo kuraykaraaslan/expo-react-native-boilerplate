@@ -1,0 +1,18 @@
+{
+  "tenant_setting.general.dualDesc": "Granting or removing owner or admin waits for a second reviewer.",
+  "tenant_setting.general.dualLabel": "Require approval for sensitive member changes",
+  "tenant_setting.general.languageCard": "Language",
+  "tenant_setting.general.languageDesc": "New members start in this language until they choose their own.",
+  "tenant_setting.general.languageLabel": "Default language",
+  "tenant_setting.general.membershipCard": "Membership",
+  "tenant_setting.general.pending": "{{count}} change sent for approval",
+  "tenant_setting.general.readOnly": "Only owners and admins can change these settings.",
+  "tenant_setting.general.roleDesc": "Role given to new members when they accept an invitation.",
+  "tenant_setting.general.roleLabel": "Default member role",
+  "tenant_setting.general.save": "Save changes",
+  "tenant_setting.general.saved": "Settings saved",
+  "tenant_setting.general.subtitle": "Defaults for this organization",
+  "tenant_setting.general.tile": "Settings",
+  "tenant_setting.general.tileDesc": "Member defaults and language",
+  "tenant_setting.general.title": "Organization settings"
+}

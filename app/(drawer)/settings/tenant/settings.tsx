@@ -71,8 +71,8 @@ export default function TenantSettingsScreen() {
       setSaved(next);
       setDraft(next);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      if (res.pending.length > 0) toast.info(t('TENANT_SETTINGS.PENDING', { count: res.pending.length }));
-      if (Object.keys(res.settings).length > 0 || res.pending.length === 0) toast.success(t('TENANT_SETTINGS.SAVED'));
+      if (res.pending.length > 0) toast.info(t('tenant_setting.general.pending', { count: res.pending.length }));
+      if (Object.keys(res.settings).length > 0 || res.pending.length === 0) toast.success(t('tenant_setting.general.saved'));
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       handleApiError(err, 'TenantSettingsScreen.save');
@@ -83,9 +83,9 @@ export default function TenantSettingsScreen() {
 
   const header = (
     <ScreenHeader
-      back={{ label: t('ORGANIZATION.TITLE'), href: '/settings/tenant' }}
-      title={t('TENANT_SETTINGS.TITLE')}
-      subtitle={t('TENANT_SETTINGS.SUBTITLE')}
+      back={{ label: t('tenant.organization.title'), href: '/settings/tenant' }}
+      title={t('tenant_setting.general.title')}
+      subtitle={t('tenant_setting.general.subtitle')}
     />
   );
 
@@ -102,7 +102,7 @@ export default function TenantSettingsScreen() {
     return (
       <Screen>
         {header}
-        <Text className="px-1 text-sm text-text-secondary">{t('TENANT_SETTINGS.READ_ONLY')}</Text>
+        <Text className="px-1 text-sm text-text-secondary">{t('tenant_setting.general.readOnly')}</Text>
       </Screen>
     );
   }
@@ -111,40 +111,40 @@ export default function TenantSettingsScreen() {
     <Screen refreshing={refreshing} onRefresh={refresh}>
       {header}
 
-      <Card title={t('TENANT_SETTINGS.MEMBERSHIP_CARD')} loading={loading}>
+      <Card title={t('tenant_setting.general.membershipCard')} loading={loading}>
         <View className="gap-4 py-2">
           <Select
             id="tenant-settings-role"
-            label={t('TENANT_SETTINGS.ROLE_LABEL')}
+            label={t('tenant_setting.general.roleLabel')}
             value={draft.defaultMemberRole}
             onChange={(v) => setDraft((d) => ({ ...d, defaultMemberRole: v }))}
-            options={DEFAULT_MEMBER_ROLES.map((r) => ({ value: r, label: t(`ROLES.${r}`) }))}
+            options={DEFAULT_MEMBER_ROLES.map((r) => ({ value: r, label: t(`tenant_member.roles.${r.toLowerCase()}`) }))}
           />
-          <Text className="-mt-2 text-xs text-text-secondary">{t('TENANT_SETTINGS.ROLE_DESC')}</Text>
+          <Text className="-mt-2 text-xs text-text-secondary">{t('tenant_setting.general.roleDesc')}</Text>
           <Toggle
             checked={draft.tenantMemberDualControl === 'true'}
             onChange={(on) => setDraft((d) => ({ ...d, tenantMemberDualControl: on ? 'true' : 'false' }))}
-            label={t('TENANT_SETTINGS.DUAL_LABEL')}
-            description={t('TENANT_SETTINGS.DUAL_DESC')}
+            label={t('tenant_setting.general.dualLabel')}
+            description={t('tenant_setting.general.dualDesc')}
           />
         </View>
       </Card>
 
-      <Card title={t('TENANT_SETTINGS.LANGUAGE_CARD')} loading={loading}>
+      <Card title={t('tenant_setting.general.languageCard')} loading={loading}>
         <View className="gap-2 py-2">
           <Select
             id="tenant-settings-language"
-            label={t('TENANT_SETTINGS.LANGUAGE_LABEL')}
+            label={t('tenant_setting.general.languageLabel')}
             value={draft.defaultLanguage}
             onChange={(v) => setDraft((d) => ({ ...d, defaultLanguage: v }))}
             options={locales.map((l) => ({ value: l.code, label: `${l.flag} ${l.name}` }))}
           />
-          <Text className="text-xs text-text-secondary">{t('TENANT_SETTINGS.LANGUAGE_DESC')}</Text>
+          <Text className="text-xs text-text-secondary">{t('tenant_setting.general.languageDesc')}</Text>
         </View>
       </Card>
 
       <Button loading={saving} disabled={!dirty || loading} onPress={save} testID="tenant-settings-save">
-        {t('TENANT_SETTINGS.SAVE')}
+        {t('tenant_setting.general.save')}
       </Button>
     </Screen>
   );

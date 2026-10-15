@@ -37,14 +37,14 @@ export function InviteMemberModal({ tenantId, open, onClose, onInvited }: Invite
   async function send() {
     const result = SendInvitationRequestSchema.safeParse({ email: email.trim(), memberRole: role });
     if (!result.success) {
-      setError(t('AUTH_UI.EMAIL_INVALID'));
+      setError(t('auth.ui.emailInvalid'));
       return;
     }
     setSending(true);
     try {
       await TenantClientService.sendInvitation(tenantId, result.data);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('MEMBERS.INVITE_SENT'));
+      toast.success(t('tenant_member.list.inviteSent'));
       onInvited?.();
       close();
     } catch (err: unknown) {
@@ -58,12 +58,12 @@ export function InviteMemberModal({ tenantId, open, onClose, onInvited }: Invite
     <Modal
       open={open}
       onClose={sending ? () => {} : close}
-      title={t('MEMBERS.INVITE')}
-      description={t('MEMBERS.INVITE_DESC')}
+      title={t('tenant_member.list.invite')}
+      description={t('tenant_member.list.inviteDesc')}
       footer={
         <>
           <Button variant="ghost" onPress={close} disabled={sending} testID="members-invite-cancel">
-            {t('COMMON.CANCEL')}
+            {t('common.actions.cancel')}
           </Button>
           <Button
             loading={sending}
@@ -71,14 +71,14 @@ export function InviteMemberModal({ tenantId, open, onClose, onInvited }: Invite
             iconLeft={<FontAwesomeIcon icon={faUserPlus} size={12} color={tokens['primary-fg']} />}
             testID="members-invite-send"
           >
-            {t('MEMBERS.SEND_INVITE')}
+            {t('tenant_member.list.sendInvite')}
           </Button>
         </>
       }
     >
       <View className="gap-4">
         <Input
-          label={t('MEMBERS.INVITE_EMAIL')}
+          label={t('tenant_member.list.inviteEmail')}
           type="email"
           required
           value={email}
@@ -92,10 +92,10 @@ export function InviteMemberModal({ tenantId, open, onClose, onInvited }: Invite
         />
         <Select
           id="members-invite-role"
-          label={t('MEMBERS.INVITE_ROLE')}
+          label={t('tenant_member.list.colRole')}
           value={role}
           onChange={(v) => setRole(v as MemberRole)}
-          options={(['USER', 'ADMIN'] as const).map((r) => ({ value: r, label: t(`ROLES.${r}`) }))}
+          options={(['USER', 'ADMIN'] as const).map((r) => ({ value: r, label: t(`tenant_member.roles.${r.toLowerCase()}`) }))}
         />
       </View>
     </Modal>

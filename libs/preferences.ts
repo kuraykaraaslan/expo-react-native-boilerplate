@@ -36,7 +36,7 @@ export async function pullPreferences(): Promise<void> {
     const language = prefs.language.toLowerCase().split("-")[0];
     if (language && language !== app.locale && isLanguageOffered(language) && !(await selectLanguage(language))) {
       if (getPendingLanguage() !== language) {
-        toast.info(i18n.t("PREFERENCES.LANGUAGE_PENDING", { language: localeName(language) }));
+        toast.info(i18n.t("user.preferences.languagePending", { language: localeName(language) }));
       }
       deferLanguage(language);
     }

@@ -27,12 +27,12 @@ export default function TenantLoginScreen() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
-  const orgName = name || t('AUTH_UI.THIS_ORG');
+  const orgName = name || t('auth.ui.thisOrg');
 
   async function handleLogin() {
     if (!tenantId) return;
     if (!password) {
-      setError(t('AUTH_UI.PASSWORD_REQUIRED'));
+      setError(t('auth.ui.passwordRequired'));
       return;
     }
     setError(undefined);
@@ -54,13 +54,13 @@ export default function TenantLoginScreen() {
 
   return (
     <AuthShell
-      title={t('AUTH_UI.TENANT_LOGIN_TITLE', { name: orgName })}
-      subtitle={t('AUTH_UI.TENANT_LOGIN_SUBTITLE', { email })}
+      title={t('auth.ui.tenantLoginTitle', { name: orgName })}
+      subtitle={t('auth.ui.tenantLoginSubtitle', { email })}
       icon={faBuilding}
-      footer={<AuthFooterLink label={t('AUTH_UI.BACK_TO_ORGS')} href="/select-tenant" testID="auth-tenant-login-back" />}
+      footer={<AuthFooterLink label={t('auth.ui.backToOrgs')} href="/select-tenant" testID="auth-tenant-login-back" />}
     >
       <Input
-        label={t('AUTH_UI.PASSWORD')}
+        label={t('auth.ui.password')}
         type="password"
         required
         value={password}
@@ -77,7 +77,7 @@ export default function TenantLoginScreen() {
         testID="auth-tenant-login-password"
       />
       <Button fullWidth loading={loading} onPress={handleLogin} testID="auth-tenant-login-submit">
-        {loading ? t('AUTH_UI.SIGNING_IN') : t('AUTH_UI.SIGN_IN')}
+        {loading ? t('auth.ui.signingIn') : t('auth.ui.signIn')}
       </Button>
     </AuthShell>
   );

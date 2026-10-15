@@ -1,0 +1,15 @@
+{
+  "privacy.center.choicesCard": "Opciones de privacidad",
+  "privacy.center.choicesDesc": "Elige qué usos opcionales de tus datos permites.",
+  "privacy.center.choicesOff": "Las opciones de privacidad no están activadas para esta organización.",
+  "privacy.center.noPolicies": "Tu organización no ha publicado enlaces de políticas.",
+  "privacy.center.policiesCard": "Políticas",
+  "privacy.center.privacyPolicy": "Política de privacidad",
+  "privacy.center.required": "Siempre activo",
+  "privacy.center.save": "Guardar opciones",
+  "privacy.center.saved": "Opciones de privacidad guardadas",
+  "privacy.center.subtitle": "Políticas y tus opciones de datos",
+  "privacy.center.terms": "Términos del servicio",
+  "privacy.center.tileDesc": "Políticas y tus opciones de datos",
+  "privacy.center.title": "Privacidad y legal"
+}

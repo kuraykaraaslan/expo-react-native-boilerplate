@@ -54,14 +54,14 @@ export default function DashboardScreen() {
 
   return (
     <Screen refreshing={refreshing} onRefresh={refresh}>
-      <ScreenHeader title={t('DASHBOARD.TITLE')} subtitle={t('DASHBOARD.SUBTITLE')} />
+      <ScreenHeader title={t('dashboard.overview.titlePage')} subtitle={t('dashboard.page.subtitle')} />
 
       {membership ? (
         <Card
-          title={t('DASHBOARD.CURRENT_ORG')}
+          title={t('dashboard.overview.currentOrg')}
           headerRight={
             <Button size="sm" variant="outline" onPress={() => router.push('/select-tenant')} testID="dashboard-switch-org">
-              {t('DASHBOARD.SWITCH')}
+              {t('dashboard.overview.switch')}
             </Button>
           }
         >
@@ -88,23 +88,23 @@ export default function DashboardScreen() {
 
       <View className="gap-3">
         <View className="flex-row gap-3">
-          <StatTile icon={faBell} label={t('DASHBOARD.STAT_UNREAD')} value={unread} />
-          <StatTile icon={faLaptop} label={t('DASHBOARD.STAT_SESSIONS')} value={sessions ?? '–'} loading={sessions === null} />
+          <StatTile icon={faBell} label={t('dashboard.overview.statUnread')} value={unread} />
+          <StatTile icon={faLaptop} label={t('dashboard.overview.statSessions')} value={sessions ?? '–'} loading={sessions === null} />
         </View>
-        <StatTile icon={faBuilding} label={t('DASHBOARD.STAT_ORGS')} value={orgCount} />
+        <StatTile icon={faBuilding} label={t('dashboard.overview.statOrgs')} value={orgCount} />
       </View>
 
       <View className="gap-3">
         <Text accessibilityRole="header" className="text-sm font-semibold text-text-primary">
-          {t('DASHBOARD.IN_WORKSPACE')}
+          {t('dashboard.overview.title')}
         </Text>
-        <SectionLabel>{t('SHELL.GROUP_ACCOUNT')}</SectionLabel>
-        <LinkTile icon={faCircleUser} title={t('SETTINGS_HUB.PROFILE')} href="/settings/profile" testID="dashboard-link-profile" />
-        <LinkTile icon={faBell} title={t('SHELL.NAV_NOTIFICATIONS')} href="/notifications" testID="dashboard-link-notifications" />
-        <SectionLabel className="mt-2">{t('SHELL.GROUP_ORGANIZATION')}</SectionLabel>
-        <LinkTile icon={faUsers} title={t('SETTINGS_HUB.MEMBERS')} href="/settings/tenant/members" testID="dashboard-link-members" />
-        <LinkTile icon={faEnvelopeOpenText} title={t('SETTINGS_HUB.INVITATIONS')} href="/settings/tenant/invitations" testID="dashboard-link-invitations" />
-        <LinkTile icon={faGear} title={t('SETTINGS_HUB.TITLE')} href="/settings" testID="dashboard-link-settings" />
+        <SectionLabel>{t('app_shell.shell.groupAccount')}</SectionLabel>
+        <LinkTile icon={faCircleUser} title={t('account.settingsHub.profile')} href="/settings/profile" testID="dashboard-link-profile" />
+        <LinkTile icon={faBell} title={t('app_shell.shell.navNotifications')} href="/notifications" testID="dashboard-link-notifications" />
+        <SectionLabel className="mt-2">{t('app_shell.shell.groupOrganization')}</SectionLabel>
+        <LinkTile icon={faUsers} title={t('account.settingsHub.members')} href="/settings/tenant/members" testID="dashboard-link-members" />
+        <LinkTile icon={faEnvelopeOpenText} title={t('account.settingsHub.invitations')} href="/settings/tenant/invitations" testID="dashboard-link-invitations" />
+        <LinkTile icon={faGear} title={t('account.settingsHub.title')} href="/settings" testID="dashboard-link-settings" />
       </View>
     </Screen>
   );

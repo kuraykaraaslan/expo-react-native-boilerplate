@@ -142,8 +142,8 @@ components/
   common/           Screen, ScreenHeader, LinkTile, StatTile, ConfirmDialog, ...
   shell/            AppHeader, DrawerContent, UserMenu, ThemeToggle, LangSwitcher
   auth/ account/ tenant/
-modules/<domain>/   <domain>.service.client.ts + <domain>.dto.ts + dictionary/<lang>.json
-                    (common, auth, tenant, user, compliance, localization)
+modules/<domain>/   <domain>.service.client.ts + <domain>.dto.ts + dictionaries/<lang>.json
+                    (module ids and translation keys match next-boilerplate)
 stores/             Zustand stores: auth, tenant, notification, sso, app
 libs/               axios, env, i18n, logger, mmkv, secureStorage, theme, ...
 utils/              cn() and small pure helpers

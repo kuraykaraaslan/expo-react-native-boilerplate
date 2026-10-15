@@ -124,7 +124,7 @@ async function retryPendingLanguage(): Promise<void> {
   if (!(await ensureLanguage(code)) || pendingLocale !== code) return;
   pendingLocale = null;
   await switchTo(code);
-  toast.success(i18n.t("PREFERENCES.LANGUAGE_SWITCHED", { language: localeName(code) }));
+  toast.success(i18n.t("user.preferences.languageSwitched", { language: localeName(code) }));
 }
 
 /** Refreshes the language list and any outdated cached modules. Never throws. */

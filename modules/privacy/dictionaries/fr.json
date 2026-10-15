@@ -1,0 +1,15 @@
+{
+  "privacy.center.choicesCard": "Choix de confidentialité",
+  "privacy.center.choicesDesc": "Choisissez les utilisations facultatives de vos données que vous autorisez.",
+  "privacy.center.choicesOff": "Les choix de confidentialité ne sont pas activés pour cette organisation.",
+  "privacy.center.noPolicies": "Votre organisation n'a publié aucun lien de politique.",
+  "privacy.center.policiesCard": "Politiques",
+  "privacy.center.privacyPolicy": "Politique de confidentialité",
+  "privacy.center.required": "Toujours actif",
+  "privacy.center.save": "Enregistrer les choix",
+  "privacy.center.saved": "Choix de confidentialité enregistrés",
+  "privacy.center.subtitle": "Politiques et vos choix de données",
+  "privacy.center.terms": "Conditions d'utilisation",
+  "privacy.center.tileDesc": "Politiques et vos choix de données",
+  "privacy.center.title": "Confidentialité et mentions légales"
+}

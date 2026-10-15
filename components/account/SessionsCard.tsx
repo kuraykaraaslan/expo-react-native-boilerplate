@@ -22,7 +22,7 @@ function SessionRow({ item, current, last, onRevoke }: { item: Session; current:
   const { t } = useTranslation();
   const tokens = useThemeTokens();
   const { name, location, mobile } = describeSession(item);
-  const device = name ?? t('SESSIONS.UNKNOWN_DEVICE');
+  const device = name ?? t('user_session.active.unknownDevice');
   return (
     <View className={`flex-row items-center gap-3 py-3 ${last ? '' : 'border-b border-border'}`}>
       <View className="h-9 w-9 items-center justify-center rounded-lg bg-surface-overlay" accessible={false}>
@@ -35,19 +35,19 @@ function SessionRow({ item, current, last, onRevoke }: { item: Session; current:
           </Text>
           {current ? (
             <Badge variant="success" size="sm">
-              {t('SESSIONS.THIS_DEVICE')}
+              {t('user_session.active.thisDevice')}
             </Badge>
           ) : null}
         </View>
         <Text className="text-xs text-text-secondary" numberOfLines={1}>
-          {[location, item.ipAddress ?? t('SESSIONS.UNKNOWN_IP')].filter(Boolean).join(' · ')}
+          {[location, item.ipAddress ?? t('user_session.active.unknownIp')].filter(Boolean).join(' · ')}
         </Text>
         <Text className="text-xs text-text-secondary" numberOfLines={1}>
-          {t('SESSIONS.STARTED', { date: formatDate(item.createdAt) })}
+          {t('user_session.active.started', { date: formatDate(item.createdAt) })}
         </Text>
       </View>
-      <Button size="sm" variant="outline" onPress={onRevoke} accessibilityLabel={`${t('SESSIONS.REVOKE')}: ${device}`} testID={`account-sessions-revoke-${item.userSessionId}`}>
-        <Text className="text-xs font-medium text-error">{current ? t('SESSIONS.SIGN_OUT') : t('SESSIONS.REVOKE')}</Text>
+      <Button size="sm" variant="outline" onPress={onRevoke} accessibilityLabel={`${t('user_session.active.revoke')}: ${device}`} testID={`account-sessions-revoke-${item.userSessionId}`}>
+        <Text className="text-xs font-medium text-error">{current ? t('user_session.active.signOut') : t('user_session.active.revoke')}</Text>
       </Button>
     </View>
   );
@@ -87,7 +87,7 @@ export function SessionsCard() {
       await AuthClientService.revokeSession(session.userSessionId);
       setSessions((prev) => prev.filter((s) => s.userSessionId !== session.userSessionId));
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('SESSIONS.REVOKED'));
+      toast.success(t('user_session.active.revoked'));
     } catch (err: unknown) {
       handleApiError(err, 'SessionsCard.revoke');
     }
@@ -95,9 +95,9 @@ export function SessionsCard() {
 
   return (
     <>
-      <Card title={t('SESSIONS.CARD')} subtitle={t('SESSIONS.CARD_DESC', { count: sessions.length })} loading={loading}>
+      <Card title={t('user_session.active.title')} subtitle={t('user_session.active.cardDesc', { count: sessions.length })} loading={loading}>
         {sessions.length === 0 ? (
-          <EmptyState icon={faLaptop} title={t('SESSIONS.EMPTY')} className="py-8" />
+          <EmptyState icon={faLaptop} title={t('user_session.active.empty')} className="py-8" />
         ) : (
           sessions.map((s, i) => <SessionRow key={s.userSessionId} item={s} current={s.userSessionId === currentId} last={i === sessions.length - 1} onRevoke={() => setTarget(s)} />)
         )}
@@ -105,9 +105,9 @@ export function SessionsCard() {
       <ConfirmDialog
         open={target !== null}
         onClose={() => setTarget(null)}
-        title={target?.userSessionId === currentId ? t('SESSIONS.SIGN_OUT_TITLE') : t('SESSIONS.REVOKE_TITLE')}
-        description={target?.userSessionId === currentId ? t('SESSIONS.SIGN_OUT_DESC') : t('SESSIONS.REVOKE_DESC', { device: (target ? describeSession(target).name : null) ?? t('SESSIONS.UNKNOWN_DEVICE') })}
-        confirmLabel={target?.userSessionId === currentId ? t('SESSIONS.SIGN_OUT') : t('SESSIONS.REVOKE')}
+        title={target?.userSessionId === currentId ? t('user_session.active.signOutTitle') : t('user_session.active.revokeTitle')}
+        description={target?.userSessionId === currentId ? t('user_session.active.signOutDesc') : t('user_session.active.revokeDesc', { device: (target ? describeSession(target).name : null) ?? t('user_session.active.unknownDevice') })}
+        confirmLabel={target?.userSessionId === currentId ? t('user_session.active.signOut') : t('user_session.active.revoke')}
         onConfirm={() => (target ? revoke(target) : undefined)}
       />
     </>

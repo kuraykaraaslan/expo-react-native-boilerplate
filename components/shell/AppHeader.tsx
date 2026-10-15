@@ -29,7 +29,7 @@ function NotificationBell() {
     <Pressable
       onPress={() => router.push('/notifications')}
       accessibilityRole="button"
-      accessibilityLabel={t('SHELL.NOTIFICATIONS_A11Y', { count: unread })}
+      accessibilityLabel={t('app_shell.shell.notificationsA11y', { count: unread })}
       testID="shell-notifications-bell"
       className="h-9 w-9 items-center justify-center rounded-md active:bg-surface-overlay"
     >
@@ -57,7 +57,7 @@ export function AppHeader({ navigation, title }: AppHeaderProps) {
       <Pressable
         onPress={() => navigation.openDrawer()}
         accessibilityRole="button"
-        accessibilityLabel={t('SHELL.OPEN_MENU')}
+        accessibilityLabel={t('app_shell.shell.openMenu')}
         testID="shell-open-drawer"
         className="h-9 w-9 items-center justify-center rounded-md active:bg-surface-overlay"
       >

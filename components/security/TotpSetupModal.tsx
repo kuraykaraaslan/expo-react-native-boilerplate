@@ -60,7 +60,7 @@ export function TotpSetupModal({ open, onClose, onEnabled }: Props) {
     try {
       await Linking.openURL(setup.otpauthUrl);
     } catch {
-      toast.error(t('SECURITY.NO_AUTH_APP'));
+      toast.error(t('user_security.security.noAuthApp'));
     }
   }
 
@@ -72,14 +72,14 @@ export function TotpSetupModal({ open, onClose, onEnabled }: Props) {
 
   async function verify() {
     if (!isCompleteCode(code)) {
-      setCodeError(t('SECURITY.CODE_INVALID'));
+      setCodeError(t('user_security.security.codeInvalid'));
       return;
     }
     setVerifying(true);
     try {
       const res = await AuthClientService.enableTOTP(code);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('SECURITY.ENABLED'));
+      toast.success(t('user_security.security.enabled'));
       setBackupCodes(res.backupCodes);
     } catch (err: unknown) {
       handleApiError(err, 'TotpSetupModal.verify');
@@ -94,15 +94,15 @@ export function TotpSetupModal({ open, onClose, onEnabled }: Props) {
       <Modal
         open={open}
         onClose={() => {}}
-        title={t('SECURITY.BACKUP_TITLE')}
-        description={t('SECURITY.BACKUP_DESC')}
+        title={t('user_security.security.backupTitle')}
+        description={t('user_security.security.backupDesc')}
         footer={
           <>
-            <Button variant="outline" onPress={() => copy(backupCodes.join('\n'), t('SECURITY.CODES_COPIED'))} testID="security-backup-copy">
-              {t('SECURITY.COPY_CODES')}
+            <Button variant="outline" onPress={() => copy(backupCodes.join('\n'), t('user_security.security.codesCopied'))} testID="security-backup-copy">
+              {t('user_security.security.copyCodes')}
             </Button>
             <Button onPress={close} testID="security-backup-done">
-              {t('SECURITY.BACKUP_SAVED')}
+              {t('user_security.security.backupSaved')}
             </Button>
           </>
         }
@@ -124,37 +124,37 @@ export function TotpSetupModal({ open, onClose, onEnabled }: Props) {
     <Modal
       open={open}
       onClose={verifying ? () => {} : close}
-      title={t('SECURITY.SETUP_TITLE')}
-      description={t('SECURITY.SETUP_DESC')}
+      title={t('user_security.security.setupTitle')}
+      description={t('user_security.security.setupDesc')}
       footer={
         <>
           <Button variant="ghost" onPress={close} disabled={verifying} testID="security-setup-cancel">
-            {t('COMMON.CANCEL')}
+            {t('common.actions.cancel')}
           </Button>
           <Button loading={verifying} disabled={!setup} onPress={verify} testID="security-setup-verify">
-            {t('SECURITY.SETUP_VERIFY')}
+            {t('user_security.security.setupVerify')}
           </Button>
         </>
       }
     >
       <View className="gap-4">
         <Button variant="outline" disabled={!setup} onPress={openApp} testID="security-setup-open-app">
-          {t('SECURITY.OPEN_APP')}
+          {t('user_security.security.openApp')}
         </Button>
         <View className="gap-1.5">
-          <Text className="text-sm font-medium text-text-primary">{t('SECURITY.SECRET_LABEL')}</Text>
+          <Text className="text-sm font-medium text-text-primary">{t('user_security.security.secretLabel')}</Text>
           <View className="flex-row items-center gap-2 rounded-md border border-border bg-surface-overlay px-3 py-2">
             <Text className="min-w-0 flex-1 font-mono text-sm tracking-wider text-text-primary" selectable testID="security-setup-secret">
               {setup ? formatSecret(setup.secret) : '…'}
             </Text>
-            <Button size="sm" variant="ghost" disabled={!setup} onPress={() => setup && copy(setup.secret, t('SECURITY.KEY_COPIED'))} testID="security-setup-copy">
-              {t('SECURITY.COPY_KEY')}
+            <Button size="sm" variant="ghost" disabled={!setup} onPress={() => setup && copy(setup.secret, t('user_security.security.keyCopied'))} testID="security-setup-copy">
+              {t('user_security.security.copyKey')}
             </Button>
           </View>
         </View>
         <Input
-          label={t('SECURITY.CODE_LABEL')}
-          hint={t('SECURITY.CODE_HINT')}
+          label={t('user_security.security.codeLabel')}
+          hint={t('user_security.security.codeHint')}
           value={code}
           onChangeText={(v) => {
             setCode(sanitizeCode(v));

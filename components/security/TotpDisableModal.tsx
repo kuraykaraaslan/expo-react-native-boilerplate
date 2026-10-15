@@ -25,14 +25,14 @@ export function TotpDisableModal({ open, onClose, onDisabled }: Props) {
 
   async function disable() {
     if (!isCompleteCode(code)) {
-      setError(t('SECURITY.CODE_INVALID'));
+      setError(t('user_security.security.codeInvalid'));
       return;
     }
     setBusy(true);
     try {
       await AuthClientService.disableTOTP(code);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('SECURITY.DISABLED'));
+      toast.success(t('user_security.security.disabled'));
       close();
       onDisabled();
     } catch (err: unknown) {
@@ -46,22 +46,22 @@ export function TotpDisableModal({ open, onClose, onDisabled }: Props) {
     <Modal
       open={open}
       onClose={busy ? () => {} : close}
-      title={t('SECURITY.DISABLE_TITLE')}
-      description={t('SECURITY.DISABLE_DESC')}
+      title={t('user_security.security.disableTitle')}
+      description={t('user_security.security.disableDesc')}
       footer={
         <>
           <Button variant="ghost" onPress={close} disabled={busy} testID="security-disable-cancel">
-            {t('COMMON.CANCEL')}
+            {t('common.actions.cancel')}
           </Button>
           <Button variant="danger" loading={busy} onPress={disable} testID="security-disable-confirm">
-            {t('SECURITY.DISABLE')}
+            {t('user_security.security.disable')}
           </Button>
         </>
       }
     >
       <View>
         <Input
-          label={t('SECURITY.CODE_LABEL')}
+          label={t('user_security.security.codeLabel')}
           value={code}
           onChangeText={(v) => {
             setCode(sanitizeCode(v));

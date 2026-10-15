@@ -29,21 +29,21 @@ export function SecurityCard() {
   const membership = useTenantStore((s) => s.selectedTenantMembership);
 
   return (
-    <Card title={t('ACCOUNT.SECURITY_CARD')} subtitle={t('ACCOUNT.SECURITY_CARD_DESC')}>
-      <InfoRow icon={faEnvelope} label={t('ACCOUNT.ROW_EMAIL')}>
+    <Card title={t('account.me.securityCard')} subtitle={t('account.me.securityCardSubtitle')}>
+      <InfoRow icon={faEnvelope} label={t('account.me.emailLabel')}>
         <Text className="shrink text-sm font-medium text-text-primary" numberOfLines={1}>
           {user?.email ?? '—'}
         </Text>
       </InfoRow>
-      <InfoRow icon={faUserShield} label={t('ACCOUNT.ROW_GLOBAL_ROLE')}>
+      <InfoRow icon={faUserShield} label={t('account.me.rowGlobalRole')}>
         <Badge variant={user?.userRole === 'ADMIN' ? 'error' : 'neutral'} size="sm">
           {user?.userRole ?? 'USER'}
         </Badge>
       </InfoRow>
-      <InfoRow icon={faBuilding} label={t('ACCOUNT.ROW_TENANT_ROLE')}>
+      <InfoRow icon={faBuilding} label={t('account.me.rowTenantRole')}>
         {membership ? <RoleBadge role={membership.memberRole} /> : <Text className="text-sm text-text-disabled">—</Text>}
       </InfoRow>
-      <InfoRow icon={faCalendar} label={t('ACCOUNT.ROW_MEMBER_SINCE')} last>
+      <InfoRow icon={faCalendar} label={t('account.me.rowMemberSince')} last>
         <Text className="text-sm text-text-primary">{formatDate(user?.createdAt) || '—'}</Text>
       </InfoRow>
     </Card>

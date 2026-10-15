@@ -7,7 +7,7 @@ export default function SessionsScreen() {
   const { t } = useTranslation();
   return (
     <Screen>
-      <ScreenHeader back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }} title={t('SESSIONS.TITLE')} subtitle={t('SESSIONS.SUBTITLE')} />
+      <ScreenHeader back={{ label: t('account.settingsHub.title'), href: '/settings' }} title={t('user_session.active.titlePage')} subtitle={t('user_session.active.subtitleMobile')} />
       <SessionsCard />
     </Screen>
   );

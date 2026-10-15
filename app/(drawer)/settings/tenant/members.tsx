@@ -105,7 +105,7 @@ export default function MembersScreen() {
       setMembers((prev) => prev.filter((x) => x.tenantMemberId !== m.tenantMemberId));
       setTotal((n) => Math.max(0, n - 1));
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('MEMBERS.REMOVED'));
+      toast.success(t('tenant_member.list.removed'));
     } catch (err: unknown) {
       handleApiError(err, 'MembersScreen.remove');
     }
@@ -116,7 +116,7 @@ export default function MembersScreen() {
       const updated = await TenantClientService.transitionMember(m.tenantId, m.tenantMemberId, { action });
       setMembers((prev) => prev.map((x) => (x.tenantMemberId === m.tenantMemberId ? { ...x, ...updated } : x)));
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t(action === 'suspend' ? 'MEMBERS.SUSPENDED' : 'MEMBERS.REACTIVATED'));
+      toast.success(t(action === 'suspend' ? 'tenant_member.list.suspended' : 'tenant_member.list.reactivated'));
     } catch (err: unknown) {
       handleApiError(err, `MembersScreen.${action}`);
     }
@@ -125,7 +125,7 @@ export default function MembersScreen() {
   if (!membership) {
     return (
       <Screen>
-        <ScreenHeader back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }} title={t('MEMBERS.TITLE')} subtitle={t('MEMBERS.SUBTITLE')} />
+        <ScreenHeader back={{ label: t('account.settingsHub.title'), href: '/settings' }} title={t('tenant_member.list.title')} subtitle={t('tenant_member.list.subtitle')} />
         <NoOrganization />
       </Screen>
     );
@@ -144,14 +144,14 @@ export default function MembersScreen() {
         ListHeaderComponent={
           <View className="mb-4 gap-6">
             <ScreenHeader
-              back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }}
-              title={t('MEMBERS.TITLE')}
-              subtitle={t('MEMBERS.SUBTITLE')}
-              actions={canManage ? [{ label: t('MEMBERS.INVITE'), onPress: () => setInviteOpen(true) }] : undefined}
+              back={{ label: t('account.settingsHub.title'), href: '/settings' }}
+              title={t('tenant_member.list.title')}
+              subtitle={t('tenant_member.list.subtitle')}
+              actions={canManage ? [{ label: t('tenant_member.list.invite'), onPress: () => setInviteOpen(true) }] : undefined}
             />
             <View className="gap-2">
-              <Text className="text-sm font-medium text-text-primary">{t('MEMBERS.SEARCH_LABEL')}</Text>
-              <SearchBar id="members-search" value={query} onChange={setQuery} placeholder={t('MEMBERS.SEARCH_PLACEHOLDER')} />
+              <Text className="text-sm font-medium text-text-primary">{t('tenant_member.list.searchLabel')}</Text>
+              <SearchBar id="members-search" value={query} onChange={setQuery} placeholder={t('tenant_member.list.searchPlaceholder')} />
             </View>
           </View>
         }
@@ -172,7 +172,7 @@ export default function MembersScreen() {
               <View className="min-w-0 flex-1 gap-1">
                 <Text className="text-sm font-medium text-text-primary" numberOfLines={1}>
                   {name}
-                  {isSelf ? <Text className="font-normal text-text-secondary">{`  · ${t('MEMBERS.YOU')}`}</Text> : null}
+                  {isSelf ? <Text className="font-normal text-text-secondary">{`  · ${t('tenant_member.list.you')}`}</Text> : null}
                 </Text>
                 {item.user?.userProfile?.name && item.user?.email ? (
                   <Text className="text-xs text-text-secondary" numberOfLines={1}>
@@ -182,7 +182,7 @@ export default function MembersScreen() {
                 <View className="flex-row flex-wrap items-center gap-1.5">
                   <RoleBadge role={item.memberRole} />
                   {item.memberStatus !== 'ACTIVE' ? <MemberStatusBadge status={item.memberStatus} /> : null}
-                  <Text className="text-xs text-text-disabled">{t('MEMBERS.JOINED', { date: formatDate(item.createdAt) })}</Text>
+                  <Text className="text-xs text-text-disabled">{t('tenant_member.list.joined', { date: formatDate(item.createdAt) })}</Text>
                 </View>
               </View>
               {manageable ? (
@@ -191,7 +191,7 @@ export default function MembersScreen() {
                   trigger={
                     <Pressable
                       accessibilityRole="button"
-                      accessibilityLabel={`${t('COMMON.MORE_ACTIONS')}: ${name}`}
+                      accessibilityLabel={`${t('common.actions.moreActions')}: ${name}`}
                       testID={`members-row-menu-${item.tenantMemberId}`}
                       className="h-9 w-9 items-center justify-center rounded-md active:bg-surface-overlay"
                     >
@@ -199,11 +199,11 @@ export default function MembersScreen() {
                     </Pressable>
                   }
                   items={[
-                    { label: t('COMMON.EDIT'), icon: <FontAwesomeIcon icon={faPen} size={12} color={tokens['text-secondary']} />, onPress: () => setEditing(item) },
+                    { label: t('common.actions.edit'), icon: <FontAwesomeIcon icon={faPen} size={12} color={tokens['text-secondary']} />, onPress: () => setEditing(item) },
                     item.memberStatus === 'SUSPENDED'
-                      ? { label: t('MEMBERS.REACTIVATE'), icon: <FontAwesomeIcon icon={faUserCheck} size={12} color={tokens['text-secondary']} />, onPress: () => transition(item, 'reactivate') }
-                      : { label: t('MEMBERS.SUSPEND'), icon: <FontAwesomeIcon icon={faUserSlash} size={12} color={tokens['text-secondary']} />, onPress: () => setSuspending(item) },
-                    { label: t('COMMON.REMOVE'), icon: <FontAwesomeIcon icon={faTrash} size={12} color={tokens.error} />, danger: true, onPress: () => setRemoving(item) },
+                      ? { label: t('tenant_member.list.reactivate'), icon: <FontAwesomeIcon icon={faUserCheck} size={12} color={tokens['text-secondary']} />, onPress: () => transition(item, 'reactivate') }
+                      : { label: t('tenant_member.list.suspend'), icon: <FontAwesomeIcon icon={faUserSlash} size={12} color={tokens['text-secondary']} />, onPress: () => setSuspending(item) },
+                    { label: t('common.actions.remove'), icon: <FontAwesomeIcon icon={faTrash} size={12} color={tokens.error} />, danger: true, onPress: () => setRemoving(item) },
                   ]}
                 />
               ) : null}
@@ -217,7 +217,7 @@ export default function MembersScreen() {
             </View>
           ) : !loading && members.length > 0 ? (
             <Text className="mt-3 text-xs text-text-secondary">
-              {t('COMMON.SHOWING_RANGE', { start: 1, end: members.length, total })}
+              {t('common.serverDataTable.range', { start: 1, end: members.length, total })}
             </Text>
           ) : null
         }
@@ -227,9 +227,9 @@ export default function MembersScreen() {
               <Spinner size="lg" />
             </View>
           ) : query ? (
-            <Text className="py-10 text-center text-sm text-text-secondary">{t('COMMON.NO_RESULTS')}</Text>
+            <Text className="py-10 text-center text-sm text-text-secondary">{t('common.select.noResults')}</Text>
           ) : (
-            <EmptyState icon={faUsers} title={t('MEMBERS.EMPTY')} />
+            <EmptyState icon={faUsers} title={t('tenant_member.list.empty')} />
           )
         }
       />
@@ -243,17 +243,17 @@ export default function MembersScreen() {
       <ConfirmDialog
         open={suspending !== null}
         onClose={() => setSuspending(null)}
-        title={t('MEMBERS.SUSPEND_TITLE')}
-        description={t('MEMBERS.SUSPEND_DESC', { email: suspending ? memberName(suspending) : '' })}
-        confirmLabel={t('MEMBERS.SUSPEND')}
+        title={t('tenant_member.list.suspendTitle')}
+        description={t('tenant_member.list.suspendDesc', { email: suspending ? memberName(suspending) : '' })}
+        confirmLabel={t('tenant_member.list.suspend')}
         onConfirm={() => (suspending ? transition(suspending, 'suspend') : undefined)}
       />
       <ConfirmDialog
         open={removing !== null}
         onClose={() => setRemoving(null)}
-        title={t('MEMBERS.REMOVE_TITLE')}
-        description={t('MEMBERS.REMOVE_DESC', { email: removing ? memberName(removing) : '' })}
-        confirmLabel={t('COMMON.REMOVE')}
+        title={t('tenant_member.list.removeTitle')}
+        description={t('tenant_member.list.removeDesc', { email: removing ? memberName(removing) : '' })}
+        confirmLabel={t('common.actions.remove')}
         onConfirm={() => (removing ? remove(removing) : undefined)}
       />
     </Screen>

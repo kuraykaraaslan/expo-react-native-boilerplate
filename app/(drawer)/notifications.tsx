@@ -29,7 +29,7 @@ function NotificationRow({ item, onPress }: { item: Notification; onPress: () =>
       onPress={onPress}
       disabled={!unread && !hasTarget}
       accessibilityRole="button"
-      accessibilityLabel={unread ? t('NOTIFICATIONS.UNREAD_A11Y', { title: item.title }) : item.title}
+      accessibilityLabel={unread ? t('notification_inapp.feed.unreadA11y', { title: item.title }) : item.title}
       accessibilityState={{ disabled: !unread && !hasTarget }}
       testID={`notifications-row-${item.notificationId}`}
       className={cn('flex-row gap-3 px-4 py-3', unread && 'bg-primary-subtle/40')}
@@ -99,7 +99,7 @@ export default function NotificationsScreen() {
       await NotificationClientService.markAllAsRead();
       setData((prev) => prev.map((n) => ({ ...n, isRead: true })));
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('NOTIFICATIONS.MARKED_ALL'));
+      toast.success(t('notification_inapp.feed.markedAll'));
     } catch (err: unknown) {
       handleApiError(err, 'NotificationsScreen.markAllRead');
     }
@@ -110,15 +110,15 @@ export default function NotificationsScreen() {
       await NotificationClientService.clearAll();
       setData([]);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('NOTIFICATIONS.CLEARED'));
+      toast.success(t('notification_inapp.feed.cleared'));
     } catch (err: unknown) {
       handleApiError(err, 'NotificationsScreen.clearAll');
     }
   }
 
   const actions = [
-    ...(unreadCount > 0 ? [{ label: t('NOTIFICATIONS.MARK_ALL_READ'), onPress: markAllRead, variant: 'outline' as const }] : []),
-    ...(data.length > 0 ? [{ label: t('NOTIFICATIONS.CLEAR_ALL'), onPress: () => setConfirmClear(true), variant: 'ghost' as const }] : []),
+    ...(unreadCount > 0 ? [{ label: t('notification_inapp.feed.markAllRead'), onPress: markAllRead, variant: 'outline' as const }] : []),
+    ...(data.length > 0 ? [{ label: t('notification_inapp.feed.clearAll'), onPress: () => setConfirmClear(true), variant: 'ghost' as const }] : []),
   ];
 
   return (
@@ -131,8 +131,8 @@ export default function NotificationsScreen() {
         ListHeaderComponent={
           <View className="mb-6 gap-4">
             <ScreenHeader
-              title={t('NOTIFICATIONS.TITLE')}
-              subtitle={unreadCount > 0 ? t('NOTIFICATIONS.SUBTITLE', { count: unreadCount }) : t('NOTIFICATIONS.SUBTITLE_NONE')}
+              title={t('notification_inapp.feed.title')}
+              subtitle={unreadCount > 0 ? t('notification_inapp.feed.subtitle', { count: unreadCount }) : t('notification_inapp.feed.subtitleNone')}
             />
             {actions.length > 0 ? (
               // Actions under the header: two labels don't fit beside the title at phone width.
@@ -163,16 +163,16 @@ export default function NotificationsScreen() {
               <Spinner size="lg" />
             </View>
           ) : (
-            <EmptyState icon={faBellSlash} title={t('NOTIFICATIONS.EMPTY')} description={t('NOTIFICATIONS.EMPTY_DESC')} />
+            <EmptyState icon={faBellSlash} title={t('notification_inapp.feed.empty')} description={t('notification_inapp.feed.emptyDesc')} />
           )
         }
       />
       <ConfirmDialog
         open={confirmClear}
         onClose={() => setConfirmClear(false)}
-        title={t('NOTIFICATIONS.CLEAR_TITLE')}
-        description={t('NOTIFICATIONS.CLEAR_DESC')}
-        confirmLabel={t('NOTIFICATIONS.CLEAR_CONFIRM')}
+        title={t('notification_inapp.feed.clearTitle')}
+        description={t('notification_inapp.feed.clearDesc')}
+        confirmLabel={t('notification_inapp.feed.clearConfirm')}
         onConfirm={clearAll}
       />
     </Screen>

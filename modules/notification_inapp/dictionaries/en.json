@@ -1,0 +1,15 @@
+{
+  "notification_inapp.feed.clearAll": "Clear all",
+  "notification_inapp.feed.clearConfirm": "Clear all",
+  "notification_inapp.feed.clearDesc": "All notifications will be permanently deleted.",
+  "notification_inapp.feed.clearTitle": "Clear notifications",
+  "notification_inapp.feed.cleared": "Notifications cleared",
+  "notification_inapp.feed.empty": "No notifications",
+  "notification_inapp.feed.emptyDesc": "You're all caught up.",
+  "notification_inapp.feed.markAllRead": "Mark all read",
+  "notification_inapp.feed.markedAll": "All notifications marked as read",
+  "notification_inapp.feed.subtitle": "{{count}} unread",
+  "notification_inapp.feed.subtitleNone": "You're all caught up",
+  "notification_inapp.feed.title": "Notifications",
+  "notification_inapp.feed.unreadA11y": "Unread: {{title}}"
+}

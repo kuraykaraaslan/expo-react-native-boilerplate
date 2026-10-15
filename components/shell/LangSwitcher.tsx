@@ -14,7 +14,7 @@ export function LangSwitcher() {
   const switching = useTranslationStore((s) => s.switchingTo) !== null;
 
   const switchTo = async (lang: string) => {
-    if (!(await changeLanguage(lang))) toast.error(t('PREFERENCES.LANGUAGE_UNAVAILABLE'));
+    if (!(await changeLanguage(lang))) toast.error(t('user.preferences.languageUnavailable'));
   };
 
   return (
@@ -24,12 +24,12 @@ export function LangSwitcher() {
         // Must be a Pressable: DropdownMenu injects onPress into the trigger element.
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={switching ? t('PREFERENCES.LANGUAGE_DOWNLOADING') : t('SHELL.LANGUAGE_A11Y', { language: current.name })}
+          accessibilityLabel={switching ? t('user.preferences.languageDownloading') : t('app_shell.shell.languageA11y', { language: current.name })}
           accessibilityState={{ busy: switching }}
           testID="shell-lang-trigger"
           className="min-h-[36px] flex-row items-center gap-1.5 rounded-md px-2 active:bg-surface-overlay"
         >
-          {switching ? <Spinner size="sm" accessibilityLabel={t('PREFERENCES.LANGUAGE_DOWNLOADING')} /> : <Text className="text-base">{current.flag}</Text>}
+          {switching ? <Spinner size="sm" accessibilityLabel={t('user.preferences.languageDownloading')} /> : <Text className="text-base">{current.flag}</Text>}
           <Text className="text-xs font-medium text-text-secondary">{current.code.toUpperCase()}</Text>
         </Pressable>
       }

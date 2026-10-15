@@ -25,7 +25,7 @@ export function AppLockScreen() {
     prompting.current = true;
     setBusy(true);
     try {
-      if (await authenticate(t('SECURITY.LOCK_PROMPT'))) unlock();
+      if (await authenticate(t('user_security.security.lockPrompt'))) unlock();
     } finally {
       prompting.current = false;
       setBusy(false);
@@ -47,15 +47,15 @@ export function AppLockScreen() {
         <FontAwesomeIcon icon={faLock} size={24} color={tokens.primary} />
       </View>
       <View className="items-center gap-1">
-        <Text className="text-xl font-semibold text-text-primary">{t('SECURITY.LOCKED_TITLE')}</Text>
-        <Text className="text-center text-sm text-text-secondary">{t('SECURITY.LOCKED_DESC')}</Text>
+        <Text className="text-xl font-semibold text-text-primary">{t('user_security.security.lockedTitle')}</Text>
+        <Text className="text-center text-sm text-text-secondary">{t('user_security.security.lockedDesc')}</Text>
       </View>
       <View className="w-full max-w-xs gap-2">
         <Button fullWidth loading={busy} onPress={tryUnlock} testID="app-lock-unlock">
-          {t('SECURITY.UNLOCK')}
+          {t('user_security.security.unlock')}
         </Button>
         <Button fullWidth variant="ghost" onPress={() => void logout()} testID="app-lock-sign-out">
-          {t('SHELL.SIGN_OUT')}
+          {t('app_shell.shell.signOut')}
         </Button>
       </View>
     </View>

@@ -1,0 +1,18 @@
+{
+  "user_session.active.cardDesc": "{{count}} sessions actives",
+  "user_session.active.empty": "Aucune session active",
+  "user_session.active.revoke": "Révoquer",
+  "user_session.active.revokeDesc": "{{device}} sera déconnecté immédiatement.",
+  "user_session.active.revokeTitle": "Révoquer la session",
+  "user_session.active.revoked": "Session révoquée",
+  "user_session.active.signOut": "Se déconnecter",
+  "user_session.active.signOutDesc": "Il s'agit de la session que vous utilisez. Vous serez déconnecté et renvoyé à l'écran de connexion.",
+  "user_session.active.signOutTitle": "Se déconnecter de cet appareil",
+  "user_session.active.started": "Démarrée le {{date}}",
+  "user_session.active.subtitleMobile": "Appareils connectés à votre compte",
+  "user_session.active.thisDevice": "Cet appareil",
+  "user_session.active.title": "Sessions actives",
+  "user_session.active.titlePage": "Sessions",
+  "user_session.active.unknownDevice": "Appareil inconnu",
+  "user_session.active.unknownIp": "IP inconnue"
+}

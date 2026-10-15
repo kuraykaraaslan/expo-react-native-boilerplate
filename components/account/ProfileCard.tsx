@@ -48,7 +48,7 @@ export function ProfileCard() {
     try {
       await ProfileClientService.updateProfile(form);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('ACCOUNT.PROFILE_SAVED'));
+      toast.success(t('account.me.profileSaved'));
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       handleApiError(err, 'ProfileCard.save');
@@ -64,11 +64,11 @@ export function ProfileCard() {
       if (result.status === 'ok') {
         setForm((f) => ({ ...f, profilePicture: result.url }));
         await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        toast.success(t('ACCOUNT.PHOTO_UPLOADED'));
+        toast.success(t('account.me.photoUploaded'));
       } else if (result.status === 'denied') {
-        toast.error(t('ACCOUNT.PHOTO_DENIED'));
+        toast.error(t('account.me.photoDenied'));
       } else if (result.status === 'invalid') {
-        toast.error(t(result.reason === 'TOO_LARGE' ? 'ACCOUNT.PHOTO_TOO_LARGE' : 'ACCOUNT.PHOTO_NOT_IMAGE'));
+        toast.error(t(result.reason === 'TOO_LARGE' ? 'account.me.photoTooLarge' : 'account.me.photoNotImage'));
       }
     } catch (err: unknown) {
       handleApiError(err, 'ProfileCard.photo');
@@ -81,13 +81,13 @@ export function ProfileCard() {
 
   return (
     <Card
-      title={t('ACCOUNT.PROFILE_CARD')}
-      subtitle={t('ACCOUNT.PROFILE_CARD_DESC')}
+      title={t('account.me.profileCard')}
+      subtitle={t('account.me.profileCardSubtitle')}
       loading={loading}
       footer={
         <View className="flex-row justify-end">
           <Button loading={saving} onPress={save} testID="account-profile-save">
-            {saving ? t('COMMON.SAVING') : t('ACCOUNT.SAVE_PROFILE')}
+            {saving ? t('common.actions.saving') : t('account.me.saveProfile')}
           </Button>
         </View>
       }
@@ -100,28 +100,28 @@ export function ProfileCard() {
               align="left"
               trigger={
                 <Button variant="outline" size="sm" loading={uploading} disabled={uploading} testID="account-photo-change">
-                  {uploading ? t('ACCOUNT.PHOTO_UPLOADING') : t('ACCOUNT.PHOTO_CHANGE')}
+                  {uploading ? t('account.me.photoUploading') : t('account.me.photoChange')}
                 </Button>
               }
               items={[
-                { label: t('ACCOUNT.PHOTO_TAKE'), onPress: () => changePhoto('camera') },
-                { label: t('ACCOUNT.PHOTO_CHOOSE'), onPress: () => changePhoto('library') },
+                { label: t('account.me.photoTake'), onPress: () => changePhoto('camera') },
+                { label: t('account.me.photoChoose'), onPress: () => changePhoto('library') },
                 ...(form.profilePicture
-                  ? [{ label: t('ACCOUNT.PHOTO_REMOVE'), danger: true, onPress: () => setForm((f) => ({ ...f, profilePicture: null })) }]
+                  ? [{ label: t('account.me.photoRemove'), danger: true, onPress: () => setForm((f) => ({ ...f, profilePicture: null })) }]
                   : []),
               ]}
             />
           </View>
         </View>
         <Input
-          label={t('ACCOUNT.DISPLAY_NAME')}
+          label={t('account.me.displayName')}
           value={form.name ?? ''}
           onChangeText={(v) => setForm((f) => ({ ...f, name: v || null }))}
           autoComplete="name"
           testID="account-profile-name"
         />
         <Textarea
-          label={t('ACCOUNT.BIO')}
+          label={t('account.me.bio')}
           rows={3}
           value={form.biography ?? ''}
           onChangeText={(v) => setForm((f) => ({ ...f, biography: v || null }))}

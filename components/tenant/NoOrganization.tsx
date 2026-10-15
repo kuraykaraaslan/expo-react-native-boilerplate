@@ -9,9 +9,9 @@ export function NoOrganization() {
   return (
     <EmptyState
       icon={faBuilding}
-      title={t('ORGANIZATION.NONE')}
-      description={t('ORGANIZATION.NONE_DESC')}
-      actionLabel={t('ORGANIZATION.SELECT')}
+      title={t('tenant.organization.none')}
+      description={t('tenant.organization.noneDesc')}
+      actionLabel={t('tenant.organization.select')}
       onAction={() => router.push('/select-tenant')}
     />
   );

@@ -46,9 +46,9 @@ export function SSOButtons({ dividerLabel }: Readonly<SSOButtonsProps>) {
       if (outcome === 'signed-in') {
         await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); // the (auth) guard routes into the app
       } else if (outcome === 'unavailable') {
-        toast.error(t('AUTH_UI.SSO_FAILED'));
+        toast.error(t('auth.ui.ssoFailed'));
       } else if (outcome === 'state-mismatch') {
-        toast.error(t('AUTH_UI.SSO_STATE_MISMATCH'));
+        toast.error(t('auth.ui.ssoStateMismatch'));
       }
       // 'cancelled': the user closed the browser - say nothing.
     } catch (err: unknown) {
@@ -73,10 +73,10 @@ export function SSOButtons({ dividerLabel }: Readonly<SSOButtonsProps>) {
             disabled={busy !== null}
             onPress={() => void handlePress(provider)}
             iconLeft={<FontAwesomeIcon icon={meta.icon} size={16} color={meta.brandColor ?? tokens['text-primary']} />}
-            accessibilityLabel={t('AUTH_UI.CONTINUE_WITH', { provider: meta.label })}
+            accessibilityLabel={t('auth.ui.continueWith', { provider: meta.label })}
             testID={`auth-sso-${provider}`}
           >
-            {t('AUTH_UI.CONTINUE_WITH', { provider: meta.label })}
+            {t('auth.ui.continueWith', { provider: meta.label })}
           </Button>
         );
       })}

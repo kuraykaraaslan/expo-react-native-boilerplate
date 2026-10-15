@@ -1,0 +1,17 @@
+{
+  "audit_log.list.actorApiKey": "Chiave API",
+  "audit_log.list.actorSystem": "Sistema",
+  "audit_log.list.actorUnknown": "Sconosciuto",
+  "audit_log.list.adminOnly": "Solo proprietari e amministratori possono leggere il registro di audit.",
+  "audit_log.list.all": "Tutte",
+  "audit_log.list.empty": "Nessuna voce di audit",
+  "audit_log.list.emptyDesc": "Nulla corrisponde a questo filtro.",
+  "audit_log.list.severityFilterLabel": "Gravità",
+  "audit_log.list.subtitle": "Attività rilevanti per la sicurezza in questa organizzazione",
+  "audit_log.list.tileDesc": "Chi ha fatto cosa e quando",
+  "audit_log.list.title": "Registro di audit",
+  "audit_log.severity.critical": "Critica",
+  "audit_log.severity.high": "Alta",
+  "audit_log.severity.low": "Bassa",
+  "audit_log.severity.medium": "Media"
+}

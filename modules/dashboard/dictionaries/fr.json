@@ -1,0 +1,10 @@
+{
+  "dashboard.overview.currentOrg": "Organisation actuelle",
+  "dashboard.overview.statOrgs": "Organisations",
+  "dashboard.overview.statSessions": "Sessions actives",
+  "dashboard.overview.statUnread": "Notifications non lues",
+  "dashboard.overview.switch": "Changer",
+  "dashboard.overview.title": "Dans cet espace de travail",
+  "dashboard.overview.titlePage": "Tableau de bord",
+  "dashboard.page.subtitle": "Vue d'ensemble de votre espace de travail"
+}

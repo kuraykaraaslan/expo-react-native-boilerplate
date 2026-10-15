@@ -1,0 +1,18 @@
+{
+  "tenant_setting.general.dualDesc": "Accorder ou retirer propriétaire ou administrateur attend un second validateur.",
+  "tenant_setting.general.dualLabel": "Exiger une approbation pour les changements sensibles de membres",
+  "tenant_setting.general.languageCard": "Langue",
+  "tenant_setting.general.languageDesc": "Les nouveaux membres démarrent dans cette langue jusqu'à ce qu'ils choisissent la leur.",
+  "tenant_setting.general.languageLabel": "Langue par défaut",
+  "tenant_setting.general.membershipCard": "Adhésion",
+  "tenant_setting.general.pending": "{{count}} modification envoyée pour approbation",
+  "tenant_setting.general.readOnly": "Seuls les propriétaires et administrateurs peuvent modifier ces paramètres.",
+  "tenant_setting.general.roleDesc": "Rôle attribué aux nouveaux membres lorsqu'ils acceptent une invitation.",
+  "tenant_setting.general.roleLabel": "Rôle par défaut des membres",
+  "tenant_setting.general.save": "Enregistrer les modifications",
+  "tenant_setting.general.saved": "Paramètres enregistrés",
+  "tenant_setting.general.subtitle": "Valeurs par défaut de cette organisation",
+  "tenant_setting.general.tile": "Paramètres",
+  "tenant_setting.general.tileDesc": "Valeurs des membres et langue",
+  "tenant_setting.general.title": "Paramètres de l'organisation"
+}

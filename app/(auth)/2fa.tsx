@@ -17,9 +17,9 @@ import { AuthClientService } from '@/modules/auth/auth.service.client';
 import { useAuthStore } from '@/stores/authStore';
 
 const RESEND_SECONDS = 30;
-const OTP_HINT_KEYS = { EMAIL: 'AUTH_UI.OTP_EMAIL_HINT', SMS: 'AUTH_UI.OTP_SMS_HINT', TOTP_APP: 'AUTH_UI.OTP_TOTP_HINT' } as const;
+const OTP_HINT_KEYS = { EMAIL: 'auth.ui.otpEmailHint', SMS: 'auth.ui.otpSmsHint', TOTP_APP: 'auth.ui.otpTotpHint' } as const;
 const OTP_ICONS = { EMAIL: faEnvelope, SMS: faCommentSms, TOTP_APP: faMobileScreen } as const;
-const OTP_LABEL_KEYS = { EMAIL: 'AUTH_UI.OTP_EMAIL', SMS: 'AUTH_UI.OTP_SMS', TOTP_APP: 'AUTH_UI.OTP_TOTP' } as const;
+const OTP_LABEL_KEYS = { EMAIL: 'auth.ui.otpEmail', SMS: 'auth.ui.otpSms', TOTP_APP: 'auth.ui.otpTotp' } as const;
 // Unknown enrolment (the gate was hit on a restored session): offer the channels the server can deliver.
 const FALLBACK_METHODS: OTPMethod[] = ['EMAIL', 'SMS'];
 
@@ -44,7 +44,7 @@ export default function TwoFactorScreen() {
     try {
       await AuthClientService.sendOTP(method, 'authenticate');
       await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      toast.success(t('AUTH_UI.CODE_SENT', { method: methodLabel }));
+      toast.success(t('auth.ui.codeSent', { method: methodLabel }));
       setSent(true);
       startCountdown(RESEND_SECONDS);
     } catch (err: unknown) {
@@ -56,7 +56,7 @@ export default function TwoFactorScreen() {
 
   async function handleVerify() {
     if (!/^\d{6}$/.test(code)) {
-      setCodeError(t('AUTH_UI.OTP_CODE_INVALID'));
+      setCodeError(t('auth.ui.otpCodeInvalid'));
       return;
     }
     setCodeError(undefined);
@@ -78,15 +78,15 @@ export default function TwoFactorScreen() {
 
   return (
     <AuthShell
-      title={t('AUTH_UI.OTP_TITLE')}
-      subtitle={t('AUTH_UI.OTP_SUBTITLE')}
+      title={t('auth.ui.otpTitle')}
+      subtitle={t('auth.ui.otpSubtitle')}
       icon={faShieldHalved}
-      footer={<AuthFooterLink label={t('AUTH_UI.BACK_TO_SIGN_IN')} href="/login" testID="auth-2fa-login" />}
+      footer={<AuthFooterLink label={t('auth.callback.backToSignIn')} href="/login" testID="auth-2fa-login" />}
     >
       {methods.length > 1 ? (
         <RadioGroup
           name="otp-method"
-          legend={t('AUTH_UI.OTP_METHOD')}
+          legend={t('auth.ui.otpMethod')}
           variant="card"
           columns={1}
           value={method}
@@ -109,8 +109,8 @@ export default function TwoFactorScreen() {
       {sent ? (
         <View className="gap-4">
           <Input
-            label={t('AUTH_UI.OTP_CODE')}
-            hint={method === 'TOTP_APP' ? t('AUTH_UI.OTP_TOTP_CODE_HINT') : t('AUTH_UI.OTP_CODE_HINT', { method: methodLabel })}
+            label={t('auth.ui.otpCode')}
+            hint={method === 'TOTP_APP' ? t('auth.ui.otpTotpCodeHint') : t('auth.ui.otpCodeHint', { method: methodLabel })}
             value={code}
             onChangeText={(v) => {
               setCode(v.replace(/\D/g, '').slice(0, 6));
@@ -127,17 +127,17 @@ export default function TwoFactorScreen() {
             testID="auth-2fa-code"
           />
           <Button fullWidth loading={loading} onPress={handleVerify} testID="auth-2fa-verify">
-            {loading ? t('AUTH_UI.VERIFYING') : t('AUTH_UI.VERIFY')}
+            {loading ? t('auth.ui.verifying') : t('auth.ui.verify')}
           </Button>
           {method !== 'TOTP_APP' ? (
             <Button variant="ghost" fullWidth onPress={handleSend} disabled={loading || remaining > 0} testID="auth-2fa-resend">
-              {remaining > 0 ? t('AUTH_UI.RESEND_IN', { time: remaining }) : t('AUTH_UI.RESEND_CODE')}
+              {remaining > 0 ? t('auth.ui.resendIn', { time: remaining }) : t('auth.ui.resendCode')}
             </Button>
           ) : null}
         </View>
       ) : (
         <Button fullWidth loading={loading} onPress={handleSend} testID="auth-2fa-send">
-          {loading ? t('AUTH_UI.SENDING') : t('AUTH_UI.SEND_CODE')}
+          {loading ? t('auth.ui.sending') : t('auth.ui.sendCode')}
         </Button>
       )}
     </AuthShell>

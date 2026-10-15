@@ -1,0 +1,18 @@
+{
+  "tenant_setting.general.dualDesc": "Conceder o quitar propietario o administrador espera a un segundo revisor.",
+  "tenant_setting.general.dualLabel": "Exigir aprobación para cambios sensibles de miembros",
+  "tenant_setting.general.languageCard": "Idioma",
+  "tenant_setting.general.languageDesc": "Los nuevos miembros empiezan en este idioma hasta que elijan el suyo.",
+  "tenant_setting.general.languageLabel": "Idioma predeterminado",
+  "tenant_setting.general.membershipCard": "Membresía",
+  "tenant_setting.general.pending": "{{count}} cambio enviado para aprobación",
+  "tenant_setting.general.readOnly": "Solo propietarios y administradores pueden cambiar estos ajustes.",
+  "tenant_setting.general.roleDesc": "Rol que reciben los nuevos miembros al aceptar una invitación.",
+  "tenant_setting.general.roleLabel": "Rol predeterminado de miembro",
+  "tenant_setting.general.save": "Guardar cambios",
+  "tenant_setting.general.saved": "Ajustes guardados",
+  "tenant_setting.general.subtitle": "Valores predeterminados de esta organización",
+  "tenant_setting.general.tile": "Ajustes",
+  "tenant_setting.general.tileDesc": "Valores de miembros e idioma",
+  "tenant_setting.general.title": "Ajustes de la organización"
+}

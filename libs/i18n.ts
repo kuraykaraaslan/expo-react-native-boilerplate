@@ -1,20 +1,30 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import auth from "@/modules/auth/dictionary";
-import common from "@/modules/common/dictionary";
-import compliance from "@/modules/compliance/dictionary";
-import localization from "@/modules/localization/dictionary";
-import type { TranslationTree } from "@/modules/localization/translation.dto";
-import tenant from "@/modules/tenant/dictionary";
-import user from "@/modules/user/dictionary";
+import { dictionaries as account } from "@/modules/account/dictionaries";
+import { dictionaries as appShell } from "@/modules/app_shell/dictionaries";
+import { dictionaries as auditLog } from "@/modules/audit_log/dictionaries";
+import { dictionaries as auth } from "@/modules/auth/dictionaries";
+import { dictionaries as common } from "@/modules/common/dictionaries";
+import { dictionaries as dashboard } from "@/modules/dashboard/dictionaries";
+import { dictionaries as notificationInapp } from "@/modules/notification_inapp/dictionaries";
+import { dictionaries as privacy } from "@/modules/privacy/dictionaries";
+import { dictionaries as tenant } from "@/modules/tenant/dictionaries";
+import { dictionaries as tenantInvitation } from "@/modules/tenant_invitation/dictionaries";
+import { dictionaries as tenantMember } from "@/modules/tenant_member/dictionaries";
+import { dictionaries as tenantSetting } from "@/modules/tenant_setting/dictionaries";
+import { dictionaries as user } from "@/modules/user/dictionaries";
+import { dictionaries as userSecurity } from "@/modules/user_security/dictionaries";
+import { dictionaries as userSession } from "@/modules/user_session/dictionaries";
+import type { Messages } from "@/modules/localization/translation.dto";
 import { useTranslationStore } from "@/stores/translationStore";
 
 // ============================================================================
 // i18n Singleton — initialized once, imported everywhere
 //
-// Texts are split per module (modules/<module>/dictionary/<lang>.json), like the
-// server's dictionaries, and merged into ONE i18next namespace — so t("AUTH.X")
-// works from anywhere and modules must not share a top-level section name.
+// Texts are split per module (modules/<module>/dictionaries/<lang>.json) with the
+// same flat keys as next-boilerplate — "<module>.<area>.<slug>", e.g.
+// "auth.login.title" — so web and mobile can share a key and its translation.
+// All modules merge into ONE i18next namespace; the module prefix keeps them apart.
 // Two layers per module:
 //   1. Bundled  — the dictionary JSON shipped in the binary. Used on the very
 //                 first launch and offline; English is also the fallback for
@@ -29,13 +39,22 @@ export const NAMESPACE = "common";
 export const FALLBACK_LOCALE = "en";
 
 /** module → language → bundled texts. */
-export const BUNDLED_DICTIONARIES: Record<string, Record<string, TranslationTree>> = {
-  common,
+export const BUNDLED_DICTIONARIES: Record<string, Record<string, Messages>> = {
+  account,
+  app_shell: appShell,
+  audit_log: auditLog,
   auth,
-  user,
+  common,
+  dashboard,
+  notification_inapp: notificationInapp,
+  privacy,
   tenant,
-  compliance,
-  localization,
+  tenant_invitation: tenantInvitation,
+  tenant_member: tenantMember,
+  tenant_setting: tenantSetting,
+  user,
+  user_security: userSecurity,
+  user_session: userSession,
 };
 
 /** Languages shipped in the binary — usable even when the server was never reached. */
@@ -56,7 +75,7 @@ export function normalizeLocale(code: string): string {
   return code.trim().toLowerCase();
 }
 
-function bundledTexts(code: string): TranslationTree[] {
+function bundledTexts(code: string): Messages[] {
   return Object.values(BUNDLED_DICTIONARIES).flatMap((byLanguage) => (byLanguage[code] ? [byLanguage[code]] : []));
 }
 
@@ -84,6 +103,9 @@ if (!i18n.isInitialized) {
     lng: FALLBACK_LOCALE,
     fallbackLng: FALLBACK_LOCALE,
     defaultNS: NAMESPACE,
+    // Keys are flat and contain dots ("auth.login.title"): never split them into a path.
+    keySeparator: false,
+    nsSeparator: false,
     lowerCaseLng: true,
     interpolation: {
       escapeValue: false,

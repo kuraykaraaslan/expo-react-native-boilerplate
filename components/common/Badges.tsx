@@ -33,7 +33,7 @@ export function MemberStatusBadge({ status }: { status: MemberStatus }) {
   const { t } = useTranslation();
   return (
     <Badge variant={MEMBER_STATUS_VARIANT[status] ?? 'neutral'} size="sm" dot>
-      {t(`MEMBERS.STATUS_${status}`)}
+      {t(`tenant_member.statusBadge.${status.toLowerCase()}`)}
     </Badge>
   );
 }
@@ -42,7 +42,7 @@ export function InvitationStatusBadge({ status }: { status: InvitationStatus }) 
   const { t } = useTranslation();
   return (
     <Badge variant={INVITATION_VARIANT[status] ?? 'neutral'} size="sm">
-      {t(`INVITATIONS.STATUS_${status}`)}
+      {t(`tenant_invitation.statusBadge.${status.toLowerCase()}`)}
     </Badge>
   );
 }

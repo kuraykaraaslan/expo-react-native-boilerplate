@@ -24,5 +24,5 @@ export async function logout(): Promise<void> {
   useAppLockStore.getState().reset(); // the next account must not inherit this one's lock
   useTenantStore.getState().flush();
   router.replace('/login');
-  toast.success(i18n.t('AUTH.LOGOUT_SUCCESS'));
+  toast.success(i18n.t('auth.common.logoutSuccess'));
 }

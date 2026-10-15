@@ -1,0 +1,15 @@
+{
+  "notification_inapp.feed.clearAll": "Alle löschen",
+  "notification_inapp.feed.clearConfirm": "Alle löschen",
+  "notification_inapp.feed.clearDesc": "Alle Benachrichtigungen werden dauerhaft gelöscht.",
+  "notification_inapp.feed.clearTitle": "Benachrichtigungen löschen",
+  "notification_inapp.feed.cleared": "Benachrichtigungen gelöscht",
+  "notification_inapp.feed.empty": "Keine Benachrichtigungen",
+  "notification_inapp.feed.emptyDesc": "Sie sind auf dem neuesten Stand.",
+  "notification_inapp.feed.markAllRead": "Alle als gelesen markieren",
+  "notification_inapp.feed.markedAll": "Alle Benachrichtigungen als gelesen markiert",
+  "notification_inapp.feed.subtitle": "{{count}} ungelesen",
+  "notification_inapp.feed.subtitleNone": "Sie sind auf dem neuesten Stand",
+  "notification_inapp.feed.title": "Benachrichtigungen",
+  "notification_inapp.feed.unreadA11y": "Ungelesen: {{title}}"
+}

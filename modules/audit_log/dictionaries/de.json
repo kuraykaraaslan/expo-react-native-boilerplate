@@ -1,0 +1,17 @@
+{
+  "audit_log.list.actorApiKey": "API-Schlüssel",
+  "audit_log.list.actorSystem": "System",
+  "audit_log.list.actorUnknown": "Unbekannt",
+  "audit_log.list.adminOnly": "Nur Inhaber und Admins können das Audit-Protokoll lesen.",
+  "audit_log.list.all": "Alle",
+  "audit_log.list.empty": "Keine Audit-Einträge",
+  "audit_log.list.emptyDesc": "Nichts entspricht diesem Filter.",
+  "audit_log.list.severityFilterLabel": "Schweregrad",
+  "audit_log.list.subtitle": "Sicherheitsrelevante Aktivitäten in dieser Organisation",
+  "audit_log.list.tileDesc": "Wer was wann getan hat",
+  "audit_log.list.title": "Audit-Protokoll",
+  "audit_log.severity.critical": "Kritisch",
+  "audit_log.severity.high": "Hoch",
+  "audit_log.severity.low": "Niedrig",
+  "audit_log.severity.medium": "Mittel"
+}

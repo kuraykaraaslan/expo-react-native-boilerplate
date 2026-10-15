@@ -1,0 +1,17 @@
+{
+  "audit_log.list.actorApiKey": "API key",
+  "audit_log.list.actorSystem": "System",
+  "audit_log.list.actorUnknown": "Unknown",
+  "audit_log.list.adminOnly": "Only owners and admins can read the audit log.",
+  "audit_log.list.all": "All",
+  "audit_log.list.empty": "No audit entries",
+  "audit_log.list.emptyDesc": "Nothing matches this filter.",
+  "audit_log.list.severityFilterLabel": "Severity",
+  "audit_log.list.subtitle": "Security-relevant activity in this organization",
+  "audit_log.list.tileDesc": "Who did what, and when",
+  "audit_log.list.title": "Audit Logs",
+  "audit_log.severity.critical": "Critical",
+  "audit_log.severity.high": "High",
+  "audit_log.severity.low": "Low",
+  "audit_log.severity.medium": "Medium"
+}

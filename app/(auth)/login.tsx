@@ -34,8 +34,8 @@ export default function LoginScreen() {
     if (!result.success) {
       const errs = result.error.flatten().fieldErrors;
       setErrors({
-        email: errs.email ? t('AUTH_UI.EMAIL_INVALID') : undefined,
-        password: errs.password ? t('AUTH_UI.PASSWORD_REQUIRED') : undefined,
+        email: errs.email ? t('auth.ui.emailInvalid') : undefined,
+        password: errs.password ? t('auth.ui.passwordRequired') : undefined,
       });
       return;
     }
@@ -56,7 +56,7 @@ export default function LoginScreen() {
       }
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       if (login.passwordExpiresInDays != null) {
-        toast.warning(t('AUTH_UI.PASSWORD_EXPIRES_SOON', { count: login.passwordExpiresInDays }));
+        toast.warning(t('auth.ui.passwordExpiresSoon', { count: login.passwordExpiresInDays }));
       }
       // The (auth) layout guard now sees a signed-in user and routes to the app.
     } catch (err: unknown) {
@@ -64,7 +64,7 @@ export default function LoginScreen() {
       const { statusCode } = normalizeApiError(err);
       // The tenant is gone or inactive: retrying cannot help, and there is no session to list other organizations with.
       if (statusCode === 404) {
-        toast.error(t('AUTH_UI.TENANT_UNAVAILABLE'));
+        toast.error(t('auth.ui.tenantUnavailable'));
         return;
       }
       handleApiError(err, 'LoginScreen.login');
@@ -75,17 +75,17 @@ export default function LoginScreen() {
 
   return (
     <AuthShell
-      title={t('AUTH_UI.LOGIN_TITLE')}
-      subtitle={t('AUTH_UI.LOGIN_SUBTITLE')}
-      footer={<AuthFooterLink prompt={t('AUTH_UI.NO_ACCOUNT')} label={t('AUTH_UI.SIGN_UP')} href="/register" testID="auth-login-register" />}
+      title={t('auth.ui.loginTitle')}
+      subtitle={t('auth.ui.loginSubtitle')}
+      footer={<AuthFooterLink prompt={t('auth.login.noAccountPrompt')} label={t('auth.ui.signUp')} href="/register" testID="auth-login-register" />}
     >
       <SSOButtons
-        dividerLabel={t('AUTH_UI.OR_CONTINUE_EMAIL')}
+        dividerLabel={t('auth.login.orContinueWithEmail')}
       />
 
       <View className="gap-3">
         <Input
-          label={t('AUTH_UI.EMAIL')}
+          label={t('auth.ui.email')}
           type="email"
           value={email}
           onChangeText={(v) => {
@@ -99,7 +99,7 @@ export default function LoginScreen() {
           testID="auth-login-email"
         />
         <Input
-          label={t('AUTH_UI.PASSWORD')}
+          label={t('auth.ui.password')}
           type="password"
           value={password}
           onChangeText={(v) => {
@@ -114,16 +114,16 @@ export default function LoginScreen() {
           prefixIcon={<FontAwesomeIcon icon={faLock} size={14} color={tokens['text-disabled']} />}
           testID="auth-login-password"
         />
-        <Checkbox checked={remember} onChange={setRemember} label={t('AUTH_UI.REMEMBER_ME')} />
+        <Checkbox checked={remember} onChange={setRemember} label={t('auth.ui.rememberMe')} />
       </View>
 
       <View className="gap-4">
         <Button fullWidth loading={loading} onPress={handleLogin} testID="auth-login-submit">
-          {loading ? t('AUTH_UI.SIGNING_IN') : t('AUTH_UI.SIGN_IN')}
+          {loading ? t('auth.ui.signingIn') : t('auth.ui.signIn')}
         </Button>
         <Link href="/forgot-password" asChild>
           <Pressable accessibilityRole="link" hitSlop={8} className="self-center" testID="auth-login-forgot">
-            <Text className="text-xs font-medium text-primary">{t('AUTH_UI.FORGOT_PASSWORD')}</Text>
+            <Text className="text-xs font-medium text-primary">{t('auth.login.forgotPassword')}</Text>
           </Pressable>
         </Link>
       </View>

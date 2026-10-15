@@ -159,7 +159,7 @@ async function endTenantSession(tenantId: string, noticeKey: string): Promise<vo
     tenantState.setActiveTenantId(fallback);
     tenantState.selectMembership(null);
     tenantState.setNeedsTenantSelection(true);
-    toast.error(i18n.t("ERRORS.ORGANIZATION_SWITCH"));
+    toast.error(i18n.t("common.errors.organizationSwitch"));
     return;
   }
   auth.logout();
@@ -190,14 +190,14 @@ axiosInstance.interceptors.response.use(
     }
 
     if ((status === 401 || status === 403 || status === 404) && isTenantUnavailable(e)) {
-      await endTenantSession(tenantId, "ERRORS.ORGANIZATION_UNAVAILABLE");
+      await endTenantSession(tenantId, "common.errors.organizationUnavailable");
       return Promise.reject(markHandled(error));
     }
 
     if (status !== 401 || !e.rawMessage) return Promise.reject(error);
 
     if (SESSION_DEAD.has(e.rawMessage)) {
-      await endTenantSession(tenantId, "ERRORS.SESSION_ENDED");
+      await endTenantSession(tenantId, "common.errors.sessionEnded");
       return Promise.reject(markHandled(error));
     }
 
@@ -212,7 +212,7 @@ axiosInstance.interceptors.response.use(
     const outcome = await refreshTenant(tenantId);
     if (outcome === "refreshed") return axiosInstance({ ...config, _retry: true });
     if (outcome === "session-dead") {
-      await endTenantSession(tenantId, "ERRORS.SESSION_ENDED");
+      await endTenantSession(tenantId, "common.errors.sessionEnded");
       return Promise.reject(markHandled(error));
     }
     return Promise.reject(error);

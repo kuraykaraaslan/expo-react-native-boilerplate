@@ -22,15 +22,15 @@ export function formatRelative(iso?: string | null, now: number = Date.now()): s
   const d = toDate(iso);
   if (!d) return "";
   const secs = Math.max(0, Math.round((now - d.getTime()) / 1000));
-  if (secs < 45) return i18n.t("DATE.JUST_NOW");
+  if (secs < 45) return i18n.t("common.date.justNow");
   const mins = Math.round(secs / 60);
-  if (mins < 2) return i18n.t("DATE.A_MINUTE_AGO");
-  if (mins < 60) return i18n.t("DATE.MINUTES_AGO", { time: mins });
+  if (mins < 2) return i18n.t("common.date.aMinuteAgo");
+  if (mins < 60) return i18n.t("common.date.minutesAgo", { time: mins });
   const hours = Math.round(mins / 60);
-  if (hours < 2) return i18n.t("DATE.AN_HOUR_AGO");
-  if (hours < 24) return i18n.t("DATE.HOURS_AGO", { time: hours });
+  if (hours < 2) return i18n.t("common.date.anHourAgo");
+  if (hours < 24) return i18n.t("common.date.hoursAgo", { time: hours });
   const days = Math.round(hours / 24);
-  if (days < 2) return i18n.t("DATE.A_DAY_AGO");
-  if (days < 7) return i18n.t("DATE.DAYS_AGO", { time: days });
+  if (days < 2) return i18n.t("common.date.aDayAgo");
+  if (days < 7) return i18n.t("common.date.daysAgo", { time: days });
   return formatDate(iso);
 }

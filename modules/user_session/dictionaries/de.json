@@ -1,0 +1,18 @@
+{
+  "user_session.active.cardDesc": "{{count}} aktive Sitzungen",
+  "user_session.active.empty": "Keine aktiven Sitzungen",
+  "user_session.active.revoke": "Widerrufen",
+  "user_session.active.revokeDesc": "{{device}} wird sofort abgemeldet.",
+  "user_session.active.revokeTitle": "Sitzung widerrufen",
+  "user_session.active.revoked": "Sitzung widerrufen",
+  "user_session.active.signOut": "Abmelden",
+  "user_session.active.signOutDesc": "Dies ist die Sitzung, die Sie gerade verwenden. Sie werden abgemeldet und zum Anmeldebildschirm zurückgeleitet.",
+  "user_session.active.signOutTitle": "Von diesem Gerät abmelden",
+  "user_session.active.started": "Gestartet am {{date}}",
+  "user_session.active.subtitleMobile": "Geräte, die bei Ihrem Konto angemeldet sind",
+  "user_session.active.thisDevice": "Dieses Gerät",
+  "user_session.active.title": "Aktive Sitzungen",
+  "user_session.active.titlePage": "Sitzungen",
+  "user_session.active.unknownDevice": "Unbekanntes Gerät",
+  "user_session.active.unknownIp": "Unbekannte IP"
+}

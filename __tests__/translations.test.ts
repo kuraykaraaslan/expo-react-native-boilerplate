@@ -18,13 +18,13 @@ jest.mock("expo-router", () => ({ router: { replace: jest.fn(), push: jest.fn() 
 jest.mock("sonner-native", () => ({ toast: { error: jest.fn(), success: jest.fn(), info: jest.fn() } }));
 jest.mock("@/libs/logger", () => ({ __esModule: true, default: { warn: jest.fn(), error: jest.fn(), info: jest.fn(), debug: jest.fn() } }));
 
-type Tree = Record<string, unknown>;
+type Tree = Record<string, string>;
 
 // Bulgarian is not bundled: the server offers it in two modules.
-const BG_COMMON = { SETTINGS_HUB: { TITLE: "Настройки" } };
-const BG_AUTH = { AUTH: { LOGIN: "Вход" } };
-const BG = { code: "bg", name: "Български", flag: "🇧🇬", versions: { common: "v1", auth: "v1" } };
-const EN = { code: "en", name: "English", flag: "🇬🇧", versions: { common: "v1" } };
+const BG_ACCOUNT = { "account.settingsHub.title": "Настройки" };
+const BG_AUTH = { "auth.ui.signIn": "Вход" };
+const BG = { code: "bg", name: "Български", flag: "🇧🇬", versions: { account: "v1", auth: "v1" } };
+const EN = { code: "en", name: "English", flag: "🇬🇧", versions: { account: "v1" } };
 
 const bundle = (code: string, module: string, version: string, messages: Tree) => ({ code, version, platform: "ios", module, messages });
 
@@ -61,34 +61,34 @@ beforeEach(async () => {
 
 describe("bundled dictionaries", () => {
   it("merges every module into one namespace", () => {
-    expect(i18n.t("PREFERENCES.LANGUAGE")).toBe("Language"); // user module
-    expect(i18n.t("SETTINGS_HUB.TITLE")).not.toBe("SETTINGS_HUB.TITLE"); // common module
-    expect(i18n.t("AUTH.LOGIN", { defaultValue: "" })).not.toBe(""); // auth module
+    expect(i18n.t("user.preferences.languageLabel")).toBe("Language"); // user module
+    expect(i18n.t("account.settingsHub.title")).toBe("Settings"); // account module
+    expect(i18n.t("auth.login.forgotPassword")).toBe("Forgot your password?"); // auth module, a key shared with the web
   });
 });
 
 describe("syncTranslations", () => {
   it("caches the server's language list without a token (a guest route)", async () => {
     const seen = mockRoute("get", "/localization/languages", { languages: [EN, BG] });
-    serveLanguage("en", { common: ["v1", {}] });
+    serveLanguage("en", { account: ["v1", {}] });
     await syncTranslations();
     expect(seen[0].headers.authorization).toBeUndefined();
     expect(useTranslationStore.getState().languages.map((l) => l.code)).toEqual(["en", "bg"]);
   });
 
   it("re-downloads only the module whose version changed, and shows the new text", async () => {
-    cache({ bg: { common: { version: "v1", messages: BG_COMMON }, auth: { version: "v1", messages: BG_AUTH } } });
-    mockRoute("get", "/localization/languages", { languages: [{ ...BG, versions: { common: "v2", auth: "v1" } }] });
-    const downloads = serveLanguage("bg", { common: ["v2", { SETTINGS_HUB: { TITLE: "Настройки v2" } }] });
+    cache({ bg: { account: { version: "v1", messages: BG_ACCOUNT }, auth: { version: "v1", messages: BG_AUTH } } });
+    mockRoute("get", "/localization/languages", { languages: [{ ...BG, versions: { account: "v2", auth: "v1" } }] });
+    const downloads = serveLanguage("bg", { account: ["v2", { "account.settingsHub.title": "Настройки v2" }] });
     await syncTranslations();
-    expect(downloads.map((d) => d.body)).toEqual([{ platform: "ios", module: "common" }]); // jest-expo runs as iOS
-    expect(useTranslationStore.getState().bundles.bg.common.version).toBe("v2");
-    expect(i18n.t("SETTINGS_HUB.TITLE", { lng: "bg" })).toBe("Настройки v2");
-    expect(i18n.t("AUTH.LOGIN", { lng: "bg" })).toBe("Вход"); // the other module is kept
+    expect(downloads.map((d) => d.body)).toEqual([{ platform: "ios", module: "account" }]); // jest-expo runs as iOS
+    expect(useTranslationStore.getState().bundles.bg.account.version).toBe("v2");
+    expect(i18n.t("account.settingsHub.title", { lng: "bg" })).toBe("Настройки v2");
+    expect(i18n.t("auth.ui.signIn", { lng: "bg" })).toBe("Вход"); // the other module is kept
   });
 
   it("does not download modules whose version is unchanged", async () => {
-    cache({ bg: { common: { version: "v1", messages: BG_COMMON }, auth: { version: "v1", messages: BG_AUTH } } });
+    cache({ bg: { account: { version: "v1", messages: BG_ACCOUNT }, auth: { version: "v1", messages: BG_AUTH } } });
     mockRoute("get", "/localization/languages", { languages: [BG] });
     const downloads = serveLanguage("bg", {});
     await syncTranslations();
@@ -96,24 +96,24 @@ describe("syncTranslations", () => {
   });
 
   it("drops a module the server no longer offers", async () => {
-    cache({ bg: { common: { version: "v1", messages: BG_COMMON }, auth: { version: "v1", messages: BG_AUTH } } });
-    mockRoute("get", "/localization/languages", { languages: [{ ...BG, versions: { common: "v1" } }] });
+    cache({ bg: { account: { version: "v1", messages: BG_ACCOUNT }, auth: { version: "v1", messages: BG_AUTH } } });
+    mockRoute("get", "/localization/languages", { languages: [{ ...BG, versions: { account: "v1" } }] });
     await syncTranslations();
-    expect(Object.keys(useTranslationStore.getState().bundles.bg)).toEqual(["common"]);
+    expect(Object.keys(useTranslationStore.getState().bundles.bg)).toEqual(["account"]);
   });
 
   it("keeps every cached text when the server cannot be reached", async () => {
     useTranslationStore.setState({ languages: [BG] });
-    cache({ bg: { common: { version: "v1", messages: BG_COMMON } } });
+    cache({ bg: { account: { version: "v1", messages: BG_ACCOUNT } } });
     mockRoute("get", "/localization/languages", () => fail(503, { message: "down" }));
     await expect(syncTranslations()).resolves.toBeUndefined();
-    expect(useTranslationStore.getState().bundles.bg.common.version).toBe("v1");
+    expect(useTranslationStore.getState().bundles.bg.account.version).toBe("v1");
     expect(useTranslationStore.getState().languages).toEqual([BG]);
   });
 
   it("does not hit the server again on a quick resume", async () => {
     const seen = mockRoute("get", "/localization/languages", { languages: [EN] });
-    serveLanguage("en", { common: ["v1", {}] }); // the language on screen is kept current
+    serveLanguage("en", { account: ["v1", {}] }); // the language on screen is kept current
     await syncTranslations();
     await syncTranslations();
     expect(seen).toHaveLength(1);
@@ -123,50 +123,50 @@ describe("syncTranslations", () => {
 describe("selectLanguage", () => {
   it("downloads every module of a language the app does not ship, then switches to it", async () => {
     useTranslationStore.setState({ languages: [EN, BG] });
-    serveLanguage("bg", { common: ["v1", BG_COMMON], auth: ["v1", BG_AUTH] });
+    serveLanguage("bg", { account: ["v1", BG_ACCOUNT], auth: ["v1", BG_AUTH] });
     await expect(selectLanguage("bg")).resolves.toBe(true);
     expect(i18n.language).toBe("bg");
     expect(useAppStore.getState().locale).toBe("bg");
-    expect(i18n.t("SETTINGS_HUB.TITLE")).toBe("Настройки");
-    expect(i18n.t("AUTH.LOGIN")).toBe("Вход");
+    expect(i18n.t("account.settingsHub.title")).toBe("Настройки");
+    expect(i18n.t("auth.ui.signIn")).toBe("Вход");
   });
 
   it("falls back to English for a key the language does not have", async () => {
     useTranslationStore.setState({ languages: [EN, BG] });
-    serveLanguage("bg", { common: ["v1", BG_COMMON], auth: ["v1", BG_AUTH] });
+    serveLanguage("bg", { account: ["v1", BG_ACCOUNT], auth: ["v1", BG_AUTH] });
     await selectLanguage("bg");
-    expect(i18n.t("PREFERENCES.LANGUAGE")).toBe("Language");
+    expect(i18n.t("user.preferences.languageLabel")).toBe("Language");
   });
 
   it("does not switch to a half-downloaded language", async () => {
     useTranslationStore.setState({ languages: [EN, BG] });
-    serveLanguage("bg", { common: ["v1", BG_COMMON], auth: 500 });
+    serveLanguage("bg", { account: ["v1", BG_ACCOUNT], auth: 500 });
     await expect(selectLanguage("bg")).resolves.toBe(false);
     expect(i18n.language).toBe("en");
     expect(useAppStore.getState().locale).toBe("en");
   });
 
   it("switches offline to a language downloaded earlier, even if a newer version exists", async () => {
-    useTranslationStore.setState({ languages: [EN, { ...BG, versions: { common: "v2", auth: "v2" } }] });
-    cache({ bg: { common: { version: "v1", messages: BG_COMMON }, auth: { version: "v1", messages: BG_AUTH } } });
-    serveLanguage("bg", { common: 500, auth: 500 });
+    useTranslationStore.setState({ languages: [EN, { ...BG, versions: { account: "v2", auth: "v2" } }] });
+    cache({ bg: { account: { version: "v1", messages: BG_ACCOUNT }, auth: { version: "v1", messages: BG_AUTH } } });
+    serveLanguage("bg", { account: 500, auth: 500 });
     await expect(selectLanguage("bg")).resolves.toBe(true);
-    expect(i18n.t("SETTINGS_HUB.TITLE")).toBe("Настройки");
+    expect(i18n.t("account.settingsHub.title")).toBe("Настройки");
   });
 
   it("server texts override the bundled ones of the same language, key by key", async () => {
     useTranslationStore.setState({ languages: [EN] });
-    serveLanguage("en", { common: ["v1", { SETTINGS_HUB: { TITLE: "Settings (edited)" } }] });
+    serveLanguage("en", { account: ["v1", { "account.settingsHub.title": "Settings (edited)" }] });
     await ensureLanguage("en");
-    expect(i18n.t("SETTINGS_HUB.TITLE")).toBe("Settings (edited)");
-    expect(i18n.t("PREFERENCES.LANGUAGE")).toBe("Language"); // untouched key keeps the bundled text
+    expect(i18n.t("account.settingsHub.title")).toBe("Settings (edited)");
+    expect(i18n.t("user.preferences.languageLabel")).toBe("Language"); // untouched key keeps the bundled text
   });
 
   it("a bundled language switches even when the server cannot be reached", async () => {
-    useTranslationStore.setState({ languages: [EN, { code: "tr", name: "Türkçe", versions: { common: "v9" } }] });
-    serveLanguage("tr", { common: 500 });
+    useTranslationStore.setState({ languages: [EN, { code: "tr", name: "Türkçe", versions: { account: "v9" } }] });
+    serveLanguage("tr", { account: 500 });
     await expect(selectLanguage("tr")).resolves.toBe(true);
-    expect(i18n.t("PREFERENCES.LANGUAGE")).toBe("Dil");
+    expect(i18n.t("user.preferences.languageLabel")).toBe("Dil");
   });
 });
 
@@ -190,7 +190,7 @@ describe("profile language that cannot be downloaded yet", () => {
   it("stays in the current language, tells the user, and switches on a later sync", async () => {
     useTranslationStore.setState({ languages: [EN, BG] });
     profileAsks("bg");
-    serveLanguage("bg", { common: 500, auth: 500 });
+    serveLanguage("bg", { account: 500, auth: 500 });
     await pullPreferences();
     expect(i18n.language).toBe("en");
     expect(getPendingLanguage()).toBe("bg");
@@ -198,8 +198,8 @@ describe("profile language that cannot be downloaded yet", () => {
 
     // Connection back: the next sync (even a quick resume) completes the download and switches.
     mockRoute("get", "/localization/languages", { languages: [EN, BG] });
-    serveLanguage("en", { common: ["v1", {}] });
-    serveLanguage("bg", { common: ["v1", BG_COMMON], auth: ["v1", BG_AUTH] });
+    serveLanguage("en", { account: ["v1", {}] });
+    serveLanguage("bg", { account: ["v1", BG_ACCOUNT], auth: ["v1", BG_AUTH] });
     await syncTranslations();
     expect(i18n.language).toBe("bg");
     expect(useAppStore.getState().locale).toBe("bg");
@@ -210,7 +210,7 @@ describe("profile language that cannot be downloaded yet", () => {
   it("does not repeat the notice when the same language is still pending", async () => {
     useTranslationStore.setState({ languages: [EN, BG] });
     profileAsks("bg");
-    serveLanguage("bg", { common: 500, auth: 500 });
+    serveLanguage("bg", { account: 500, auth: 500 });
     await pullPreferences();
     await pullPreferences();
     expect(toast.info).toHaveBeenCalledTimes(1);
@@ -219,7 +219,7 @@ describe("profile language that cannot be downloaded yet", () => {
   it("is dropped once the user picks a language themselves", async () => {
     useTranslationStore.setState({ languages: [EN, BG, { code: "tr", name: "Türkçe", versions: {} }] });
     profileAsks("bg");
-    serveLanguage("bg", { common: 500, auth: 500 });
+    serveLanguage("bg", { account: 500, auth: 500 });
     await pullPreferences();
     const pushed = mockRoute("put", "/auth/me/preferences", {});
     await changeLanguage("tr");

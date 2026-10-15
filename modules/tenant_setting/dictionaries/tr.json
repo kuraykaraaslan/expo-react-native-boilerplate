@@ -1,0 +1,18 @@
+{
+  "tenant_setting.general.dualDesc": "Sahip veya yönetici verme/kaldırma işlemi ikinci bir onaylayıcıyı bekler.",
+  "tenant_setting.general.dualLabel": "Hassas üye değişiklikleri için onay iste",
+  "tenant_setting.general.languageCard": "Dil",
+  "tenant_setting.general.languageDesc": "Yeni üyeler kendi dillerini seçene kadar bu dille başlar.",
+  "tenant_setting.general.languageLabel": "Varsayılan dil",
+  "tenant_setting.general.membershipCard": "Üyelik",
+  "tenant_setting.general.pending": "{{count}} değişiklik onaya gönderildi",
+  "tenant_setting.general.readOnly": "Bu ayarları yalnızca sahipler ve yöneticiler değiştirebilir.",
+  "tenant_setting.general.roleDesc": "Daveti kabul eden yeni üyelere verilen rol.",
+  "tenant_setting.general.roleLabel": "Varsayılan üye rolü",
+  "tenant_setting.general.save": "Değişiklikleri kaydet",
+  "tenant_setting.general.saved": "Ayarlar kaydedildi",
+  "tenant_setting.general.subtitle": "Bu organizasyonun varsayılanları",
+  "tenant_setting.general.tile": "Ayarlar",
+  "tenant_setting.general.tileDesc": "Üye varsayılanları ve dil",
+  "tenant_setting.general.title": "Organizasyon ayarları"
+}

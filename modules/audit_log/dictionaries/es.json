@@ -1,0 +1,17 @@
+{
+  "audit_log.list.actorApiKey": "Clave de API",
+  "audit_log.list.actorSystem": "Sistema",
+  "audit_log.list.actorUnknown": "Desconocido",
+  "audit_log.list.adminOnly": "Solo propietarios y administradores pueden leer el registro de auditoría.",
+  "audit_log.list.all": "Todas",
+  "audit_log.list.empty": "Sin entradas de auditoría",
+  "audit_log.list.emptyDesc": "Nada coincide con este filtro.",
+  "audit_log.list.severityFilterLabel": "Gravedad",
+  "audit_log.list.subtitle": "Actividad relevante para la seguridad en esta organización",
+  "audit_log.list.tileDesc": "Quién hizo qué y cuándo",
+  "audit_log.list.title": "Registro de auditoría",
+  "audit_log.severity.critical": "Crítica",
+  "audit_log.severity.high": "Alta",
+  "audit_log.severity.low": "Baja",
+  "audit_log.severity.medium": "Media"
+}

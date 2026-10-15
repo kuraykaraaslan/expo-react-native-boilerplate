@@ -25,7 +25,7 @@ export default function ForgotPasswordScreen() {
   async function handleSend() {
     const result = ForgotPasswordRequestSchema.safeParse({ email: email.trim() });
     if (!result.success) {
-      setError(t('AUTH_UI.EMAIL_INVALID'));
+      setError(t('auth.ui.emailInvalid'));
       return;
     }
     setError(undefined);
@@ -33,7 +33,7 @@ export default function ForgotPasswordScreen() {
     try {
       await AuthClientService.forgotPassword(result.data);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('AUTH.RESET_LINK_SENT'));
+      toast.success(t('auth.common.resetLinkSent'));
       setSentTo(result.data.email);
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -45,26 +45,26 @@ export default function ForgotPasswordScreen() {
 
   return (
     <AuthShell
-      title={t('AUTH_UI.FORGOT_TITLE')}
-      subtitle={t('AUTH_UI.FORGOT_SUBTITLE')}
+      title={t('auth.ui.forgotTitle')}
+      subtitle={t('auth.forgotPassword.subtitle')}
       icon={sentTo ? faEnvelopeCircleCheck : faKey}
-      footer={<AuthFooterLink prompt={t('AUTH_UI.REMEMBER_PASSWORD')} label={t('AUTH_UI.SIGN_IN_LINK')} href="/login" testID="auth-forgot-login" />}
+      footer={<AuthFooterLink prompt={t('auth.forgotPassword.rememberPrompt')} label={t('auth.ui.signInLink')} href="/login" testID="auth-forgot-login" />}
     >
       {sentTo ? (
         <View className="gap-4">
         <AlertBanner
           variant="success"
-          title={t('AUTH_UI.CHECK_INBOX')}
-          message={t('AUTH_UI.CHECK_INBOX_DESC', { email: sentTo })}
+          title={t('auth.forgotPassword.checkInbox')}
+          message={t('auth.ui.checkInboxDesc', { email: sentTo })}
         />
           <Button fullWidth variant="outline" onPress={() => router.push({ pathname: '/reset-password', params: { email: sentTo } })} testID="auth-forgot-have-token">
-            {t('AUTH_UI.HAVE_RESET_TOKEN')}
+            {t('auth.ui.haveResetToken')}
           </Button>
         </View>
       ) : (
         <View className="gap-4">
           <Input
-            label={t('AUTH_UI.EMAIL')}
+            label={t('auth.ui.email')}
             type="email"
             required
             value={email}
@@ -81,7 +81,7 @@ export default function ForgotPasswordScreen() {
             testID="auth-forgot-email"
           />
           <Button fullWidth loading={loading} onPress={handleSend} testID="auth-forgot-submit">
-            {loading ? t('AUTH_UI.SENDING') : t('AUTH_UI.SEND_RESET_LINK')}
+            {loading ? t('auth.ui.sending') : t('auth.forgotPassword.submit')}
           </Button>
         </View>
       )}

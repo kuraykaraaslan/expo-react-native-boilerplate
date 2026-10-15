@@ -47,35 +47,35 @@ export default function SecurityScreen() {
   return (
     <Screen refreshing={refreshing} onRefresh={refresh}>
       <ScreenHeader
-        back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }}
-        title={t('SECURITY.TITLE')}
-        subtitle={t('SECURITY.SUBTITLE')}
+        back={{ label: t('account.settingsHub.title'), href: '/settings' }}
+        title={t('user_security.security.title')}
+        subtitle={t('user_security.security.subtitle')}
       />
 
-      <Card title={t('SECURITY.TOTP_CARD')} subtitle={t('SECURITY.TOTP_CARD_DESC')} loading={loading}>
+      <Card title={t('user_security.security.totpCard')} subtitle={t('user_security.security.totpCardDesc')} loading={loading}>
         <View className="flex-row items-center gap-3 py-3">
           <FontAwesomeIcon icon={faMobileScreen} size={16} color={tokens['text-disabled']} />
-          <Text className="flex-1 text-sm text-text-primary">{t('SECURITY.TOTP_STATUS')}</Text>
+          <Text className="flex-1 text-sm text-text-primary">{t('user_security.security.totpStatus')}</Text>
           <Badge variant={totpOn ? 'success' : 'neutral'} size="sm" testID="security-totp-status">
-            {totpOn ? t('SECURITY.ON') : t('SECURITY.OFF')}
+            {totpOn ? t('user_security.security.on') : t('user_security.security.off')}
           </Badge>
         </View>
         {totpOn ? (
           <Button variant="outline" onPress={() => setDisableOpen(true)} testID="security-totp-disable">
-            {t('SECURITY.DISABLE')}
+            {t('user_security.security.disable')}
           </Button>
         ) : (
           <Button onPress={() => setSetupOpen(true)} disabled={!security} testID="security-totp-enable">
-            {t('SECURITY.ENABLE')}
+            {t('user_security.security.enable')}
           </Button>
         )}
       </Card>
 
-      <Card title={t('SECURITY.ACTIVITY_CARD')} loading={loading}>
+      <Card title={t('user_security.security.activityCard')} loading={loading}>
         <View className="flex-row items-center gap-3 py-3">
           <FontAwesomeIcon icon={faClockRotateLeft} size={16} color={tokens['text-disabled']} />
           <View className="min-w-0 flex-1">
-            <Text className="text-sm text-text-primary">{t('SECURITY.LAST_SIGN_IN')}</Text>
+            <Text className="text-sm text-text-primary">{t('user_security.security.lastSignIn')}</Text>
             <Text className="text-xs text-text-secondary" numberOfLines={1}>
               {[security?.lastLoginAt ? formatDate(security.lastLoginAt) : null, security?.lastLoginDevice].filter(Boolean).join('  ·  ') || '—'}
             </Text>

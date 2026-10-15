@@ -24,27 +24,27 @@ export default function SettingsHubScreen() {
   const { t } = useTranslation();
   return (
     <Screen>
-      <ScreenHeader title={t('SETTINGS_HUB.TITLE')} subtitle={t('SETTINGS_HUB.SUBTITLE')} />
+      <ScreenHeader title={t('account.settingsHub.title')} subtitle={t('account.settingsHub.subtitle')} />
 
       <View className="gap-3">
-        <SectionLabel>{t('SETTINGS_HUB.SECTION_ACCOUNT')}</SectionLabel>
-        <LinkTile icon={faCircleUser} title={t('SETTINGS_HUB.PROFILE')} description={t('SETTINGS_HUB.PROFILE_DESC')} href="/settings/profile" testID="settings-hub-profile" />
-        <LinkTile icon={faLaptop} title={t('SETTINGS_HUB.SESSIONS')} description={t('SETTINGS_HUB.SESSIONS_DESC')} href="/settings/sessions" testID="settings-hub-sessions" />
+        <SectionLabel>{t('account.settingsHub.sectionAccount')}</SectionLabel>
+        <LinkTile icon={faCircleUser} title={t('account.settingsHub.profile')} description={t('account.settingsHub.profileDesc')} href="/settings/profile" testID="settings-hub-profile" />
+        <LinkTile icon={faLaptop} title={t('account.settingsHub.sessions')} description={t('account.settingsHub.sessionsDesc')} href="/settings/sessions" testID="settings-hub-sessions" />
 
-        <LinkTile icon={faShieldHalved} title={t('SETTINGS_HUB.SECURITY')} description={t('SETTINGS_HUB.SECURITY_DESC')} href="/settings/security" testID="settings-hub-security" />
-        <LinkTile icon={faFileContract} title={t('PRIVACY.TITLE')} description={t('PRIVACY.TILE_DESC')} href="/settings/legal" testID="settings-hub-legal" />
-        <LinkTile icon={faLink} title={t('SETTINGS_HUB.SOCIAL')} description={t('SETTINGS_HUB.SOCIAL_DESC')} href="/settings/social-accounts" testID="settings-hub-social" />
-        <LinkTile icon={faSliders} title={t('SETTINGS_HUB.PREFERENCES')} description={t('SETTINGS_HUB.PREFERENCES_DESC')} href="/settings/change-language" testID="settings-hub-preferences" />
+        <LinkTile icon={faShieldHalved} title={t('account.settingsHub.security')} description={t('account.settingsHub.securityDesc')} href="/settings/security" testID="settings-hub-security" />
+        <LinkTile icon={faFileContract} title={t('privacy.center.title')} description={t('privacy.center.tileDesc')} href="/settings/legal" testID="settings-hub-legal" />
+        <LinkTile icon={faLink} title={t('account.settingsHub.social')} description={t('account.settingsHub.socialDesc')} href="/settings/social-accounts" testID="settings-hub-social" />
+        <LinkTile icon={faSliders} title={t('account.settingsHub.preferences')} description={t('account.settingsHub.preferencesDesc')} href="/settings/change-language" testID="settings-hub-preferences" />
       </View>
 
       <View className="gap-3">
-        <SectionLabel>{t('SETTINGS_HUB.SECTION_ORGANIZATION')}</SectionLabel>
-        <LinkTile icon={faBuilding} title={t('SETTINGS_HUB.ORGANIZATION')} description={t('SETTINGS_HUB.ORGANIZATION_DESC')} href="/settings/tenant" testID="settings-hub-organization" />
-        <LinkTile icon={faUsers} title={t('SETTINGS_HUB.MEMBERS')} description={t('SETTINGS_HUB.MEMBERS_DESC')} href="/settings/tenant/members" testID="settings-hub-members" />
-        <LinkTile icon={faEnvelopeOpenText} title={t('SETTINGS_HUB.INVITATIONS')} description={t('SETTINGS_HUB.INVITATIONS_DESC')} href="/settings/tenant/invitations" testID="settings-hub-invitations" />
+        <SectionLabel>{t('account.settingsHub.sectionOrganization')}</SectionLabel>
+        <LinkTile icon={faBuilding} title={t('account.settingsHub.organization')} description={t('account.settingsHub.organizationDesc')} href="/settings/tenant" testID="settings-hub-organization" />
+        <LinkTile icon={faUsers} title={t('account.settingsHub.members')} description={t('account.settingsHub.membersDesc')} href="/settings/tenant/members" testID="settings-hub-members" />
+        <LinkTile icon={faEnvelopeOpenText} title={t('account.settingsHub.invitations')} description={t('account.settingsHub.invitationsDesc')} href="/settings/tenant/invitations" testID="settings-hub-invitations" />
       </View>
 
-      <LinkTile icon={faRightFromBracket} title={t('SHELL.SIGN_OUT')} description={t('SETTINGS_HUB.SIGN_OUT_DESC')} onPress={logout} danger testID="settings-hub-sign-out" />
+      <LinkTile icon={faRightFromBracket} title={t('app_shell.shell.signOut')} description={t('account.settingsHub.signOutDesc')} onPress={logout} danger testID="settings-hub-sign-out" />
     </Screen>
   );
 }

@@ -1,0 +1,15 @@
+{
+  "notification_inapp.feed.clearAll": "Tümünü temizle",
+  "notification_inapp.feed.clearConfirm": "Tümünü temizle",
+  "notification_inapp.feed.clearDesc": "Tüm bildirimler kalıcı olarak silinecek.",
+  "notification_inapp.feed.clearTitle": "Bildirimleri temizle",
+  "notification_inapp.feed.cleared": "Bildirimler temizlendi",
+  "notification_inapp.feed.empty": "Bildirim yok",
+  "notification_inapp.feed.emptyDesc": "Her şey güncel.",
+  "notification_inapp.feed.markAllRead": "Tümünü okundu işaretle",
+  "notification_inapp.feed.markedAll": "Tüm bildirimler okundu olarak işaretlendi",
+  "notification_inapp.feed.subtitle": "{{count}} okunmamış",
+  "notification_inapp.feed.subtitleNone": "Her şey güncel",
+  "notification_inapp.feed.title": "Bildirimler",
+  "notification_inapp.feed.unreadA11y": "Okunmamış: {{title}}"
+}

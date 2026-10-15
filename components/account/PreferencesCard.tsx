@@ -22,34 +22,34 @@ export function PreferencesCard() {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     } else {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      toast.error(t('PREFERENCES.LANGUAGE_UNAVAILABLE'));
+      toast.error(t('user.preferences.languageUnavailable'));
     }
   }
 
   return (
-    <Card title={t('PREFERENCES.CARD')} subtitle={t('PREFERENCES.CARD_DESC')}>
+    <Card title={t('user.preferences.card')} subtitle={t('user.preferences.cardDesc')}>
       <View className="gap-4">
         <Select
           id="preferences-theme"
-          label={t('PREFERENCES.THEME')}
+          label={t('user.preferences.themeLabel')}
           value={colorScheme}
           onChange={(v) => {
             setColorScheme(v as 'light' | 'dark' | 'system');
             void pushPreferences({ colorScheme: v as 'light' | 'dark' | 'system' });
           }}
           options={[
-            { value: 'light', label: t('PREFERENCES.THEME_LIGHT') },
-            { value: 'dark', label: t('PREFERENCES.THEME_DARK') },
-            { value: 'system', label: t('PREFERENCES.THEME_SYSTEM') },
+            { value: 'light', label: t('user.preferences.themeLight') },
+            { value: 'dark', label: t('user.preferences.themeDark') },
+            { value: 'system', label: t('user.preferences.themeSystem') },
           ]}
         />
         <Select
           id="preferences-language"
-          label={t('PREFERENCES.LANGUAGE')}
+          label={t('user.preferences.languageLabel')}
           value={locale}
           onChange={(code) => void onLanguage(code)}
           disabled={switching}
-          hint={switching ? t('PREFERENCES.LANGUAGE_DOWNLOADING') : undefined}
+          hint={switching ? t('user.preferences.languageDownloading') : undefined}
           options={locales.map((l) => ({ value: l.code, label: `${l.flag}  ${l.name}` }))}
         />
       </View>

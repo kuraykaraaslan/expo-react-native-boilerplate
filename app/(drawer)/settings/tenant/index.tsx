@@ -57,7 +57,7 @@ export default function OrganizationScreen() {
     if (!membership) return;
     const trimmed = name.trim();
     if (trimmed.length < 2) {
-      setNameError(t('AUTH_UI.ORG_NAME_INVALID'));
+      setNameError(t('auth.ui.orgNameInvalid'));
       return;
     }
     setNameError(undefined);
@@ -66,7 +66,7 @@ export default function OrganizationScreen() {
       const saved = await TenantClientService.updateTenantProfile({ name: trimmed, description: description.trim() || null });
       selectMembership({ ...membership, tenant: { ...membership.tenant, name: saved.name, description: saved.description } });
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('ORGANIZATION.SAVED'));
+      toast.success(t('tenant.organization.saved'));
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       handleApiError(err, 'OrganizationScreen.save');
@@ -77,38 +77,38 @@ export default function OrganizationScreen() {
 
   return (
     <Screen>
-      <ScreenHeader back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }} title={t('ORGANIZATION.TITLE')} subtitle={t('ORGANIZATION.SUBTITLE')} />
+      <ScreenHeader back={{ label: t('account.settingsHub.title'), href: '/settings' }} title={t('tenant.organization.title')} subtitle={t('tenant.organization.subtitle')} />
       {membership ? (
         <>
-          <Card title={t('ORGANIZATION.CARD')} subtitle={t('ORGANIZATION.CARD_DESC')}>
-            <Row label={t('ORGANIZATION.NAME')}>
+          <Card title={t('tenant.organization.card')} subtitle={t('tenant.organization.cardDesc')}>
+            <Row label={t('tenant.organization.name')}>
               <Text className="text-sm font-medium text-text-primary" numberOfLines={1}>
                 {tenant?.name ?? membership.tenantId}
               </Text>
             </Row>
             {tenant?.description ? (
-              <Row label={t('ORGANIZATION.DESCRIPTION')}>
+              <Row label={t('tenant.organization.description')}>
                 <Text className="text-right text-sm text-text-primary">{tenant.description}</Text>
               </Row>
             ) : null}
-            <Row label={t('ORGANIZATION.STATUS')}>
+            <Row label={t('tenant.organization.status')}>
               <Badge variant={STATUS_VARIANT[tenant?.tenantStatus ?? 'ACTIVE']} size="sm" dot>
-                {t(`ORGANIZATION.STATUS_${tenant?.tenantStatus ?? 'ACTIVE'}`)}
+                {t(`tenant.status.${(tenant?.tenantStatus ?? 'ACTIVE').toLowerCase()}`)}
               </Badge>
             </Row>
-            <Row label={t('ORGANIZATION.YOUR_ROLE')}>
+            <Row label={t('tenant.organization.yourRole')}>
               <RoleBadge role={membership.memberRole} />
             </Row>
-            <Row label={t('ORGANIZATION.CREATED')} last>
+            <Row label={t('tenant.organization.created')} last>
               <Text className="text-sm text-text-primary">{formatDate(tenant?.createdAt) || '—'}</Text>
             </Row>
           </Card>
 
           {canEdit ? (
-            <Card title={t('ORGANIZATION.EDIT_CARD')} subtitle={t('ORGANIZATION.EDIT_CARD_DESC')}>
+            <Card title={t('tenant.organization.editCard')} subtitle={t('tenant.organization.editCardDesc')}>
               <View className="gap-3">
                 <Input
-                  label={t('ORGANIZATION.NAME')}
+                  label={t('tenant.organization.name')}
                   required
                   value={name}
                   onChangeText={(v) => {
@@ -119,22 +119,22 @@ export default function OrganizationScreen() {
                   maxLength={100}
                   testID="organization-name"
                 />
-                <Textarea label={t('ORGANIZATION.DESCRIPTION')} rows={3} value={description} onChangeText={setDescription} testID="organization-description" />
+                <Textarea label={t('tenant.organization.description')} rows={3} value={description} onChangeText={setDescription} testID="organization-description" />
                 <Button loading={saving} onPress={handleSave} testID="organization-save">
-                  {t('ORGANIZATION.SAVE')}
+                  {t('tenant.organization.save')}
                 </Button>
               </View>
             </Card>
           ) : (
-            <Text className="px-1 text-xs text-text-secondary">{t('ORGANIZATION.READ_ONLY')}</Text>
+            <Text className="px-1 text-xs text-text-secondary">{t('tenant.organization.readOnly')}</Text>
           )}
 
           <View className="gap-3">
-            <SectionLabel>{t('ORGANIZATION.MANAGE')}</SectionLabel>
-            <LinkTile icon={faSliders} title={t('TENANT_SETTINGS.TILE')} description={t('TENANT_SETTINGS.TILE_DESC')} href="/settings/tenant/settings" testID="organization-settings" />
-            <LinkTile icon={faClipboardList} title={t('AUDIT.TITLE')} description={t('AUDIT.TILE_DESC')} href="/settings/tenant/audit-log" testID="organization-audit-log" />
-            <LinkTile icon={faUsers} title={t('SETTINGS_HUB.MEMBERS')} description={t('SETTINGS_HUB.MEMBERS_DESC')} href="/settings/tenant/members" testID="organization-members" />
-            <LinkTile icon={faEnvelopeOpenText} title={t('SETTINGS_HUB.INVITATIONS')} description={t('SETTINGS_HUB.INVITATIONS_DESC')} href="/settings/tenant/invitations" testID="organization-invitations" />
+            <SectionLabel>{t('tenant.organization.manage')}</SectionLabel>
+            <LinkTile icon={faSliders} title={t('tenant_setting.general.tile')} description={t('tenant_setting.general.tileDesc')} href="/settings/tenant/settings" testID="organization-settings" />
+            <LinkTile icon={faClipboardList} title={t('audit_log.list.title')} description={t('audit_log.list.tileDesc')} href="/settings/tenant/audit-log" testID="organization-audit-log" />
+            <LinkTile icon={faUsers} title={t('account.settingsHub.members')} description={t('account.settingsHub.membersDesc')} href="/settings/tenant/members" testID="organization-members" />
+            <LinkTile icon={faEnvelopeOpenText} title={t('account.settingsHub.invitations')} description={t('account.settingsHub.invitationsDesc')} href="/settings/tenant/invitations" testID="organization-invitations" />
           </View>
         </>
       ) : (

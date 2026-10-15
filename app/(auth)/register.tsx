@@ -33,10 +33,10 @@ export default function RegisterScreen() {
     const next: FieldErrors = {};
     if (!result.success) {
       const errs = result.error.flatten().fieldErrors;
-      if (errs.email) next.email = t('AUTH_UI.EMAIL_INVALID');
-      if (errs.password) next.password = t('AUTH_UI.PASSWORD_MIN');
+      if (errs.email) next.email = t('auth.ui.emailInvalid');
+      if (errs.password) next.password = t('auth.ui.passwordMin');
     }
-    if (confirm !== password) next.confirm = t('AUTH_UI.PASSWORD_MATCH');
+    if (confirm !== password) next.confirm = t('auth.ui.passwordMatch');
     setErrors(next);
     if (!result.success || next.confirm) return;
 
@@ -44,7 +44,7 @@ export default function RegisterScreen() {
     try {
       await AuthClientService.register(result.data);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('AUTH.REGISTER_SUCCESS'));
+      toast.success(t('auth.common.registerSuccess'));
       router.replace('/login');
     } catch (err: unknown) {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -56,18 +56,18 @@ export default function RegisterScreen() {
 
   return (
     <AuthShell
-      title={t('AUTH_UI.REGISTER_TITLE')}
-      subtitle={t('AUTH_UI.REGISTER_SUBTITLE')}
+      title={t('auth.ui.registerTitle')}
+      subtitle={t('auth.ui.registerSubtitle')}
       icon={faUserPlus}
-      footer={<AuthFooterLink prompt={t('AUTH_UI.HAVE_ACCOUNT')} label={t('AUTH_UI.SIGN_IN_LINK')} href="/login" testID="auth-register-login" />}
+      footer={<AuthFooterLink prompt={t('auth.register.haveAccountPrompt')} label={t('auth.ui.signInLink')} href="/login" testID="auth-register-login" />}
     >
       <SSOButtons
-        dividerLabel={t('AUTH_UI.OR_REGISTER_EMAIL')}
+        dividerLabel={t('auth.register.orWithEmail')}
       />
 
       <View className="gap-3">
         <Input
-          label={t('AUTH_UI.EMAIL')}
+          label={t('auth.ui.email')}
           type="email"
           required
           value={email}
@@ -82,10 +82,10 @@ export default function RegisterScreen() {
           testID="auth-register-email"
         />
         <Input
-          label={t('AUTH_UI.PASSWORD')}
+          label={t('auth.ui.password')}
           type="password"
           required
-          hint={t('AUTH_UI.PASSWORD_HINT')}
+          hint={t('auth.register.passwordHint')}
           value={password}
           onChangeText={(v) => {
             setPassword(v);
@@ -98,7 +98,7 @@ export default function RegisterScreen() {
           testID="auth-register-password"
         />
         <Input
-          label={t('AUTH_UI.CONFIRM_PASSWORD')}
+          label={t('auth.ui.confirmPassword')}
           type="password"
           required
           value={confirm}
@@ -117,7 +117,7 @@ export default function RegisterScreen() {
       </View>
 
       <Button fullWidth loading={loading} onPress={handleRegister} testID="auth-register-submit">
-        {loading ? t('AUTH_UI.CREATING_ACCOUNT') : t('AUTH_UI.CREATE_ACCOUNT')}
+        {loading ? t('auth.ui.creatingAccount') : t('auth.ui.createAccount')}
       </Button>
     </AuthShell>
   );

@@ -1,0 +1,15 @@
+{
+  "privacy.center.choicesCard": "Datenschutzauswahl",
+  "privacy.center.choicesDesc": "Legen Sie fest, welche optionalen Verwendungen Ihrer Daten Sie erlauben.",
+  "privacy.center.choicesOff": "Die Datenschutzauswahl ist für diese Organisation nicht aktiviert.",
+  "privacy.center.noPolicies": "Ihre Organisation hat keine Richtlinien-Links veröffentlicht.",
+  "privacy.center.policiesCard": "Richtlinien",
+  "privacy.center.privacyPolicy": "Datenschutzerklärung",
+  "privacy.center.required": "Immer aktiv",
+  "privacy.center.save": "Auswahl speichern",
+  "privacy.center.saved": "Datenschutzauswahl gespeichert",
+  "privacy.center.subtitle": "Richtlinien und Ihre Datenauswahl",
+  "privacy.center.terms": "Nutzungsbedingungen",
+  "privacy.center.tileDesc": "Richtlinien und Ihre Datenauswahl",
+  "privacy.center.title": "Datenschutz & Rechtliches"
+}

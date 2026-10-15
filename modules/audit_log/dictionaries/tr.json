@@ -1,0 +1,17 @@
+{
+  "audit_log.list.actorApiKey": "API anahtarı",
+  "audit_log.list.actorSystem": "Sistem",
+  "audit_log.list.actorUnknown": "Bilinmiyor",
+  "audit_log.list.adminOnly": "Denetim günlüğünü yalnızca sahipler ve yöneticiler okuyabilir.",
+  "audit_log.list.all": "Tümü",
+  "audit_log.list.empty": "Denetim kaydı yok",
+  "audit_log.list.emptyDesc": "Bu filtreyle eşleşen kayıt yok.",
+  "audit_log.list.severityFilterLabel": "Önem düzeyi",
+  "audit_log.list.subtitle": "Bu organizasyondaki güvenlikle ilgili etkinlikler",
+  "audit_log.list.tileDesc": "Kim ne zaman ne yaptı",
+  "audit_log.list.title": "Denetim kayıtları",
+  "audit_log.severity.critical": "Kritik",
+  "audit_log.severity.high": "Yüksek",
+  "audit_log.severity.low": "Düşük",
+  "audit_log.severity.medium": "Orta"
+}

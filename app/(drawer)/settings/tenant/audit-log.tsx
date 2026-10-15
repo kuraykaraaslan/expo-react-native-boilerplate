@@ -19,7 +19,7 @@ const SEVERITY_VARIANT = { low: 'neutral', medium: 'warning', high: 'error', cri
 
 function AuditRow({ item, last }: { item: AuditLog; last: boolean }) {
   const { t } = useTranslation();
-  const actor = item.actorType === 'SYSTEM' ? t('AUDIT.ACTOR_SYSTEM') : item.actorType === 'API_KEY' ? t('AUDIT.ACTOR_API_KEY') : item.actorId ? item.actorId.slice(0, 8) : t('AUDIT.ACTOR_UNKNOWN');
+  const actor = item.actorType === 'SYSTEM' ? t('audit_log.list.actorSystem') : item.actorType === 'API_KEY' ? t('audit_log.list.actorApiKey') : item.actorId ? item.actorId.slice(0, 8) : t('audit_log.list.actorUnknown');
   return (
     <View className={`gap-1 py-3 ${last ? '' : 'border-b border-border'}`} testID={`audit-row-${item.auditLogId}`}>
       <View className="flex-row items-center gap-2">
@@ -27,7 +27,7 @@ function AuditRow({ item, last }: { item: AuditLog; last: boolean }) {
           {item.action}
         </Text>
         <Badge variant={SEVERITY_VARIANT[item.severity]} size="sm">
-          {t(`AUDIT.SEV_${item.severity}`)}
+          {t(`audit_log.severity.${item.severity.toLowerCase()}`)}
         </Badge>
       </View>
       <Text className="text-xs text-text-secondary" numberOfLines={1}>
@@ -110,7 +110,7 @@ export default function AuditLogScreen() {
   }
 
   const header = (
-    <ScreenHeader back={{ label: t('ORGANIZATION.TITLE'), href: '/settings/tenant' }} title={t('AUDIT.TITLE')} subtitle={t('AUDIT.SUBTITLE')} />
+    <ScreenHeader back={{ label: t('tenant.organization.title'), href: '/settings/tenant' }} title={t('audit_log.list.title')} subtitle={t('audit_log.list.subtitle')} />
   );
 
   if (!membership) {
@@ -126,7 +126,7 @@ export default function AuditLogScreen() {
     return (
       <Screen>
         {header}
-        <Text className="px-1 text-sm text-text-secondary">{t('AUDIT.ADMIN_ONLY')}</Text>
+        <Text className="px-1 text-sm text-text-secondary">{t('audit_log.list.adminOnly')}</Text>
       </Screen>
     );
   }
@@ -136,20 +136,20 @@ export default function AuditLogScreen() {
       {header}
       <Select
         id="audit-severity"
-        label={t('AUDIT.FILTER_SEVERITY')}
+        label={t('audit_log.list.severityFilterLabel')}
         value={severity}
         onChange={setSeverity}
-        options={[{ value: ALL, label: t('AUDIT.ALL') }, ...SEVERITIES.map((s) => ({ value: s, label: t(`AUDIT.SEV_${s}`) }))]}
+        options={[{ value: ALL, label: t('audit_log.list.all') }, ...SEVERITIES.map((s) => ({ value: s, label: t(`audit_log.severity.${s.toLowerCase()}`) }))]}
       />
       <Card loading={loading}>
         {logs.length === 0 ? (
-          <EmptyState icon={faClipboardList} title={t('AUDIT.EMPTY')} description={t('AUDIT.EMPTY_DESC')} className="py-8" />
+          <EmptyState icon={faClipboardList} title={t('audit_log.list.empty')} description={t('audit_log.list.emptyDesc')} className="py-8" />
         ) : (
           logs.map((l, i) => <AuditRow key={l.auditLogId} item={l} last={i === logs.length - 1} />)
         )}
         {logs.length < total ? (
           <Button variant="outline" size="sm" loading={loadingMore} onPress={loadMore} testID="audit-load-more" className="mt-3 self-center">
-            <Text className="text-xs font-medium text-text-primary">{t('COMMON.LOAD_MORE')}</Text>
+            <Text className="text-xs font-medium text-text-primary">{t('common.actions.loadMore')}</Text>
           </Button>
         ) : null}
       </Card>

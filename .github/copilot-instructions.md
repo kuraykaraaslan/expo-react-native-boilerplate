@@ -52,7 +52,7 @@ npm run registry:snapshot
 | New persistent client state | `stores/<name>Store.ts` (use `zustandStorage`) |
 | New Zod schema | `modules/<module>/<module>.dto.ts` |
 | New primitive | `libs/<name>.ts` |
-| New translation key | `modules/<module>/dictionary/<lang>.json` (all six languages; one i18next namespace — a top-level section belongs to exactly one module) |
+| New translation key | `modules/<module>/dictionaries/<lang>.json` — flat next-boilerplate keys `<module>.<area>.<slug>` (reuse the web key when the text is the same); all six languages |
 | Expo config (icons, splash, plugins) | `app.config.ts` |
 | Tailwind theme | `tailwind.config.js` |
 | Tests | `__tests__/<name>.test.ts(x)` |

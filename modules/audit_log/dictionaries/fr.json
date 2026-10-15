@@ -1,0 +1,17 @@
+{
+  "audit_log.list.actorApiKey": "Clé API",
+  "audit_log.list.actorSystem": "Système",
+  "audit_log.list.actorUnknown": "Inconnu",
+  "audit_log.list.adminOnly": "Seuls les propriétaires et administrateurs peuvent lire le journal d'audit.",
+  "audit_log.list.all": "Toutes",
+  "audit_log.list.empty": "Aucune entrée d'audit",
+  "audit_log.list.emptyDesc": "Rien ne correspond à ce filtre.",
+  "audit_log.list.severityFilterLabel": "Gravité",
+  "audit_log.list.subtitle": "Activité liée à la sécurité dans cette organisation",
+  "audit_log.list.tileDesc": "Qui a fait quoi, et quand",
+  "audit_log.list.title": "Journal d'audit",
+  "audit_log.severity.critical": "Critique",
+  "audit_log.severity.high": "Élevée",
+  "audit_log.severity.low": "Faible",
+  "audit_log.severity.medium": "Moyenne"
+}

@@ -18,19 +18,19 @@ export default function ProfileScreen() {
   return (
     <Screen keyboard>
       <ScreenHeader
-        back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }}
-        title={t('ACCOUNT.TITLE')}
-        subtitle={t('ACCOUNT.SUBTITLE')}
+        back={{ label: t('account.settingsHub.title'), href: '/settings' }}
+        title={t('account.me.title')}
+        subtitle={t('account.me.subtitle')}
         badge={role ? <RoleBadge role={role} /> : undefined}
       />
       <TabGroup
-        label={t('ACCOUNT.TITLE')}
+        label={t('account.me.title')}
         lazy
         tabs={[
-          { id: 'profile', label: t('ACCOUNT.TAB_PROFILE'), content: <ProfileCard /> },
+          { id: 'profile', label: t('account.me.tabProfile'), content: <ProfileCard /> },
           {
             id: 'security',
-            label: t('ACCOUNT.TAB_SECURITY'),
+            label: t('account.me.tabSecurity'),
             content: (
               <View className="gap-6">
                 <SecurityCard />
@@ -38,7 +38,7 @@ export default function ProfileScreen() {
               </View>
             ),
           },
-          { id: 'preferences', label: t('ACCOUNT.TAB_PREFERENCES'), content: <PreferencesCard /> },
+          { id: 'preferences', label: t('account.me.tabPreferences'), content: <PreferencesCard /> },
         ]}
       />
     </Screen>

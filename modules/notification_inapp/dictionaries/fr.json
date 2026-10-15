@@ -1,0 +1,15 @@
+{
+  "notification_inapp.feed.clearAll": "Tout effacer",
+  "notification_inapp.feed.clearConfirm": "Tout effacer",
+  "notification_inapp.feed.clearDesc": "Toutes les notifications seront supprimées définitivement.",
+  "notification_inapp.feed.clearTitle": "Effacer les notifications",
+  "notification_inapp.feed.cleared": "Notifications effacées",
+  "notification_inapp.feed.empty": "Aucune notification",
+  "notification_inapp.feed.emptyDesc": "Vous êtes à jour.",
+  "notification_inapp.feed.markAllRead": "Tout marquer comme lu",
+  "notification_inapp.feed.markedAll": "Toutes les notifications ont été marquées comme lues",
+  "notification_inapp.feed.subtitle": "{{count}} non lues",
+  "notification_inapp.feed.subtitleNone": "Vous êtes à jour",
+  "notification_inapp.feed.title": "Notifications",
+  "notification_inapp.feed.unreadA11y": "Non lue : {{title}}"
+}

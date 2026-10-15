@@ -19,25 +19,25 @@ export function AppLockCard() {
   }, []);
 
   async function change(next: boolean) {
-    if (next && !(await authenticate(t('SECURITY.LOCK_PROMPT')))) return; // cancelled: stay off
+    if (next && !(await authenticate(t('user_security.security.lockPrompt')))) return; // cancelled: stay off
     setEnabled(next);
     await Haptics.selectionAsync();
-    toast.success(t(next ? 'SECURITY.LOCK_ON' : 'SECURITY.LOCK_OFF'));
+    toast.success(t(next ? 'user_security.security.lockOn' : 'user_security.security.lockOff'));
   }
 
   return (
-    <Card title={t('SECURITY.LOCK_CARD')} subtitle={t('SECURITY.LOCK_CARD_DESC')} loading={available === null}>
+    <Card title={t('user_security.security.lockCard')} subtitle={t('user_security.security.lockCardDesc')} loading={available === null}>
       <View className="py-3">
         <Toggle
           checked={enabled}
           onChange={change}
-          label={t('SECURITY.LOCK_TOGGLE')}
-          ariaLabel={t('SECURITY.LOCK_TOGGLE')}
+          label={t('user_security.security.lockToggle')}
+          ariaLabel={t('user_security.security.lockToggle')}
           disabled={!available && !enabled}
         />
         {available === false && !enabled ? (
           <Text className="mt-2 text-xs text-text-secondary" testID="app-lock-unavailable">
-            {t('SECURITY.LOCK_UNAVAILABLE')}
+            {t('user_security.security.lockUnavailable')}
           </Text>
         ) : null}
       </View>

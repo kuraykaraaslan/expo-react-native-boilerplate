@@ -1,0 +1,22 @@
+{
+  "app_shell.shell.groupAccount": "Account",
+  "app_shell.shell.groupOrganization": "Organizzazione",
+  "app_shell.shell.groupOverview": "Panoramica",
+  "app_shell.shell.languageA11y": "Lingua: {{language}}",
+  "app_shell.shell.myProfile": "Il mio profilo",
+  "app_shell.shell.navDashboard": "Dashboard",
+  "app_shell.shell.navInvitations": "Inviti",
+  "app_shell.shell.navMembers": "Membri",
+  "app_shell.shell.navNotifications": "Notifiche",
+  "app_shell.shell.navProfile": "Il mio profilo",
+  "app_shell.shell.navSessions": "Sessioni",
+  "app_shell.shell.navSettings": "Impostazioni",
+  "app_shell.shell.notificationsA11y": "Notifiche, {{count}} non lette",
+  "app_shell.shell.openMenu": "Apri il menu di navigazione",
+  "app_shell.shell.platform": "Piattaforma",
+  "app_shell.shell.signOut": "Esci",
+  "app_shell.shell.switchOrgA11y": "Cambia organizzazione, attuale: {{name}}",
+  "app_shell.shell.themeToDark": "Passa alla modalità scura",
+  "app_shell.shell.themeToLight": "Passa alla modalità chiara",
+  "app_shell.shell.userMenuA11y": "Menu dell'account di {{name}}"
+}

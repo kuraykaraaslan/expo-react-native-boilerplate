@@ -1,0 +1,18 @@
+{
+  "user_session.active.cardDesc": "{{count}} active sessions",
+  "user_session.active.empty": "No active sessions found.",
+  "user_session.active.revoke": "Revoke",
+  "user_session.active.revokeDesc": "{{device}} will be signed out immediately.",
+  "user_session.active.revokeTitle": "Revoke session",
+  "user_session.active.revoked": "Session revoked",
+  "user_session.active.signOut": "Sign out",
+  "user_session.active.signOutDesc": "This is the session you are using. You will be signed out and returned to the sign-in screen.",
+  "user_session.active.signOutTitle": "Sign out of this device",
+  "user_session.active.started": "Started {{date}}",
+  "user_session.active.subtitleMobile": "Devices signed in to your account",
+  "user_session.active.thisDevice": "This device",
+  "user_session.active.title": "Active Sessions",
+  "user_session.active.titlePage": "Sessions",
+  "user_session.active.unknownDevice": "Unknown device",
+  "user_session.active.unknownIp": "Unknown IP"
+}

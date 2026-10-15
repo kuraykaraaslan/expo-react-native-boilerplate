@@ -33,14 +33,14 @@ function InvitationRow({ item, last, actions }: { item: Invitation; last: boolea
       </View>
       {actions ? (
         <View className="flex-row flex-wrap gap-2">
-          <Button size="sm" variant="outline" onPress={actions.onRemind} accessibilityLabel={`${t('INVITATIONS.REMIND')}: ${who}`}>
-            <Text className="text-xs font-medium text-text-primary">{t('INVITATIONS.REMIND')}</Text>
+          <Button size="sm" variant="outline" onPress={actions.onRemind} accessibilityLabel={`${t('tenant_invitation.list.remind')}: ${who}`}>
+            <Text className="text-xs font-medium text-text-primary">{t('tenant_invitation.list.remind')}</Text>
           </Button>
-          <Button size="sm" variant="outline" onPress={actions.onResend} accessibilityLabel={`${t('INVITATIONS.RESEND')}: ${who}`}>
-            <Text className="text-xs font-medium text-text-primary">{t('INVITATIONS.RESEND')}</Text>
+          <Button size="sm" variant="outline" onPress={actions.onResend} accessibilityLabel={`${t('tenant_invitation.list.resend')}: ${who}`}>
+            <Text className="text-xs font-medium text-text-primary">{t('tenant_invitation.list.resend')}</Text>
           </Button>
-          <Button size="sm" variant="outline" onPress={actions.onRevoke} accessibilityLabel={`${t('INVITATIONS.REVOKE')}: ${who}`}>
-            <Text className="text-xs font-medium text-error">{t('INVITATIONS.REVOKE')}</Text>
+          <Button size="sm" variant="outline" onPress={actions.onRevoke} accessibilityLabel={`${t('tenant_invitation.list.revokeButton')}: ${who}`}>
+            <Text className="text-xs font-medium text-error">{t('tenant_invitation.list.revokeButton')}</Text>
           </Button>
         </View>
       ) : null}
@@ -50,8 +50,8 @@ function InvitationRow({ item, last, actions }: { item: Invitation; last: boolea
       </View>
       <Text className="text-xs text-text-secondary">
         {[
-          item.createdAt ? t('INVITATIONS.SENT', { date: formatDate(item.createdAt) }) : null,
-          item.expiresAt ? t('INVITATIONS.EXPIRES', { date: formatDate(item.expiresAt) }) : null,
+          item.createdAt ? t('tenant_invitation.list.sent', { date: formatDate(item.createdAt) }) : null,
+          item.expiresAt ? t('tenant_invitation.list.expires', { date: formatDate(item.expiresAt) }) : null,
         ]
           .filter(Boolean)
           .join('  ·  ')}
@@ -118,7 +118,7 @@ export default function InvitationsScreen() {
       await TenantClientService.revokeInvitation(inv.tenantId, inv.invitationId);
       setInvitations((prev) => prev.map((i) => (i.invitationId === inv.invitationId ? { ...i, status: 'REVOKED' } : i)));
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t('INVITATIONS.REVOKED'));
+      toast.success(t('tenant_invitation.list.revoked'));
     } catch (err: unknown) {
       handleApiError(err, 'InvitationsScreen.revoke');
     }
@@ -133,7 +133,7 @@ export default function InvitationsScreen() {
           : await TenantClientService.remindInvitation(inv.tenantId, inv.invitationId);
       setInvitations((prev) => prev.map((i) => (i.invitationId === inv.invitationId ? { ...i, ...updated } : i)));
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      toast.success(t(kind === 'resend' ? 'INVITATIONS.RESENT' : 'INVITATIONS.REMINDED'));
+      toast.success(t(kind === 'resend' ? 'tenant_invitation.list.resent' : 'tenant_invitation.list.reminded'));
     } catch (err: unknown) {
       handleApiError(err, `InvitationsScreen.${kind}`);
     }
@@ -141,10 +141,10 @@ export default function InvitationsScreen() {
 
   const header = (
     <ScreenHeader
-      back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }}
-      title={t('INVITATIONS.TITLE')}
-      subtitle={t('INVITATIONS.SUBTITLE')}
-      actions={membership && canManage ? [{ label: t('INVITATIONS.NEW'), onPress: () => setInviteOpen(true) }] : undefined}
+      back={{ label: t('account.settingsHub.title'), href: '/settings' }}
+      title={t('tenant_invitation.list.title')}
+      subtitle={t('tenant_invitation.list.subtitle')}
+      actions={membership && canManage ? [{ label: t('tenant_invitation.list.new'), onPress: () => setInviteOpen(true) }] : undefined}
     />
   );
 
@@ -160,13 +160,13 @@ export default function InvitationsScreen() {
   return (
     <Screen refreshing={refreshing} onRefresh={refresh}>
       {header}
-      <Card title={t('INVITATIONS.CARD')} subtitle={t('INVITATIONS.CARD_DESC')} loading={loading}>
+      <Card title={t('tenant_invitation.list.card')} subtitle={t('tenant_invitation.list.cardDesc')} loading={loading}>
         {invitations.length === 0 ? (
           <EmptyState
             icon={faEnvelopeOpenText}
-            title={t('INVITATIONS.EMPTY')}
-            description={t('INVITATIONS.EMPTY_DESC')}
-            actionLabel={canManage ? t('INVITATIONS.NEW') : undefined}
+            title={t('tenant_invitation.report.noPendingTitle')}
+            description={t('tenant_invitation.list.emptyDesc')}
+            actionLabel={canManage ? t('tenant_invitation.list.new') : undefined}
             onAction={canManage ? () => setInviteOpen(true) : undefined}
             className="py-8"
           />
@@ -186,7 +186,7 @@ export default function InvitationsScreen() {
         )}
         {invitations.length < total ? (
           <Button variant="outline" size="sm" loading={loadingMore} onPress={loadMore} testID="invitations-load-more" className="mt-3 self-center">
-            <Text className="text-xs font-medium text-text-primary">{t('COMMON.LOAD_MORE')}</Text>
+            <Text className="text-xs font-medium text-text-primary">{t('common.actions.loadMore')}</Text>
           </Button>
         ) : null}
       </Card>
@@ -195,9 +195,9 @@ export default function InvitationsScreen() {
       <ConfirmDialog
         open={revoking !== null}
         onClose={() => setRevoking(null)}
-        title={t('INVITATIONS.REVOKE_TITLE')}
-        description={t('INVITATIONS.REVOKE_DESC', { email: revoking?.email ?? '' })}
-        confirmLabel={t('INVITATIONS.REVOKE')}
+        title={t('tenant_invitation.list.revokeTitle')}
+        description={t('tenant_invitation.list.revokeDesc', { email: revoking?.email ?? '' })}
+        confirmLabel={t('tenant_invitation.list.revokeButton')}
         onConfirm={() => (revoking ? revoke(revoking) : undefined)}
       />
     </Screen>

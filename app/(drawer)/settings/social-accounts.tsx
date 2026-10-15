@@ -26,11 +26,11 @@ function AccountRow({ item, last }: Readonly<{ item: ConnectedAccount; last: boo
         <Text className="text-sm font-medium text-text-primary" numberOfLines={1}>
           {item.displayName}
         </Text>
-        {item.group ? <Text className="text-xs text-text-secondary">{t(`SOCIAL.GROUP_${item.group.toUpperCase()}`, { defaultValue: item.group })}</Text> : null}
+        {item.group ? <Text className="text-xs text-text-secondary">{t(`user.socialAccounts.group${item.group.charAt(0).toUpperCase()}${item.group.slice(1).toLowerCase()}`, { defaultValue: item.group })}</Text> : null}
       </View>
       {item.tokenExpired ? (
         <Badge variant="warning" size="sm">
-          {t('SOCIAL.TOKEN_EXPIRED')}
+          {t('user.socialAccounts.tokenExpired')}
         </Badge>
       ) : null}
     </View>
@@ -56,15 +56,15 @@ export default function SocialAccountsScreen() {
 
   return (
     <Screen>
-      <ScreenHeader back={{ label: t('SETTINGS_HUB.TITLE'), href: '/settings' }} title={t('SOCIAL.TITLE')} subtitle={t('SOCIAL.SUBTITLE')} />
-      <Card title={t('SOCIAL.CARD')} subtitle={t('SOCIAL.CARD_DESC', { count: accounts.length })} loading={loading}>
+      <ScreenHeader back={{ label: t('account.settingsHub.title'), href: '/settings' }} title={t('user.socialAccounts.title')} subtitle={t('user.socialAccounts.subtitle')} />
+      <Card title={t('user.socialAccounts.card')} subtitle={t('user.socialAccounts.cardDesc', { count: accounts.length })} loading={loading}>
         {accounts.length === 0 ? (
-          <EmptyState icon={faLink} title={t('SOCIAL.EMPTY')} className="py-8" />
+          <EmptyState icon={faLink} title={t('user.socialAccounts.empty')} className="py-8" />
         ) : (
           accounts.map((a, i) => <AccountRow key={a.userSocialAccountId} item={a} last={i === accounts.length - 1} />)
         )}
       </Card>
-      <AlertBanner variant="info" message={t('SOCIAL.LINKING_SOON')} />
+      <AlertBanner variant="info" message={t('user.socialAccounts.linkingSoon')} />
     </Screen>
   );
 }

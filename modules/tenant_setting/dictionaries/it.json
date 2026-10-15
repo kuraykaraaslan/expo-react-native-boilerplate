@@ -1,0 +1,18 @@
+{
+  "tenant_setting.general.dualDesc": "Concedere o rimuovere proprietario o amministratore attende un secondo revisore.",
+  "tenant_setting.general.dualLabel": "Richiedi approvazione per modifiche sensibili ai membri",
+  "tenant_setting.general.languageCard": "Lingua",
+  "tenant_setting.general.languageDesc": "I nuovi membri iniziano in questa lingua finché non scelgono la propria.",
+  "tenant_setting.general.languageLabel": "Lingua predefinita",
+  "tenant_setting.general.membershipCard": "Appartenenza",
+  "tenant_setting.general.pending": "{{count}} modifica inviata per approvazione",
+  "tenant_setting.general.readOnly": "Solo proprietari e amministratori possono modificare queste impostazioni.",
+  "tenant_setting.general.roleDesc": "Ruolo assegnato ai nuovi membri quando accettano un invito.",
+  "tenant_setting.general.roleLabel": "Ruolo predefinito dei membri",
+  "tenant_setting.general.save": "Salva modifiche",
+  "tenant_setting.general.saved": "Impostazioni salvate",
+  "tenant_setting.general.subtitle": "Valori predefiniti di questa organizzazione",
+  "tenant_setting.general.tile": "Impostazioni",
+  "tenant_setting.general.tileDesc": "Valori predefiniti dei membri e lingua",
+  "tenant_setting.general.title": "Impostazioni dell'organizzazione"
+}
