@@ -4,6 +4,7 @@ import {
   LanguagesResponseSchema,
   TranslationBundleRequestSchema,
   TranslationBundleSchema,
+  TranslationPlatformSchema,
   type RemoteLanguage,
   type TranslationBundle,
 } from "@/modules/localization/translation.dto";
@@ -13,9 +14,10 @@ import {
 // ============================================================================
 
 export class TranslationClientService {
-  /** The languages the server offers, each with the version of every module's texts. */
+  /** The languages the server offers, each with the version of every module's texts for this platform. */
   static async getLanguages(): Promise<RemoteLanguage[]> {
-    const res = await axiosInstance.get("/localization/languages", { skipAuth: true });
+    const platform = TranslationPlatformSchema.parse(Platform.OS);
+    const res = await axiosInstance.get("/localization/languages", { params: { platform }, skipAuth: true });
     return LanguagesResponseSchema.parse(res.data).languages;
   }
 

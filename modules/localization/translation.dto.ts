@@ -6,8 +6,10 @@ import { z } from "zod";
 //
 // Contract (next-boilerplate `localization` module). Both are GUEST routes under
 // the tenant prefix, so the login screen is translated before sign-in:
-//   GET  /localization/languages
+//   GET  /localization/languages?platform=<android|ios|web>
 //     → { languages: [{ code, name, flag?, versions: { <module>: "<version>" } }] }
+//     Only languages with texts for that platform; `flag` is an ISO 3166 country
+//     code ("BG"), shown as an emoji by libs/translations.ts.
 //   POST /localization/languages/{code}   body { platform, module }
 //     → { code, version, platform, module, messages: { "<module>.<area>.<slug>": "text" } }
 // Texts are split per server module, like modules/<module>/dictionaries/ here.
@@ -29,6 +31,7 @@ export const RemoteLanguageSchema = z.object({
   code: LanguageCodeSchema,
   /** Endonym — the language named in itself ("Български"). */
   name: z.string().min(1),
+  /** ISO 3166 alpha-2 country code of the flag ("BG"). */
   flag: z.string().nullish(),
   /** module → version of that module's texts in this language. */
   versions: z.record(z.string().min(1)),

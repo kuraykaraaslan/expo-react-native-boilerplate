@@ -195,6 +195,16 @@ export function clearPendingLanguage(): void {
   pendingLocale = null;
 }
 
+/**
+ * The server sends a flag as an ISO 3166 country code ("BG", as the web uses it);
+ * pickers show the emoji (🇧🇬). Anything else is returned unchanged; empty → undefined.
+ */
+export function flagEmoji(flag: string | null | undefined): string | undefined {
+  if (!flag) return undefined;
+  if (!/^[A-Za-z]{2}$/.test(flag)) return flag;
+  return String.fromCodePoint(...[...flag.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
+}
+
 /** The languages to offer in pickers: the server's list once known, else the bundled ones. */
 export function getAvailableLocales(languages: RemoteLanguage[] = useTranslationStore.getState().languages): LocaleOption[] {
   if (languages.length === 0) {
@@ -202,7 +212,7 @@ export function getAvailableLocales(languages: RemoteLanguage[] = useTranslation
   }
   return languages.map((l) => {
     const code = normalizeLocale(l.code);
-    return { code, name: l.name, flag: l.flag ?? BUNDLED_LOCALE_META[code]?.flag ?? "🌐" };
+    return { code, name: l.name, flag: flagEmoji(l.flag) ?? BUNDLED_LOCALE_META[code]?.flag ?? "🌐" };
   });
 }
 

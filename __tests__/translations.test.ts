@@ -3,6 +3,7 @@ import i18n, { applyLanguageTexts } from "@/libs/i18n";
 import { changeLanguage, pullPreferences } from "@/libs/preferences";
 import {
   ensureLanguage,
+  flagEmoji,
   getAvailableLocales,
   getPendingLanguage,
   resetTranslationSyncForTests,
@@ -73,6 +74,7 @@ describe("syncTranslations", () => {
     serveLanguage("en", { account: ["v1", {}] });
     await syncTranslations();
     expect(seen[0].headers.authorization).toBeUndefined();
+    expect(seen[0].query).toEqual({ platform: "ios" }); // jest-expo runs as iOS
     expect(useTranslationStore.getState().languages.map((l) => l.code)).toEqual(["en", "bg"]);
   });
 
@@ -249,5 +251,22 @@ describe("getAvailableLocales", () => {
       { code: "en", name: "English", flag: "🇬🇧" },
       { code: "bg", name: "Български", flag: "🇧🇬" },
     ]);
+  });
+
+  it("shows the server's ISO country code as a flag emoji", () => {
+    expect(getAvailableLocales([{ ...BG, flag: "BG" }, { ...EN, flag: "gb" }]).map((l) => l.flag)).toEqual(["🇧🇬", "🇬🇧"]);
+  });
+
+  it("falls back to the bundled flag, then a globe, when the server sends none", () => {
+    expect(getAvailableLocales([{ ...EN, flag: null }, { ...BG, flag: undefined }]).map((l) => l.flag)).toEqual(["🇬🇧", "🌐"]);
+  });
+});
+
+describe("flagEmoji", () => {
+  it("turns a two-letter country code into its flag and leaves anything else alone", () => {
+    expect(flagEmoji("TR")).toBe("🇹🇷");
+    expect(flagEmoji("🇧🇬")).toBe("🇧🇬");
+    expect(flagEmoji("")).toBeUndefined();
+    expect(flagEmoji(null)).toBeUndefined();
   });
 });

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "registryVersion": "1.0",
-  "generatedAt": "2026-10-15T13:04:17.902Z",
+  "generatedAt": "2026-10-16T10:44:35.855Z",
   "libs": [
     {
       "filePath": "libs/apiError.ts",
@@ -191,6 +191,7 @@
         "deferLanguage",
         "getPendingLanguage",
         "clearPendingLanguage",
+        "flagEmoji",
         "getAvailableLocales",
         "useLocales",
         "localeOption",
