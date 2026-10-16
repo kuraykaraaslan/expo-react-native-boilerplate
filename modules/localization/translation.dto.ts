@@ -38,8 +38,9 @@ export const RemoteLanguageSchema = z.object({
 });
 export type RemoteLanguage = z.infer<typeof RemoteLanguageSchema>;
 
+/** Items are checked one by one (RemoteLanguageSchema) so one malformed language does not hide the rest. */
 export const LanguagesResponseSchema = z.object({
-  languages: z.array(RemoteLanguageSchema),
+  languages: z.array(z.unknown()),
 });
 export type LanguagesResponse = z.infer<typeof LanguagesResponseSchema>;
 

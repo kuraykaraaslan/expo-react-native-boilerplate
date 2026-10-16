@@ -78,6 +78,13 @@ describe("syncTranslations", () => {
     expect(useTranslationStore.getState().languages.map((l) => l.code)).toEqual(["en", "bg"]);
   });
 
+  it("skips a malformed language instead of dropping the whole list", async () => {
+    mockRoute("get", "/localization/languages", { languages: [EN, { ...BG, code: "zh-hant-tw" }, { ...BG, name: "" }, BG] });
+    serveLanguage("en", { account: ["v1", {}] });
+    await syncTranslations();
+    expect(useTranslationStore.getState().languages.map((l) => l.code)).toEqual(["en", "bg"]);
+  });
+
   it("re-downloads only the module whose version changed, and shows the new text", async () => {
     cache({ bg: { account: { version: "v1", messages: BG_ACCOUNT }, auth: { version: "v1", messages: BG_AUTH } } });
     mockRoute("get", "/localization/languages", { languages: [{ ...BG, versions: { account: "v2", auth: "v1" } }] });

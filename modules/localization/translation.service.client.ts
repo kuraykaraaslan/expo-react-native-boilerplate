@@ -1,7 +1,9 @@
 import { Platform } from "react-native";
 import axiosInstance from "@/libs/axios";
+import logger from "@/libs/logger";
 import {
   LanguagesResponseSchema,
+  RemoteLanguageSchema,
   TranslationBundleRequestSchema,
   TranslationBundleSchema,
   TranslationPlatformSchema,
@@ -18,7 +20,12 @@ export class TranslationClientService {
   static async getLanguages(): Promise<RemoteLanguage[]> {
     const platform = TranslationPlatformSchema.parse(Platform.OS);
     const res = await axiosInstance.get("/localization/languages", { params: { platform }, skipAuth: true });
-    return LanguagesResponseSchema.parse(res.data).languages;
+    return LanguagesResponseSchema.parse(res.data).languages.flatMap((item) => {
+      const language = RemoteLanguageSchema.safeParse(item);
+      if (language.success) return [language.data];
+      logger.warn("[i18n] skipping a malformed language from the server", language.error.issues[0]?.message ?? "invalid");
+      return [];
+    });
   }
 
   /** One module's dictionary in one language, for this platform. */
